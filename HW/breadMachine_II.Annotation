@@ -1,0 +1,49 @@
+[DesignatorManager]
+
+[SheetNumberManager]
+SheetNumberOrder=Display Order
+SheetNumberMethod=Increasing
+DocumentName0=AFFICHEUR.SchDoc
+UniqueIDPath0=\ETGLITCB
+SheetNumber0=1
+DocumentName1=COIN RETURN_A.SchDoc
+UniqueIDPath1=\IEZZWNWP
+SheetNumber1=2
+DocumentName2=DOOR SWITCHES.SchDoc
+UniqueIDPath2=\CGTMPSYO
+SheetNumber2=3
+DocumentName3=KEYBOARD.SchDoc
+UniqueIDPath3=\PIFXCYVZ
+SheetNumber3=4
+DocumentName4=MCU.SchDoc
+UniqueIDPath4=\OCXSBQBR
+SheetNumber4=5
+DocumentName5=MDB.SchDoc
+UniqueIDPath5=\GYTKKNSG
+SheetNumber5=6
+DocumentName6=MODEM.SchDoc
+UniqueIDPath6=\QFFXJLAB
+SheetNumber6=7
+DocumentName7=MOTOR DRIVER.SchDoc
+UniqueIDPath7=\MLVBOLZW
+SheetNumber7=8
+DocumentName8=PSU.SchDoc
+UniqueIDPath8=\LMBOJOMC
+SheetNumber8=9
+DocumentName9=RS232_2_USB.SchDoc
+UniqueIDPath9=\BVUEXSFK
+SheetNumber9=10
+DocumentName10=SENSORS.SchDoc
+UniqueIDPath10=\WUDCWBRI
+SheetNumber10=11
+DocumentName11=THERMOMETER.SchDoc
+UniqueIDPath11=\IDVCZODY
+SheetNumber11=12
+DocumentName12=TOPSHEET.SchDoc
+UniqueIDPath12=
+SheetNumber12=13
+DocumentName13=USB HOST.SchDoc
+UniqueIDPath13=\MOPXFRST
+SheetNumber13=14
+
+
