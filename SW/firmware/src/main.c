@@ -16,6 +16,10 @@
     machines of all modules in the system
  *******************************************************************************/
 
+/**
+ * \brief Ce fichier contient la fonction "main" du projet.
+ */
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -36,7 +40,7 @@
  *   78390 BOIS D'ARCY <BR>
  *	+33 651 60 40 47 <BR>
  *	<a href = "http://www.rasoftware.fr">http://www.rasoftware.fr </a> <BR><BR>
- *<CENTER>Copyright<b>? RASoftware</b> 2019 </CENTER>  <BR>
+ *<CENTER>Copyright<b>© RASoftware</b> 2019 </CENTER>  <BR>
  * 
  *  
  * The information contained here-in is the property of RASoftware and is not 
@@ -46,7 +50,7 @@
  * display.                                                                  
  * <CENTER>___________________________________________</CENTER><BR><BR>
  * 
- * Documentation du logiciel qui g?re l'?l?ctronique de la carte Bread machine version 2
+ * Documentation du logiciel qui gère l'éléctronique de la carte Bread machine version 2
  **/
 
 // *****************************************************************************

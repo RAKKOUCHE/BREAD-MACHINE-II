@@ -1,5 +1,24 @@
+/** ***************************************************************************
+ * \date 2019 11 08
+ * 
+ * \file mainboard2.c
+ * 
+ * \brief Ce fichier contient le code source pour le module principale de 
+ * l'applicatin.
+ * 
+ * \details Ce fichier contient le code source du module principale de 
+ * l'application. Il implémente la logique de la machine d'état de l'application 
+ * et peut appeler les routines API des modules MPLAB Harmony du système, 
+ * tels que les pilotes,  services système et middleware.  Toutefois, il
+ *  n'appelle aucune des interfaces système (telles que les fonctions 
+ * "Initialiser" et "Tâches") des modules du système ou  faire des suppositions 
+ * sur le moment où ces fonctions sont exécutées s'appellent.  C'est de la 
+ * responsabilité du système spécifique à la configuration fichiers.
+ * 
+ ******************************************************************************/
+
 /*******************************************************************************
-  MPLAB Harmony Application Source File
+ *   MPLAB Harmony Application Source File
 
   Company:
     Microchip Technology Inc.
@@ -28,8 +47,11 @@
 // *****************************************************************************
 
 #include "mainboard2.h"
-#include "audits.h"
 
+/**
+ * \addtogroup main
+ * @{
+ */
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -147,6 +169,9 @@ void MAINBOARD2_Tasks ( void )
     }
 }
 
+/**
+ * @}
+ */
 
 /*******************************************************************************
  End of File

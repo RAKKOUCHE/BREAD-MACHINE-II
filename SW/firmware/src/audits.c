@@ -1,9 +1,9 @@
-/***************************************************************************
- *  \author Rachid AKKOUCHE
+/** *************************************************************************
+ * \author Rachid AKKOUCHE
  * 
  *  Company RASoftware
  * 
- * \date 2019 11 018
+ * \date 2019 11 08
  * 
  * \file audits.c
  * 
@@ -24,6 +24,7 @@
 #include "config/../configuration.h"
 #include "driver/at24/drv_at24.h"
 #include "peripheral/gpio/plib_gpio.h"
+#include "audits.h"
 
 /**
  * \addtogroup audits
@@ -49,47 +50,45 @@
 /* ************************************************************************** */
 
 /**
- * \brief Delay de la tâche
- */
-#define AUDITS_DELAY (1000 * MILLISEC)
-
-/**
  * \brief Valeur indiquant que l'eeprom a été initialis'.
  */
 #define AUDITS_USED_FLAG 0XA5A5A5A5
 
 /**
- * \brief Nom de la tâche.
+ * \brief Nom de la tâche d'audits.
  */
 #define AUDITS_TASK_NAME "Audits"
 
 /**
- * \brief Profondeur du tas de la tâche.
+ * \brief Profondeur du tas de la tâche d'audits.
  */
 #define AUDITS_TASK_STACK 512
 
 /**
- * 
- * \brief Priorité de la tâche.
+ * \brief Priorité de la tâche d'audits.
  */
 #define AUDITS_TASK_PRIORITY 2
 
 /**
- * \brief Nombre d'éléments dans la queue.
+ * \brief Nombre d'éléments dans la queue utilisée dans la tâche d'audits
  */
 #define AUDITS_QUEUE_LEN 8
 
 /**
+ * \brief Delay de la tâche
+ */
+#define AUDITS_DELAY (1000 * MILLISEC)
+
+/**
  * \brief Adresse du flag d'initialisation dans l'eeprom
  */
-//#define ADDRESS_FLAG (DRV_AT24_EEPROM_FLASH_SIZE - sizeof(uint32_t))
-#define ADDRESS_FLAG (1024 - sizeof(uint32_t))
+#define ADDRESS_FLAG (DRV_AT24_EEPROM_FLASH_SIZE - sizeof(uint32_t))
+
 
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: File Scope or Global Data                                         */
 /* ************************************************************************** */
-
 /* ************************************************************************** */
 
 /**
@@ -212,7 +211,7 @@ static struct
  ********************************************************************/
 static void vTaskAudit(void *vParameters)
 {
-    int index = 0;
+    int index;
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while(1)
     {
@@ -274,8 +273,12 @@ static void vTaskAudit(void *vParameters)
                         }
                         if(audits.record.dwValue == AUDITS_USED_FLAG)
                         {
-                            LED_SYS_Set();
-                            while(1);
+                            while(!CLR_Get())
+                            {
+                                LED_SYS_Toggle();
+                                vTaskDelay(FLASH_PERIOD);
+                            }
+                            LED_SYS_Clear();
                         }
                     }
                 }

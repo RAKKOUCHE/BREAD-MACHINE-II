@@ -18,6 +18,20 @@
     are defined here for convenience.
 *******************************************************************************/
 
+/**
+ * \file mainboard2.h
+ * 
+ * \brief Ce fichier en-tête fournit les prototypes et les deéfinitions pour 
+ * l'application.
+ * 
+ * \details Ce fichier d'en-tête fournit des prototypes de fonctions et 
+ * des définitions de types de données pour l'application.  Certaines d'entre 
+ * elles sont requises par le système (telles que la  "MAINBOARD2_Initialize" et 
+ * "MAINBOARD2_Tasks") et certains d'entre eux sont seulement utilisés en 
+ * interne par l'application (comme la définition "MAINBOARD2_STATES").  
+ * Les deux sont définies ici pour plus de commodité.
+ */
+
 #ifndef _MAINBOARD2_H
 #define _MAINBOARD2_H
 
@@ -34,6 +48,9 @@
 #include "configuration.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
+#include "audits.h"
+#include "hd44780.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -43,6 +60,11 @@ extern "C" {
 #endif
 // DOM-IGNORE-END
 
+    /**
+     * \defgroup main MAIN
+     * \brief Module principale
+     * @{
+     */
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
@@ -178,8 +200,9 @@ void MAINBOARD2_Initialize ( void );
  */
 void MAINBOARD2_Tasks( void );
 
-
-
+/**
+ * @}
+ */
 #endif /* _MAINBOARD2_H */
 
 //DOM-IGNORE-BEGIN

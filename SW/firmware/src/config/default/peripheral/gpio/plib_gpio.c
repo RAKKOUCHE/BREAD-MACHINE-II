@@ -62,6 +62,7 @@ void GPIO_Initialize ( void )
     LATA = 0x0; /* Initial Latch Value */
     TRISACLR = 0x2ff; /* Direction Control */
     ANSELACLR = 0x600; /* Digital Mode Enable */
+    CNPUASET = 0x1; /* Pull-Up Enable */
 
     /* PORTB Initialization */
     LATB = 0x0; /* Initial Latch Value */
@@ -73,6 +74,7 @@ void GPIO_Initialize ( void )
     LATC = 0x0; /* Initial Latch Value */
     TRISCCLR = 0x2; /* Direction Control */
     ANSELCCLR = 0xf000; /* Digital Mode Enable */
+    CNPUCSET = 0x2; /* Pull-Up Enable */
 
     /* PORTD Initialization */
     ODCDSET = 0xff8c; /* Open Drain Enable */

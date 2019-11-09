@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /**
- *  \author Rachid AKKOUCHE
+ * \author Rachid AKKOUCHE
  * 
  *  Company RASoftware
  * 
