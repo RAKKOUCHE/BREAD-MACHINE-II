@@ -36,6 +36,7 @@
 #include "globaldef.h"
 #include "timers.h"
 #include "delay_us.h"
+#include "mainboard2.h"
 
 /* ************************************************************************** */
 
@@ -104,7 +105,7 @@
 /**
  * \brief afficheur actif.
  */
-#define LCD_ON                          0b00000100
+#define LCD_DISPLAY_ON                          0b00000100
 
 /**
  * \brief Indique si le déplacement doit s'effectuer à gauche ou à droite.
@@ -262,6 +263,7 @@ static struct
     uint8_t cursor_Address; /*!<Adresse de la position qui sera utilisée pour 
                              * le prochain afficheur.*/
     bool isTOLCD; /*!<Flag indiquant si le TO est atteint.*/
+    bool isLCDInitialized; /*!Flag indiquant si l'afficheur est initializé.*/
 } lcd;
 
 
@@ -406,19 +408,21 @@ static void vLCD_Enable(void)
  ********************************************************************/
 static uint8_t byGetLCDAddressCounter(void)
 {
+    
     uint8_t byResult;
+    
     LCD_DATA_IN();
     LCD_RS_Clear();
     LCD_RW_Set();
     Delay10us(1);
     LCD_EN_Set();
     Delay10us(1);
-    byResult = ((uint8_t) GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA) >> 4;
+    byResult = (uint8_t)GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA;
     LCD_EN_Clear();
     Delay10us(1);
     LCD_EN_Set();
     Delay10us(1);
-    byResult += (uint8_t) GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA;
+    byResult += (uint8_t)(GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA) >> 4;
     LCD_EN_Clear();
     Delay10us(1);
     LCD_RW_Clear();
@@ -524,7 +528,6 @@ static void vLCDSetValue(const uint8_t byValue, const bool isData)
     GPIO_PortWrite(LCD_PORT_DATA, LCD_DATA, ((byValue << 4) & 0XF0));
     Delay10us(1);
     vLCD_Enable();
-    Delay10us(1);
 }
 //******************************************************************************
 
@@ -776,43 +779,48 @@ static void vCreateChar(const uint8_t Code, const uint8_t *pBuffer)
 /* ************************************************************************** */
 
 /*********************************************************************
- * Function:        void _mon_putc(const char data)
+ * Function:        
+ *         void _mon_putc(const char data)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/11/10
  *
- * Version:         
- *                  1.0
+ * Summary:
+ *         Ajoute un caractère dans la queue
  * 
- * Date:            
- *                  yyyy.MM.dd
- * 
- * Author:          
- *                  Rachid AKKOUCHE  
- * 
- * Summary:         
- *                  Cette fonction 
+ * Description:
+ *         Par défaut le compilateur envoie les caractères de printf sur le port 
+ * série. La redéclaration de _mon_putc permet une redirection
  *
  * PreCondition:    
- *                  None                 
+ *         None
  *
- * Input:           
- *                  None                 
- *                  
- * Output:          
- *                  None                 
- * 
- * Returns          
- *                  None                 
+ * Input:     
+ *         Le code du caractère à afficher.
  *
- * Side Effects:    
- *                  None                 
+ * Output:
+ *         None
  *
- * Note:            
- *                  None                 
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
  * 
  * Example:
- *                  <code>
- *                  code            
- *                  </code>
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
  * 
+ * Remarks:
+ *         None
+ *         
  ********************************************************************/
 void _mon_putc(const char data)
 {
@@ -824,6 +832,9 @@ void _mon_putc(const char data)
 /*********************************************************************
  * Function:        
  *         void vLCD_HOME()
+ * 
+ * Version :
+ *          1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
@@ -864,20 +875,24 @@ void _mon_putc(const char data)
 void vLCD_HOME()
 {
     vLCD_Command(LCD_HOME);
+    delayMs(1);
 }
 
 /*********************************************************************
  * Function:        
  *         void vLCD_CLEAR()
  * 
+ * Version:
+ *         1.0
+ * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Efface l'écran.
  * 
  * Description:
  *         DESCRIPTION
@@ -909,20 +924,24 @@ void vLCD_HOME()
 void vLCD_CLEAR()
 {
     vLCD_Command(LCD_CLEAR);
+    delayMs(1);
 }
 
 /*********************************************************************
  * Function:        
  *         void vLCDGotoXY(uint8_t X, uint8_t Y)
  * 
+ * Version:
+ *         1.0
+ * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Positionne le curseur à la ligne Y en position X
  * 
  * Description:
  *         DESCRIPTION
@@ -931,7 +950,8 @@ void vLCD_CLEAR()
  *         None
  *
  * Input:     
- *         None
+ *         X position sur la ligne.
+ *          Y Ligne
  *
  * Output:
  *         None
@@ -948,7 +968,8 @@ void vLCD_CLEAR()
  *         <code>
  * 
  * Remarks:
- *         None
+ *         La ligne et la position commence à 1
+ * 
  *         
  ********************************************************************/
 void vLCDGotoXY(uint8_t X, uint8_t Y)
@@ -960,14 +981,17 @@ void vLCDGotoXY(uint8_t X, uint8_t Y)
  * Function:        
  *         void vLCDClearLine(const uint8_t byLine)
  * 
+ * Version:
+ *         1.0
+ * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Efface une ligne
  * 
  * Description:
  *         DESCRIPTION
@@ -976,7 +1000,7 @@ void vLCDGotoXY(uint8_t X, uint8_t Y)
  *         None
  *
  * Input:     
- *         None
+ *         byLine Numéro de la ligne à effacer
  *
  * Output:
  *         None
@@ -1005,16 +1029,19 @@ void vLCDClearLine(const uint8_t byLine)
 
 /*********************************************************************
  * Function:        
- *         void vLCD_EntryMode(eID inc, eShift shift)
+ *         void vLCD_EntryMode(const eID inc, const eShift shift)
+ * 
+ * Version:
+ *         1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/1/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Choisi le mode d'entrée de l'afficheur.
  * 
  * Description:
  *         DESCRIPTION
@@ -1023,8 +1050,9 @@ void vLCDClearLine(const uint8_t byLine)
  *         None
  *
  * Input:     
- *         None
- *
+ *         inc Type d'incrémentation.
+ *          shift Déplacement à gaughe ou à droite.
+ * 
  * Output:
  *         None
  *
@@ -1043,23 +1071,26 @@ void vLCDClearLine(const uint8_t byLine)
  *         None
  *         
  ********************************************************************/
-void vLCD_EntryMode(eID inc, eShift shift)
+void vLCD_EntryMode(const eID inc, const eShift shift)
 {
     vLCD_Command(LCD_ENTRY_SET | (inc == increment ? LCD_INCREMENT : 0) | (shift == shifted ? LCD_SHIFT : 0));
 }
 
 /*********************************************************************
  * Function:        
- *         void vLCD_Display_control(eD_ON_OFF d_on, eC_ON_OFF c_on, eB_ON_OFF b_on)
+ *         void vLCD_Display_control(LCD_ON_OFF d_on, Cursor_ON_OFF c_on, Blink_ON_OFF b_on)
+ * 
+ * Version:
+ *         1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Contrôle de l'afficheur
  * 
  * Description:
  *         DESCRIPTION
@@ -1068,7 +1099,9 @@ void vLCD_EntryMode(eID inc, eShift shift)
  *         None
  *
  * Input:     
- *         None
+ *         d_on Afficheur actif ou non
+ *          c_on Curseur affiché ou non 
+ *          b_on Curseur clignotant ou non
  *
  * Output:
  *         None
@@ -1088,33 +1121,37 @@ void vLCD_EntryMode(eID inc, eShift shift)
  *         None
  *         
  ********************************************************************/
-void vLCD_Display_control(LCD_ON_OFF d_on, Cursor_ON_OFF c_on, Blink_ON_OFF b_on)
+void vLCD_Display_control(const LCD_ON_OFF d_on, const Cursor_ON_OFF c_on, const Blink_ON_OFF b_on)
 {
-    vLCD_Command(LCD_DISPLAY_CONTROL | (d_on == LCD_On ? LCD_ON : 0) |
+    vLCD_Command(LCD_DISPLAY_CONTROL | (d_on == LCD_On ? LCD_DISPLAY_ON : 0) |
                  (c_on == Cursor_On ? LCD_CURSOR_ON : 0) | (b_on == Blink_On ? LCD_CURSOR_BLINK : 0));
 }
 
 /*********************************************************************
  * Function:        
- *         void vLCD_Shift(eCursorDisplayShift beShifted, eDirection direction)
+ *         void vLCD_Shift(const CursorDisplayShift beShifted, const eDirection direction)
+ * 
+ * Version:
+ *         1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
  *         RECAPULATIF
  * 
  * Description:
- *         DESCRIPTION
+ *         Déplace le curseur ou l'affichage
  *
  * PreCondition:    
  *         None
  *
  * Input:     
- *         None
+ *         beShifted Indique si le glissement s'effectue ou non
+ *          direction Direction du glissement le cas échéant.
  *
  * Output:
  *         None
@@ -1134,7 +1171,7 @@ void vLCD_Display_control(LCD_ON_OFF d_on, Cursor_ON_OFF c_on, Blink_ON_OFF b_on
  *         None
  *         
  ********************************************************************/
-void vLCD_Shift(CursorDisplayShift beShifted, eDirection direction)     
+void vLCD_Shift(const CursorDisplayShift beShifted, const eDirection direction)
 {
     vLCD_Command(LCD_SHIFT_DISPLAY_CURSOR | (beShifted == D_shift ? LCD_SC : 0) |
                  (direction == right ? LCD_R_L : 0));
@@ -1143,16 +1180,19 @@ void vLCD_Shift(CursorDisplayShift beShifted, eDirection direction)
 /*********************************************************************
  * Function:        
  *         void vLCD_Function(const eInterface interface, const eLines lines,
-                   const eFont font)
+ *                            const eFont font)     
+ * 
+ * Version:
+ *         1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         YY/MM/DD
+ *         19/11/10
  *
  * Summary:
- *         RECAPULATIF
+ *         Défini le bus, le nombre de lignes et la fonte utilisés.
  * 
  * Description:
  *         DESCRIPTION
@@ -1161,7 +1201,9 @@ void vLCD_Shift(CursorDisplayShift beShifted, eDirection direction)
  *         None
  *
  * Input:     
- *         None
+ *         inteface 4 ou 8 bits
+ *          eLines 1 ou 2 lignes
+ *          font 5x8 ou 5x10
  *
  * Output:
  *         None
@@ -1178,11 +1220,11 @@ void vLCD_Shift(CursorDisplayShift beShifted, eDirection direction)
  *         <code>
  * 
  * Remarks:
- *         None
+ *         La fonte 5x10 ne peut être utlisée que par les afficheurs à 1 ligne.
  *         
  ********************************************************************/
 void vLCD_Function(const eInterface interface, const eLines lines,
-                   const eFont font)     
+                   const eFont font)
 {
     vLCD_Command(LCD_FUNCTION_SET | (interface == bits8 ? LCD_8_BITS : 0) |
                  (lines == more ? LCD_N_LIGNE : 0) | (font == hi ? LCD_FONT : 0));
@@ -1190,7 +1232,57 @@ void vLCD_Function(const eInterface interface, const eLines lines,
 
 /*********************************************************************
  * Function:        
+ *         bool getLCDInitialized(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/11/10
+ *
+ * Summary:
+ *         Renvoi le flag d'initialization.
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         isInitialized
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getLCDInitialized(void)
+{
+    return lcd.isLCDInitialized;
+}
+
+/*********************************************************************
+ * Function:        
  *         void vHD44780Init(void)
+ * 
+ * Version: 1.0
  * 
  * Author:
  *         Rachid AKKOUCHE
@@ -1234,31 +1326,23 @@ void vHD44780Init(void)
 
     delayMs(MILLISEC * 100);
     vLCD_Set_Interface(true);
-    delayMs(MILLISEC * 5);
+    delayMs(8);
     vLCD_Set_Interface(true);
-    delayMs(MILLISEC * 1);
+    delayMs( 1);
     vLCD_Set_Interface(true);
-    delayMs(MILLISEC * 1);
+    delayMs( 1);
     vLCD_Set_Interface(false);
     delayMs(1);
-    vLCD_Command(LCD_FUNCTION_SET | LCD_N_LIGNE);
-    delayMs(1);
-    vLCD_Command(LCD_DISPLAY_CONTROL);
-    delayMs(1);
-    vLCD_CLEAR();
-    delayMs(5);
-    vLCD_Command(LCD_ENTRY_SET | LCD_INCREMENT);
-    delayMs(5);
-    //  vLCD_Command(LCD_DISPLAY_CONTROL | LCD_ON | LCD_CURSOR_ON | LCD_CURSOR_BLINK);
-    vLCD_Command(LCD_DISPLAY_CONTROL | LCD_ON);
+    vLCD_Function(bits4, more, lo);
+    vLCD_Display_control(LCD_Off, Cursor_Off, Blink_Off);
+    vLCD_EntryMode(increment, noShifted);
+    vLCD_Display_control(LCD_On, Blink_Off, Cursor_Off);
     vCreateChar(EURO, euro);
     for(byIndex = 0; byIndex < 5; byIndex++)
     {
         vCreateChar(byIndex + 1, barr[byIndex]);
     }
-    vLCD_HOME();
-    Delay10us(1);
-    printf("%s", "MT DISTRIBUTION");
+    vLCD_CLEAR();
 }
 
 /*********************************************************************
@@ -1305,13 +1389,11 @@ void vHD44780Init(void)
  ********************************************************************/
 void vLCDInit(void)
 {
-    LATA = 0xff;
-
     LCD_RS_Clear();
     LCD_RW_Clear();
     LCD_EN_Clear();
-
     LCD_CLEAR_DATA();
+    lcd.isLCDInitialized = false;
     if(!lcd.hTaskLCD)
     {
         xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, LCD_TASK_PRIORITY, &lcd.hTaskLCD);

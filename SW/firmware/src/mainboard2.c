@@ -139,18 +139,34 @@ void MAINBOARD2_Tasks(void)
             /* Application's initial state. */
         case MAINBOARD2_STATE_INIT:
         {
-
-            mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
             vHD44780Init();
+            mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
+            vLCD_CLEAR();
+            printf("%s", "MT DISTRIBUTION");
+            vLCDGotoXY(1, 2);
+            printf(" %s %s", "Version ", VERSION);
+            delayMs(3 * SECONDE);
             break;
         }
-
         case MAINBOARD2_STATE_SERVICE_TASKS:
         {
-            delayMs(1000);
+            if(getIsRAZAudit())
+            {
+                setIsRAZAudit(false);
+                mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
+            }
             break;
         }
-
+        case MAINBOARD2_STATE_DISPLAY_CHOICE:
+            // <editor-fold desc="MAINBOARD2_STATE_DISPLAY_CHOICE"> 
+        {
+            mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
+            vLCD_CLEAR();
+            printf("%s", "  Choisssisez");
+            vLCDGotoXY(1, 2);
+            printf("%s", " votre produit");
+            break;
+        }// </editor-fold>
             /* TODO: implement your application state machine.*/
 
 

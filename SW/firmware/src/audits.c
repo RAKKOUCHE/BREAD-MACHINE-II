@@ -25,6 +25,7 @@
 #include "driver/at24/drv_at24.h"
 #include "peripheral/gpio/plib_gpio.h"
 #include "audits.h"
+#include "hd44780.h"
 
 /**
  * \addtogroup audits
@@ -157,6 +158,8 @@ static struct
     UAUDITS dataBuffer; /*!<Buffer contenant les donneées d'audits.*/
     RECORDWORD record; /*!<Variable temporaire utilisée pour enregistrer les 
                         * informations dans l'eeprom.*/
+    bool isAuditReseted; /*!<Flag indiquant si un reset à été effectué sur les
+                          * audits*/
 } audits;
 
 /* ************************************************************************** */
@@ -276,12 +279,18 @@ static void vTaskAudit(void *vParameters)
                         }
                         if(audits.record.dwValue == AUDITS_USED_FLAG)
                         {
+                            vLCD_CLEAR();
+                            vLCDGotoXY(1, 1);
+                            printf("%s", "  RAZ termine");
+                            vLCDGotoXY(1, 2);
+                            printf("%s", " Retirez jumper");
                             while(!CLR_Get())
                             {
                                 LED_SYS_Toggle();
                                 vTaskDelay(FLASH_PERIOD);
                             }
                             LED_SYS_Clear();
+                            setIsRAZAudit(true);
                         }
                     }
                 }
@@ -311,6 +320,102 @@ static void vTaskAudit(void *vParameters)
 // Section: Interface Functions                                               */
 /* ************************************************************************** */
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         bool getIsRAZAudit()
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/10/10
+ *
+ * Summary:
+ *         Retourne le flag indiquant que l'audit est remise à zéro.
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         Le flag de remise à zéro des audits
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getIsRAZAudit()
+{
+    return audits.isAuditReseted;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setIsRAZAudit(bool isRAZ)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/11/10
+ *
+ * Summary:
+ *         Fixe l'état du flag de RAZ.
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         isRAZ Flag indiquant si le RAZ vient d\ être effectué.
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setIsRAZAudit(bool isRAZ)
+{
+    audits.isAuditReseted = isRAZ;
+}
 
 /*********************************************************************
  * Function:        
@@ -359,11 +464,11 @@ void vAuditsInit(void)
     if(!audits.hAuditHandle)
     {
         audits.state = AUDITS_STATE_INIT;
+        setIsRAZAudit(false);
         xTaskCreate(vTaskAudit, AUDITS_TASK_NAME, AUDITS_TASK_STACK, NULL,
                     AUDITS_TASK_PRIORITY, &audits.hAuditHandle);
     }
 }
-
 /**
  * @}
  */

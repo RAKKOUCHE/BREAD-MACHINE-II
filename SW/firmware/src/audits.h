@@ -36,11 +36,11 @@ extern "C"
 {
 #endif
 
-/**
- * \defgroup audits AUDITS
- * Gestion des audits dans l'eeprom.
- * @{
- */
+    /**
+     * \defgroup audits AUDITS
+     * Gestion des audits dans l'eeprom.
+     * @{
+     */
     /* ************************************************************************** */
     /* ************************************************************************** */
     /* Section: Constants                                                         */
@@ -52,18 +52,30 @@ extern "C"
     // Section: Data Types
     // *****************************************************************************
     // *****************************************************************************
-    
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
+    
+    /**
+     * \brief Positionne le flag de RAZ
+     * @param isRAZ flag à true quand les audits viennent d'être RAZ.
+     */
+    void setIsRAZAudit(bool isRAZ);
+
+    /**
+     * \brief retourne le flag indiquant si les audits sont à zéro
+     * @return true si le reset vient d'6etre effectué.
+     */
+    bool getIsRAZAudit(void);
 
     /**
      * \brief Initialisation du module des audits.
      */
     void vAuditsInit(void);
-    
+
     /**
      * @}
      */

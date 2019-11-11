@@ -107,7 +107,7 @@ extern "C"
         Blink_On = 1, /*!<Le curseur clignote.*/
     } Blink_ON_OFF;
 
-        /**
+    /**
      * \brief Indique si c'est le curseur qui se déplace ou si c'est 
      * les caractères.
      */
@@ -116,7 +116,7 @@ extern "C"
         C_move = 0, /*!<Le curseur se déplace.*/
         D_shift = 1, /*!<Les caractères se dplacent.*/
     } CursorDisplayShift;
-    
+
     /**
      * \brief Indique si l'affichage se déplace par rapport au curseur.
      * \details Vers la droite si l'adresse est incrémenté, vers la gauche si
@@ -127,7 +127,7 @@ extern "C"
         noShifted = 0, /*!<Pas de d?placment de l'affichage.*/
         shifted = 1, /*!<D?placement de l'affichage.*/
     } eShift;
-    
+
     /**
      * \brief Mode de modification de l'adresse du compteur
      */
@@ -145,7 +145,7 @@ extern "C"
         left = 0, /*!<Déplacement vers la gauche.*/
         right = 1, /*!<Déplacement vers la drote.*/
     } eDirection;
-        
+
     /**
      * \brief Type d'interface(4 ou 8 bits)
      */
@@ -154,8 +154,7 @@ extern "C"
         bits4 = 0, /*!<Interface 4 bit de DB4 à DB7.*/
         bits8 = 1, /*!<Interface 8 bits de DB0 à DB7.*/
     } eInterface;
-    
-    
+
     /**
      * \brief Nombre de lignes de l'afficheur.
      */
@@ -164,7 +163,7 @@ extern "C"
         one = 0, /*!<1 ligne. */
         more = 1, /*!<2 lignes ou plus.*/
     } eLines;
-    
+
     /**
      * \brief Fonte utilisée.
      */
@@ -182,7 +181,7 @@ extern "C"
     // *****************************************************************************
 
     /**
-     * \brief
+     * \brief Efface l'afficheur.
      */
     void vLCD_CLEAR();
 
@@ -193,45 +192,48 @@ extern "C"
     void vLCD_HOME();
 
     /**
-     * \brief
-     * @param X
-     * @param Y
+     * \brief Positionne le curseur de l'afficheur.
+     * @param X Position du curseur.
+     * @param Y Ligne sur laquelle se positionne le curseur.
      */
     void vLCDGotoXY(uint8_t X, uint8_t Y);
 
     /**
-     * \brief
-     * @param byLine
+     * \brief Efface une ligne.
+     * @param[in] byLine Numéro de la ligne à effacer.
      */
     void vLCDClearLine(const uint8_t byLine);
 
     /**
-     * \brief
-     * @param d_on
-     * @param c_on
-     * @param b_on
+     * \brief Contrôle l'afficheur
+     * @param[in] d_on Afficheur allumé ou non.
+     * @param[in] c_on Curseur affiché ou non.
+     * @param[in] b_on Curseur clignotant ou non.
      */
-    void vLCD_Display_control(LCD_ON_OFF d_on, Cursor_ON_OFF c_on, Blink_ON_OFF b_on);
+    void vLCD_Display_control(const LCD_ON_OFF d_on, const Cursor_ON_OFF c_on, const Blink_ON_OFF b_on);
+
+    
+    /**
+     * \brief Mode de traitement des caractères arrivant sur l'afficheur.
+     * @param[in] inc Incrémente ou décrèmente le compteur d'adresse.
+     * @param[in] shift Déplacement ou non des caractères déjà affichés.
+     */
+    void vLCD_EntryMode(const eID inc, const eShift shift);
 
     /**
-     * \brief
-     * @param inc
-     * @param shift
+     * \brief Déplace le curseur ou l'afficheur.
+     * @param[in] beShifted Indique si c'est le curseur ou les caractères.
+     * @param[in] direction Indique la direction.
      */
-    void vLCD_EntryMode(eID inc, eShift shift);
+    void vLCD_Shift(const CursorDisplayShift beShifted, const eDirection direction);
 
     /**
-     * \brief
-     * @param beShifted
-     * @param direction
-     */
-    void vLCD_Shift(CursorDisplayShift beShifted, eDirection direction);
-
-    /**
-     * \brief
-     * @param interface
-     * @param lines
-     * @param font
+     * \brief Determine les paramètres de l'afficheur.
+     * \details La fonte 5x10 ne peut être utilisée que pour les afficheurs à 1 
+     * ligne.
+     * \param[in] interface Bus 4 ou 8 bits.
+     * \param[in] lines 1 ou plusieurs lignes.
+     * \param[in] font Font 5x10 ou 5x8
      */
     void vLCD_Function(const eInterface interface, const eLines lines,
                        const eFont font);
