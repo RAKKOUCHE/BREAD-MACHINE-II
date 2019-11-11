@@ -71,7 +71,7 @@
     This structure should be initialized by the MAINBOARD2_Initialize function.
 
     Application strings and buffers are be defined outside this structure.
-*/
+ */
 
 MAINBOARD2_DATA mainboard2Data;
 
@@ -82,7 +82,7 @@ MAINBOARD2_DATA mainboard2Data;
 // *****************************************************************************
 
 /* TODO:  Add any necessary callback functions.
-*/
+ */
 
 // *****************************************************************************
 // *****************************************************************************
@@ -92,7 +92,7 @@ MAINBOARD2_DATA mainboard2Data;
 
 
 /* TODO:  Add any necessary local functions.
-*/
+ */
 
 
 // *****************************************************************************
@@ -109,11 +109,11 @@ MAINBOARD2_DATA mainboard2Data;
     See prototype in mainboard2.h.
  */
 
-void MAINBOARD2_Initialize ( void )
+void MAINBOARD2_Initialize(void)
 {
     /* Place the App state machine in its initial state. */
     mainboard2Data.state = MAINBOARD2_STATE_INIT;
-    vAuditsInit();
+    vLCDInit();
     vAuditsInit();
 
 
@@ -121,7 +121,6 @@ void MAINBOARD2_Initialize ( void )
      * parameters.
      */
 }
-
 
 /******************************************************************************
   Function:
@@ -131,36 +130,31 @@ void MAINBOARD2_Initialize ( void )
     See prototype in mainboard2.h.
  */
 
-void MAINBOARD2_Tasks ( void )
+void MAINBOARD2_Tasks(void)
 {
 
     /* Check the application's current state. */
-    switch ( mainboard2Data.state )
+    switch(mainboard2Data.state)
     {
-        /* Application's initial state. */
+            /* Application's initial state. */
         case MAINBOARD2_STATE_INIT:
         {
-            bool appInitialized = true;
 
-
-            if (appInitialized)
-            {
-
-                mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
-            }
+            mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
+            vHD44780Init();
             break;
         }
 
         case MAINBOARD2_STATE_SERVICE_TASKS:
         {
-
+            delayMs(1000);
             break;
         }
 
-        /* TODO: implement your application state machine.*/
+            /* TODO: implement your application state machine.*/
 
 
-        /* The default state should never be executed. */
+            /* The default state should never be executed. */
         default:
         {
             /* TODO: Handle error in application's state machine. */

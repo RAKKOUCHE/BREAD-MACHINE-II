@@ -1,0 +1,28 @@
+<<<<<<< HEAD
+/SW/TEST/doc/DOXYGEN/html
+/HW/__Previews
+/HW/Project Logs for breadMachine_II
+/SW/TEST/firmware/Test.X/debug
+/SW/TEST/firmware/Test.X/dist
+/SW/TEST/firmware/Test.X/build
+=======
+/SW/TEST/firmware/Test.X/build
+/SW/TEST/firmware/Test.X/debug
+/SW/TEST/firmware/Test.X/dist
+/SW/TEST/doc/PDF/*.pdf
+/SW/TEST/doc/DOXYGEN/html
+/HW/__Previews
+/HW/Project Logs for breadMachine_II
+<<<<<<< HEAD
+/SW/TEST/doc/PDF
+=======
+>>>>>>> develop
+>>>>>>> develop
+/HW/Design
+/SW/TEST
+/SW/firmware/doc/DOXYGEN/html
+/SW/firmware/doc/PDF
+/SW/firmware/src/config/default/eeprom
+/SW/firmware/MainBoard2.X/debug/default/eeprom.xml
+/SW/firmware/MainBoard2.X/build
+/SW/firmware/_src

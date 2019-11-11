@@ -34,6 +34,7 @@
 
 /* TODO:  Include other files here if needed. */
 #include "FreeRTOSConfig.h"
+#include "third_party/rtos/FreeRTOS/Source/include/projdefs.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -47,16 +48,11 @@ extern "C"
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
-    
+
     /**
      * \brief Nombre de produits.
      */
 #define PRODUCT_NUMBER 3
-    
-    /**
-     * \brief Provoque un délai de x milliseconde.
-     */
-#define delayMs(x) vTaskDelay(pdMS_TO_TICKS(x))
 
     /**
      * \brief Fréquence d'horloge du CPU.
@@ -72,6 +68,11 @@ extern "C"
      * \brief Définition d'une milliseconde pour Freertos.
      */
 #define MILLISEC pdMS_TO_TICKS(1)
+
+    /**
+     * \brief Provoque un délai de x milliseconde.
+     */
+#define delayMs(x) vTaskDelay(x)
 
     /**
      * \brief Période de clignotement de la led système.
@@ -95,9 +96,9 @@ extern "C"
         banner.
      */
 
-/**
- @}
- */
+    /**
+     @}
+     */
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }

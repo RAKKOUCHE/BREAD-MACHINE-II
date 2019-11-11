@@ -225,7 +225,10 @@ static void vTaskAudit(void *vParameters)
                     DRV_HANDLE_INVALID))
                 {
                     audits.state = CLR_Get() ? AUDITS_STATE_READ : AUDITS_STATE_CLEAR;
-                    audits.hAuditQueue = xQueueCreate(AUDITS_QUEUE_LEN, sizeof( RECORDWORD));
+                    if(!audits.hAuditQueue)
+                    {
+                        audits.hAuditQueue = xQueueCreate(AUDITS_QUEUE_LEN, sizeof( RECORDWORD));
+                    }
                 }
                 break;
             }// </editor-fold>
@@ -353,7 +356,7 @@ static void vTaskAudit(void *vParameters)
  ********************************************************************/
 void vAuditsInit(void)
 {
-    if(audits.hAuditHandle == NULL)
+    if(!audits.hAuditHandle)
     {
         audits.state = AUDITS_STATE_INIT;
         xTaskCreate(vTaskAudit, AUDITS_TASK_NAME, AUDITS_TASK_STACK, NULL,
