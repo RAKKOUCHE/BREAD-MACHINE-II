@@ -145,7 +145,7 @@ void MAINBOARD2_Tasks(void)
             printf("%s", "MT DISTRIBUTION");
             vLCDGotoXY(1, 2);
             printf(" %s %s", "Version ", VERSION);
-            delayMs(3 * SECONDE);
+            delayMs(1 * SECONDE);
             break;
         }
         case MAINBOARD2_STATE_SERVICE_TASKS:
