@@ -113,6 +113,7 @@ void MAINBOARD2_Initialize(void)
 {
     /* Place the App state machine in its initial state. */
     mainboard2Data.state = MAINBOARD2_STATE_INIT;
+    vParametersRead();
     vLCDInit();
     vAuditsInit();
 

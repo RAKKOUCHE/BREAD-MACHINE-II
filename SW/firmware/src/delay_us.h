@@ -19,7 +19,7 @@
 #include  "xc-pic32m.h"
 
 /**
- * \defgroup delay DELAIS
+ * \defgroup delais DELAIS
  * \brief Module gérant les délais de 10us utilisés par le programme.
  * @{
  */

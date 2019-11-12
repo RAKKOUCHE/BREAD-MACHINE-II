@@ -26,3 +26,7 @@
 /SW/firmware/MainBoard2.X/debug/default/eeprom.xml
 /SW/firmware/MainBoard2.X/build
 /SW/firmware/_src
+/SW/firmware/MainBoard2.X/debug
+/SW/firmware/MainBoard2.X/dist
+/SW/doc/DOXYGEN/html
+/SW/doc/PDF

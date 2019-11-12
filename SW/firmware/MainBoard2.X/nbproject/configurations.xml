@@ -28,6 +28,9 @@
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c1.h</itemPath>
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c_master.h</itemPath>
             </logicalFolder>
+            <logicalFolder name="f5" displayName="nvm" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/nvm/plib_nvm.h</itemPath>
+            </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f3" displayName="system" projectFiles="true">
             <logicalFolder name="f1" displayName="int" projectFiles="true">
@@ -94,6 +97,7 @@
       <itemPath>../src/globaldef.h</itemPath>
       <itemPath>../src/hd44780.h</itemPath>
       <itemPath>../src/delay_us.h</itemPath>
+      <itemPath>../src/parameters.h</itemPath>
       <itemPath>../src/mainboard2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -123,6 +127,9 @@
             </logicalFolder>
             <logicalFolder name="f1" displayName="i2c" projectFiles="true">
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c1.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f5" displayName="nvm" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/nvm/plib_nvm.c</itemPath>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f3" displayName="system" projectFiles="true">
@@ -163,6 +170,7 @@
       <itemPath>../src/audits.c</itemPath>
       <itemPath>../src/hd44780.c</itemPath>
       <itemPath>../src/delay_us.c</itemPath>
+      <itemPath>../src/parameters.c</itemPath>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/mainboard2.c</itemPath>
     </logicalFolder>
@@ -224,7 +232,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/default;../src/packs/PIC32MX470F512L_DFP;../src/mips;../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include"/>
+                  value="../src;../src/config/default;../src/packs/PIC32MX470F512L_DFP;;../src/mips;../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -252,9 +260,9 @@
         <property key="exclude-floating-point-library" value="false"/>
         <property key="expand-macros" value="false"/>
         <property key="extra-include-directories-for-assembler"
-                  value="../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include;../src/config/default"/>
+                  value="../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include;../src/config/default;"/>
         <property key="extra-include-directories-for-preprocessor"
-                  value="../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include;../src/config/default"/>
+                  value="../src/third_party/rtos/FreeRTOS/Source/portable/MPLAB/PIC32MX;../src/third_party/rtos/FreeRTOS/Source/include;../src/config/default;"/>
         <property key="false-conditionals" value="false"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
@@ -475,6 +483,7 @@
         <property key="UART5" value="true"/>
         <property key="USB" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="hwtoolclock.instructionspeed" value="4"/>
         <property key="hwtoolclock.units" value="mips"/>

@@ -54,6 +54,7 @@
 #include "audits.h"
 #include "hd44780.h"
 #include "globaldef.h"
+#include "parameters.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

@@ -57,6 +57,7 @@
 #include "task.h"
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"
+#include "peripheral/nvm/plib_nvm.h"
 #include "mainboard2.h"
 
 
