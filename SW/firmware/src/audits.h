@@ -66,7 +66,7 @@ extern "C"
                          * et positionne l'état en mode lecture pour provoquer 
                          * la remise à zéro des audits. */
         AUDITS_STATE_NUM, /*!<Nombre d'état.*/
-        AUDITS_SEND_TO_PC, /*!<Envoie vers le PC les audits.*/
+        AUDITS_STATE_SEND_TO_PC, /*!<Envoie vers le PC les audits.*/
     } AUDITS_STATES;
 
     // *****************************************************************************
@@ -82,16 +82,15 @@ extern "C"
     void setAuditState(AUDITS_STATES state);
 
     /**
+     * \brief Renvoi le flag indiquant si les audits ont étés remise à zéro.
+     * @return true quand les audits viennent d'être remis à zéro.
+     */
+    bool getIsRAZAudit(void);
+    /**
      * \brief Positionne le flag de RAZ
      * @param isRAZ flag à true quand les audits viennent d'être RAZ.
      */
     void setIsRAZAudit(bool isRAZ);
-
-    /**
-     * \brief retourne le flag indiquant si les audits sont à zéro
-     * @return true si le reset vient d'6etre effectué.
-     */
-    bool getIsRAZAudit(void);
 
     /**
      * \brief Initialisation du module des audits.

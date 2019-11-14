@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include "parameters.h"
+#include "peripheral/uart/plib_uart3.h"
 
 /**
  * \addtogroup parameters
@@ -153,7 +154,7 @@ const unsigned int __attribute__((space(prog),
  *         None
  *         
  ********************************************************************/
-void vParametreWrite(void)
+void vParametersWrite(void)
 {
     NVM_PageErase(NVM_MEDIA_START_ADDRESS);
     while(NVM_IsBusy());
@@ -209,9 +210,111 @@ void vParametersRead(void)
     memmove(&parameters, &gNVMFlashReserveArea, sizeof(parameters));
 }
 
+/*********************************************************************
+ * Function:        
+ *         void vParamSendToPC(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void vParamSendToPC(void)
+{
+    UART3_Write(&parameters.data, sizeof(PARAMETERS));
+}
+
+/*********************************************************************
+ * Function:        
+ *         void vParametersGetFromPC(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void vParametersGetFromPC(void)
+{
+//TODO placer un timer et effectuer les vérifications
+    if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
+    {
+        vParametersWrite();
+    }
+    vParametersRead();
+    vParamSendToPC();
+}
+
 /**
  * @}
  */
 /* *****************************************************************************
- End of File
+End of File
  */

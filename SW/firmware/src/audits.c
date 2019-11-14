@@ -243,13 +243,6 @@ static void vTaskAudit(void *vParameters)
                 {
                     DRV_AT24_Read(audits.hDrvAT24, audits.dataBuffer.buffer, sizeof(UAUDITS), 0);
                     while(DRV_AT24_TransferStatusGet(audits.hDrvAT24) == DRV_AT24_TRANSFER_STATUS_BUSY);
-
-                    srand(65);
-                    for(index = 0; index < sizeof(SAUDITS); index++)
-                    {
-                        audits.dataBuffer.buffer[index] = rand();
-                    }
-                    Nop();
                 }
                 break;
             }// </editor-fold>
@@ -271,17 +264,20 @@ static void vTaskAudit(void *vParameters)
                         }
                         if(audits.record.dwValue == AUDITS_USED_FLAG)
                         {
-                            vLCD_CLEAR();
-                            vLCDGotoXY(1, 1);
-                            printf("%s", "  RAZ termine");
-                            vLCDGotoXY(1, 2);
-                            printf("%s", " Retirez jumper");
-                            while(!CLR_Get())
+                            if(!CLR_Get())
                             {
-                                LED_SYS_Toggle();
-                                vTaskDelay(FLASH_PERIOD);
+                                vLCD_CLEAR();
+                                vLCDGotoXY(1, 1);
+                                printf("%s", "  RAZ termine");
+                                vLCDGotoXY(1, 2);
+                                printf("%s", " Retirez jumper");
+                                while(!CLR_Get())
+                                {
+                                    LED_SYS_Toggle();
+                                    vTaskDelay(FLASH_PERIOD);
+                                }
+                                LED_SYS_Clear();
                             }
-                            LED_SYS_Clear();
                             setIsRAZAudit(true);
                         }
                     }
@@ -297,7 +293,7 @@ static void vTaskAudit(void *vParameters)
                 xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
                 break;
             }// </editor-fold>
-            case AUDITS_SEND_TO_PC:
+            case AUDITS_STATE_SEND_TO_PC:
                 // <editor-fold desc="AUDITS_SEND_TO_PC"> 
             {
                 audits.state = AUDITS_STATE_IDLE;
@@ -380,7 +376,7 @@ void setAuditState(AUDITS_STATES state)
  *         Rachid AKKOUCHE
  * 
  * Date:
- *         19/10/10
+ *         19/11/10
  *
  * Summary:
  *         Retourne le flag indiquant que l'audit est remise à zéro.
@@ -414,7 +410,6 @@ void setAuditState(AUDITS_STATES state)
  ********************************************************************/
 bool getIsRAZAudit()
 {
-
     return audits.isAuditReseted;
 }
 
@@ -463,7 +458,6 @@ bool getIsRAZAudit()
  ********************************************************************/
 void setIsRAZAudit(bool isRAZ)
 {
-
     audits.isAuditReseted = isRAZ;
 }
 

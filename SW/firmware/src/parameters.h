@@ -53,13 +53,22 @@ extern "C"
     /**
      * \brief Enregistre les paramï¿½tres dans la mï¿½moire flash
      */
-    void vParametreWrite(void);
+    void vParametersWrite(void);
     
     /**
      * \brief Lecture des paramï¿½tres.
      */
     void vParametersRead();
 
+    /**
+     * \brief Envoie les paramètres sur port micro USB.
+     */
+    void vParamSendToPC(void);
+    
+    /**
+     * \brief Recoit les caractères du PC et les enregistre
+     */
+    void vParametersGetFromPC(void);
 /**
  * @}
  */    
