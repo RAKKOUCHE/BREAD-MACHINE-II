@@ -75,8 +75,8 @@
           <Name dnOrder="1">initialization.c</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">6FE23133FFFD2E622EE91DE7DD152AD5</GeneratedChecksum>
-          <UserChecksum dnOrder="5">6FE23133FFFD2E622EE91DE7DD152AD5</UserChecksum>
+          <GeneratedChecksum dnOrder="4">B69372B431B8159055B9911E2C46082C</GeneratedChecksum>
+          <UserChecksum dnOrder="5">B69372B431B8159055B9911E2C46082C</UserChecksum>
         </File>
         <File dnOrder="9">
           <Type dnOrder="0">SOURCE</Type>
@@ -120,13 +120,21 @@
         </File>
         <File dnOrder="14">
           <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">osal_freertos.c</Name>
+          <LogicalPath dnOrder="2">/osal/</LogicalPath>
+          <PhysicalPath dnOrder="3">/osal/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">13F747CBE45AD5A7C4DF007FEA796CC9</GeneratedChecksum>
+          <UserChecksum dnOrder="5">13F747CBE45AD5A7C4DF007FEA796CC9</UserChecksum>
+        </File>
+        <File dnOrder="15">
+          <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">plib_clk.c</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/clk/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/clk/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">7900D7886C1BC7FC275850273E35E0DA</GeneratedChecksum>
-          <UserChecksum dnOrder="5">7900D7886C1BC7FC275850273E35E0DA</UserChecksum>
+          <GeneratedChecksum dnOrder="4">AFA480B0A4E7906E86438781424B5C45</GeneratedChecksum>
+          <UserChecksum dnOrder="5">AFA480B0A4E7906E86438781424B5C45</UserChecksum>
         </File>
-        <File dnOrder="15">
+        <File dnOrder="16">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">plib_evic.c</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/evic/</LogicalPath>
@@ -134,15 +142,15 @@
           <GeneratedChecksum dnOrder="4">1922E11A5A685FCCE5FB4F11376C4282</GeneratedChecksum>
           <UserChecksum dnOrder="5">1922E11A5A685FCCE5FB4F11376C4282</UserChecksum>
         </File>
-        <File dnOrder="16">
+        <File dnOrder="17">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">plib_gpio.c</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/gpio/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/gpio/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">84A9CE5C41142D861B916689D9782F4A</GeneratedChecksum>
-          <UserChecksum dnOrder="5">84A9CE5C41142D861B916689D9782F4A</UserChecksum>
+          <GeneratedChecksum dnOrder="4">75096FD89C527E168C9930067C8CD048</GeneratedChecksum>
+          <UserChecksum dnOrder="5">75096FD89C527E168C9930067C8CD048</UserChecksum>
         </File>
-        <File dnOrder="17">
+        <File dnOrder="18">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">plib_i2c1.c</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/i2c/</LogicalPath>
@@ -150,7 +158,7 @@
           <GeneratedChecksum dnOrder="4">AC8E683DC906D19F489C9CBCCB783BE6</GeneratedChecksum>
           <UserChecksum dnOrder="5">AC8E683DC906D19F489C9CBCCB783BE6</UserChecksum>
         </File>
-        <File dnOrder="18">
+        <File dnOrder="19">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">plib_nvm.c</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/nvm/</LogicalPath>
@@ -158,7 +166,15 @@
           <GeneratedChecksum dnOrder="4">DE02D81404FB7504DD0151C20220C6B5</GeneratedChecksum>
           <UserChecksum dnOrder="5">DE02D81404FB7504DD0151C20220C6B5</UserChecksum>
         </File>
-        <File dnOrder="19">
+        <File dnOrder="20">
+          <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">plib_uart3.c</Name>
+          <LogicalPath dnOrder="2">config/default/peripheral/uart/</LogicalPath>
+          <PhysicalPath dnOrder="3">/peripheral/uart/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">9CE163C5AC6E6C69DAB8191B4B79A7DC</GeneratedChecksum>
+          <UserChecksum dnOrder="5">9CE163C5AC6E6C69DAB8191B4B79A7DC</UserChecksum>
+        </File>
+        <File dnOrder="21">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">port.c</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/portable/MPLAB/PIC32MX</LogicalPath>
@@ -166,7 +182,7 @@
           <GeneratedChecksum dnOrder="4">0050462E9C49D502623A3050E39916DB</GeneratedChecksum>
           <UserChecksum dnOrder="5">0050462E9C49D502623A3050E39916DB</UserChecksum>
         </File>
-        <File dnOrder="20">
+        <File dnOrder="22">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">port_asm.S</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/portable/MPLAB/PIC32MX</LogicalPath>
@@ -174,7 +190,7 @@
           <GeneratedChecksum dnOrder="4">C3A5A08B2030F988090D854607C497CF</GeneratedChecksum>
           <UserChecksum dnOrder="5">C3A5A08B2030F988090D854607C497CF</UserChecksum>
         </File>
-        <File dnOrder="21">
+        <File dnOrder="23">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">queue.c</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source</LogicalPath>
@@ -182,7 +198,7 @@
           <GeneratedChecksum dnOrder="4">F5394E2E84773BFF1A4BD6CDBB7C5840</GeneratedChecksum>
           <UserChecksum dnOrder="5">F5394E2E84773BFF1A4BD6CDBB7C5840</UserChecksum>
         </File>
-        <File dnOrder="22">
+        <File dnOrder="24">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">stream_buffer.c</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source</LogicalPath>
@@ -190,7 +206,15 @@
           <GeneratedChecksum dnOrder="4">4825B12AEBF317AB1B8AAD54428F70BD</GeneratedChecksum>
           <UserChecksum dnOrder="5">4825B12AEBF317AB1B8AAD54428F70BD</UserChecksum>
         </File>
-        <File dnOrder="23">
+        <File dnOrder="25">
+          <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">sys_dma.c</Name>
+          <LogicalPath dnOrder="2">config/default/system/dma/</LogicalPath>
+          <PhysicalPath dnOrder="3">/system/dma/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">0A6893369C4DA0EE7906866EB6E1D310</GeneratedChecksum>
+          <UserChecksum dnOrder="5">0A6893369C4DA0EE7906866EB6E1D310</UserChecksum>
+        </File>
+        <File dnOrder="26">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">sys_int.c</Name>
           <LogicalPath dnOrder="2">config/default/system/int/</LogicalPath>
@@ -198,7 +222,7 @@
           <GeneratedChecksum dnOrder="4">640A4B35B8CDB53BD8EA5077D81386BE</GeneratedChecksum>
           <UserChecksum dnOrder="5">640A4B35B8CDB53BD8EA5077D81386BE</UserChecksum>
         </File>
-        <File dnOrder="24">
+        <File dnOrder="27">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">tasks.c</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>
@@ -206,7 +230,7 @@
           <GeneratedChecksum dnOrder="4">2639BB4FD3055D401942BB52FAD14587</GeneratedChecksum>
           <UserChecksum dnOrder="5">2639BB4FD3055D401942BB52FAD14587</UserChecksum>
         </File>
-        <File dnOrder="25">
+        <File dnOrder="28">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">timers.c</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source</LogicalPath>
@@ -214,7 +238,7 @@
           <GeneratedChecksum dnOrder="4">0319C91A5CE9B15DD2E91A78C4D92A40</GeneratedChecksum>
           <UserChecksum dnOrder="5">0319C91A5CE9B15DD2E91A78C4D92A40</UserChecksum>
         </File>
-        <File dnOrder="26">
+        <File dnOrder="29">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">FreeRTOS.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -222,15 +246,15 @@
           <GeneratedChecksum dnOrder="4">A678E2C3E9855094DBB7DF6643133C73</GeneratedChecksum>
           <UserChecksum dnOrder="5">A678E2C3E9855094DBB7DF6643133C73</UserChecksum>
         </File>
-        <File dnOrder="27">
+        <File dnOrder="30">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">FreeRTOSConfig.h</Name>
           <LogicalPath dnOrder="2">config/default</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">87ADF08FAD4F0FF932EBD0B088F0A00B</GeneratedChecksum>
-          <UserChecksum dnOrder="5">87ADF08FAD4F0FF932EBD0B088F0A00B</UserChecksum>
+          <GeneratedChecksum dnOrder="4">4BD2F06DBD4E44CD7F4C53B0FA17A512</GeneratedChecksum>
+          <UserChecksum dnOrder="5">4BD2F06DBD4E44CD7F4C53B0FA17A512</UserChecksum>
         </File>
-        <File dnOrder="28">
+        <File dnOrder="31">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">ISR_Support.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/portable/MPLAB/PIC32MX</LogicalPath>
@@ -238,7 +262,7 @@
           <GeneratedChecksum dnOrder="4">968C65D1D30FDD362AE4E7C45C695EA8</GeneratedChecksum>
           <UserChecksum dnOrder="5">968C65D1D30FDD362AE4E7C45C695EA8</UserChecksum>
         </File>
-        <File dnOrder="29">
+        <File dnOrder="32">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">configuration.h</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>
@@ -246,7 +270,7 @@
           <GeneratedChecksum dnOrder="4">AAADF23B7FEE31AE7B0730112B896D54</GeneratedChecksum>
           <UserChecksum dnOrder="5">AAADF23B7FEE31AE7B0730112B896D54</UserChecksum>
         </File>
-        <File dnOrder="30">
+        <File dnOrder="33">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">croutine.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -254,15 +278,15 @@
           <GeneratedChecksum dnOrder="4">704E831E7499FFC3C0424AE431341286</GeneratedChecksum>
           <UserChecksum dnOrder="5">704E831E7499FFC3C0424AE431341286</UserChecksum>
         </File>
-        <File dnOrder="31">
+        <File dnOrder="34">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">definitions.h</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">0C86FDD927F454E57DB3228D3A64A712</GeneratedChecksum>
-          <UserChecksum dnOrder="5">0C86FDD927F454E57DB3228D3A64A712</UserChecksum>
+          <GeneratedChecksum dnOrder="4">2DB639197A9AC950E8ABD7ADBF75559C</GeneratedChecksum>
+          <UserChecksum dnOrder="5">2DB639197A9AC950E8ABD7ADBF75559C</UserChecksum>
         </File>
-        <File dnOrder="32">
+        <File dnOrder="35">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">deprecated_definitions.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -270,7 +294,7 @@
           <GeneratedChecksum dnOrder="4">2F1A823655EAF732C206989C44FBCA23</GeneratedChecksum>
           <UserChecksum dnOrder="5">2F1A823655EAF732C206989C44FBCA23</UserChecksum>
         </File>
-        <File dnOrder="33">
+        <File dnOrder="36">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">device.h</Name>
           <LogicalPath dnOrder="2">packs/PIC32MX470F512L_DFP/</LogicalPath>
@@ -278,7 +302,7 @@
           <GeneratedChecksum dnOrder="4">5D5C52527AB1435153DB9B50ADE6B79D</GeneratedChecksum>
           <UserChecksum dnOrder="5">5D5C52527AB1435153DB9B50ADE6B79D</UserChecksum>
         </File>
-        <File dnOrder="34">
+        <File dnOrder="37">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">driver.h</Name>
           <LogicalPath dnOrder="2">config/default/driver/</LogicalPath>
@@ -286,7 +310,7 @@
           <GeneratedChecksum dnOrder="4">1D2094DFA60F847FFD4E8153B6E78027</GeneratedChecksum>
           <UserChecksum dnOrder="5">1D2094DFA60F847FFD4E8153B6E78027</UserChecksum>
         </File>
-        <File dnOrder="35">
+        <File dnOrder="38">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">driver_common.h</Name>
           <LogicalPath dnOrder="2">config/default/driver/</LogicalPath>
@@ -294,7 +318,7 @@
           <GeneratedChecksum dnOrder="4">CC7DFCC51CD25171A3E400E18969354F</GeneratedChecksum>
           <UserChecksum dnOrder="5">CC7DFCC51CD25171A3E400E18969354F</UserChecksum>
         </File>
-        <File dnOrder="36">
+        <File dnOrder="39">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">drv_at24.h</Name>
           <LogicalPath dnOrder="2">config/default/driver/at24/</LogicalPath>
@@ -302,7 +326,7 @@
           <GeneratedChecksum dnOrder="4">F68EFAED22D62906295F2E60D6B32E3B</GeneratedChecksum>
           <UserChecksum dnOrder="5">F68EFAED22D62906295F2E60D6B32E3B</UserChecksum>
         </File>
-        <File dnOrder="37">
+        <File dnOrder="40">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">drv_at24_definitions.h</Name>
           <LogicalPath dnOrder="2">config/default/driver/at24/</LogicalPath>
@@ -310,7 +334,7 @@
           <GeneratedChecksum dnOrder="4">99C180836F8E45B3A9E30FB846B930CC</GeneratedChecksum>
           <UserChecksum dnOrder="5">99C180836F8E45B3A9E30FB846B930CC</UserChecksum>
         </File>
-        <File dnOrder="38">
+        <File dnOrder="41">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">event_groups.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -318,7 +342,7 @@
           <GeneratedChecksum dnOrder="4">FDBAD33B943F959F74DE0D2D11D85EFE</GeneratedChecksum>
           <UserChecksum dnOrder="5">FDBAD33B943F959F74DE0D2D11D85EFE</UserChecksum>
         </File>
-        <File dnOrder="39">
+        <File dnOrder="42">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">list.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -326,7 +350,7 @@
           <GeneratedChecksum dnOrder="4">4D85F0F869CB012DED6C82D454A13487</GeneratedChecksum>
           <UserChecksum dnOrder="5">4D85F0F869CB012DED6C82D454A13487</UserChecksum>
         </File>
-        <File dnOrder="40">
+        <File dnOrder="43">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">mainboard2.h</Name>
           <LogicalPath dnOrder="2"/>
@@ -334,7 +358,7 @@
           <GeneratedChecksum dnOrder="4"/>
           <UserChecksum dnOrder="5"/>
         </File>
-        <File dnOrder="41">
+        <File dnOrder="44">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">message_buffer.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -342,7 +366,7 @@
           <GeneratedChecksum dnOrder="4">64659FA6F03AC96B0BF691238AB47C04</GeneratedChecksum>
           <UserChecksum dnOrder="5">64659FA6F03AC96B0BF691238AB47C04</UserChecksum>
         </File>
-        <File dnOrder="42">
+        <File dnOrder="45">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">mpu_prototypes.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -350,7 +374,7 @@
           <GeneratedChecksum dnOrder="4">DC31F16E45F999DBACA3447CAAB3795D</GeneratedChecksum>
           <UserChecksum dnOrder="5">DC31F16E45F999DBACA3447CAAB3795D</UserChecksum>
         </File>
-        <File dnOrder="43">
+        <File dnOrder="46">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">mpu_wrappers.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -358,7 +382,31 @@
           <GeneratedChecksum dnOrder="4">F4155A9ACE4FB5B0EBE00CD118DC2162</GeneratedChecksum>
           <UserChecksum dnOrder="5">F4155A9ACE4FB5B0EBE00CD118DC2162</UserChecksum>
         </File>
-        <File dnOrder="44">
+        <File dnOrder="47">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">osal.h</Name>
+          <LogicalPath dnOrder="2">/osal/</LogicalPath>
+          <PhysicalPath dnOrder="3">/osal/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">F0AD88762263B7CB89B02AB4F5876059</GeneratedChecksum>
+          <UserChecksum dnOrder="5">F0AD88762263B7CB89B02AB4F5876059</UserChecksum>
+        </File>
+        <File dnOrder="48">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">osal_definitions.h</Name>
+          <LogicalPath dnOrder="2">/osal/</LogicalPath>
+          <PhysicalPath dnOrder="3">/osal/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">167A43EFF8A31441EBF85AC77958A30B</GeneratedChecksum>
+          <UserChecksum dnOrder="5">167A43EFF8A31441EBF85AC77958A30B</UserChecksum>
+        </File>
+        <File dnOrder="49">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">osal_freertos.h</Name>
+          <LogicalPath dnOrder="2">/osal/</LogicalPath>
+          <PhysicalPath dnOrder="3">/osal/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">0E6C60DFF74D4A0EC993971475F2CEAC</GeneratedChecksum>
+          <UserChecksum dnOrder="5">0E6C60DFF74D4A0EC993971475F2CEAC</UserChecksum>
+        </File>
+        <File dnOrder="50">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_clk.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/clk/</LogicalPath>
@@ -366,7 +414,7 @@
           <GeneratedChecksum dnOrder="4">7066CC390335CF75126E2A50C46E3BDD</GeneratedChecksum>
           <UserChecksum dnOrder="5">7066CC390335CF75126E2A50C46E3BDD</UserChecksum>
         </File>
-        <File dnOrder="45">
+        <File dnOrder="51">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_evic.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/evic/</LogicalPath>
@@ -374,15 +422,15 @@
           <GeneratedChecksum dnOrder="4">E59773BA907AB07B914B26DC17C93366</GeneratedChecksum>
           <UserChecksum dnOrder="5">E59773BA907AB07B914B26DC17C93366</UserChecksum>
         </File>
-        <File dnOrder="46">
+        <File dnOrder="52">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_gpio.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/gpio/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/gpio/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">D9BFE387C777EA974E2B4DB6546F58CF</GeneratedChecksum>
-          <UserChecksum dnOrder="5">D9BFE387C777EA974E2B4DB6546F58CF</UserChecksum>
+          <GeneratedChecksum dnOrder="4">D844F987A26E00A78BB8154F0313B9AA</GeneratedChecksum>
+          <UserChecksum dnOrder="5">D844F987A26E00A78BB8154F0313B9AA</UserChecksum>
         </File>
-        <File dnOrder="47">
+        <File dnOrder="53">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_i2c1.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/i2c/</LogicalPath>
@@ -390,7 +438,7 @@
           <GeneratedChecksum dnOrder="4">D9FABFEA435EFF1F4FD9B61917E54CD1</GeneratedChecksum>
           <UserChecksum dnOrder="5">D9FABFEA435EFF1F4FD9B61917E54CD1</UserChecksum>
         </File>
-        <File dnOrder="48">
+        <File dnOrder="54">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_i2c_master.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/i2c/</LogicalPath>
@@ -398,7 +446,7 @@
           <GeneratedChecksum dnOrder="4">0CE7018D4B951DF14C45D3AC2E8F9B19</GeneratedChecksum>
           <UserChecksum dnOrder="5">0CE7018D4B951DF14C45D3AC2E8F9B19</UserChecksum>
         </File>
-        <File dnOrder="49">
+        <File dnOrder="55">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">plib_nvm.h</Name>
           <LogicalPath dnOrder="2">config/default/peripheral/nvm/</LogicalPath>
@@ -406,7 +454,23 @@
           <GeneratedChecksum dnOrder="4">23AE8EC8981887B4EE6335D7425C6399</GeneratedChecksum>
           <UserChecksum dnOrder="5">23AE8EC8981887B4EE6335D7425C6399</UserChecksum>
         </File>
-        <File dnOrder="50">
+        <File dnOrder="56">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">plib_uart3.h</Name>
+          <LogicalPath dnOrder="2">config/default/peripheral/uart/</LogicalPath>
+          <PhysicalPath dnOrder="3">/peripheral/uart/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">2BD0E121DAB561C0F840444346EC1A87</GeneratedChecksum>
+          <UserChecksum dnOrder="5">2BD0E121DAB561C0F840444346EC1A87</UserChecksum>
+        </File>
+        <File dnOrder="57">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">plib_uart_common.h</Name>
+          <LogicalPath dnOrder="2">config/default/peripheral/uart/</LogicalPath>
+          <PhysicalPath dnOrder="3">/peripheral/uart/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">A5B40F859F555A11C166EBEE10E8B5CD</GeneratedChecksum>
+          <UserChecksum dnOrder="5">A5B40F859F555A11C166EBEE10E8B5CD</UserChecksum>
+        </File>
+        <File dnOrder="58">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">portable.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -414,7 +478,7 @@
           <GeneratedChecksum dnOrder="4">3DD4DD0A44DABEF42A2945130458D606</GeneratedChecksum>
           <UserChecksum dnOrder="5">3DD4DD0A44DABEF42A2945130458D606</UserChecksum>
         </File>
-        <File dnOrder="51">
+        <File dnOrder="59">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">portmacro.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/portable/MPLAB/PIC32MX</LogicalPath>
@@ -422,7 +486,7 @@
           <GeneratedChecksum dnOrder="4">60416DDC5C4179A0D9CB5D28BC55579A</GeneratedChecksum>
           <UserChecksum dnOrder="5">60416DDC5C4179A0D9CB5D28BC55579A</UserChecksum>
         </File>
-        <File dnOrder="52">
+        <File dnOrder="60">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">projdefs.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -430,7 +494,7 @@
           <GeneratedChecksum dnOrder="4">CE78EF96C36D88D22E99EA091C304A52</GeneratedChecksum>
           <UserChecksum dnOrder="5">CE78EF96C36D88D22E99EA091C304A52</UserChecksum>
         </File>
-        <File dnOrder="53">
+        <File dnOrder="61">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">queue.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -438,7 +502,7 @@
           <GeneratedChecksum dnOrder="4">CC58866D184128BAF381F1FEBE67DAA8</GeneratedChecksum>
           <UserChecksum dnOrder="5">CC58866D184128BAF381F1FEBE67DAA8</UserChecksum>
         </File>
-        <File dnOrder="54">
+        <File dnOrder="62">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">semphr.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -446,7 +510,7 @@
           <GeneratedChecksum dnOrder="4">44E99649CAE3DE01AEE11929BF08E01F</GeneratedChecksum>
           <UserChecksum dnOrder="5">44E99649CAE3DE01AEE11929BF08E01F</UserChecksum>
         </File>
-        <File dnOrder="55">
+        <File dnOrder="63">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">stack_macros.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -454,7 +518,7 @@
           <GeneratedChecksum dnOrder="4">2A74BD05F3F1D28DD4B0925D419DEF24</GeneratedChecksum>
           <UserChecksum dnOrder="5">2A74BD05F3F1D28DD4B0925D419DEF24</UserChecksum>
         </File>
-        <File dnOrder="56">
+        <File dnOrder="64">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">stream_buffer.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -462,7 +526,23 @@
           <GeneratedChecksum dnOrder="4">92A84BBB4C20E15E21E63F818E101BD7</GeneratedChecksum>
           <UserChecksum dnOrder="5">92A84BBB4C20E15E21E63F818E101BD7</UserChecksum>
         </File>
-        <File dnOrder="57">
+        <File dnOrder="65">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">sys_dma.h</Name>
+          <LogicalPath dnOrder="2">config/default/system/dma/</LogicalPath>
+          <PhysicalPath dnOrder="3">/system/dma/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">C2DA38DFCE9FE1F73F3CBB86AF829F03</GeneratedChecksum>
+          <UserChecksum dnOrder="5">C2DA38DFCE9FE1F73F3CBB86AF829F03</UserChecksum>
+        </File>
+        <File dnOrder="66">
+          <Type dnOrder="0">HEADER</Type>
+          <Name dnOrder="1">sys_dma_mapping.h</Name>
+          <LogicalPath dnOrder="2">config/default/system/dma/</LogicalPath>
+          <PhysicalPath dnOrder="3">/system/dma/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">42E557EFE638D7A736FB88AA84F085F1</GeneratedChecksum>
+          <UserChecksum dnOrder="5">42E557EFE638D7A736FB88AA84F085F1</UserChecksum>
+        </File>
+        <File dnOrder="67">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">sys_int.h</Name>
           <LogicalPath dnOrder="2">config/default/system/int/</LogicalPath>
@@ -470,7 +550,7 @@
           <GeneratedChecksum dnOrder="4">47330C2D8F204B2B69F8A86240A564B6</GeneratedChecksum>
           <UserChecksum dnOrder="5">47330C2D8F204B2B69F8A86240A564B6</UserChecksum>
         </File>
-        <File dnOrder="58">
+        <File dnOrder="68">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">sys_int_mapping.h</Name>
           <LogicalPath dnOrder="2">config/default/system/int/</LogicalPath>
@@ -478,7 +558,7 @@
           <GeneratedChecksum dnOrder="4">FC7B55936A09E0CA1395AE4DFB1A188F</GeneratedChecksum>
           <UserChecksum dnOrder="5">FC7B55936A09E0CA1395AE4DFB1A188F</UserChecksum>
         </File>
-        <File dnOrder="59">
+        <File dnOrder="69">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">sys_ports.h</Name>
           <LogicalPath dnOrder="2">config/default/system/ports/</LogicalPath>
@@ -486,7 +566,7 @@
           <GeneratedChecksum dnOrder="4">32626D0C10BF7133A5729009D842E66B</GeneratedChecksum>
           <UserChecksum dnOrder="5">32626D0C10BF7133A5729009D842E66B</UserChecksum>
         </File>
-        <File dnOrder="60">
+        <File dnOrder="70">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">sys_ports_mapping.h</Name>
           <LogicalPath dnOrder="2">config/default/system/ports/</LogicalPath>
@@ -494,7 +574,7 @@
           <GeneratedChecksum dnOrder="4">BC6E1661BF4CAC21B70F5F56A0D7BBDB</GeneratedChecksum>
           <UserChecksum dnOrder="5">BC6E1661BF4CAC21B70F5F56A0D7BBDB</UserChecksum>
         </File>
-        <File dnOrder="61">
+        <File dnOrder="71">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">system.h</Name>
           <LogicalPath dnOrder="2">config/default/system/</LogicalPath>
@@ -502,7 +582,7 @@
           <GeneratedChecksum dnOrder="4">BE95B4F134C5C929787B9DA6FDBF3501</GeneratedChecksum>
           <UserChecksum dnOrder="5">BE95B4F134C5C929787B9DA6FDBF3501</UserChecksum>
         </File>
-        <File dnOrder="62">
+        <File dnOrder="72">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">system_common.h</Name>
           <LogicalPath dnOrder="2">config/default/system/</LogicalPath>
@@ -510,7 +590,7 @@
           <GeneratedChecksum dnOrder="4">C3F5136D520DAC4416512EBFCCA023C3</GeneratedChecksum>
           <UserChecksum dnOrder="5">C3F5136D520DAC4416512EBFCCA023C3</UserChecksum>
         </File>
-        <File dnOrder="63">
+        <File dnOrder="73">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">system_module.h</Name>
           <LogicalPath dnOrder="2">config/default/system/</LogicalPath>
@@ -518,7 +598,7 @@
           <GeneratedChecksum dnOrder="4">1C75A8A6B60598A2FD0D533F57839B72</GeneratedChecksum>
           <UserChecksum dnOrder="5">1C75A8A6B60598A2FD0D533F57839B72</UserChecksum>
         </File>
-        <File dnOrder="64">
+        <File dnOrder="74">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">task.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -526,7 +606,7 @@
           <GeneratedChecksum dnOrder="4">AF035B34736027A83C7BD0BB54C1E786</GeneratedChecksum>
           <UserChecksum dnOrder="5">AF035B34736027A83C7BD0BB54C1E786</UserChecksum>
         </File>
-        <File dnOrder="65">
+        <File dnOrder="75">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">timers.h</Name>
           <LogicalPath dnOrder="2">FreeRTOS/Source/include</LogicalPath>
@@ -534,7 +614,7 @@
           <GeneratedChecksum dnOrder="4">28E52676B0B3F85FF6D0CAC0D6172034</GeneratedChecksum>
           <UserChecksum dnOrder="5">28E52676B0B3F85FF6D0CAC0D6172034</UserChecksum>
         </File>
-        <File dnOrder="66">
+        <File dnOrder="76">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">toolchain_specifics.h</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>
@@ -542,7 +622,7 @@
           <GeneratedChecksum dnOrder="4">5F0B87C955FBF569CBD67F4861B6B7AD</GeneratedChecksum>
           <UserChecksum dnOrder="5">5F0B87C955FBF569CBD67F4861B6B7AD</UserChecksum>
         </File>
-        <File dnOrder="67">
+        <File dnOrder="77">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">user.h</Name>
           <LogicalPath dnOrder="2">config/default/</LogicalPath>

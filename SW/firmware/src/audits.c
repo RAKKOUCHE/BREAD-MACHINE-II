@@ -26,6 +26,7 @@
 #include "peripheral/gpio/plib_gpio.h"
 #include "audits.h"
 #include "hd44780.h"
+#include "peripheral/uart/plib_uart3.h"
 
 /**
  * \addtogroup audits
@@ -101,22 +102,6 @@ typedef struct
     uint32_t dwAddress; /*!<Adresse à laquelle sera enregistrée la valeur.*/
     uint32_t dwValue; /*<Valeur de la donnée à sauvegarder.*/
 } RECORDWORD;
-
-/**
- * \brief Etats de la tâche des audits.
- */
-typedef enum
-{
-    AUDITS_STATE_INIT, /*!<Initialisation des audits.*/
-    AUDITS_STATE_READ, /*!<Lecture des audits en eeprom. Si le flag 
-                        * d'initialisation n'a pas la valeur 0xA5A5A5A5, les
-                        * audits seront  remis à zéro.*/
-    AUDITS_STATE_IDLE, /*!<Aucune opération requise sur les audits.*/
-    AUDITS_STATE_CLEAR, /*!<Enregistre 0xFFFFFFFF pour le flag d'initialisation
-                         * et positionne l'état en mode lecture pour provoquer 
-                         * la remise à zéro des audits. */
-    AUDITS_STATE_NUM, /*!<Nombre d'état.*/
-} AUDITS_STATES;
 
 /**
  * \brief Structure des datas d'audits
@@ -258,6 +243,13 @@ static void vTaskAudit(void *vParameters)
                 {
                     DRV_AT24_Read(audits.hDrvAT24, audits.dataBuffer.buffer, sizeof(UAUDITS), 0);
                     while(DRV_AT24_TransferStatusGet(audits.hDrvAT24) == DRV_AT24_TRANSFER_STATUS_BUSY);
+
+                    srand(65);
+                    for(index = 0; index < sizeof(SAUDITS); index++)
+                    {
+                        audits.dataBuffer.buffer[index] = rand();
+                    }
+                    Nop();
                 }
                 break;
             }// </editor-fold>
@@ -297,12 +289,19 @@ static void vTaskAudit(void *vParameters)
                 break;
             }// </editor-fold>
             case AUDITS_STATE_CLEAR:
-                // <editor-fold desc="AUDITS-STATE_C"> 
+                // <editor-fold desc="AUDITS_STATE_CLEAR"> 
             {
                 audits.state = AUDITS_STATE_IDLE;
                 audits.record.dwAddress = ADDRESS_FLAG;
                 audits.record.dwValue = UINT32_MAX;
                 xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
+                break;
+            }// </editor-fold>
+            case AUDITS_SEND_TO_PC:
+                // <editor-fold desc="AUDITS_SEND_TO_PC"> 
+            {
+                audits.state = AUDITS_STATE_IDLE;
+                UART3_Write(&audits.dataBuffer.saudit, sizeof(SAUDITS));
                 break;
             }// </editor-fold>
             default:
@@ -320,6 +319,55 @@ static void vTaskAudit(void *vParameters)
 // Section: Interface Functions                                               */
 /* ************************************************************************** */
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         void setAuditState(AUDITS_STATES state)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setAuditState(AUDITS_STATES state)
+{
+    while(audits.state != AUDITS_STATE_IDLE);
+    audits.state = state;
+}
 
 /*********************************************************************
  * Function:        
@@ -366,6 +414,7 @@ static void vTaskAudit(void *vParameters)
  ********************************************************************/
 bool getIsRAZAudit()
 {
+
     return audits.isAuditReseted;
 }
 
@@ -414,6 +463,7 @@ bool getIsRAZAudit()
  ********************************************************************/
 void setIsRAZAudit(bool isRAZ)
 {
+
     audits.isAuditReseted = isRAZ;
 }
 

@@ -47,7 +47,9 @@
 // *****************************************************************************
 
 #include "mainboard2.h"
-
+#include "peripheral/gpio/plib_gpio.h"
+#include "config/default/peripheral/uart/plib_uart3.h"
+#include "dataCommun.h"
 /**
  * \addtogroup main
  * @{
@@ -116,6 +118,7 @@ void MAINBOARD2_Initialize(void)
     vParametersRead();
     vLCDInit();
     vAuditsInit();
+    vDataInit();
 
 
     /* TODO: Initialize your application's state machine and other
@@ -151,6 +154,7 @@ void MAINBOARD2_Tasks(void)
         }
         case MAINBOARD2_STATE_SERVICE_TASKS:
         {
+            LED_SYS_Toggle();
             if(getIsRAZAudit())
             {
                 setIsRAZAudit(false);
@@ -158,6 +162,7 @@ void MAINBOARD2_Tasks(void)
             }
             break;
         }
+
         case MAINBOARD2_STATE_DISPLAY_CHOICE:
             // <editor-fold desc="MAINBOARD2_STATE_DISPLAY_CHOICE"> 
         {

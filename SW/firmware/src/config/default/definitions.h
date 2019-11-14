@@ -48,6 +48,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include "peripheral/uart/plib_uart3.h"
 #include "peripheral/i2c/plib_i2c1.h"
 #include "driver/at24/drv_at24.h"
 #include "peripheral/clk/plib_clk.h"
@@ -55,9 +56,11 @@
 #include "peripheral/evic/plib_evic.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "peripheral/nvm/plib_nvm.h"
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"
-#include "peripheral/nvm/plib_nvm.h"
+#include "system/dma/sys_dma.h"
+#include "osal/osal.h"
 #include "mainboard2.h"
 
 

@@ -477,14 +477,14 @@
 #define AN_OutputEnable()      (TRISGCLR = (1<<14))
 #define AN_InputEnable()       (TRISGSET = (1<<14))
 #define AN_PIN                  GPIO_PIN_RG14
-/*** Macros for RTS_GSM pin ***/
-#define RTS_GSM_Set()               (LATGSET = (1<<12))
-#define RTS_GSM_Clear()             (LATGCLR = (1<<12))
-#define RTS_GSM_Toggle()            (LATGINV= (1<<12))
-#define RTS_GSM_Get()               ((PORTG >> 12) & 0x1)
-#define RTS_GSM_OutputEnable()      (TRISGCLR = (1<<12))
-#define RTS_GSM_InputEnable()       (TRISGSET = (1<<12))
-#define RTS_GSM_PIN                  GPIO_PIN_RG12
+/*** Macros for GSM_RTS pin ***/
+#define GSM_RTS_Set()               (LATGSET = (1<<12))
+#define GSM_RTS_Clear()             (LATGCLR = (1<<12))
+#define GSM_RTS_Toggle()            (LATGINV= (1<<12))
+#define GSM_RTS_Get()               ((PORTG >> 12) & 0x1)
+#define GSM_RTS_OutputEnable()      (TRISGCLR = (1<<12))
+#define GSM_RTS_InputEnable()       (TRISGSET = (1<<12))
+#define GSM_RTS_PIN                  GPIO_PIN_RG12
 /*** Macros for RI pin ***/
 #define RI_Set()               (LATGSET = (1<<13))
 #define RI_Clear()             (LATGCLR = (1<<13))

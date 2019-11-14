@@ -15,24 +15,32 @@
             <itemPath>../src/config/default/driver/driver_common.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f1" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f2" displayName="clk" projectFiles="true">
+            <logicalFolder name="f3" displayName="clk" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clk/plib_clk.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="evic" projectFiles="true">
+            <logicalFolder name="f5" displayName="evic" projectFiles="true">
               <itemPath>../src/config/default/peripheral/evic/plib_evic.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f3" displayName="gpio" projectFiles="true">
+            <logicalFolder name="f4" displayName="gpio" projectFiles="true">
               <itemPath>../src/config/default/peripheral/gpio/plib_gpio.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="i2c" projectFiles="true">
+            <logicalFolder name="f2" displayName="i2c" projectFiles="true">
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c1.h</itemPath>
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c_master.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="nvm" projectFiles="true">
+            <logicalFolder name="f6" displayName="nvm" projectFiles="true">
               <itemPath>../src/config/default/peripheral/nvm/plib_nvm.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="uart" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/uart/plib_uart_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/uart/plib_uart3.h</itemPath>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f3" displayName="system" projectFiles="true">
+            <logicalFolder name="f3" displayName="dma" projectFiles="true">
+              <itemPath>../src/config/default/system/dma/sys_dma.h</itemPath>
+              <itemPath>../src/config/default/system/dma/sys_dma_mapping.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="f1" displayName="int" projectFiles="true">
               <itemPath>../src/config/default/system/int/sys_int.h</itemPath>
               <itemPath>../src/config/default/system/int/sys_int_mapping.h</itemPath>
@@ -51,6 +59,11 @@
           <itemPath>../src/config/default/user.h</itemPath>
           <itemPath>../src/config/default/configuration.h</itemPath>
         </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f6" displayName="DataRecord" projectFiles="true">
+        <itemPath>../src/audits.h</itemPath>
+        <itemPath>../src/parameters.h</itemPath>
+        <itemPath>../src/dataCommun.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="FreeRTOS" projectFiles="true">
         <logicalFolder name="f1" displayName="Source" projectFiles="true">
@@ -88,16 +101,19 @@
         <itemPath>../src/mdb_bv.h</itemPath>
         <itemPath>../src/mdb_cl.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f5" displayName="osal" projectFiles="true">
+        <itemPath>../src/config/default/osal/osal.h</itemPath>
+        <itemPath>../src/config/default/osal/osal_definitions.h</itemPath>
+        <itemPath>../src/config/default/osal/osal_freertos.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2" displayName="packs" projectFiles="true">
         <logicalFolder name="f1" displayName="PIC32MX470F512L_DFP" projectFiles="true">
           <itemPath>../src/packs/PIC32MX470F512L_DFP/device.h</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/audits.h</itemPath>
       <itemPath>../src/globaldef.h</itemPath>
       <itemPath>../src/hd44780.h</itemPath>
       <itemPath>../src/delay_us.h</itemPath>
-      <itemPath>../src/parameters.h</itemPath>
       <itemPath>../src/mainboard2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -116,23 +132,29 @@
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f1" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f2" displayName="clk" projectFiles="true">
+            <logicalFolder name="f3" displayName="clk" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clk/plib_clk.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="evic" projectFiles="true">
+            <logicalFolder name="f5" displayName="evic" projectFiles="true">
               <itemPath>../src/config/default/peripheral/evic/plib_evic.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f3" displayName="gpio" projectFiles="true">
+            <logicalFolder name="f4" displayName="gpio" projectFiles="true">
               <itemPath>../src/config/default/peripheral/gpio/plib_gpio.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="i2c" projectFiles="true">
+            <logicalFolder name="f2" displayName="i2c" projectFiles="true">
               <itemPath>../src/config/default/peripheral/i2c/plib_i2c1.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="nvm" projectFiles="true">
+            <logicalFolder name="f6" displayName="nvm" projectFiles="true">
               <itemPath>../src/config/default/peripheral/nvm/plib_nvm.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="uart" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/uart/plib_uart3.c</itemPath>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f3" displayName="system" projectFiles="true">
+            <logicalFolder name="f2" displayName="dma" projectFiles="true">
+              <itemPath>../src/config/default/system/dma/sys_dma.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="f1" displayName="int" projectFiles="true">
               <itemPath>../src/config/default/system/int/src/sys_int.c</itemPath>
             </logicalFolder>
@@ -144,6 +166,11 @@
           <itemPath>../src/config/default/freertos_hooks.c</itemPath>
           <itemPath>../src/config/default/tasks.c</itemPath>
         </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="DataRecord" projectFiles="true">
+        <itemPath>../src/audits.c</itemPath>
+        <itemPath>../src/parameters.c</itemPath>
+        <itemPath>../src/dataCommun.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="FreeRTOS" projectFiles="true">
         <logicalFolder name="f1" displayName="Source" projectFiles="true">
@@ -167,10 +194,11 @@
           <itemPath>../src/third_party/rtos/FreeRTOS/Source/stream_buffer.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/audits.c</itemPath>
+      <logicalFolder name="f3" displayName="osal" projectFiles="true">
+        <itemPath>../src/config/default/osal/osal_freertos.c</itemPath>
+      </logicalFolder>
       <itemPath>../src/hd44780.c</itemPath>
       <itemPath>../src/delay_us.c</itemPath>
-      <itemPath>../src/parameters.c</itemPath>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/mainboard2.c</itemPath>
     </logicalFolder>

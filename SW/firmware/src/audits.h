@@ -17,7 +17,6 @@
 #ifndef _AUDITS_H    /* Guard against multiple inclusion */
 #define _AUDITS_H
 
-
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: Included Files                                                    */
@@ -53,12 +52,35 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
+    /**
+     * \brief Etats de la tâche des audits.
+     */
+    typedef enum
+    {
+        AUDITS_STATE_INIT, /*!<Initialisation des audits.*/
+        AUDITS_STATE_READ, /*!<Lecture des audits en eeprom. Si le flag 
+                        * d'initialisation n'a pas la valeur 0xA5A5A5A5, les
+                        * audits seront  remis à zéro.*/
+        AUDITS_STATE_IDLE, /*!<Aucune opération requise sur les audits.*/
+        AUDITS_STATE_CLEAR, /*!<Enregistre 0xFFFFFFFF pour le flag d'initialisation
+                         * et positionne l'état en mode lecture pour provoquer 
+                         * la remise à zéro des audits. */
+        AUDITS_STATE_NUM, /*!<Nombre d'état.*/
+        AUDITS_SEND_TO_PC, /*!<Envoie vers le PC les audits.*/
+    } AUDITS_STATES;
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
-    
+
+    /**
+     * \brief Modifie l'état de la machine d'état des audits
+     * @param state Nouvel état de la machine d'état
+     */
+    void setAuditState(AUDITS_STATES state);
+
     /**
      * \brief Positionne le flag de RAZ
      * @param isRAZ flag à true quand les audits viennent d'être RAZ.
