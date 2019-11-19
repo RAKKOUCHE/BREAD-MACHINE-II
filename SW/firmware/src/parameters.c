@@ -19,6 +19,7 @@
 #include <string.h>
 #include "parameters.h"
 #include "peripheral/uart/plib_uart3.h"
+#include "mainboard2.h"
 
 /**
  * \addtogroup parameters
@@ -51,24 +52,37 @@
 typedef struct
 {
     unsigned int phone[13]; /*!<Numéro de téléphone en sur 12 chiffres.*/
-    unsigned int isAuditInform; /*!<La consultation des audits est autorisée sur ce 
+    unsigned int isAuditInform; /*!<La consultation des audits est autorisée sur ce ab
                          * numéro*/
     unsigned int isActivityInform; /*!<Ce numéro sera informé de l'activité de la 
                                * machine.*/
 } PHONES;
 
 /**
+ */
+typedef struct 
+{
+    uint16_t enable_GG;
+    uint16_t enable_BV;
+}ENABLE;
+
+/**
  * \brief type structure contenant les paramètres.
  */
 typedef struct
 {
-    uint32_t id; /*!<Identification de la machine*/
+    uint32_t id; /*!<Identification de la machine.*/
     int prices[3]; /*!<Prix des produits en cash.*/
     int pricesCL[3]; /*!<Prix des produits en cashless.*/
     PHONES phones[6]; /*!<Numéro et activation des numéros de t'léphones.*/
     int sensitivity[3]; /*!<Sensitivité de la sécurité des trappes.*/
     int TOcumul; /*!<Délai maximum accordé pour réinsérer une autre pièce.*/
-    int TOOverpay; /*!<Délai maximum de maintien du trop perçu.*/
+    int TOOverpay; /*!<Délai maximum de maintien du trop perçu*/
+    union
+    {
+        ENABLE enables;
+        uint32_t u32Enables;
+    };
 } PARAMETERS;
 
 /**
@@ -85,7 +99,8 @@ static union
  */
 const unsigned int __attribute__((space(prog),
                                   address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
-= {
+= 
+{
    1,
    100, 100, 100,
    100, 100, 100,
@@ -95,8 +110,10 @@ const unsigned int __attribute__((space(prog),
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
-   800, 800, 800,
-   60, 60
+   0, 0, 0,
+   60, 60,
+   63,63,
+       
 };
 
 /* ************************************************************************** */
@@ -255,6 +272,7 @@ void vParametersRead(void)
  ********************************************************************/
 void vParamSendToPC(void)
 {
+    UART3_Write(VERSION, 6);
     UART3_Write(&parameters.data, sizeof(PARAMETERS));
 }
 

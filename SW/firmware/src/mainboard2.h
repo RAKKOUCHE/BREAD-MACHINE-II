@@ -46,7 +46,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "configuration.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -79,7 +78,7 @@ extern "C"
 #ifdef __DEBUG
 #define VERSION "2.00_D"
 #else
-#define VERSION "2.00"
+#define VERSION "2.00  "
 #endif
 
     /**
