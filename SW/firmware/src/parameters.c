@@ -1,4 +1,7 @@
 /* ************************************************************************** */
+
+#include <machine/types.h>
+
 /** Descriptive File Name
  * 
  * 
@@ -54,7 +57,7 @@ typedef struct
     unsigned int phone[13]; /*!<Numéro de téléphone en sur 12 chiffres.*/
     unsigned int isAuditInform; /*!<La consultation des audits est autorisée sur ce ab
                          * numéro*/
-    unsigned int isActivityInform; /*!<Ce numéro sera informé de l'activité de la 
+    unsigned int isAlarmed; /*!<Ce numéro sera informé de l'activité de la 
                                * machine.*/
 } PHONES;
 
@@ -101,7 +104,7 @@ const unsigned int __attribute__((space(prog),
                                   address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
 = 
 {
-   1,
+   1234,
    100, 100, 100,
    100, 100, 100,
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
@@ -109,11 +112,10 @@ const unsigned int __attribute__((space(prog),
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0,
+   0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 7, 0, 0,
    0, 0, 0,
-   60, 60,
-   63,63,
-       
+   60, 30,
+   2031631, //Activation par défaut des moyens de paiement 0X001F001F 
 };
 
 /* ************************************************************************** */
@@ -272,8 +274,21 @@ void vParametersRead(void)
  ********************************************************************/
 void vParamSendToPC(void)
 {
+    UART3_WriteByte(6);
+    while(!UART3_TransmitComplete());
     UART3_Write(VERSION, 6);
+    while(!UART3_TransmitComplete());
+    UART3_WriteByte(11);
+    while(!UART3_TransmitComplete());
+    UART3_Write(__DATE__, 11);    
+    while(!UART3_TransmitComplete());
+    
+    uint32_t dwParameterSize = sizeof(PARAMETERS);
+    UART3_Write(&dwParameterSize, sizeof(dwParameterSize));
+    while(!UART3_TransmitComplete());
+    
     UART3_Write(&parameters.data, sizeof(PARAMETERS));
+    while(!UART3_TransmitComplete());
 }
 
 /*********************************************************************

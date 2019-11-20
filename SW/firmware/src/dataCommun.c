@@ -50,11 +50,12 @@
  * \brief Enumération des commandes venant du PC.
  */
 enum
-{
+{   
     PCCOM_AUDITS_REQUEST = 0XAA,
     PCCOM_AUDITS_CLEAR = 0X55,
     PCCOM_PARAM_REQUEST = 0X5A,
     PCC0M_PARAM_SET = 0XA5,
+    PCCOM_CHECK = 0XAF,
 };
 
 /**
@@ -133,6 +134,7 @@ static struct
  ********************************************************************/
 void vTaskPcComm(void *vParameters)
 {
+    uint8_t byCheckAnswer = 0XFA;
     while(1)
     {
         switch(pcCom.state)
@@ -160,7 +162,7 @@ void vTaskPcComm(void *vParameters)
                         case PCCOM_AUDITS_CLEAR:
                             // <editor-fold desc="PCCOM_AUDITS_CLEAR"> 
                         {
-                            setAuditState(AUDITS_STATE_CLEAR);                            
+                            setAuditState(AUDITS_STATE_CLEAR);
                             while(!getIsRAZAudit());
                             setAuditState(AUDITS_STATE_SEND_TO_PC);
                             break;
@@ -177,6 +179,12 @@ void vTaskPcComm(void *vParameters)
                             vParametersGetFromPC();
                             break;
                         }// </editor-fold>
+                        case PCCOM_CHECK:
+                        {
+                            
+                            UART3_Write(&byCheckAnswer, 1);
+                            while(UART3_TransmitComplete());
+                        }
                         default:
                         {
                             break;

@@ -168,7 +168,7 @@ void MAINBOARD2_Tasks(void)
         {
             mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
             vLCD_CLEAR();
-            printf("%s", "  Choisssisez");
+            printf("%s", "   Choisissez");
             vLCDGotoXY(1, 2);
             printf("%s", " votre produit");
             break;
