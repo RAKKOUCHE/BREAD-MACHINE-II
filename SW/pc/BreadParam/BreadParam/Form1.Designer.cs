@@ -64,6 +64,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBoxAudit = new System.Windows.Forms.GroupBox();
+            this.lCashLess = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.TotalInBV = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.CoinsInCash = new System.Windows.Forms.Label();
@@ -150,6 +152,14 @@
             this.GBSerialPort = new System.Windows.Forms.GroupBox();
             this.RBSerialAuto = new System.Windows.Forms.RadioButton();
             this.RBSerialFixed = new System.Windows.Forms.RadioButton();
+            this.label8 = new System.Windows.Forms.Label();
+            this.UDCold = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.UDHot = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBoxAudit.SuspendLayout();
             this.groupBoxAuditCGOUT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAuditCGOUT)).BeginInit();
@@ -179,12 +189,15 @@
             this.GBTrap1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Trap1UpDown)).BeginInit();
             this.GBSerialPort.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.UDCold)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UDHot)).BeginInit();
             this.SuspendLayout();
             // 
             // TotalOutCG
             // 
             this.TotalOutCG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TotalOutCG.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TotalOutCG.Enabled = false;
             this.TotalOutCG.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TotalOutCG.Location = new System.Drawing.Point(1288, 62);
             this.TotalOutCG.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -203,7 +216,7 @@
             this.Total.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Total.Name = "Total";
             this.Total.Size = new System.Drawing.Size(91, 28);
-            this.Total.TabIndex = 15;
+            this.Total.TabIndex = 14;
             this.Total.Text = "0.00";
             this.Total.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -220,7 +233,7 @@
             this.LVersionFW.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LVersionFW.Name = "LVersionFW";
             this.LVersionFW.Size = new System.Drawing.Size(14, 17);
-            this.LVersionFW.TabIndex = 7;
+            this.LVersionFW.TabIndex = 6;
             this.LVersionFW.Text = "-";
             // 
             // LabelDateFW
@@ -230,13 +243,13 @@
             this.LabelDateFW.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LabelDateFW.Name = "LabelDateFW";
             this.LabelDateFW.Size = new System.Drawing.Size(71, 17);
-            this.LabelDateFW.TabIndex = 4;
+            this.LabelDateFW.TabIndex = 3;
             this.LabelDateFW.Text = "Date FW :";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1144, 68);
+            this.label7.Location = new System.Drawing.Point(1154, 68);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 17);
@@ -247,15 +260,17 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1144, 272);
+            this.label5.Location = new System.Drawing.Point(1225, 272);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 17);
-            this.label5.TabIndex = 14;
+            this.label5.TabIndex = 13;
             this.label5.Text = "Total :";
             // 
             // groupBoxAudit
             // 
+            this.groupBoxAudit.Controls.Add(this.lCashLess);
+            this.groupBoxAudit.Controls.Add(this.label10);
             this.groupBoxAudit.Controls.Add(this.TotalInBV);
             this.groupBoxAudit.Controls.Add(this.label11);
             this.groupBoxAudit.Controls.Add(this.CoinsInCash);
@@ -272,7 +287,7 @@
             this.groupBoxAudit.Controls.Add(this.label3);
             this.groupBoxAudit.Controls.Add(this.TotalInCG);
             this.groupBoxAudit.Controls.Add(this.label6);
-            this.groupBoxAudit.Location = new System.Drawing.Point(13, 564);
+            this.groupBoxAudit.Location = new System.Drawing.Point(12, 586);
             this.groupBoxAudit.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxAudit.Name = "groupBoxAudit";
             this.groupBoxAudit.Padding = new System.Windows.Forms.Padding(4);
@@ -281,39 +296,67 @@
             this.groupBoxAudit.TabStop = false;
             this.groupBoxAudit.Text = "Audit";
             // 
+            // lCashLess
+            // 
+            this.lCashLess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lCashLess.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lCashLess.Enabled = false;
+            this.lCashLess.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lCashLess.Location = new System.Drawing.Point(1288, 218);
+            this.lCashLess.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lCashLess.Name = "lCashLess";
+            this.lCashLess.Size = new System.Drawing.Size(91, 28);
+            this.lCashLess.TabIndex = 16;
+            this.lCashLess.Text = "0.00";
+            this.lCashLess.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lCashLess.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(1179, 227);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(101, 17);
+            this.label10.TabIndex = 15;
+            this.label10.Text = "Carte bancaire";
+            this.label10.Visible = false;
+            // 
             // TotalInBV
             // 
             this.TotalInBV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TotalInBV.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TotalInBV.Enabled = false;
             this.TotalInBV.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TotalInBV.Location = new System.Drawing.Point(1288, 100);
             this.TotalInBV.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.TotalInBV.Name = "TotalInBV";
             this.TotalInBV.Size = new System.Drawing.Size(91, 28);
-            this.TotalInBV.TabIndex = 11;
+            this.TotalInBV.TabIndex = 8;
             this.TotalInBV.Text = "0.00";
             this.TotalInBV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1144, 107);
+            this.label11.Location = new System.Drawing.Point(1192, 107);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(88, 17);
-            this.label11.TabIndex = 10;
+            this.label11.TabIndex = 7;
             this.label11.Text = "Total billets :";
             // 
             // CoinsInCash
             // 
             this.CoinsInCash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.CoinsInCash.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.CoinsInCash.Enabled = false;
             this.CoinsInCash.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CoinsInCash.Location = new System.Drawing.Point(1288, 176);
             this.CoinsInCash.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CoinsInCash.Name = "CoinsInCash";
             this.CoinsInCash.Size = new System.Drawing.Size(91, 28);
-            this.CoinsInCash.TabIndex = 9;
+            this.CoinsInCash.TabIndex = 12;
             this.CoinsInCash.Text = "0.00";
             this.CoinsInCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.CoinsInCash.Visible = false;
@@ -321,11 +364,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1144, 185);
+            this.label4.Location = new System.Drawing.Point(1143, 185);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(137, 17);
-            this.label4.TabIndex = 8;
+            this.label4.TabIndex = 11;
             this.label4.Text = "Total pièces caisse :";
             this.label4.Visible = false;
             // 
@@ -379,7 +422,7 @@
             // 
             // dataGridViewTextBoxColumn1
             // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewTextBoxColumn1.HeaderText = "Canal";
@@ -389,19 +432,20 @@
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Numéro du canal du rendeur";
-            this.dataGridViewTextBoxColumn1.Width = 73;
+            this.dataGridViewTextBoxColumn1.Width = 50;
             // 
             // MontantOutCG
             // 
+            this.MontantOutCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.MontantOutCG.DefaultCellStyle = dataGridViewCellStyle3;
             this.MontantOutCG.HeaderText = "Montant";
             this.MontantOutCG.MaxInputLength = 10;
-            this.MontantOutCG.MinimumWidth = 6;
+            this.MontantOutCG.MinimumWidth = 100;
             this.MontantOutCG.Name = "MontantOutCG";
             this.MontantOutCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantOutCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantOutCG.Width = 125;
+            this.MontantOutCG.Width = 100;
             // 
             // groupBoxauditProduit
             // 
@@ -412,7 +456,7 @@
             this.groupBoxauditProduit.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxauditProduit.Name = "groupBoxauditProduit";
             this.groupBoxauditProduit.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxauditProduit.Size = new System.Drawing.Size(273, 127);
+            this.groupBoxauditProduit.Size = new System.Drawing.Size(273, 130);
             this.groupBoxauditProduit.TabIndex = 3;
             this.groupBoxauditProduit.TabStop = false;
             this.groupBoxauditProduit.Text = "&Produits";
@@ -443,12 +487,12 @@
             this.dataGridViewAuditProduit.Name = "dataGridViewAuditProduit";
             this.dataGridViewAuditProduit.RowHeadersWidth = 51;
             this.dataGridViewAuditProduit.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridViewAuditProduit.Size = new System.Drawing.Size(265, 104);
+            this.dataGridViewAuditProduit.Size = new System.Drawing.Size(265, 107);
             this.dataGridViewAuditProduit.TabIndex = 0;
             // 
             // ProduitAudit
             // 
-            this.ProduitAudit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ProduitAudit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.ProduitAudit.DefaultCellStyle = dataGridViewCellStyle5;
             this.ProduitAudit.HeaderText = "Prod.";
@@ -458,19 +502,20 @@
             this.ProduitAudit.ReadOnly = true;
             this.ProduitAudit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ProduitAudit.ToolTipText = "Numéro du produit";
-            this.ProduitAudit.Width = 71;
+            this.ProduitAudit.Width = 50;
             // 
             // NumProduitAudit
             // 
+            this.NumProduitAudit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.NumProduitAudit.DefaultCellStyle = dataGridViewCellStyle6;
             this.NumProduitAudit.HeaderText = "Nombre";
             this.NumProduitAudit.MaxInputLength = 10;
-            this.NumProduitAudit.MinimumWidth = 92;
+            this.NumProduitAudit.MinimumWidth = 90;
             this.NumProduitAudit.Name = "NumProduitAudit";
             this.NumProduitAudit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NumProduitAudit.ToolTipText = "Nombre de produits vendus";
-            this.NumProduitAudit.Width = 92;
+            this.NumProduitAudit.Width = 95;
             // 
             // groupBoxAuditBV
             // 
@@ -514,7 +559,7 @@
             // 
             // dataGridViewTextBoxColumn5
             // 
-            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewTextBoxColumn5.HeaderText = "Canal";
@@ -524,19 +569,21 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn5.ToolTipText = "Numéro du canal du rendeur";
-            this.dataGridViewTextBoxColumn5.Width = 73;
+            this.dataGridViewTextBoxColumn5.Width = 50;
             // 
             // MontantInBV
             // 
+            this.MontantInBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.MontantInBV.DefaultCellStyle = dataGridViewCellStyle9;
             this.MontantInBV.HeaderText = "Montant";
             this.MontantInBV.MaxInputLength = 10;
             this.MontantInBV.MinimumWidth = 6;
             this.MontantInBV.Name = "MontantInBV";
+            this.MontantInBV.ReadOnly = true;
             this.MontantInBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInBV.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInBV.Width = 125;
+            this.MontantInBV.Width = 100;
             // 
             // groupBoxAuditCGIN
             // 
@@ -580,7 +627,7 @@
             // 
             // Canal
             // 
-            this.Canal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.Canal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.Canal.DefaultCellStyle = dataGridViewCellStyle11;
             this.Canal.HeaderText = "Canal";
@@ -590,47 +637,51 @@
             this.Canal.ReadOnly = true;
             this.Canal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Canal.ToolTipText = "Numéro du canal du rendeur";
-            this.Canal.Width = 73;
+            this.Canal.Width = 50;
             // 
             // MontantInCG
             // 
+            this.MontantInCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.MontantInCG.DefaultCellStyle = dataGridViewCellStyle12;
             this.MontantInCG.HeaderText = "Montant";
             this.MontantInCG.MaxInputLength = 10;
-            this.MontantInCG.MinimumWidth = 6;
+            this.MontantInCG.MinimumWidth = 90;
             this.MontantInCG.Name = "MontantInCG";
+            this.MontantInCG.ReadOnly = true;
             this.MontantInCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInCG.Width = 125;
+            this.MontantInCG.Width = 100;
             // 
             // LOverPay
             // 
             this.LOverPay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.LOverPay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.LOverPay.Enabled = false;
             this.LOverPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LOverPay.Location = new System.Drawing.Point(1288, 138);
             this.LOverPay.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LOverPay.Name = "LOverPay";
             this.LOverPay.Size = new System.Drawing.Size(91, 28);
-            this.LOverPay.TabIndex = 13;
+            this.LOverPay.TabIndex = 10;
             this.LOverPay.Text = "0.00";
             this.LOverPay.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1144, 145);
+            this.label3.Location = new System.Drawing.Point(1194, 145);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(86, 17);
-            this.label3.TabIndex = 12;
+            this.label3.TabIndex = 9;
             this.label3.Text = "Trop perçu :";
             // 
             // TotalInCG
             // 
             this.TotalInCG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TotalInCG.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TotalInCG.Enabled = false;
             this.TotalInCG.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TotalInCG.Location = new System.Drawing.Point(1288, 23);
             this.TotalInCG.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -643,7 +694,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1144, 30);
+            this.label6.Location = new System.Drawing.Point(1163, 30);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(117, 17);
@@ -654,7 +705,7 @@
             // 
             this.BtnExit.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.BtnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnExit.Location = new System.Drawing.Point(1309, 876);
+            this.BtnExit.Location = new System.Drawing.Point(1300, 898);
             this.BtnExit.Margin = new System.Windows.Forms.Padding(4);
             this.BtnExit.Name = "BtnExit";
             this.BtnExit.Size = new System.Drawing.Size(100, 28);
@@ -671,7 +722,7 @@
             this.LDateFW.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LDateFW.Name = "LDateFW";
             this.LDateFW.Size = new System.Drawing.Size(14, 17);
-            this.LDateFW.TabIndex = 5;
+            this.LDateFW.TabIndex = 4;
             this.LDateFW.Text = "-";
             // 
             // GBPrice
@@ -715,10 +766,11 @@
             this.dataGridViewPrice.Size = new System.Drawing.Size(417, 112);
             this.dataGridViewPrice.TabIndex = 0;
             this.dataGridViewPrice.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
+            this.dataGridViewPrice.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // NumProd
             // 
-            this.NumProd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.NumProd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.NumProd.DefaultCellStyle = dataGridViewCellStyle14;
             this.NumProd.HeaderText = "Prod.";
@@ -728,10 +780,11 @@
             this.NumProd.ReadOnly = true;
             this.NumProd.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NumProd.ToolTipText = "Numéro du produit";
-            this.NumProd.Width = 71;
+            this.NumProd.Width = 60;
             // 
             // Prix
             // 
+            this.Prix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.Prix.DefaultCellStyle = dataGridViewCellStyle15;
             this.Prix.HeaderText = "Prix";
@@ -740,17 +793,18 @@
             this.Prix.Name = "Prix";
             this.Prix.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Prix.ToolTipText = "Prix du produit";
-            this.Prix.Width = 125;
+            this.Prix.Width = 100;
             // 
             // CashLess
             // 
+            this.CashLess.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.CashLess.DefaultCellStyle = dataGridViewCellStyle16;
             this.CashLess.HeaderText = "CashLess";
             this.CashLess.MinimumWidth = 90;
             this.CashLess.Name = "CashLess";
             this.CashLess.ToolTipText = "Prix du produit par carte bancaire";
-            this.CashLess.Width = 125;
+            this.CashLess.Width = 100;
             // 
             // LabelVersionFW
             // 
@@ -759,7 +813,7 @@
             this.LabelVersionFW.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LabelVersionFW.Name = "LabelVersionFW";
             this.LabelVersionFW.Size = new System.Drawing.Size(89, 17);
-            this.LabelVersionFW.TabIndex = 6;
+            this.LabelVersionFW.TabIndex = 5;
             this.LabelVersionFW.Text = "Version FW :";
             // 
             // MachineID
@@ -769,9 +823,10 @@
             this.MachineID.MaxLength = 12;
             this.MachineID.Name = "MachineID";
             this.MachineID.Size = new System.Drawing.Size(175, 22);
-            this.MachineID.TabIndex = 3;
+            this.MachineID.TabIndex = 2;
             this.MachineID.Text = "0";
             this.MachineID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.MachineID.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             this.MachineID.Leave += new System.EventHandler(this.MachineID_Leave);
             // 
             // label9
@@ -781,7 +836,7 @@
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(123, 17);
-            this.label9.TabIndex = 2;
+            this.label9.TabIndex = 1;
             this.label9.Text = "Numéro machine :";
             // 
             // statusStrip1
@@ -790,7 +845,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 917);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 937);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.statusStrip1.Size = new System.Drawing.Size(1431, 22);
@@ -845,21 +900,21 @@
             // lireToolStripMenuItem
             // 
             this.lireToolStripMenuItem.Name = "lireToolStripMenuItem";
-            this.lireToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.lireToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.lireToolStripMenuItem.Text = "&Lire";
             this.lireToolStripMenuItem.Click += new System.EventHandler(this.BtnRead_Click);
             // 
             // enregisterToolStripMenuItem
             // 
             this.enregisterToolStripMenuItem.Name = "enregisterToolStripMenuItem";
-            this.enregisterToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
-            this.enregisterToolStripMenuItem.Text = "&Enregister";
+            this.enregisterToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.enregisterToolStripMenuItem.Text = "&Ecrire";
             this.enregisterToolStripMenuItem.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 6);
             // 
             // auditToolStripMenuItem
             // 
@@ -874,14 +929,14 @@
             // lectureToolStripMenuItem
             // 
             this.lectureToolStripMenuItem.Name = "lectureToolStripMenuItem";
-            this.lectureToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.lectureToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
             this.lectureToolStripMenuItem.Text = "&Lecture";
             this.lectureToolStripMenuItem.Click += new System.EventHandler(this.BtnAudit_Click);
             // 
             // RAZToolStripMenuItem
             // 
             this.RAZToolStripMenuItem.Name = "RAZToolStripMenuItem";
-            this.RAZToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.RAZToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
             this.RAZToolStripMenuItem.Text = "&RàZ";
             this.RAZToolStripMenuItem.Click += new System.EventHandler(this.BtnRazAudit_Click);
             // 
@@ -908,7 +963,7 @@
             this.CBSerialPorts.Name = "CBSerialPorts";
             this.CBSerialPorts.Size = new System.Drawing.Size(162, 24);
             this.CBSerialPorts.Sorted = true;
-            this.CBSerialPorts.TabIndex = 1;
+            this.CBSerialPorts.TabIndex = 2;
             this.CBSerialPorts.Text = "Sélectionner un port...";
             this.CBSerialPorts.SelectedIndexChanged += new System.EventHandler(this.CBSerialPorts_SelectedIndexChanged);
             // 
@@ -960,10 +1015,11 @@
             this.dataGridViewBV.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridViewBV.Size = new System.Drawing.Size(341, 245);
             this.dataGridViewBV.TabIndex = 0;
+            this.dataGridViewBV.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // CanalBV
             // 
-            this.CanalBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.CanalBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.CanalBV.DefaultCellStyle = dataGridViewCellStyle18;
             this.CanalBV.HeaderText = "Canal";
@@ -973,11 +1029,11 @@
             this.CanalBV.ReadOnly = true;
             this.CanalBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CanalBV.ToolTipText = "Numéro du canal du rendeur";
-            this.CanalBV.Width = 73;
+            this.CanalBV.Width = 60;
             // 
             // EnableBV
             // 
-            this.EnableBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.EnableBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.EnableBV.FalseValue = "0";
             this.EnableBV.HeaderText = "Actif";
             this.EnableBV.IndeterminateValue = "0XFF";
@@ -987,10 +1043,11 @@
             this.EnableBV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.EnableBV.ToolTipText = "Autorise ou non le canal";
             this.EnableBV.TrueValue = "1";
-            this.EnableBV.Width = 64;
+            this.EnableBV.Width = 60;
             // 
             // ValueBV
             // 
+            this.ValueBV.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.ValueBV.DefaultCellStyle = dataGridViewCellStyle19;
             this.ValueBV.HeaderText = "Valeur";
@@ -1000,7 +1057,7 @@
             this.ValueBV.ReadOnly = true;
             this.ValueBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ValueBV.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.ValueBV.Width = 125;
+            this.ValueBV.Width = 83;
             // 
             // GBCG
             // 
@@ -1042,10 +1099,11 @@
             this.dataGridViewCG.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridViewCG.Size = new System.Drawing.Size(341, 245);
             this.dataGridViewCG.TabIndex = 0;
+            this.dataGridViewCG.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // CanalCG
             // 
-            this.CanalCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.CanalCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.CanalCG.DefaultCellStyle = dataGridViewCellStyle21;
             this.CanalCG.HeaderText = "Canal";
@@ -1055,11 +1113,11 @@
             this.CanalCG.ReadOnly = true;
             this.CanalCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CanalCG.ToolTipText = "Numéro du canal du rendeur";
-            this.CanalCG.Width = 73;
+            this.CanalCG.Width = 60;
             // 
             // EnableCG
             // 
-            this.EnableCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.EnableCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.EnableCG.FalseValue = "0";
             this.EnableCG.HeaderText = "Actif";
             this.EnableCG.IndeterminateValue = "0XFF";
@@ -1069,10 +1127,11 @@
             this.EnableCG.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.EnableCG.ToolTipText = "Autorise ou non le canal";
             this.EnableCG.TrueValue = "1";
-            this.EnableCG.Width = 64;
+            this.EnableCG.Width = 60;
             // 
             // ValueCG
             // 
+            this.ValueCG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.ValueCG.DefaultCellStyle = dataGridViewCellStyle22;
             this.ValueCG.HeaderText = "Valeur";
@@ -1082,18 +1141,18 @@
             this.ValueCG.ReadOnly = true;
             this.ValueCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ValueCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.ValueCG.Width = 125;
+            this.ValueCG.Width = 83;
             // 
             // groupBoxTel
             // 
             this.groupBoxTel.AutoSize = true;
             this.groupBoxTel.Controls.Add(this.dataGridViewTelephone);
-            this.groupBoxTel.Location = new System.Drawing.Point(735, 335);
+            this.groupBoxTel.Location = new System.Drawing.Point(734, 357);
             this.groupBoxTel.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxTel.Name = "groupBoxTel";
             this.groupBoxTel.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxTel.Size = new System.Drawing.Size(421, 209);
-            this.groupBoxTel.TabIndex = 11;
+            this.groupBoxTel.TabIndex = 16;
             this.groupBoxTel.TabStop = false;
             this.groupBoxTel.Text = "&Téléphones";
             // 
@@ -1127,11 +1186,13 @@
             this.dataGridViewTelephone.TabIndex = 0;
             this.dataGridViewTelephone.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewTelephone_CellEndEdit);
             this.dataGridViewTelephone.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewTelephone_CellEndEdit);
+            this.dataGridViewTelephone.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // EnableAudit
             // 
             this.EnableAudit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle24.NullValue = "False";
             this.EnableAudit.DefaultCellStyle = dataGridViewCellStyle24;
             this.EnableAudit.FalseValue = "0";
             this.EnableAudit.HeaderText = "Audits";
@@ -1172,17 +1233,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(741, 246);
+            this.label1.Location = new System.Drawing.Point(744, 229);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 17);
-            this.label1.TabIndex = 12;
+            this.label1.TabIndex = 11;
             this.label1.Text = "&Délai trop perçu :";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TOUpDown
             // 
-            this.TOUpDown.Location = new System.Drawing.Point(866, 241);
+            this.TOUpDown.Location = new System.Drawing.Point(869, 226);
             this.TOUpDown.Margin = new System.Windows.Forms.Padding(4);
             this.TOUpDown.Maximum = new decimal(new int[] {
             254,
@@ -1191,23 +1252,24 @@
             0});
             this.TOUpDown.Name = "TOUpDown";
             this.TOUpDown.Size = new System.Drawing.Size(93, 22);
-            this.TOUpDown.TabIndex = 13;
+            this.TOUpDown.TabIndex = 12;
             this.TOUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.TOUpDown.ValueChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(741, 282);
+            this.label2.Location = new System.Drawing.Point(744, 259);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 17);
-            this.label2.TabIndex = 14;
+            this.label2.TabIndex = 13;
             this.label2.Text = "&Délai cumul :";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // numericCumul
             // 
-            this.numericCumul.Location = new System.Drawing.Point(866, 277);
+            this.numericCumul.Location = new System.Drawing.Point(869, 256);
             this.numericCumul.Margin = new System.Windows.Forms.Padding(4);
             this.numericCumul.Maximum = new decimal(new int[] {
             255,
@@ -1216,20 +1278,21 @@
             0});
             this.numericCumul.Name = "numericCumul";
             this.numericCumul.Size = new System.Drawing.Size(93, 22);
-            this.numericCumul.TabIndex = 15;
+            this.numericCumul.TabIndex = 14;
             this.numericCumul.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numericCumul.ValueChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // GBSecurity
             // 
             this.GBSecurity.Controls.Add(this.groupBox3);
             this.GBSecurity.Controls.Add(this.groupBox2);
             this.GBSecurity.Controls.Add(this.GBTrap1);
-            this.GBSecurity.Location = new System.Drawing.Point(16, 363);
+            this.GBSecurity.Location = new System.Drawing.Point(15, 385);
             this.GBSecurity.Margin = new System.Windows.Forms.Padding(4);
             this.GBSecurity.Name = "GBSecurity";
             this.GBSecurity.Padding = new System.Windows.Forms.Padding(4);
             this.GBSecurity.Size = new System.Drawing.Size(703, 183);
-            this.GBSecurity.TabIndex = 16;
+            this.GBSecurity.TabIndex = 15;
             this.GBSecurity.TabStop = false;
             this.GBSecurity.Text = "Résistance anti-pincement";
             // 
@@ -1241,7 +1304,7 @@
             this.groupBox3.Location = new System.Drawing.Point(501, 22);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(160, 135);
-            this.groupBox3.TabIndex = 24;
+            this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Volet 3";
             // 
@@ -1251,10 +1314,11 @@
             this.RBAuto3.Location = new System.Drawing.Point(17, 93);
             this.RBAuto3.Name = "RBAuto3";
             this.RBAuto3.Size = new System.Drawing.Size(104, 22);
-            this.RBAuto3.TabIndex = 7;
+            this.RBAuto3.TabIndex = 2;
             this.RBAuto3.Text = "Auto";
             this.RBAuto3.UseVisualStyleBackColor = true;
             this.RBAuto3.CheckedChanged += new System.EventHandler(this.RBAuto1_CheckedChanged);
+            this.RBAuto3.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // RBFixed3
             // 
@@ -1262,9 +1326,10 @@
             this.RBFixed3.Location = new System.Drawing.Point(17, 60);
             this.RBFixed3.Name = "RBFixed3";
             this.RBFixed3.Size = new System.Drawing.Size(104, 22);
-            this.RBFixed3.TabIndex = 6;
+            this.RBFixed3.TabIndex = 1;
             this.RBFixed3.Text = "Fixé";
             this.RBFixed3.UseVisualStyleBackColor = true;
+            this.RBFixed3.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // Trap3UpDown
             // 
@@ -1277,8 +1342,10 @@
             0});
             this.Trap3UpDown.Name = "Trap3UpDown";
             this.Trap3UpDown.Size = new System.Drawing.Size(104, 22);
-            this.Trap3UpDown.TabIndex = 1;
+            this.Trap3UpDown.TabIndex = 0;
             this.Trap3UpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Trap3UpDown.ValueChanged += new System.EventHandler(this.MachineID_TextChanged);
+            this.Trap3UpDown.Leave += new System.EventHandler(this.Trap1UpDown_Leave);
             // 
             // groupBox2
             // 
@@ -1288,7 +1355,7 @@
             this.groupBox2.Location = new System.Drawing.Point(259, 22);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(160, 135);
-            this.groupBox2.TabIndex = 24;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Volet 2";
             // 
@@ -1298,10 +1365,11 @@
             this.RBAuto2.Location = new System.Drawing.Point(17, 93);
             this.RBAuto2.Name = "RBAuto2";
             this.RBAuto2.Size = new System.Drawing.Size(104, 22);
-            this.RBAuto2.TabIndex = 7;
+            this.RBAuto2.TabIndex = 2;
             this.RBAuto2.Text = "Auto";
             this.RBAuto2.UseVisualStyleBackColor = true;
             this.RBAuto2.CheckedChanged += new System.EventHandler(this.RBAuto1_CheckedChanged);
+            this.RBAuto2.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // RBFixed2
             // 
@@ -1309,9 +1377,10 @@
             this.RBFixed2.Location = new System.Drawing.Point(17, 60);
             this.RBFixed2.Name = "RBFixed2";
             this.RBFixed2.Size = new System.Drawing.Size(104, 22);
-            this.RBFixed2.TabIndex = 6;
+            this.RBFixed2.TabIndex = 1;
             this.RBFixed2.Text = "Fixé";
             this.RBFixed2.UseVisualStyleBackColor = true;
+            this.RBFixed2.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // Trap2UpDown
             // 
@@ -1324,8 +1393,10 @@
             0});
             this.Trap2UpDown.Name = "Trap2UpDown";
             this.Trap2UpDown.Size = new System.Drawing.Size(104, 22);
-            this.Trap2UpDown.TabIndex = 3;
+            this.Trap2UpDown.TabIndex = 0;
             this.Trap2UpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Trap2UpDown.ValueChanged += new System.EventHandler(this.MachineID_TextChanged);
+            this.Trap2UpDown.Leave += new System.EventHandler(this.Trap1UpDown_Leave);
             // 
             // GBTrap1
             // 
@@ -1335,7 +1406,7 @@
             this.GBTrap1.Location = new System.Drawing.Point(31, 22);
             this.GBTrap1.Name = "GBTrap1";
             this.GBTrap1.Size = new System.Drawing.Size(160, 135);
-            this.GBTrap1.TabIndex = 23;
+            this.GBTrap1.TabIndex = 0;
             this.GBTrap1.TabStop = false;
             this.GBTrap1.Text = "Volet 1";
             // 
@@ -1345,10 +1416,11 @@
             this.RBAuto1.Location = new System.Drawing.Point(17, 93);
             this.RBAuto1.Name = "RBAuto1";
             this.RBAuto1.Size = new System.Drawing.Size(104, 22);
-            this.RBAuto1.TabIndex = 7;
+            this.RBAuto1.TabIndex = 2;
             this.RBAuto1.Text = "Auto";
             this.RBAuto1.UseVisualStyleBackColor = true;
             this.RBAuto1.CheckedChanged += new System.EventHandler(this.RBAuto1_CheckedChanged);
+            this.RBAuto1.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // RBFixed1
             // 
@@ -1356,9 +1428,10 @@
             this.RBFixed1.Location = new System.Drawing.Point(17, 60);
             this.RBFixed1.Name = "RBFixed1";
             this.RBFixed1.Size = new System.Drawing.Size(104, 22);
-            this.RBFixed1.TabIndex = 6;
+            this.RBFixed1.TabIndex = 1;
             this.RBFixed1.Text = "Fixé";
             this.RBFixed1.UseVisualStyleBackColor = true;
+            this.RBFixed1.TextChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
             // Trap1UpDown
             // 
@@ -1371,12 +1444,13 @@
             0});
             this.Trap1UpDown.Name = "Trap1UpDown";
             this.Trap1UpDown.Size = new System.Drawing.Size(104, 22);
-            this.Trap1UpDown.TabIndex = 5;
+            this.Trap1UpDown.TabIndex = 0;
             this.Trap1UpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Trap1UpDown.ValueChanged += new System.EventHandler(this.MachineID_TextChanged);
+            this.Trap1UpDown.Leave += new System.EventHandler(this.Trap1UpDown_Leave);
             // 
             // timer1
             // 
-            this.timer1.Enabled = true;
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick_1);
             // 
@@ -1388,7 +1462,7 @@
             this.GBSerialPort.Location = new System.Drawing.Point(1163, 87);
             this.GBSerialPort.Name = "GBSerialPort";
             this.GBSerialPort.Size = new System.Drawing.Size(246, 135);
-            this.GBSerialPort.TabIndex = 22;
+            this.GBSerialPort.TabIndex = 7;
             this.GBSerialPort.TabStop = false;
             this.GBSerialPort.Text = "Port série";
             // 
@@ -1399,7 +1473,7 @@
             this.RBSerialAuto.Location = new System.Drawing.Point(17, 95);
             this.RBSerialAuto.Name = "RBSerialAuto";
             this.RBSerialAuto.Size = new System.Drawing.Size(104, 22);
-            this.RBSerialAuto.TabIndex = 9;
+            this.RBSerialAuto.TabIndex = 0;
             this.RBSerialAuto.TabStop = true;
             this.RBSerialAuto.Text = "Auto";
             this.RBSerialAuto.UseVisualStyleBackColor = true;
@@ -1411,10 +1485,96 @@
             this.RBSerialFixed.Location = new System.Drawing.Point(17, 67);
             this.RBSerialFixed.Name = "RBSerialFixed";
             this.RBSerialFixed.Size = new System.Drawing.Size(104, 22);
-            this.RBSerialFixed.TabIndex = 8;
+            this.RBSerialFixed.TabIndex = 1;
             this.RBSerialFixed.Text = "Fixé";
             this.RBSerialFixed.UseVisualStyleBackColor = true;
             this.RBSerialFixed.CheckedChanged += new System.EventHandler(this.RBSerialAuto_CheckedChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(744, 319);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(40, 17);
+            this.label8.TabIndex = 24;
+            this.label8.Text = "&Froid";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // UDCold
+            // 
+            this.UDCold.Location = new System.Drawing.Point(869, 316);
+            this.UDCold.Margin = new System.Windows.Forms.Padding(4);
+            this.UDCold.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.UDCold.Name = "UDCold";
+            this.UDCold.Size = new System.Drawing.Size(93, 22);
+            this.UDCold.TabIndex = 25;
+            this.UDCold.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(744, 289);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(73, 17);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Chauffage";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // UDHot
+            // 
+            this.UDHot.Location = new System.Drawing.Point(869, 286);
+            this.UDHot.Margin = new System.Windows.Forms.Padding(4);
+            this.UDHot.Maximum = new decimal(new int[] {
+            254,
+            0,
+            0,
+            0});
+            this.UDHot.Name = "UDHot";
+            this.UDHot.Size = new System.Drawing.Size(93, 22);
+            this.UDHot.TabIndex = 23;
+            this.UDHot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(979, 228);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(15, 17);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "s";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(979, 259);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(15, 17);
+            this.label14.TabIndex = 27;
+            this.label14.Text = "s";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(979, 289);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(14, 17);
+            this.label15.TabIndex = 28;
+            this.label15.Text = "°";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(979, 319);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(14, 17);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "°";
             // 
             // Form1
             // 
@@ -1423,7 +1583,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Highlight;
             this.CancelButton = this.BtnExit;
-            this.ClientSize = new System.Drawing.Size(1431, 939);
+            this.ClientSize = new System.Drawing.Size(1431, 959);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.UDCold);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.UDHot);
             this.Controls.Add(this.GBSerialPort);
             this.Controls.Add(this.GBSecurity);
             this.Controls.Add(this.label2);
@@ -1456,6 +1624,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BreadParam II";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBoxAudit.ResumeLayout(false);
@@ -1490,6 +1659,8 @@
             this.GBTrap1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Trap1UpDown)).EndInit();
             this.GBSerialPort.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.UDCold)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UDHot)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1548,18 +1719,6 @@
         private System.Windows.Forms.DataGridView dataGridViewTelephone;
         private System.Windows.Forms.NumericUpDown TOUpDown;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValueCG;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableCG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CanalCG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValueBV;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableBV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CanalBV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MontantInCG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Canal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MontantOutCG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MontantInBV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericCumul;
         private System.Windows.Forms.GroupBox GBSecurity;
@@ -1582,14 +1741,36 @@
         private System.Windows.Forms.ToolStripMenuItem fileStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem exitStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MontantOutCG;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProduitAudit;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumProduitAudit;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableAudit;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableAlarm;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
+        private System.Windows.Forms.Label lCashLess;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MontantInBV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Canal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MontantInCG;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumProd;
         private System.Windows.Forms.DataGridViewTextBoxColumn Prix;
         private System.Windows.Forms.DataGridViewTextBoxColumn CashLess;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown UDCold;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown UDHot;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableAudit;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableAlarm;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CanalBV;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableBV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ValueBV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CanalCG;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableCG;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ValueCG;
     }
 }
 

@@ -28,6 +28,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
+using System.Text;
 
 namespace BreadParam
 {
@@ -46,12 +47,17 @@ namespace BreadParam
         /// <summary>
         /// Buffer à usage général.
         /// </summary>
-        byte[] byBuffer = new byte[32];
+        byte[] byBuffer;
 
         /// <summary>
         /// Flag correspondant à la lecture de la carte.
         /// </summary>
         bool isParametersReaded;
+
+        /// <summary>
+        /// Flag indiquant une modification
+        /// </summary>
+        bool isParametersModified;
 
         /// <summary>
         /// Header indiquant les paramètres en cours de transmission 
@@ -67,9 +73,10 @@ namespace BreadParam
             PRODUITPRIX,
             PHONE,
             TRAP = 12,
-            AUDITS = 0X80,
+            AUDITS = 0XAA,
             RAZAUDITS = 0X81,
             GETPARAMS = 0X5A,
+            SAVE_PARAM = 0XA5
         };
 
         /// <summary>
@@ -103,7 +110,7 @@ namespace BreadParam
                 {
                     throw new Exception("Sélectionnez un port série.");
                 }
-                UInt16 num = Convert.ToUInt16(MachineID.Text);
+                UInt32 num = Convert.ToUInt32(MachineID.Text);
             }
             catch (Exception exception)
             {
@@ -120,7 +127,6 @@ namespace BreadParam
         /// <param name="e"></param>
         private void BtnExit_Click(object sender, EventArgs e)
         {
-            serialPort1.Close();
             Close();
         }
 
@@ -164,6 +170,7 @@ namespace BreadParam
             {
                 dataGridViewTelephone.Rows.Add(false, false, "0033612345678");
             }
+            isParametersReaded = isParametersModified = false;
         }
 
         /// <summary>
@@ -180,7 +187,7 @@ namespace BreadParam
             {
                 ui16Result += byBuffer[byIndex];
             }
-            return (byte)(ui16Result % 256);
+            return Convert.ToByte((ui16Result % 256));
         }
 
         /// <summary>
@@ -190,8 +197,7 @@ namespace BreadParam
         /// <param name="e"></param>
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            byte byRepeat = 0;
-            byte byLength;
+            Int32 value;
             try
             {
                 if (IsSerialPortOpen() && (MessageBox.Show("Etes-vous sûr de vouloir modifier les paramètres de la machine ?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
@@ -200,273 +206,103 @@ namespace BreadParam
                     {
                         throw new Exception("Impossible d'enregistrer les paramètres!\r\nLes paramètres enregistrés dans la CPU n'ont pas été lus.");
                     }
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
 
-                    //Envoi le numéro de la machine.
-                    if (byRepeat < 2)
+                    byte[] byParamSave = { Convert.ToByte(HEADER.SAVE_PARAM) };
+                    serialPort1.Write(byParamSave, 0, 1);
+                    byParamSave[0] = Convert.ToByte(serialPort1.ReadByte());
+                    if (byParamSave[0] == 0X5A)
                     {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 2;
-                        byBuffer[1] = (byte)HEADER.SERIAL;
-                        byBuffer[2] = (byte)(Convert.ToUInt16(MachineID.Text) % 256);
-                        byBuffer[3] = (byte)(Convert.ToUInt16(MachineID.Text) / 256);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
+                        //Envoie l'identification de la machine.
+                        byBuffer = new byte[4];
+                        value = Int32.Parse(MachineID.Text);
+                        byBuffer[0] = Convert.ToByte(value % 0x100);
+                        byBuffer[1] = Convert.ToByte(value / 0x100);
+                        byBuffer[2] = Convert.ToByte(value / 0x10000);
+                        byBuffer[3] = Convert.ToByte(value / 0x1000000);
+                        serialPort1.Write(byBuffer, 0, 4);
 
-                    //Envoi la validation des pièces.
-                    if (byRepeat < 2)
-                    {
-                        byBuffer[0] = byLength = 1;
-                        byBuffer[1] = (byte)HEADER.ENABLEGC;
-                        byBuffer[2] = 0;
-                        for (int byIndex = 0; byIndex < 8; byIndex++)
+                        //Envoie les prix en cash
+                        byBuffer = new byte[12];
+                        for (int i = 0; i < 3; i++)
                         {
-                            byBuffer[2] += (byte)((Convert.ToByte(dataGridViewCG["EnableCG", byIndex].Value)) << byIndex);
+                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["Prix", i].Value) * 100);
+                            byBuffer[4 * i + 0] = Convert.ToByte(value % 0x100);
+                            byBuffer[4 * i + 1] = Convert.ToByte(value / 0x100);
+                            byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
+                            byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000);
                         }
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
+                        serialPort1.Write(byBuffer, 0, 12);
 
-
-                    //Envoie la validation des billets
-                    if (byRepeat < 2)
-                    {
-                        //Envoi la validation des pièces.
-                        byBuffer[0] = byLength = 1;
-                        byBuffer[1] = (byte)HEADER.ENABLEBV;
-                        byBuffer[2] = 0;
-                        for (int byIndex = 0; byIndex < 8; byIndex++)
+                        //Envoie les prix cashless
+                        byBuffer = new byte[12];
+                        for (int i = 0; i < 3; i++)
                         {
-                            byBuffer[2] += (byte)((Convert.ToByte(dataGridViewBV["EnableBV", byIndex].Value)) << byIndex);
+                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["CashLess", i].Value) * 100);
+                            byBuffer[4 * i + 0] = Convert.ToByte(value % 0x100);
+                            byBuffer[4 * i + 1] = Convert.ToByte(value / 0x100);
+                            byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
+                            byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000);
                         }
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
+                        serialPort1.Write(byBuffer, 0, 12);
 
-                    //Envoie le délai du trop perçu.
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 1;
-                        byBuffer[1] = (byte)HEADER.TROPPERCU;
-                        byBuffer[2] = Convert.ToByte(TOUpDown.Value);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
+                        //Envoi les informations des téléphones.
+                        byBuffer = new byte[360];
+                        for (int i = 0; i < 6; i++)
                         {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
+                            byte[] array = Encoding.ASCII.GetBytes(dataGridViewTelephone["Numero", i].Value.ToString().Trim());
+                            for (int j = 0; j < 13; j++)
                             {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
+                                byBuffer[60 * i + (j * 4)] = Convert.ToByte(array[j] - 0x30);
                             }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
-
-                    //Envoie le délai de cumul.
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 1;
-                        byBuffer[1] = (byte)HEADER.TOCUMUL;
-                        byBuffer[2] = Convert.ToByte(numericCumul.Value);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
-
-                    //Envoie le prix dex produits
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 12;
-                        byBuffer[1] = (byte)HEADER.PRODUITPRIX;
-                        for (int byIndex = 0; byIndex < byLength / 2; byIndex++)
-                        {
-                            byBuffer[2 + (byIndex * 2)] = (byte)(((Convert.ToDouble(dataGridViewPrice["Prix", byIndex].Value) + 0.001) * 100) % 256);
-                            byBuffer[3 + (byIndex * 2)] = (byte)(((Convert.ToDouble(dataGridViewPrice["Prix", byIndex].Value) + 0.01) * 100) / 256);
+                            byBuffer[60 * (i + 1) - 8] = Convert.ToByte(dataGridViewTelephone["EnableAudit", i].Value);
+                            byBuffer[60 * ( i+1) - 4] = Convert.ToByte(dataGridViewTelephone["EnableAlarm", i].Value);
                         }
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
+                        serialPort1.Write(byBuffer, 0, 360);
 
-                    //Envoie les paramètres des telephones.
-                    for (int byIndex = 0; byIndex < 5; byIndex++)
-                    {
-                        if (byRepeat < 2)
+                        //Envoi les valeurs de sécurité.
+                        byBuffer = new byte[12];
+                        for (int i = 0; i < 3; i++)
                         {
-                            Array.Clear(byBuffer, 0, 32);
-                            //Elimine les espaces
-                            string sResult = Convert.ToString(dataGridViewTelephone["Numero", byIndex].Value).Replace(" ", "");
-                            //Elimine les points
-                            sResult = sResult.Replace(".", "");
-                            byRepeat = 0;
-                            //Longueur d'un numéro + les autorisations
-                            byBuffer[0] = byLength = (lenPhoneNumber + 5);
-                            byBuffer[1] = (byte)(HEADER.PHONE + byIndex);
-                            //Autorisation des audits
-                            byBuffer[2] = (byte)(Convert.ToByte(dataGridViewTelephone["EnableAudit", byIndex].Value) > 0 ? 1 : 0);
-                            //Autorisation des alarmes
-                            byBuffer[3] = (byte)((Convert.ToByte(dataGridViewTelephone["EnableAlarm", byIndex].Value) > 0) ? 1 : 0);
-                            for (int byIndex2 = 0; byIndex2 < lenPhoneNumber; byIndex2++)
-                            {
-                                try
-                                {
-                                    byBuffer[4 + byIndex2] = (byte)sResult[byIndex2];
-                                }
-                                catch (Exception)
-                                {
-                                    break;
-                                }
-                            }
-                            byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                            do
-                            {
-                                serialPort1.Write(byBuffer, 0, byLength + 3);
-                                if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                                {
-                                    Thread.Sleep(1000);
-                                    ++byRepeat;
-                                }
-                            } while ((byRepeat > 0) && (byRepeat < 2));
+                            byBuffer[(i * 4) + 0] = Convert.ToByte(Trap1UpDown.Value % 0x100);
+                            byBuffer[(i * 4) + 1] = Convert.ToByte(Trap1UpDown.Value / 0x100);
                         }
-                        else
+                        serialPort1.Write(byBuffer, 0, 12);
+
+                        //Envoi du délai de cumul
+                        byBuffer = new byte[4];
+                        for (int i = 0; i < 4; i++)
                         {
-                            throw new Exception(strSaveError);
+                            byBuffer[0] = Convert.ToByte(numericCumul.Value);
                         }
-                    }
+                        serialPort1.Write(byBuffer, 0, 4);
 
-                    //Envoi la sensibilité trappe 1
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 2;
-                        byBuffer[1] = (byte)HEADER.TRAP;
-                        byBuffer[2] = Convert.ToByte(Trap1UpDown.Value % 256);
-                        byBuffer[3] = Convert.ToByte(Trap1UpDown.Value / 256);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
+                        //Envoi la valeur du TO overpay.
+                        byBuffer = new byte[4];
+                        for (int i = 0; i < 4; i++)
                         {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
+                            byBuffer[0] = Convert.ToByte(TOUpDown.Value);
+                        }
+                        serialPort1.Write(byBuffer, 0, 4);
 
-                    //Envoi la sensibilité trappe 2
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 2;
-                        byBuffer[1] = (byte)HEADER.TRAP + 1;
-                        byBuffer[2] = Convert.ToByte(Trap2UpDown.Value % 256);
-                        byBuffer[3] = Convert.ToByte(Trap2UpDown.Value / 256);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
+                        //Envoi les habilitations des périphériques.
+                        byBuffer = new byte[4];
+                        for (byte i = 0; i < 8; i++)
                         {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
-                    }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
+                            byBuffer[0] += Convert.ToByte(Convert.ToByte(dataGridViewCG["EnableCG", i].Value) << i);
+                            byBuffer[2] += Convert.ToByte(Convert.ToByte(dataGridViewBV["EnableBV", i].Value) << i);
+                        }
+                        serialPort1.Write(byBuffer, 0, 4);
 
-                    //Envoi la sensibilité trappe 3
-                    if (byRepeat < 2)
-                    {
-                        byRepeat = 0;
-                        byBuffer[0] = byLength = 2;
-                        byBuffer[1] = (byte)HEADER.TRAP + 2;
-                        byBuffer[2] = Convert.ToByte(Trap3UpDown.Value % 256);
-                        byBuffer[3] = Convert.ToByte(Trap3UpDown.Value / 256);
-                        byBuffer[byLength + 2] = ByCheckSum((byte)(byLength + 2));
-                        do
-                        {
-                            serialPort1.Write(byBuffer, 0, byLength + 3);
-                            if (!(serialPort1.ReadByte() == (byte)ANSWER.ACK))
-                            {
-                                Thread.Sleep(1000);
-                                ++byRepeat;
-                            }
-                        } while ((byRepeat > 0) && (byRepeat < 2));
+                        //Envoi les valeurs des commandes de températures.
+                        byBuffer = new byte[8];
+                        byBuffer[0] = Convert.ToByte(UDCold.Value);
+                        byBuffer[4] = Convert.ToByte(UDHot.Value);
+                        serialPort1.Write(byBuffer, 0, 8);
+                        MessageBox.Show("Les nouveaux paramètres sont enregistrés.", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    else
-                    {
-                        throw new Exception(strSaveError);
-                    }
-
-                    MessageBox.Show("Les nouveaux paramètres sont enregistrés.", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    isParametersModified = false;
                 }
             }
             catch (Exception exception)
@@ -484,14 +320,17 @@ namespace BreadParam
         {
             try
             {
-                if (!ushort.TryParse(MachineID.Text, out ushort usResult))
+                if (!Int32.TryParse(MachineID.Text, out Int32 usResult))
                 {
-                    MessageBox.Show("Le numéro de la machine doit être compris entre 0 et 65535", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw new Exception(string.Format("Le numéro de la machine doit être compris entre 0 et {0:d}", Int32.MaxValue));
                 }
             }
             catch (Exception exception)
             {
+                MachineID.Text = "0";
                 MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ((TextBox)sender).Select();
+                ((TextBox)sender).SelectAll();
             }
         }
 
@@ -512,13 +351,16 @@ namespace BreadParam
             {
                 if (IsSerialPortOpen())
                 {
-                    byte[] byAuditRequest = { (byte)HEADER.AUDITS };
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
+
+                    byte[] byAuditRequest = { Convert.ToByte(HEADER.AUDITS) };
                     serialPort1.Write(byAuditRequest, 0, 1);
-                    byte byLength = (byte)serialPort1.ReadByte();
+                    byte byLength = Convert.ToByte(serialPort1.ReadByte());
                     byBuffer = new byte[byLength];
                     for (int byIndex = 0; byIndex < byLength; byIndex++)
                     {
-                        byBuffer[byIndex] = (byte)serialPort1.ReadByte();
+                        byBuffer[byIndex] = Convert.ToByte(serialPort1.ReadByte());
                     }
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
@@ -533,35 +375,35 @@ namespace BreadParam
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
                         dataGridViewAuditCGOUT["MontantOutCG", byIndex].Value = string.Format("{0:F2}",
-                            Convert.ToDouble(byBuffer[32 + (byIndex * 4)] + (byBuffer[32 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[32 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[32 + (byIndex * 4) + 3] * 0X1000000)) / 100);
-                        TotalAmountOutCG += Convert.ToDouble(byBuffer[32 + (byIndex * 4)] + (byBuffer[32 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[32 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[32 + (byIndex * 4) + 3] * 0X1000000)) / 100;
+                            Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100);
+                        TotalAmountOutCG += Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100;
                     }
                     TotalOutCG.Text = string.Format("{0:F2}", TotalAmountOutCG);
 
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
                         dataGridViewAuditBV["MontantInBV", byIndex].Value = string.Format("{0:F2}",
-                            Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100);
-                        TotalAmountInBv += Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
-                         (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100;
+                            Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100);
+                        TotalAmountInBv += Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
+                         (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100;
                     }
                     TotalInBV.Text = string.Format("{0:F2}", TotalAmountInBv);
 
-                    for (int byIndex = 0; byIndex < 6; byIndex++)
+                    for (int byIndex = 0; byIndex < 3; byIndex++)
                     {
-                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format("{0:d}", byBuffer[96 + (byIndex * 4)] +
-                            (byBuffer[96 + ((byIndex * 4) + 1)] * 0X100) + (byBuffer[96 + (byIndex * 4) + 2] * 0X10000) +
-                            (byBuffer[96 + (byIndex * 4) + 3] * 0X1000000));
+                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format("{0:d}", byBuffer[192 + (byIndex * 4)] +
+                            (byBuffer[192 + ((byIndex * 4) + 1)] * 0X100) + (byBuffer[192 + (byIndex * 4) + 2] * 0X10000) +
+                            (byBuffer[192 + (byIndex * 4) + 3] * 0X1000000));
                     }
-                    OverPay = Convert.ToDouble(byBuffer[120] + (byBuffer[121] * 0X100) + (byBuffer[122] * 0X10000) + (byBuffer[123] * 0X1000000)) / 100;
+                    OverPay = Convert.ToDouble(byBuffer[204] + (byBuffer[205] * 0X100) + (byBuffer[206] * 0X10000) + (byBuffer[207] * 0X1000000)) / 100;
                     LOverPay.Text = string.Format("{0:F2}", OverPay);
-                    InCash = Convert.ToDouble(byBuffer[124] + (byBuffer[125] * 0X100) + (byBuffer[126] * 0X10000) + (byBuffer[127] * 0X1000000));
+                    InCash = Convert.ToDouble(byBuffer[208] + (byBuffer[209] * 0X100) + (byBuffer[210] * 0X10000) + (byBuffer[211] * 0X1000000));
                     CoinsInCash.Text = string.Format("{0:F2}", InCash);
                     Total.Text = String.Format("{0:F2}", TotalAmountInCG + TotalAmountInBv + /*OverPay + InCash*/ -TotalAmountOutCG);
-                    this.Height = 725;
+
                 }
             }
             catch (Exception exception)
@@ -578,7 +420,7 @@ namespace BreadParam
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             string sResult;
-            if (((DataGridView)sender).CurrentCell.ColumnIndex == 1)
+            if ((((DataGridView)sender).CurrentCell.ColumnIndex == 1) || (((DataGridView)sender).CurrentCell.ColumnIndex == 2))
             {
                 try
                 {
@@ -684,7 +526,7 @@ namespace BreadParam
                     dataGridViewAuditProduit[1, byIndex].Value = 0;
                 }
                 TotalInCG.Text = TotalOutCG.Text = TotalInBV.Text = CoinsInCash.Text = TotalInCG.Text = LOverPay.Text = Total.Text = string.Format("{0:F2}", Convert.ToDouble(0));
-                byte[] byAuditRequest = { (byte)HEADER.RAZAUDITS };
+                byte[] byAuditRequest = { Convert.ToByte(HEADER.RAZAUDITS) };
                 serialPort1.Write(byAuditRequest, 0, 1);
             }
             catch (Exception exception)
@@ -705,8 +547,9 @@ namespace BreadParam
             {
                 if (IsSerialPortOpen())
                 {
-
-                    byte[] byParamRequest = { (byte)HEADER.GETPARAMS };
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
+                    byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS) };
                     serialPort1.Write(byParamRequest, 0, 1);
 
                     //Date FW
@@ -719,22 +562,23 @@ namespace BreadParam
                     LDateFW.Text = "";
 
                     //Date FW
-                    byPos = (byte)serialPort1.ReadByte();
+                    byPos = Convert.ToByte(serialPort1.ReadByte());
                     for (int i = 0; i < byPos; i++)
                     {
                         LDateFW.Text += (char)serialPort1.ReadByte();
                     }
 
                     //Parametres
+                    byBuffer = new byte[4];
                     for (int i = 0; i < 4; i++)
                     {
-                        byBuffer[i] = (byte)serialPort1.ReadByte();
+                        byBuffer[i] = Convert.ToByte(serialPort1.ReadByte());
                     }
                     dwLength = byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000);
                     byBuffer = new byte[dwLength];
                     for (int i = 0; i < dwLength; i++)
                     {
-                        byBuffer[i] = (byte)serialPort1.ReadByte();
+                        byBuffer[i] = Convert.ToByte(serialPort1.ReadByte());
 
                     }
 
@@ -744,23 +588,24 @@ namespace BreadParam
                     //Activation periphériques
                     for (int i = 0; i < 8; i++)
                     {
-                        dataGridViewCG["EnableCG", i].Value = (byBuffer[410] >> i) & 0X01;
-                        dataGridViewBV["EnableBV", i].Value = (byBuffer[408] >> i) & 0X01;
+                        dataGridViewCG["EnableCG", i].Value = (byBuffer[408] >> i) & 0X01;
+                        dataGridViewBV["EnableBV", i].Value = (byBuffer[410] >> i) & 0X01;
                     }
 
                     //Prix
                     for (int i = 0; i < 3; i++)
                     {
-                        dataGridViewPrice["Prix", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 4] + (byBuffer[4 * i + 5] * 0x100) + (byBuffer[4 * i + 6] * 0x10000) + (byBuffer[4 * i + 7] * 0x1000000)));
+                        dataGridViewPrice["Prix", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 4] + (byBuffer[4 * i + 5] * 0x100) + (byBuffer[4 * i + 6] * 0x10000) + (byBuffer[4 * i + 7] * 0x1000000)) / 100);
                         //CashLess
-                        dataGridViewPrice["CashLess", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 16] + (byBuffer[4 * i + 17] * 0x100) + (byBuffer[4 * i + 18] * 0x10000) + (byBuffer[4 * i + 19] * 0x1000000)));
+                        dataGridViewPrice["CashLess", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 16] + (byBuffer[4 * i + 17] * 0x100) + (byBuffer[4 * i + 18] * 0x10000) + (byBuffer[4 * i + 19] * 0x1000000)) / 100);
                     }
 
                     //Téléphones
                     for (int i = 0; i < 6; i++)
                     {
-                        dataGridViewTelephone["Numero", i].Value = string.Format("{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}", byBuffer[i * 60 + 28], byBuffer[i * 60 + 32], byBuffer[i * 60 + 36], byBuffer[i * 60 + 40], byBuffer[i * 60 + 44],
-                     byBuffer[i * 60 + 48], byBuffer[i * 60 + 52], byBuffer[i * 60 + 56], byBuffer[i * 60 + 60], byBuffer[i * 60 + 64], byBuffer[i * 60 + 68], byBuffer[i * 60 + 72], byBuffer[i * 60 + 76]);
+                        dataGridViewTelephone["Numero", i].Value = string.Format("{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}", byBuffer[i * 60 + 28], byBuffer[i * 60 + 32], byBuffer[i * 60 + 36],
+                            byBuffer[i * 60 + 40], byBuffer[i * 60 + 44], byBuffer[i * 60 + 48], byBuffer[i * 60 + 52], byBuffer[i * 60 + 56], byBuffer[i * 60 + 60], byBuffer[i * 60 + 64], byBuffer[i * 60 + 68],
+                            byBuffer[i * 60 + 72], byBuffer[i * 60 + 76]);
                         dataGridViewTelephone["EnableAudit", i].Value = byBuffer[i * 60 + 80] & 0x01;
                         dataGridViewTelephone["EnableAlarm", i].Value = byBuffer[i * 60 + 84] & 0x01;
                     }
@@ -784,7 +629,6 @@ namespace BreadParam
                     {
                         RBFixed2.Checked = true;
                     }
-
                     Trap3UpDown.Value = byBuffer[396] + (byBuffer[397] * 0x100);
                     if (Trap3UpDown.Value == 0)
                     {
@@ -796,8 +640,10 @@ namespace BreadParam
                     }
                     TOUpDown.Value = byBuffer[400];
                     numericCumul.Value = byBuffer[404];
+                    UDCold.Value = byBuffer[412];
+                    UDHot.Value = byBuffer[416];
                     isParametersReaded = true;
-                    Refresh();
+                    isParametersModified = false;
                 }
             }
             catch (Exception exception)
@@ -823,6 +669,10 @@ namespace BreadParam
             {
                 try
                 {
+                    if (serialPort1.IsOpen)
+                    {
+                        serialPort1.Close();
+                    }
                     serialPort1.PortName = (string)CBSerialPorts.Items[i];
                     serialPort1.Open();
                     serialPort1.Write(byCheckBoardPresence, 0, 1);
@@ -833,12 +683,13 @@ namespace BreadParam
                         CBSerialPorts.SelectedIndex = i;
                         Refresh();
                         BtnRead_Click(sender, e);
-                        ///BtnAudit_Click(sender, e);
+                        BtnAudit_Click(sender, e);
                         break;
                     }
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException E)
                 {
+                    string str = E.Message;
                 }
                 catch (Exception)
                 {
@@ -849,7 +700,17 @@ namespace BreadParam
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            serialPort1.Close();
+            if ((isParametersReaded && !isParametersModified) || (MessageBox.Show("Etes-vous sûr de vouloir quitter sans enregister les paramètres modifiés ?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
+            {
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Close();
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         private void RBSerialAuto_CheckedChanged(object sender, EventArgs e)
@@ -863,17 +724,26 @@ namespace BreadParam
             {
                 case "RBAuto1":
                 {
-                    Trap1UpDown.Value = 0;
+                    if (((RadioButton)sender).Checked)
+                    {
+                        Trap1UpDown.Value = 0;
+                    }
                     break;
                 }
                 case "RBAuto2":
                 {
-                    Trap2UpDown.Value = 0;
+                    if (((RadioButton)sender).Checked)
+                    {
+                        Trap2UpDown.Value = 0;
+                    }
                     break;
                 }
                 case "RBAuto3":
                 {
-                    Trap3UpDown.Value = 0;
+                    if (((RadioButton)sender).Checked)
+                    {
+                        Trap3UpDown.Value = 0;
+                    }
                     break;
                 }
                 default:
@@ -882,5 +752,42 @@ namespace BreadParam
                 }
             }
         }
+
+        private void MachineID_TextChanged(object sender, EventArgs e)
+        {
+            isParametersModified = true;
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+        }
+
+        private void Trap1UpDown_Leave(object sender, EventArgs e)
+        {
+            switch(((NumericUpDown)sender).Name)
+            {
+                case "Trap1UpDown":
+                {
+                    RBFixed1.Checked = ((NumericUpDown)sender).Value > 0;
+                    break;
+                }
+                case "Trap2UpDown":
+                {
+                    RBFixed2.Checked = ((NumericUpDown)sender).Value > 0;
+                    break;
+                }
+                case "Trap3UpDown":
+                {
+                    RBFixed3.Checked = ((NumericUpDown)sender).Value > 0;
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+
     }
 }

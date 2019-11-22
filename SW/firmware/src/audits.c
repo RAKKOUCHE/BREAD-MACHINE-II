@@ -15,6 +15,7 @@
 /* ************************************************************************** */
 
 #include <string.h>
+#include <machine/types.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -117,7 +118,10 @@ typedef struct
                                         * billets.*/
     uint32_t dwProductsOut[PRODUCT_NUMBER]; /*!<Tableau du nombre de produits 
                                              * distribués.*/
+    uint32_t dwInCash; /*!<Montant en caisse.*/
+    uint32_t dwCashLess; /*!<Montant payé en cash less.*/
     uint32_t dwOverPay; /*!<Montant du trop perçu en cts.*/
+    
 } SAUDITS;
 
 /**
@@ -297,7 +301,13 @@ static void vTaskAudit(void *vParameters)
                 // <editor-fold desc="AUDITS_SEND_TO_PC"> 
             {
                 audits.state = AUDITS_STATE_IDLE;
+
+                uint32_t dwDataSize = sizeof(SAUDITS);
+                UART3_Write(&dwDataSize, sizeof(dwDataSize));                
+                while(!UART3_TransmitComplete());
+                                        
                 UART3_Write(&audits.dataBuffer.saudit, sizeof(SAUDITS));
+                while(!UART3_TransmitComplete());
                 break;
             }// </editor-fold>
             default:
