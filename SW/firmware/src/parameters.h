@@ -20,8 +20,14 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
-//#include <stdint.h>
+#include <string.h>
 #include "peripheral/nvm/plib_nvm.h"
+#include "peripheral/uart/plib_uart3.h"
+#include "FreeRTOS.h"
+#include "timers.h"
+#include "mainboard2.h"
+#include "dataCommun.h"
+
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus

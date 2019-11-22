@@ -18,6 +18,7 @@
 #include <xc-pic32m.h>
 
 #include "dataCommun.h"
+#include "timers.h"
 
 /**
  * \addtogroup dataRecord
@@ -34,7 +35,12 @@
 /**
  * \brief Nom en clair de la tâche
  */
-#define PCCOOM_TASK_NAME "PC com"
+#define PCCOM_TASK_NAME "PC com"
+
+/**
+ * \brief Nom en clair du timer de TO.
+ */
+#define PCCOM_TASK_TIMER_NAME "PC_TIMER"
 
 /**
  * \brief Taille du tas de la tâche.
@@ -47,40 +53,75 @@
 #define PCCOM_TASK_PRIORITY 2
 
 /**
+ * \brief Delai maximum accordé pour une communication.
+ */
+#define PCCOM_TIMER_TO (5 * SECONDE)
+
+/**
  * \brief Enumération des commandes venant du PC.
  */
 enum
-{   
-    PCCOM_AUDITS_REQUEST = 0XAA,
-    PCCOM_AUDITS_CLEAR = 0X55,
-    PCCOM_PARAM_REQUEST = 0X5A,
-    PCC0M_PARAM_SET = 0XA5,
-    PCCOM_CHECK = 0XAF,
+{
+    PCCOM_AUDITS_REQUEST = 0XAA, /*!<Envoi des audits au PC.*/
+    PCCOM_AUDITS_CLEAR = 0X55, /*!<Requête, par le PC, de la remise à zéro des audits.*/
+    PCCOM_PARAM_REQUEST = 0X5A, /*!<Envoi des paramètres au PC.*/
+    PCC0M_PARAM_SET = 0XA5, /*!<Enregistre les paramètres venant du PC.*/
+    PCCOM_CHECK = 0XAF, /*!<Ack vers le PC.*/
 };
-
-/**
- * \brief Enumération des états de la machine d'état de la communication.
- */
-typedef enum
-{
-    STATE_PCCOMM_INIT,
-    STATE_PCCOM_IDLE,
-} PCCOMM_STATE;
-
-/**
- * \brief Varialbe structure contenant les variables utilisées par le module.
- */
-static struct
-{
-    PCCOMM_STATE state;
-    TaskHandle_t handlePcCom;
-} pcCom;
 
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
 /* ************************************************************************** */
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         static void vTOPC(TimerHandle_t *timer)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/11/22
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void vTOPC(TimerHandle_t timerHandle)
+{
+    pcCom.isTOReached = true;
+}
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -142,6 +183,9 @@ void vTaskPcComm(void *vParameters)
             case STATE_PCCOMM_INIT:
                 // <editor-fold desc="STATE_PCCOMM_INIT"> 
             {
+                pcCom.hTimerTO_PC = xTimerCreate(PCCOM_TASK_TIMER_NAME,
+                                                 PCCOM_TIMER_TO, false, 
+                                                 NULL, vTOPC);
                 pcCom.state = STATE_PCCOM_IDLE;
                 break;
             }// </editor-fold>
@@ -164,7 +208,7 @@ void vTaskPcComm(void *vParameters)
                         {
                             setAuditState(AUDITS_STATE_CLEAR);
                             while(!getIsRAZAudit());
-                            setAuditState(AUDITS_STATE_SEND_TO_PC);
+//                            setAuditState(AUDITS_STATE_SEND_TO_PC);
                             break;
                         }// </editor-fold>
                         case PCCOM_PARAM_REQUEST:
@@ -181,7 +225,7 @@ void vTaskPcComm(void *vParameters)
                         }// </editor-fold>
                         case PCCOM_CHECK:
                         {
-                            
+
                             UART3_Write(&byCheckAnswer, 1);
                             while(UART3_TransmitComplete());
                         }
@@ -250,7 +294,7 @@ void vDataInit(void)
 {
     if(pcCom.handlePcCom == NULL)
     {
-        xTaskCreate(vTaskPcComm, PCCOOM_TASK_NAME, PCCOM_TASK_STACK, NULL,
+        xTaskCreate(vTaskPcComm, PCCOM_TASK_NAME, PCCOM_TASK_STACK, NULL,
                     PCCOM_TASK_PRIORITY, &pcCom.handlePcCom);
     }
 }

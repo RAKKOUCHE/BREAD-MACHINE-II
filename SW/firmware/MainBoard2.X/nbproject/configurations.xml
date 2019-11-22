@@ -102,6 +102,8 @@
         <itemPath>../src/mdb_bv.h</itemPath>
         <itemPath>../src/mdb_cl.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f7" displayName="Mdb" projectFiles="true">
+      </logicalFolder>
       <logicalFolder name="f5" displayName="osal" projectFiles="true">
         <itemPath>../src/config/default/osal/osal.h</itemPath>
         <itemPath>../src/config/default/osal/osal_definitions.h</itemPath>
@@ -195,6 +197,8 @@
           <itemPath>../src/third_party/rtos/FreeRTOS/Source/event_groups.c</itemPath>
           <itemPath>../src/third_party/rtos/FreeRTOS/Source/stream_buffer.c</itemPath>
         </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="MDB" projectFiles="true">
       </logicalFolder>
       <logicalFolder name="f3" displayName="osal" projectFiles="true">
         <itemPath>../src/config/default/osal/osal_freertos.c</itemPath>

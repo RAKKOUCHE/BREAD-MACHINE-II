@@ -19,10 +19,7 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "parameters.h"
-#include "peripheral/uart/plib_uart3.h"
-#include "mainboard2.h"
 
 /**
  * \addtogroup parameters
@@ -82,13 +79,14 @@ typedef struct
     uint32_t sensitivity[3]; /*!<Sensitivité de la sécurité des trappes.*/
     uint32_t TOcumul; /*!<Délai maximum accordé pour réinsérer une autre pièce.*/
     uint32_t TOOverpay; /*!<Délai maximum de maintien du trop perçu*/
+
     union
     {
         ENABLE enables;
         uint32_t u32Enables;
     };
     int32_t cooler; /*!<Températeur de déclenchement du refroidissement.*/
-    int32_t heater;/*!<Températirue de déclenchement du chauffage.*/
+    int32_t heater; /*!<Températirue de déclenchement du chauffage.*/
 } PARAMETERS;
 
 /**
@@ -105,20 +103,20 @@ static union
  */
 const unsigned int __attribute__((space(prog),
                                   address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
-={
-  1234,
-  100, 100, 100,
-  100, 100, 100,
-  0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 1, 1, 1,
-  0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 2, 0, 0,
-  0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 3, 0, 0,
-  0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 4, 0, 0,
-  0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 5, 0, 0,
-  0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 6, 0, 0,
-  0, 0, 0,
-  60, 30,
-  983071, //Activation par défaut des moyens de paiement 0X001F001F 
-  22, 18, 
+= {
+   1,
+   100, 100, 100,
+   100, 100, 100,
+   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 1, 0, 0,
+   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 2, 0, 0,
+   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 3, 0, 0,
+   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 4, 0, 0,
+   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 5, 0, 0,
+   0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 6, 0, 0,
+   0, 0, 0,
+   60, 30,
+   983071, //Activation par défaut des moyens de paiement 0X001F001F 
+   22, 18,
 };
 
 /* ************************************************************************** */
@@ -342,14 +340,19 @@ void vParametersGetFromPC(void)
     //TODO placer un timer et effectuer les vérifications
     UART3_WriteByte(0X5A);
     while(!UART3_TransmitComplete());
-    if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
+    pcCom.isTOReached = false;
+    xTimerStart(pcCom.hTimerTO_PC, 1000);
+    while(!UART3_ReceiverIsReady() && !pcCom.isTOReached);
+    if(!pcCom.isTOReached)
     {
-        while(!UART3_TransmitComplete());
-        vParametersWrite();
+        if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
+        {
+            while(!UART3_TransmitComplete());
+            vParametersWrite();
+        }
+        vParametersRead();
     }
-    vParametersRead();
-
-    vParamSendToPC();
+    //vParamSendToPC();
 }
 
 /**

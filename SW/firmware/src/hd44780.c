@@ -56,6 +56,10 @@
 #define LCD_TASK_NAME "LCD"
 
 /**
+ * \brief Nom du timer du TO.
+ */
+#define LCD_TO_TIMER_NAME "TO LCD"
+/**
  * \brief Profondeur du tas de la tâche de l'afficheur.
  */
 #define LCD_TASK_STACK 512
@@ -80,7 +84,7 @@
  * \details Si l'afficheur est toujours occupé après ce délai, le programme 
  * cessera la vérification et tentera d'effectuer la commande.
  */
-#define LCD_TO 2 * MILLISEC
+#define LCD_TO (2 * MILLISEC)
 
 /**
  * \brief Dplacement des caractères
@@ -1404,7 +1408,7 @@ void vLCDInit(void)
     }
     if(!lcd.hTO_LCD)
     {
-        lcd.hTO_LCD = xTimerCreate("TO_LCD", LCD_TO, false, NULL, vTO_LCD);
+        lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL, vTO_LCD);
     }
 }
 /**

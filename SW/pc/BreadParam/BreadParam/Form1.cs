@@ -74,7 +74,7 @@ namespace BreadParam
             PHONE,
             TRAP = 12,
             AUDITS = 0XAA,
-            RAZAUDITS = 0X81,
+            RAZAUDITS = 0X55,
             GETPARAMS = 0X5A,
             SAVE_PARAM = 0XA5
         };
@@ -302,6 +302,7 @@ namespace BreadParam
                         serialPort1.Write(byBuffer, 0, 8);
                         MessageBox.Show("Les nouveaux paramètres sont enregistrés.", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+                    BtnRead_Click(sender, e);
                     isParametersModified = false;
                 }
             }
@@ -521,13 +522,15 @@ namespace BreadParam
                     dataGridViewAuditCGIN[1, byIndex].Value = dataGridViewAuditCGOUT[1, byIndex].Value =
                     dataGridViewAuditBV[1, byIndex].Value = string.Format("{0:F2}", Convert.ToDouble(0));
                 }
-                for (int byIndex = 0; byIndex < 6; byIndex++)
+                for (int byIndex = 0; byIndex < 3; byIndex++)
                 {
                     dataGridViewAuditProduit[1, byIndex].Value = 0;
                 }
                 TotalInCG.Text = TotalOutCG.Text = TotalInBV.Text = CoinsInCash.Text = TotalInCG.Text = LOverPay.Text = Total.Text = string.Format("{0:F2}", Convert.ToDouble(0));
                 byte[] byAuditRequest = { Convert.ToByte(HEADER.RAZAUDITS) };
                 serialPort1.Write(byAuditRequest, 0, 1);
+                Thread.Sleep(2000);
+                BtnAudit_Click(sender, e);
             }
             catch (Exception exception)
             {
@@ -660,6 +663,7 @@ namespace BreadParam
         private void Timer1_Tick_1(object sender, EventArgs e)
         {
             byte[] byCheckBoardPresence = { 0XAF };
+            
             if (CBSerialPorts.Items.Count != System.IO.Ports.SerialPort.GetPortNames().Length)
             {
                 CBSerialPorts.Items.Clear();
@@ -687,9 +691,9 @@ namespace BreadParam
                         break;
                     }
                 }
-                catch (InvalidOperationException E)
+                catch (InvalidOperationException)
                 {
-                    string str = E.Message;
+                    
                 }
                 catch (Exception)
                 {
@@ -755,6 +759,7 @@ namespace BreadParam
 
         private void MachineID_TextChanged(object sender, EventArgs e)
         {
+            Refresh();
             isParametersModified = true;
         }
 
@@ -789,5 +794,9 @@ namespace BreadParam
             }
         }
 
+        private void dataGridViewTelephone_Click(object sender, EventArgs e)
+        {
+            Type cellule = ((DataGridView)sender).Columns.GetType();
+        }
     }
 }

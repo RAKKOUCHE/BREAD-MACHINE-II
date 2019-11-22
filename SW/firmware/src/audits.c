@@ -253,7 +253,6 @@ static void vTaskAudit(void *vParameters)
             case AUDITS_STATE_IDLE:
                 // <editor-fold desc="AUDIT_IDLE"> 
             {
-
                 if(xQueueReceive(audits.hAuditQueue, &audits.record, 10))
                 {
                     DRV_AT24_Write(audits.hDrvAT24, &audits.record.dwValue,
@@ -301,18 +300,15 @@ static void vTaskAudit(void *vParameters)
                 // <editor-fold desc="AUDITS_SEND_TO_PC"> 
             {
                 audits.state = AUDITS_STATE_IDLE;
-
                 uint32_t dwDataSize = sizeof(SAUDITS);
                 UART3_Write(&dwDataSize, sizeof(dwDataSize));                
-                while(!UART3_TransmitComplete());
-                                        
+                while(!UART3_TransmitComplete());                                       
                 UART3_Write(&audits.dataBuffer.saudit, sizeof(SAUDITS));
                 while(!UART3_TransmitComplete());
                 break;
             }// </editor-fold>
             default:
             {
-
                 break;
             }
         }

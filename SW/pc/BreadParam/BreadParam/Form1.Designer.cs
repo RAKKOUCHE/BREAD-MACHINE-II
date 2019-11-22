@@ -445,7 +445,7 @@
             this.MontantOutCG.Name = "MontantOutCG";
             this.MontantOutCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantOutCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantOutCG.Width = 100;
+            this.MontantOutCG.Width = 125;
             // 
             // groupBoxauditProduit
             // 
@@ -583,7 +583,7 @@
             this.MontantInBV.ReadOnly = true;
             this.MontantInBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInBV.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInBV.Width = 100;
+            this.MontantInBV.Width = 125;
             // 
             // groupBoxAuditCGIN
             // 
@@ -651,7 +651,7 @@
             this.MontantInCG.ReadOnly = true;
             this.MontantInCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInCG.Width = 100;
+            this.MontantInCG.Width = 125;
             // 
             // LOverPay
             // 
@@ -793,7 +793,7 @@
             this.Prix.Name = "Prix";
             this.Prix.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Prix.ToolTipText = "Prix du produit";
-            this.Prix.Width = 100;
+            this.Prix.Width = 125;
             // 
             // CashLess
             // 
@@ -804,7 +804,7 @@
             this.CashLess.MinimumWidth = 90;
             this.CashLess.Name = "CashLess";
             this.CashLess.ToolTipText = "Prix du produit par carte bancaire";
-            this.CashLess.Width = 100;
+            this.CashLess.Width = 125;
             // 
             // LabelVersionFW
             // 
@@ -1151,7 +1151,7 @@
             this.groupBoxTel.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxTel.Name = "groupBoxTel";
             this.groupBoxTel.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxTel.Size = new System.Drawing.Size(421, 209);
+            this.groupBoxTel.Size = new System.Drawing.Size(421, 213);
             this.groupBoxTel.TabIndex = 16;
             this.groupBoxTel.TabStop = false;
             this.groupBoxTel.Text = "&Téléphones";
@@ -1182,11 +1182,11 @@
             this.dataGridViewTelephone.Name = "dataGridViewTelephone";
             this.dataGridViewTelephone.RowHeadersWidth = 51;
             this.dataGridViewTelephone.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridViewTelephone.Size = new System.Drawing.Size(413, 186);
+            this.dataGridViewTelephone.Size = new System.Drawing.Size(413, 190);
             this.dataGridViewTelephone.TabIndex = 0;
-            this.dataGridViewTelephone.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewTelephone_CellEndEdit);
             this.dataGridViewTelephone.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewTelephone_CellEndEdit);
             this.dataGridViewTelephone.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
+            this.dataGridViewTelephone.Click += new System.EventHandler(this.dataGridViewTelephone_Click);
             // 
             // EnableAudit
             // 

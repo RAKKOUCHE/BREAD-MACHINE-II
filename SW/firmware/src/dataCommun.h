@@ -52,6 +52,26 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
+    /**
+     * \brief Enumération des états de la machine d'état de la communication.
+     */
+    typedef enum
+    {
+        STATE_PCCOMM_INIT, /*!<Initialisation du module.*/
+        STATE_PCCOM_IDLE, /*!<Tâche en attente.*/
+    } PCCOMM_STATE;
+
+    /**
+     * \brief Varialbe structure contenant les variables utilisées par le module.
+     */
+    struct
+    {
+        PCCOMM_STATE state; /*!<Etat de la tâche de communication avec le PC.*/
+        TaskHandle_t handlePcCom; /*!<Handle de la tâche de communication avec le PC.*/
+        TimerHandle_t hTimerTO_PC; /*!<Timer du TO de la communication.*/
+        bool isTOReached; /*!<Flag indiquant que le TO est dépassé.*/
+    } pcCom;
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
@@ -62,7 +82,7 @@ extern "C"
      * \brief Initialise le module de communication avec le PC
      */
     void vDataInit(void);
-    
+
     /**
      * @}
      */
