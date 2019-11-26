@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
         <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</url>
+            <bookmark id="3">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.c</url>
             <bookmark id="2">
                 <name/>
@@ -11,14 +19,6 @@
             <bookmark id="1">
                 <name/>
                 <line>304</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</url>
-            <bookmark id="3">
-                <name/>
-                <line>0</line>
                 <key/>
             </bookmark>
         </file>
@@ -39,19 +39,9 @@
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.h</file>
         </group>
         <group name="MT DISTRIBUTION">
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/hd44780.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_BV.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_CG.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/driver/at24/src/drv_at24.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/mdb_cg.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/mdb.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
         </group>
     </open-files>
 </project-private>
