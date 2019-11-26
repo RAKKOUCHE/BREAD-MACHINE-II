@@ -17,6 +17,9 @@
 #ifndef _AUDITS_H    /* Guard against multiple inclusion */
 #define _AUDITS_H
 
+#include "MDB/mdb_cg.h"
+
+
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: Included Files                                                    */
@@ -45,6 +48,15 @@ extern "C"
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
+
+#define ADDRESSBASEAUDIT 0
+#define ADDRESSCGIN ADDRESSBASEAUDIT /*0*/
+#define ADDRESSCGOUT (ADDRESSCGIN + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*64*/
+#define ADDRESSBVIN (ADDRESSCGOUT + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*128*/
+#define ADDRESSPRODUCT (ADDRESSBVIN + (NUMBERCHANNELSBV) * sizeof(uint32_t))) /*192*/
+#define ADDRESSCASH (ADDRESSPRODUCT + (PRODUCT_NUMBER * sizeof(uint32_t))) /*204*/
+#define ADDRESSCL (ADDRESSCASH + sizeof(uint32_t)) /*208*/
+#define ADDRESSOVERPAY (ADDRESSCL + sizeof(uint32_t) /*212*/
 
     // *****************************************************************************
     // *****************************************************************************
@@ -75,6 +87,19 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
+    /**
+     * \brief Requête du montant de l'audit à l'adresse spécifié
+     * @param Address Index dans la structure audits.
+     * @return Le montant contenu à l'adresse indiquée.
+     */
+    uint32_t getAuditValue(uint32_t Address);
+    
+    /**
+     * \brief Sauvegarde un audit.
+     * @param[in] Address dans l'eeprom de la valeur.
+     * @param[in] value Valeur à enregistrer.
+     */
+    void setAuditValue(const uint32_t Address, const uint32_t value);
     /**
      * \brief Modifie l'état de la machine d'état des audits
      * @param state Nouvel état de la machine d'état

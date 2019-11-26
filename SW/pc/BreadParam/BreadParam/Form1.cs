@@ -796,7 +796,7 @@ namespace BreadParam
 
         private void dataGridViewTelephone_Click(object sender, EventArgs e)
         {
-            Type cellule = ((DataGridView)sender).Columns.GetType();
+            
         }
     }
 }

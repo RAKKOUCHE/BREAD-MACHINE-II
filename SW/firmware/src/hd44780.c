@@ -262,12 +262,14 @@ static struct
     QueueHandle_t hQueueLCD; /*!Handle de la liste utilisée pour stocker les
                               * commandes et les caractères destinés au LCD.*/
     TimerHandle_t hTO_LCD; /*!<Timer de contrôle du TO.*/
+    SemaphoreHandle_t semaphoreLCD; /*!<Handle du sémaphore protégeant la liste print.*/
     FOR_LCD forlcd; /*!<Structure contenant une information à envoyer à 
                      * l'afficheur.*/
     uint8_t cursor_Address; /*!<Adresse de la position qui sera utilisée pour 
                              * le prochain afficheur.*/
     bool isTOLCD; /*!<Flag indiquant si le TO est atteint.*/
     bool isLCDInitialized; /*!Flag indiquant si l'afficheur est initializé.*/
+
 } lcd;
 
 
@@ -412,21 +414,21 @@ static void vLCD_Enable(void)
  ********************************************************************/
 static uint8_t byGetLCDAddressCounter(void)
 {
-    
+
     uint8_t byResult;
-    
+
     LCD_DATA_IN();
     LCD_RS_Clear();
     LCD_RW_Set();
     Delay10us(1);
     LCD_EN_Set();
     Delay10us(1);
-    byResult = (uint8_t)GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA;
+    byResult = (uint8_t) GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA;
     LCD_EN_Clear();
     Delay10us(1);
     LCD_EN_Set();
     Delay10us(1);
-    byResult += (uint8_t)(GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA) >> 4;
+    byResult += (uint8_t) (GPIO_PortRead(LCD_PORT_DATA) & LCD_DATA) >> 4;
     LCD_EN_Clear();
     Delay10us(1);
     LCD_RW_Clear();
@@ -799,7 +801,7 @@ static void vCreateChar(const uint8_t Code, const uint8_t *pBuffer)
  *         Ajoute un caractère dans la queue
  * 
  * Description:
- *         Par défaut le compilateur envoie les caractères de printf sur le port 
+ *         Par défaut le compilateur envoie les caractères de vDisplayLCD sur le port 
  * série. La redéclaration de _mon_putc permet une redirection
  *
  * PreCondition:    
@@ -833,6 +835,79 @@ void _mon_putc(const char data)
     xQueueSendToBack(lcd.hQueueLCD, &lcd.forlcd, 1 * SECONDE);
 }
 
+/*********************************************************************
+ * Function:        void vDisplayLCD(char *format, ...)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void vDisplayLCD(char *format, ...)
+{
+    va_list args;
+
+    xSemaphoreTake(lcd.semaphoreLCD, 10000);
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    xSemaphoreGive(lcd.semaphoreLCD);
+}
+
+/*********************************************************************
+ * Function:        
+ *         bool getIsLCDIntialiazed(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getIsLCDIntialiazed(void)
+{
+    return lcd.isLCDInitialized;
+}
 /*********************************************************************
  * Function:        
  *         void vLCD_HOME()
@@ -1027,7 +1102,7 @@ void vLCDGotoXY(uint8_t X, uint8_t Y)
 void vLCDClearLine(const uint8_t byLine)
 {
     vLCDGotoXY(1, byLine);
-    printf("%s", "                    ");
+    vDisplayLCD("%s", "                    ");
     vLCDGotoXY(1, byLine);
 }
 
@@ -1332,9 +1407,9 @@ void vHD44780Init(void)
     vLCD_Set_Interface(true);
     delayMs(8);
     vLCD_Set_Interface(true);
-    delayMs( 1);
+    delayMs(1);
     vLCD_Set_Interface(true);
-    delayMs( 1);
+    delayMs(1);
     vLCD_Set_Interface(false);
     delayMs(1);
     vLCD_Function(bits4, more, lo);
@@ -1398,9 +1473,10 @@ void vLCDInit(void)
     LCD_EN_Clear();
     LCD_CLEAR_DATA();
     lcd.isLCDInitialized = false;
-    if(!lcd.hTaskLCD)
+
+    if(!lcd.semaphoreLCD)
     {
-        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, LCD_TASK_PRIORITY, &lcd.hTaskLCD);
+        xSemaphoreGive(lcd.semaphoreLCD = xSemaphoreCreateBinary());
     }
     if(!lcd.hQueueLCD)
     {
@@ -1409,6 +1485,10 @@ void vLCDInit(void)
     if(!lcd.hTO_LCD)
     {
         lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL, vTO_LCD);
+    }
+    if(!lcd.hTaskLCD)
+    {
+        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, LCD_TASK_PRIORITY, &lcd.hTaskLCD);
     }
 }
 /**

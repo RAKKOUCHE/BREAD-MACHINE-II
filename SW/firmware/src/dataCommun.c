@@ -225,7 +225,6 @@ void vTaskPcComm(void *vParameters)
                         }// </editor-fold>
                         case PCCOM_CHECK:
                         {
-
                             UART3_Write(&byCheckAnswer, 1);
                             while(UART3_TransmitComplete());
                         }

@@ -47,9 +47,6 @@
 // *****************************************************************************
 
 #include "mainboard2.h"
-#include "peripheral/gpio/plib_gpio.h"
-#include "config/default/peripheral/uart/plib_uart3.h"
-#include "dataCommun.h"
 /**
  * \addtogroup main
  * @{
@@ -75,26 +72,487 @@
     Application strings and buffers are be defined outside this structure.
  */
 
-MAINBOARD2_DATA mainboard2Data;
+static MAINBOARD2_DATA mainboard2Data;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Application Callback Functions
+// Section: Application Functions
 // *****************************************************************************
 // *****************************************************************************
 
-/* TODO:  Add any necessary callback functions.
- */
+/*********************************************************************
+ * Function:        void vTO_OverPay(const TimerHandle_t HandleTimer)
+ * 
+ * Version:         1.0
+ * 
+ * Date:            01/01/2017
+ * 
+ * Author:          Rachid AKKOUCHE    
+ *
+ * PreCondition:    le handle mainBoardData.hTimerOverpayTO ou 
+ *                  mainBoardData.hTimerCumul doit avoir été créé.
+ *
+ * Input:           HandleTimer non utilsée. Nécessaire pour le prototype du
+ *                  callback.
 
+ * Output:          None
+ * 
+ * Side Effects:    None
+ *
+ * Overview:        Si un montant a été inséré mais pas utilisé, il sera 
+ *                  enregistré dans les trop perçus.
+ *
+ * Note:            None
+ ********************************************************************/
+void vTO_OverPay(const TimerHandle_t HandleTimer)
+{
+    setAuditValue(ADDRESSOVERPAY, getAmountDispo());
+    setAmountDispo(0);
+    setAmountRequested(0);
+    setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
+}
+
+/******************************************************************************/
+
+/*********************************************************************
+ * Function:        
+ *         void vTO_Cumul(const TimerHandle_t handleTimer)
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         19/07/19
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+
+void vTO_Cumul(const TimerHandle_t handleTimer)
+{
+    setMainBoardTaskState(MAINBOARD2_STATE_CHANGE);
+}
+
+/*********************************************************************
+ * Function:        
+ *         MAINBOARD2_STATES getMainBoardTaskState(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+MAINBOARD2_STATES getMainBoardTaskState(void)
+{
+    return mainboard2Data.state;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setMainBoardTaskState(MAINBOARD2_STATES state)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setMainBoardTaskState(MAINBOARD2_STATES state)
+{
+    mainboard2Data.state = state;
+}
+
+/*********************************************************************
+ * Function:        
+ *         uint32_t GetAmountDispo(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+int32_t getAmountDispo(void)
+{
+    return mainboard2Data.lAmountDispo;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setAmountRequested(uint32_t amount)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setAmountRequested(uint32_t amount)
+{
+    mainboard2Data.lAmountRequested = amount;
+}
 // *****************************************************************************
+
+/*********************************************************************
+ * Function:        
+ *         uint32_t GetAmountRequestedvoid)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+int32_t getAmountRequested(void)
+{
+    return mainboard2Data.lAmountRequested;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setAmountDispo(uint32_t amount)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setAmountDispo(uint32_t amount)
+{
+    mainboard2Data.lAmountDispo = amount;
+}
+// *****************************************************************************
+
+/*********************************************************************
+ * Function:        
+ *         bool getMDBChecked(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getMDBChecked(void)
+{
+    return mainboard2Data.isMDBChecked;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setMDBChecked(bool isChecked)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setMDBChecked(bool isChecked)
+{
+    mainboard2Data.isMDBChecked = isChecked;
+}
+
+
+
 // *****************************************************************************
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
 
-
-/* TODO:  Add any necessary local functions.
- */
 
 
 // *****************************************************************************
@@ -114,11 +572,12 @@ MAINBOARD2_DATA mainboard2Data;
 void MAINBOARD2_Initialize(void)
 {
     /* Place the App state machine in its initial state. */
-    mainboard2Data.state = MAINBOARD2_STATE_INIT;
+    setMainBoardTaskState(MAINBOARD2_STATE_INIT);
     vParametersRead();
     vLCDInit();
     vAuditsInit();
     vDataInit();
+    vMDBInit();
 
 
     /* TODO: Initialize your application's state machine and other
@@ -144,12 +603,14 @@ void MAINBOARD2_Tasks(void)
         case MAINBOARD2_STATE_INIT:
         {
             vHD44780Init();
-            mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
+            setMainBoardTaskState(MAINBOARD2_STATE_SERVICE_TASKS);
             vLCD_CLEAR();
-            printf("%s", "MT DISTRIBUTION");
+            vDisplayLCD("%s", "MT DISTRIBUTION");
             vLCDGotoXY(1, 2);
-            printf(" %s %s", "Version ", VERSION);
+            vDisplayLCD(" %s %s", "Version ", VERSION);
             delayMs(1 * SECONDE);
+            vTaskResume(mdb.hTaskMdb);
+            hTimerCumul = xTimerCreate("TO CUMUL", getTOCumul() * SECONDE, false, NULL, vTO_Cumul);
             break;
         }
         case MAINBOARD2_STATE_SERVICE_TASKS:
@@ -158,7 +619,7 @@ void MAINBOARD2_Tasks(void)
             if(getIsRAZAudit())
             {
                 setIsRAZAudit(false);
-                mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
+                //                mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
             }
             break;
         }
@@ -168,9 +629,9 @@ void MAINBOARD2_Tasks(void)
         {
             mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
             vLCD_CLEAR();
-            printf("%s", "   Choisissez");
+            vDisplayLCD("%s", "   Choisissez");
             vLCDGotoXY(1, 2);
-            printf("%s", " votre produit");
+            vDisplayLCD("%s", " votre produit");
             break;
         }// </editor-fold>
             /* TODO: implement your application state machine.*/

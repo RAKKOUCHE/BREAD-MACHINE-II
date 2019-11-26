@@ -130,6 +130,102 @@ const unsigned int __attribute__((space(prog),
 // Section: Interface Functions                                               */
 
 /* ************************************************************************** */
+/*********************************************************************
+ * Function:        
+ *         uint8_t getTOCumul(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint8_t getTOCumul(void)
+{
+    return (uint8_t)parameters.data.TOcumul;
+}
+
+/*********************************************************************
+ * Function:        
+ *         uint16_t getChannelEnable(bool isChangeGiver)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint16_t getChannelEnable(bool isChangeGiver)
+{
+    return isChangeGiver ? parameters.data.enables.enable_GG :
+            parameters.data.enables.enable_BV;
+}
 
 /*********************************************************************
  * Function:        

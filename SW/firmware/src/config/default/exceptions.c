@@ -125,7 +125,7 @@ void _general_exception_handler ( void )
     _excep_addr = _CP0_GET_EPC();
 
     _cause_str  = cause[_excep_code];
-    printf("\n\rGeneral Exception %s (cause=%d, addr=%x).\n\r", _cause_str, _excep_code, _excep_addr);
+    vDisplayLCD("\n\rGeneral Exception %s (cause=%d, addr=%x).\n\r", _cause_str, _excep_code, _excep_addr);
 
     while (1)
     {

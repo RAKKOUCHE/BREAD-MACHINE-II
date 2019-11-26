@@ -96,15 +96,13 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f4" displayName="mdb" projectFiles="true">
-        <itemPath>../src/mdb.h</itemPath>
-        <itemPath>../src/mdb_cg.h</itemPath>
-        <itemPath>../src/mdb_bv.h</itemPath>
-        <itemPath>../src/mdb_cl.h</itemPath>
+      <logicalFolder name="MDB" displayName="MDB" projectFiles="true">
+        <itemPath>../src/MDB/mdb.h</itemPath>
+        <itemPath>../src/MDB/mdb_bv.h</itemPath>
+        <itemPath>../src/MDB/mdb_cg.h</itemPath>
+        <itemPath>../src/MDB/mdbGeneric.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="f7" displayName="Mdb" projectFiles="true">
-      </logicalFolder>
-      <logicalFolder name="f5" displayName="osal" projectFiles="true">
+      <logicalFolder name="f4" displayName="osal" projectFiles="true">
         <itemPath>../src/config/default/osal/osal.h</itemPath>
         <itemPath>../src/config/default/osal/osal_definitions.h</itemPath>
         <itemPath>../src/config/default/osal/osal_freertos.h</itemPath>
@@ -198,7 +196,10 @@
           <itemPath>../src/third_party/rtos/FreeRTOS/Source/stream_buffer.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f5" displayName="MDB" projectFiles="true">
+      <logicalFolder name="MDB" displayName="MDB" projectFiles="true">
+        <itemPath>../src/MDB/MDB.c</itemPath>
+        <itemPath>../src/MDB/MDB_CG.c</itemPath>
+        <itemPath>../src/MDB/MDB_BV.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="osal" projectFiles="true">
         <itemPath>../src/config/default/osal/osal_freertos.c</itemPath>

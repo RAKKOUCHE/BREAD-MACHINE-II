@@ -54,6 +54,10 @@
 #include "hd44780.h"
 #include "globaldef.h"
 #include "parameters.h"
+#include "peripheral/gpio/plib_gpio.h"
+#include "config/default/peripheral/uart/plib_uart3.h"
+#include "dataCommun.h"
+#include "MDB/mdb.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -89,9 +93,12 @@ extern "C"
     typedef enum
     {
         /* Application's state machine's initial state. */
-        MAINBOARD2_STATE_INIT = 0, /*!<Initialisation de l'application*/
-        MAINBOARD2_STATE_SERVICE_TASKS, /*!<Etat de l'application en fonctionnement*/
-        MAINBOARD2_STATE_DISPLAY_CHOICE, /*!<Affichage choix du produit*/
+        MAINBOARD2_STATE_INIT = 0, /*!<Initialisation de l'application.*/
+        MAINBOARD2_STATE_SERVICE_TASKS, /*!<Etat de l'application en fonctionnement.*/
+        MAINBOARD2_STATE_DISPLAY_CHOICE, /*!<Affichage choix du produit.*/
+        MAINBOARD2_STATE_DISPLAY_AMOUNT, /*!<Affichage du montant disponible.*/
+        MAINBOARD2_STATE_CHANGE, /*!<Lance la procédure de change.*/
+
     } MAINBOARD2_STATES;
 
 
@@ -114,19 +121,68 @@ extern "C"
     typedef struct
     {
         /* The application's current state */
-        MAINBOARD2_STATES state;
-
-        /* TODO: Define any additional data used by the application. */
-
+        MAINBOARD2_STATES state; /*!<Etat de la tâche principale de l'application.*/
+        int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
+        uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
+        bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
     } MAINBOARD2_DATA;
 
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: Application Callback Routines
-    // *****************************************************************************
-    // *****************************************************************************
-    /* These routines are called by drivers when certain events occur.
+    /**
+     * \brief Handle timer de cumul.
      */
+    TimerHandle_t hTimerCumul;
+    
+    /**
+     * \brief Handle du to déclenchant la procédure de trop perçu.
+     */
+    TimerHandle_t hTimerOverPay;
+
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Application Routines
+    // *****************************************************************************
+    // *****************************************************************************
+
+    /**
+     * \brief Requête de l'état de la Tâche de l'application
+     * @return Etat de la tâche.
+     */
+    MAINBOARD2_STATES getMainBoardTaskState(void);
+
+    /**
+     * \brief Fixe l'état de la tâche de l'application
+     * @param state Etat de la tâche de l'application à utiliser.
+     */
+    void setMainBoardTaskState(MAINBOARD2_STATES state);
+    
+    /**
+     * \brief Requête du montant à fournir.
+     * @param amount Montant du produit.
+     */
+    void setAmountRequested(uint32_t amount);
+    /**
+     * \brief Requête du montant disponible.
+     * @return Le montant disponible en cts.
+     */
+    int32_t getAmountDispo(void);
+
+    /**
+     * \brief Enregistre le montant disponible.
+     * @param amount Montant disponible;
+     */
+    void setAmountDispo(uint32_t amount);
+    
+    /**
+     * \brief Lit le flag indiquant si les péruiphériques MDB sont prêt.
+     * @return true si les périphériques sont initialisés
+     */
+    bool getMDBChecked(void);
+    
+    /**
+     * brief Fixe l'état du flag indiquant si le périphérique sont prêt
+     * @param isChecked Etat du flag choisi.
+     */
+    void setMDBChecked(bool isChecked);
 
     // *****************************************************************************
     // *****************************************************************************

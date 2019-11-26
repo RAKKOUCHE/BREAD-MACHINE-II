@@ -181,6 +181,19 @@ extern "C"
     // *****************************************************************************
 
     /**
+     * 
+     * @param format
+     * @param ...
+     */
+    void vDisplayLCD(char *format, ...);
+
+    /**
+     * 
+     * @return 
+     */
+    bool getIsLCDIntialiazed(void);
+
+    /**
      * \brief Efface l'afficheur.
      */
     void vLCD_CLEAR();
@@ -212,7 +225,7 @@ extern "C"
      */
     void vLCD_Display_control(const LCD_ON_OFF d_on, const Cursor_ON_OFF c_on, const Blink_ON_OFF b_on);
 
-    
+
     /**
      * \brief Mode de traitement des caractères arrivant sur l'afficheur.
      * @param[in] inc Incrémente ou décrèmente le compteur d'adresse.

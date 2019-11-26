@@ -57,6 +57,21 @@ extern "C"
     // *****************************************************************************
 
     /**
+     * \brief Requête du TO pour le cumul.
+     * @return Un byte contenant le delai du time out en seconde;
+     */
+    uint8_t getTOCumul(void); 
+
+    
+    /**
+     * \brief Requête des canaux habilités.
+     * @param isChangeGiver true pour le changer, false pour le lecteur de billet.
+     * @return Un mot contenant le mask d'habilitation.
+     */
+    uint16_t getChannelEnable(bool isChangeGiver);
+    
+    
+    /**
      * \brief Enregistre les paramï¿½tres dans la mï¿½moire flash
      */
     void vParametersWrite(void);

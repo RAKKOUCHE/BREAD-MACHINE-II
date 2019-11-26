@@ -19,8 +19,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
-#include "mdb_bv.h"
-#include "mdb_cg.h"
 #include "globaldef.h"
 #include "config/../configuration.h"
 #include "driver/at24/drv_at24.h"
@@ -28,6 +26,8 @@
 #include "audits.h"
 #include "hd44780.h"
 #include "peripheral/uart/plib_uart3.h"
+#include "MDB/mdb_bv.h"
+#include "MDB/mdb_cg.h"
 
 /**
  * \addtogroup audits
@@ -109,11 +109,11 @@ typedef struct
  */
 typedef struct
 {
-    uint32_t dwCG_in[CG_NUM_CHANNELS]; /*!<Tableau du nombre de pièces par canal 
+    uint32_t dwCG_in[NUMBERCHANNELSCG]; /*!<Tableau du nombre de pièces par canal 
                                         * acceptées par le rendeur.*/
-    uint32_t dwCG_OUT[CG_NUM_CHANNELS]; /*!<<Tableau du nombre de pièces par 
+    uint32_t dwCG_OUT[NUMBERCHANNELSCG]; /*!<<Tableau du nombre de pièces par 
                                          * canal retournées par le rendeur.*/
-    uint32_t dwBV_in[BV_NUM_CHANNELS]; /*!<Tableau du nombre de billets par 
+    uint32_t dwBV_in[NUMBERCHANNELSBV]; /*!<Tableau du nombre de billets par 
                                         * canal acceptés par le lecteur de 
                                         * billets.*/
     uint32_t dwProductsOut[PRODUCT_NUMBER]; /*!<Tableau du nombre de produits 
@@ -121,7 +121,7 @@ typedef struct
     uint32_t dwInCash; /*!<Montant en caisse.*/
     uint32_t dwCashLess; /*!<Montant payé en cash less.*/
     uint32_t dwOverPay; /*!<Montant du trop perçu en cts.*/
-    
+
 } SAUDITS;
 
 /**
@@ -271,9 +271,9 @@ static void vTaskAudit(void *vParameters)
                             {
                                 vLCD_CLEAR();
                                 vLCDGotoXY(1, 1);
-                                printf("%s", "  RAZ termine");
+                                vDisplayLCD("%s", "  RAZ termine");
                                 vLCDGotoXY(1, 2);
-                                printf("%s", " Retirez jumper");
+                                vDisplayLCD("%s", " Retirez jumper");
                                 while(!CLR_Get())
                                 {
                                     LED_SYS_Toggle();
@@ -301,8 +301,8 @@ static void vTaskAudit(void *vParameters)
             {
                 audits.state = AUDITS_STATE_IDLE;
                 uint32_t dwDataSize = sizeof(SAUDITS);
-                UART3_Write(&dwDataSize, sizeof(dwDataSize));                
-                while(!UART3_TransmitComplete());                                       
+                UART3_Write(&dwDataSize, sizeof(dwDataSize));
+                while(!UART3_TransmitComplete());
                 UART3_Write(&audits.dataBuffer.saudit, sizeof(SAUDITS));
                 while(!UART3_TransmitComplete());
                 break;
@@ -320,7 +320,108 @@ static void vTaskAudit(void *vParameters)
 /* ************************************************************************** */
 // Section: Interface Functions                                               */
 /* ************************************************************************** */
+
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         uint32_t getAuditValue(uint32_t Address)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint32_t getAuditValue(uint32_t Address)
+{
+    uint32_t result;
+    memmove(&result, &audits.dataBuffer.buffer[Address], sizeof(uint32_t));
+    return result;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setAuditValue(const uint32_t Address, const uint32_t value)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setAuditValue(uint32_t Address, uint32_t value)
+{
+    memmove(&audits.dataBuffer.buffer[Address], &value, sizeof(uint32_t));
+    DRV_AT24_Write(audits.hDrvAT24, (void*) value, sizeof(value), Address);
+    while(DRV_AT24_TransferStatusGet(audits.hDrvAT24) == DRV_AT24_TRANSFER_STATUS_BUSY);
+}
 
 /*********************************************************************
  * Function:        
