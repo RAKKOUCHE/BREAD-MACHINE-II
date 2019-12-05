@@ -29,16 +29,12 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 using System.Text;
+using System.Globalization;
 
 namespace BreadParam
 {
     public partial class Form1 : Form
     {
-        /// <summary>
-        /// Constante contenant le texte de l'erreur d'enreg
-        /// </summary>
-        const String strSaveError = "Erreur durant l'enregistrement/r/nLes paramètres ne sont pas correctement enregistrés";
-
         /// <summary>
         /// Longueur maximum du numéro de téléphone
         /// </summary>
@@ -58,7 +54,7 @@ namespace BreadParam
         /// Flag indiquant une modification
         /// </summary>
         bool isParametersModified;
-
+                                               
         /// <summary>
         /// Header indiquant les paramètres en cours de transmission 
         /// </summary>
@@ -96,26 +92,29 @@ namespace BreadParam
             InitializeComponent();
         }
 
+
         /// <summary>
         /// Vérifie que le port série est ouvert.
         /// </summary>
         /// <returns>
         /// true si le port est ouvert.
         /// </returns>
+
         private bool IsSerialPortOpen()
         {
             try
             {
                 if (!serialPort1.IsOpen)
                 {
-                    throw new Exception("Sélectionnez un port série.");
+                    throw new Exception(BreadParam.Properties.Resources.Str_Serial_Port_Select);
                 }
-                UInt32 num = Convert.ToUInt32(MachineID.Text);
+                uint num = Convert.ToUInt32(MachineID.Text, CultureInfo.CurrentCulture);
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+                throw;
             }
             return true;
         }
@@ -155,15 +154,15 @@ namespace BreadParam
             CBSerialPorts.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
             for (int byIndex = 1; byIndex < 9; byIndex++)
             {
-                dataGridViewCG.Rows.Add(byIndex, true, string.Format("{0:F2}", Convert.ToDouble(0)));
-                dataGridViewBV.Rows.Add(byIndex, true, string.Format("{0:F2}", Convert.ToDouble(0)));
-                dataGridViewAuditCGIN.Rows.Add(byIndex, string.Format("{0:F2}", Convert.ToDouble(0)));
-                dataGridViewAuditCGOUT.Rows.Add(byIndex, string.Format("{0:F2}", Convert.ToDouble(0)));
-                dataGridViewAuditBV.Rows.Add(byIndex, string.Format("{0:F2}", Convert.ToDouble(0)));
+                dataGridViewCG.Rows.Add(byIndex, true, string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0)));
+                dataGridViewBV.Rows.Add(byIndex, true, string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0)));
+                dataGridViewAuditCGIN.Rows.Add(byIndex, string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0)));
+                dataGridViewAuditCGOUT.Rows.Add(byIndex, string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0)));
+                dataGridViewAuditBV.Rows.Add(byIndex, string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0)));
             }
             for (int byIndex = 1; byIndex < 4; byIndex++)
             {
-                dataGridViewPrice.Rows.Add(byIndex, string.Format("{0:F2}", 0.00), string.Format("{0:F2}", 0.00));
+                dataGridViewPrice.Rows.Add(byIndex, string.Format(CultureInfo.CurrentCulture, "{0:F2}", 0.00), string.Format(CultureInfo.CurrentCulture, "{0:F2}", 0.00));
                 dataGridViewAuditProduit.Rows.Add(byIndex, 0);
             }
             for (int byIndex = 0; byIndex < 6; byIndex++)
@@ -180,43 +179,45 @@ namespace BreadParam
         /// <returns>
         /// La somme des octets modulo 256.
         /// </returns>
-        byte ByCheckSum(byte byLength)
-        {
-            UInt16 ui16Result = 0;
-            for (int byIndex = 0; byIndex < byLength; byIndex++)
-            {
-                ui16Result += byBuffer[byIndex];
-            }
-            return Convert.ToByte((ui16Result % 256));
-        }
+        //byte ByCheckSum(byte byLength)
+        //{
+        //    UInt16 ui16Result = 0;
+        //    for (int byIndex = 0; byIndex < byLength; byIndex++)
+        //    {
+        //        ui16Result += byBuffer[byIndex];
+        //    }
+        //    return Convert.ToByte((ui16Result % 256));
+        //}
+
 
         /// <summary>
         /// Envoie les paramètres à la cpu.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void BtnSave_Click(object sender, EventArgs e)
         {
             Int32 value;
             try
             {
-                if (IsSerialPortOpen() && (MessageBox.Show("Etes-vous sûr de vouloir modifier les paramètres de la machine ?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
+                if (IsSerialPortOpen() && (MessageBox.Show(BreadParam.Properties.Resources.Str_Confirm_modify_param, BreadParam.Properties.Resources.Str_Confirm, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
                 {
                     if (!isParametersReaded)
                     {
-                        throw new Exception("Impossible d'enregistrer les paramètres!\r\nLes paramètres enregistrés dans la CPU n'ont pas été lus.");
+                        throw new Exception(BreadParam.Properties.Resources.Str_Fail_save);
                     }
                     serialPort1.DiscardOutBuffer();
                     serialPort1.DiscardInBuffer();
 
-                    byte[] byParamSave = { Convert.ToByte(HEADER.SAVE_PARAM) };
+                    byte[] byParamSave = { Convert.ToByte(HEADER.SAVE_PARAM, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byParamSave, 0, 1);
                     byParamSave[0] = Convert.ToByte(serialPort1.ReadByte());
                     if (byParamSave[0] == 0X5A)
                     {
                         //Envoie l'identification de la machine.
                         byBuffer = new byte[4];
-                        value = Int32.Parse(MachineID.Text);
+                        value = Int32.Parse(MachineID.Text, CultureInfo.CurrentCulture);
                         byBuffer[0] = Convert.ToByte(value % 0x100);
                         byBuffer[1] = Convert.ToByte(value / 0x100);
                         byBuffer[2] = Convert.ToByte(value / 0x10000);
@@ -227,11 +228,11 @@ namespace BreadParam
                         byBuffer = new byte[12];
                         for (int i = 0; i < 3; i++)
                         {
-                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["Prix", i].Value) * 100);
-                            byBuffer[4 * i + 0] = Convert.ToByte(value % 0x100);
-                            byBuffer[4 * i + 1] = Convert.ToByte(value / 0x100);
-                            byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
-                            byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000);
+                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["Prix", i].Value, CultureInfo.CurrentCulture) * 100);
+                            byBuffer[4 * i + 0] = Convert.ToByte(value % 0x100, CultureInfo.CurrentCulture);
+                            byBuffer[4 * i + 1] = Convert.ToByte(value / 0x100, CultureInfo.CurrentCulture);
+                            byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000, CultureInfo.CurrentCulture);
+                            byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000, CultureInfo.CurrentCulture);
                         }
                         serialPort1.Write((byte[])byBuffer, 0, 12);
 
@@ -239,7 +240,7 @@ namespace BreadParam
                         byBuffer = new byte[12];
                         for (int i = 0; i < 3; i++)
                         {
-                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["CashLess", i].Value) * 100);
+                            value = (Int32)(Convert.ToDouble(dataGridViewPrice["CashLess", i].Value, CultureInfo.CurrentCulture) * 100);
                             byBuffer[4 * i + 0] = Convert.ToByte(value % 0x100);
                             byBuffer[4 * i + 1] = Convert.ToByte(value / 0x100);
                             byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
@@ -256,8 +257,8 @@ namespace BreadParam
                             {
                                 byBuffer[60 * i + (j * 4)] = Convert.ToByte(array[j] - 0x30);
                             }
-                            byBuffer[60 * (i + 1) - 8] = Convert.ToByte(dataGridViewTelephone["EnableAudit", i].Value);
-                            byBuffer[60 * ( i+1) - 4] = Convert.ToByte(dataGridViewTelephone["EnableAlarm", i].Value);
+                            byBuffer[(60 * (i + 1)) - 8] = Convert.ToByte(dataGridViewTelephone["EnableAudit", i].Value, CultureInfo.CurrentCulture);
+                            byBuffer[(60 * (i + 1)) - 4] = Convert.ToByte(dataGridViewTelephone["EnableAlarm", i].Value, CultureInfo.CurrentCulture);
                         }
                         serialPort1.Write((byte[])byBuffer, 0, 360);
 
@@ -290,8 +291,8 @@ namespace BreadParam
                         byBuffer = new byte[4];
                         for (byte i = 0; i < 8; i++)
                         {
-                            byBuffer[0] += Convert.ToByte(Convert.ToByte(dataGridViewCG["EnableCG", i].Value) << i);
-                            byBuffer[2] += Convert.ToByte(Convert.ToByte(dataGridViewBV["EnableBV", i].Value) << i);
+                            byBuffer[0] += Convert.ToByte(Convert.ToByte(dataGridViewCG["EnableCG", i].Value, CultureInfo.CurrentCulture) << i, CultureInfo.CurrentCulture);
+                            byBuffer[2] += Convert.ToByte(Convert.ToByte(dataGridViewBV["EnableBV", i].Value, CultureInfo.CurrentCulture) << i, CultureInfo.CurrentCulture);
                         }
                         serialPort1.Write((byte[])byBuffer, 0, 4);
 
@@ -300,7 +301,7 @@ namespace BreadParam
                         byBuffer[0] = Convert.ToByte(UDCold.Value);
                         byBuffer[4] = Convert.ToByte(UDHot.Value);
                         serialPort1.Write((byte[])byBuffer, 0, 8);
-                        MessageBox.Show("Les nouveaux paramètres sont enregistrés.", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(BreadParam.Properties.Resources.Str_param_saved, BreadParam.Properties.Resources.Str_Record, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     BtnRead_Click(sender, e);
                     isParametersModified = false;
@@ -308,38 +309,44 @@ namespace BreadParam
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
         }
+
 
         /// <summary>
         /// Vérifie la cohérence du numéro de la machine.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void MachineID_Leave(object sender, EventArgs e)
         {
             try
             {
                 if (!Int32.TryParse(MachineID.Text, out Int32 usResult))
                 {
-                    throw new Exception(string.Format("Le numéro de la machine doit être compris entre 0 et {0:d}", Int32.MaxValue));
+                    throw new Exception(string.Format(CultureInfo.CurrentCulture, BreadParam.Properties.Resources.Str_Number_Machine_Error, Int32.MaxValue));
                 }
             }
             catch (Exception exception)
             {
-                MachineID.Text = "0";
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MachineID.Text = BreadParam.Properties.Resources.Str_zero;
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ((TextBox)sender).Select();
                 ((TextBox)sender).SelectAll();
+                throw;
             }
         }
+
 
         /// <summary>
         /// Affiche la partie inférieur pour montrer les audits.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void BtnAudit_Click(object sender, EventArgs e)
         {
             byte[] byBuffer;
@@ -355,7 +362,7 @@ namespace BreadParam
                     serialPort1.DiscardOutBuffer();
                     serialPort1.DiscardInBuffer();
 
-                    byte[] byAuditRequest = { Convert.ToByte(HEADER.AUDITS) };
+                    byte[] byAuditRequest = { Convert.ToByte(HEADER.AUDITS, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byAuditRequest, 0, 1);
                     byte byLength = Convert.ToByte(serialPort1.ReadByte());
                     byBuffer = new byte[byLength];
@@ -365,59 +372,62 @@ namespace BreadParam
                     }
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
-                        dataGridViewAuditCGIN["MontantInCG", byIndex].Value = string.Format("{0:F2}",
+                        dataGridViewAuditCGIN["MontantInCG", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
                             Convert.ToDouble(byBuffer[byIndex * 4] + (byBuffer[(byIndex * 4) + 1] * 0X100) +
                             (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) / 100);
                         TotalAmountInCG += Convert.ToDouble(byBuffer[byIndex * 4] + (byBuffer[(byIndex * 4) + 1] * 0X100) +
                             (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) / 100;
                     }
-                    TotalInCG.Text = string.Format("{0:F2}", TotalAmountInCG);
+                    TotalInCG.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG);
 
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
-                        dataGridViewAuditCGOUT["MontantOutCG", byIndex].Value = string.Format("{0:F2}",
+                        dataGridViewAuditCGOUT["MontantOutCG", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
                             Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
                             (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100);
                         TotalAmountOutCG += Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
                             (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100;
                     }
-                    TotalOutCG.Text = string.Format("{0:F2}", TotalAmountOutCG);
+                    TotalOutCG.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountOutCG);
 
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
-                        dataGridViewAuditBV["MontantInBV", byIndex].Value = string.Format("{0:F2}",
+                        dataGridViewAuditBV["MontantInBV", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
                             Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
                             (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100);
                         TotalAmountInBv += Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
                          (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100;
                     }
-                    TotalInBV.Text = string.Format("{0:F2}", TotalAmountInBv);
+                    TotalInBV.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInBv);
 
                     for (int byIndex = 0; byIndex < 3; byIndex++)
                     {
-                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format("{0:d}", byBuffer[192 + (byIndex * 4)] +
+                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}", byBuffer[192 + (byIndex * 4)] +
                             (byBuffer[192 + ((byIndex * 4) + 1)] * 0X100) + (byBuffer[192 + (byIndex * 4) + 2] * 0X10000) +
                             (byBuffer[192 + (byIndex * 4) + 3] * 0X1000000));
                     }
                     OverPay = Convert.ToDouble(byBuffer[204] + (byBuffer[205] * 0X100) + (byBuffer[206] * 0X10000) + (byBuffer[207] * 0X1000000)) / 100;
-                    LOverPay.Text = string.Format("{0:F2}", OverPay);
+                    LOverPay.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", OverPay);
                     InCash = Convert.ToDouble(byBuffer[208] + (byBuffer[209] * 0X100) + (byBuffer[210] * 0X10000) + (byBuffer[211] * 0X1000000));
-                    CoinsInCash.Text = string.Format("{0:F2}", InCash);
-                    Total.Text = String.Format("{0:F2}", TotalAmountInCG + TotalAmountInBv + /*OverPay + InCash*/ -TotalAmountOutCG);
+                    CoinsInCash.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", InCash);
+                    Total.Text = String.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG + TotalAmountInBv + /*OverPay + InCash*/ -TotalAmountOutCG);
 
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
         }
+
 
         /// <summary>
         /// Vérifie la saisie d'une valeur monétaire.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             string sResult;
@@ -428,26 +438,29 @@ namespace BreadParam
                     sResult = ((DataGridView)sender).CurrentCell.Value.ToString().Replace('.', ',');
                     if (!double.TryParse(sResult, out double dResult))
                     {
-                        throw new Exception("Entrée incorrecte!...");
+                        throw new Exception(BreadParam.Properties.Resources.Str_Incorrect_Entry);
                         //MessageBox.Show("Entrée incorrecte!!!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
-                        ((DataGridView)sender).CurrentCell.Value = string.Format("{0:F2}", dResult);
+                        ((DataGridView)sender).CurrentCell.Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", dResult);
                     }
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw;
                 }
             }
         }
+
 
         /// <summary>
         /// Vérifie la cohérence d'un numéro de téléphone saisie
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void DataGridViewTelephone_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             string sResult;
@@ -459,60 +472,63 @@ namespace BreadParam
                     sResult = sResult.Replace(".", "");
                     if ((sResult.Length >= lenPhoneNumber) || (sResult.Length < 6))
                     {
-                        throw new Exception("Le numéro de téléphone est incohérent!...");
+                        throw new Exception(BreadParam.Properties.Resources.Str_Phone_Number_Error);
                     }
                     foreach (char car in sResult)
                     {
-                        if (!byte.TryParse(car.ToString(), out byte chiffre))
+                        if (!byte.TryParse(car.ToString(CultureInfo.CurrentCulture), out byte chiffre))
                         {
-                            throw new Exception("Seul les chiffres sont acceptés pour le numéro de téléphone!!!");
+                            throw new Exception(BreadParam.Properties.Resources.Str_Phone_Car_Error);
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ((DataGridView)sender)[0, ((DataGridView)sender).CurrentCell.RowIndex].Value = false;
                 ((DataGridView)sender)[1, ((DataGridView)sender).CurrentCell.RowIndex].Value = false;
                 ((DataGridView)sender).CurrentCell.Value = "06 12 34 56 78";
+                throw;
             }
         }
+
 
         /// <summary>
         /// Ouvre le port série choisi.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void CBSerialPorts_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (CBSerialPorts.SelectedIndex != -1)
                 {
-                    if (serialPort1.IsOpen)
+                    timer1.Enabled = false;
+                    if (!serialPort1.IsOpen)
                     {
-                        serialPort1.Close();
+                        serialPort1.PortName = CBSerialPorts.SelectedItem.ToString();
+                        serialPort1.Open();
                     }
-                    serialPort1.PortName = CBSerialPorts.SelectedItem.ToString();
-                    serialPort1.Open();
-                    if (serialPort1.IsOpen)
-                    {
-                        toolStripComLabel.Text = serialPort1.PortName;
-                    }
+                    toolStripComLabel.Text = serialPort1.PortName;                    
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message,BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
         }
+
 
         /// <summary>
         /// Remet à zéro les compteurs et les envoie à la CPU.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void BtnRazAudit_Click(object sender, EventArgs e)
         {
             try
@@ -520,52 +536,55 @@ namespace BreadParam
                 for (int byIndex = 0; byIndex < 8; byIndex++)
                 {
                     dataGridViewAuditCGIN[1, byIndex].Value = dataGridViewAuditCGOUT[1, byIndex].Value =
-                    dataGridViewAuditBV[1, byIndex].Value = string.Format("{0:F2}", Convert.ToDouble(0));
+                    dataGridViewAuditBV[1, byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(0));
                 }
                 for (int byIndex = 0; byIndex < 3; byIndex++)
                 {
                     dataGridViewAuditProduit[1, byIndex].Value = 0;
                 }
-                TotalInCG.Text = TotalOutCG.Text = TotalInBV.Text = CoinsInCash.Text = TotalInCG.Text = LOverPay.Text = Total.Text = string.Format("{0:F2}", Convert.ToDouble(0));
-                byte[] byAuditRequest = { Convert.ToByte(HEADER.RAZAUDITS) };
+                TotalInCG.Text = TotalOutCG.Text = TotalInBV.Text = CoinsInCash.Text = TotalInCG.Text = 
+                    LOverPay.Text = Total.Text = string.Format(CultureInfo.CurrentCulture,"{0:F2}", Convert.ToDouble(0));
+                byte[] byAuditRequest = { Convert.ToByte(HEADER.RAZAUDITS, CultureInfo.CurrentCulture) };
                 serialPort1.Write(byAuditRequest, 0, 1);
                 Thread.Sleep(2000);
                 BtnAudit_Click(sender, e);
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
         }
+
 
         /// <summary>
         /// Lecture des paramètres de la carte
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void BtnRead_Click(object sender, EventArgs e)
         {
+            int byPos;
             int dwLength;
             try
             {
                 if (IsSerialPortOpen())
                 {
-                    LVersionFW.Text = "";
-                    serialPort1.DiscardOutBuffer();
-                    serialPort1.DiscardInBuffer();
-                    byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS) };
+                    byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byParamRequest, 0, 1);
+                    byPos = serialPort1.ReadByte();
 
-                    //Date FW
-                    int byPos = serialPort1.ReadByte();
+                    //Version FW
+                    LVersionFW.Text = "";
                     for (int i = 0; i < byPos; i++)
                     {
                         LVersionFW.Text += (char)serialPort1.ReadByte();
                     }
-                    LDateFW.Text = "";
 
                     //Date FW
-                    byPos = Convert.ToByte(serialPort1.ReadByte());
+                    LDateFW.Text = "";
+                    byPos = serialPort1.ReadByte();
                     for (int i = 0; i < byPos; i++)
                     {
                         LDateFW.Text += (char)serialPort1.ReadByte();
@@ -586,7 +605,7 @@ namespace BreadParam
                     }
 
                     //Identification
-                    MachineID.Text = string.Format("{0,0:D}", (byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000)));
+                    MachineID.Text = string.Format(CultureInfo.CurrentCulture, "{0,0:D}", (byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000)));
 
                     //Activation periphériques
                     for (int i = 0; i < 8; i++)
@@ -598,15 +617,15 @@ namespace BreadParam
                     //Prix
                     for (int i = 0; i < 3; i++)
                     {
-                        dataGridViewPrice["Prix", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 4] + (byBuffer[4 * i + 5] * 0x100) + (byBuffer[4 * i + 6] * 0x10000) + (byBuffer[4 * i + 7] * 0x1000000)) / 100);
+                        dataGridViewPrice["Prix", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(byBuffer[4 * i + 4] + (byBuffer[4 * i + 5] * 0x100) + (byBuffer[4 * i + 6] * 0x10000) + (byBuffer[4 * i + 7] * 0x1000000)) / 100);
                         //CashLess
-                        dataGridViewPrice["CashLess", i].Value = string.Format("{0:F2}", Convert.ToDouble(byBuffer[4 * i + 16] + (byBuffer[4 * i + 17] * 0x100) + (byBuffer[4 * i + 18] * 0x10000) + (byBuffer[4 * i + 19] * 0x1000000)) / 100);
+                        dataGridViewPrice["CashLess", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDouble(byBuffer[4 * i + 16] + (byBuffer[4 * i + 17] * 0x100) + (byBuffer[4 * i + 18] * 0x10000) + (byBuffer[4 * i + 19] * 0x1000000)) / 100);
                     }
 
                     //Téléphones
                     for (int i = 0; i < 6; i++)
                     {
-                        dataGridViewTelephone["Numero", i].Value = string.Format("{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}", byBuffer[i * 60 + 28], byBuffer[i * 60 + 32], byBuffer[i * 60 + 36],
+                        dataGridViewTelephone["Numero", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}", byBuffer[i * 60 + 28], byBuffer[i * 60 + 32], byBuffer[i * 60 + 36],
                             byBuffer[i * 60 + 40], byBuffer[i * 60 + 44], byBuffer[i * 60 + 48], byBuffer[i * 60 + 52], byBuffer[i * 60 + 56], byBuffer[i * 60 + 60], byBuffer[i * 60 + 64], byBuffer[i * 60 + 68],
                             byBuffer[i * 60 + 72], byBuffer[i * 60 + 76]);
                         dataGridViewTelephone["EnableAudit", i].Value = byBuffer[i * 60 + 80] & 0x01;
@@ -651,7 +670,8 @@ namespace BreadParam
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
         }
 
@@ -684,6 +704,7 @@ namespace BreadParam
                     {
                         timer1.Enabled = false;
                         CBSerialPorts.SelectedIndex = i;
+                        //CBSerialPorts.Text = serialPort1.PortName;
                         Refresh();
                         BtnRead_Click(sender, e);
                         BtnAudit_Click(sender, e);
@@ -692,18 +713,20 @@ namespace BreadParam
                 }
                 catch (InvalidOperationException)
                 {
-                    
+                    throw;
                 }
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception)
                 {
                     serialPort1.Close();
                 }
+#pragma warning restore CA1031 // Do not catch general exception types
             }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((isParametersReaded && !isParametersModified) || (MessageBox.Show("Etes-vous sûr de vouloir quitter sans enregister les paramètres modifiés ?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
+            if ((isParametersReaded && !isParametersModified) || (MessageBox.Show(BreadParam.Properties.Resources.Str_Leave_Without_Save, BreadParam.Properties.Resources.Str_Confirm, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
             {
                 if (serialPort1.IsOpen)
                 {
@@ -769,7 +792,7 @@ namespace BreadParam
 
         private void Trap1UpDown_Leave(object sender, EventArgs e)
         {
-            switch(((NumericUpDown)sender).Name)
+            switch (((NumericUpDown)sender).Name)
             {
                 case "Trap1UpDown":
                 {

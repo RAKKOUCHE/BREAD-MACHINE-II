@@ -67,7 +67,7 @@
 /**
  * \brief Priorité de la tâche de l'afficheur.
  */
-#define LCD_TASK_PRIORITY 2
+#define LCD_TASK_PRIORITY 3
 
 /**
  * \brief Nombre d'éléments dans la queue utilisée pour l'affichage.
@@ -1484,11 +1484,13 @@ void vLCDInit(void)
     }
     if(!lcd.hTO_LCD)
     {
-        lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL, vTO_LCD);
+        lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL, 
+                                   vTO_LCD);
     }
     if(!lcd.hTaskLCD)
     {
-        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, LCD_TASK_PRIORITY, &lcd.hTaskLCD);
+        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, 
+                    LCD_TASK_PRIORITY, &lcd.hTaskLCD);
     }
 }
 /**

@@ -175,7 +175,7 @@ static void vTOPC(TimerHandle_t timerHandle)
  ********************************************************************/
 void vTaskPcComm(void *vParameters)
 {
-    int toto;
+
     uint8_t byCheckAnswer = 0XFA;
     while(1)
     {
@@ -225,10 +225,12 @@ void vTaskPcComm(void *vParameters)
                             break;
                         }// </editor-fold>
                         case PCCOM_CHECK:
+                            // <editor-fold desc="PCCOM_CHECK"> 
                         {
                             UART3_Write(&byCheckAnswer, 1);
                             while(UART3_TransmitComplete());
-                        }
+                            break;
+                        }// </editor-fold>                        
                         default:
                         {
                             break;
@@ -243,7 +245,7 @@ void vTaskPcComm(void *vParameters)
                 break;
             }
         }
-        delayMs(100);
+        delayMs(20);
     }
 }
 

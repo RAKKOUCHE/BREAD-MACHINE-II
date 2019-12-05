@@ -2,6 +2,16 @@
 
 /*Constante*******************************************************************/
 
+/**
+ * \brief Priorité de la tâche de change.
+ */
+#define MDB_TASK_PRIORITY 3
+
+/**
+ * \brief Taille du tas de la tâche de change.
+ */
+#define MDB_TASK_STACK 512
+
 const BYTE changeBase[] = {250, 200, 100, 50, 20, 10, 0, 0};
 
 /*****************************************************************************/
@@ -99,8 +109,8 @@ static void vTaskChange(void)
 void vCGInit(void)
 {
     changeGiver.state = CG_INIT;
-    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", 512, NULL, 2,
-                &changeGiver.hChangeTask);
+    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", MDB_TASK_STACK, NULL,
+                MDB_TASK_PRIORITY, &changeGiver.hChangeTask);
 }
 
 /******************************************************************************/

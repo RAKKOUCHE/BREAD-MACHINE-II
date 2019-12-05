@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BreadParam.Properties
-{
-
-
+namespace BreadParam.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
     /// </summary>
@@ -19,52 +19,161 @@ namespace BreadParam.Properties
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    public class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BreadParam.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Remplace la propriété CurrentUICulture du thread actuel pour toutes
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirmation.
+        /// </summary>
+        public static string Str_Confirm {
+            get {
+                return ResourceManager.GetString("Str_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Etes-vous sûr de vouloir modifier les paramètres de la machine ?.
+        /// </summary>
+        public static string Str_Confirm_modify_param {
+            get {
+                return ResourceManager.GetString("Str_Confirm_modify_param", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Erreur.
+        /// </summary>
+        public static string Str_Error {
+            get {
+                return ResourceManager.GetString("Str_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Impossible d&apos;enregistrer les paramètres!\r\nLes paramètres enregistrés dans la CPU n&apos;ont pas été lus..
+        /// </summary>
+        public static string Str_Fail_save {
+            get {
+                return ResourceManager.GetString("Str_Fail_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Saisie incorrecte!....
+        /// </summary>
+        public static string Str_Incorrect_Entry {
+            get {
+                return ResourceManager.GetString("Str_Incorrect_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Etes-vous sûr de vouloir quitter sans enregister les paramètres modifiés ?.
+        /// </summary>
+        public static string Str_Leave_Without_Save {
+            get {
+                return ResourceManager.GetString("Str_Leave_Without_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Le numéro de la machine doit être compris entre 0 et {0:d}.
+        /// </summary>
+        public static string Str_Number_Machine_Error {
+            get {
+                return ResourceManager.GetString("Str_Number_Machine_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Les nouveaux paramètres sont enregistrés..
+        /// </summary>
+        public static string Str_param_saved {
+            get {
+                return ResourceManager.GetString("Str_param_saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Seul les chiffres sont acceptés pour le numéro de téléphone!...
+        /// </summary>
+        public static string Str_Phone_Car_Error {
+            get {
+                return ResourceManager.GetString("Str_Phone_Car_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Le numéro de téléphone est incohérent!....
+        /// </summary>
+        public static string Str_Phone_Number_Error {
+            get {
+                return ResourceManager.GetString("Str_Phone_Number_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enregistrement.
+        /// </summary>
+        public static string Str_Record {
+            get {
+                return ResourceManager.GetString("Str_Record", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sélectionnez un port série.
+        /// </summary>
+        public static string Str_Serial_Port_Select {
+            get {
+                return ResourceManager.GetString("Str_Serial_Port_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à 0.
+        /// </summary>
+        public static string Str_zero {
+            get {
+                return ResourceManager.GetString("Str_zero", resourceCulture);
             }
         }
     }

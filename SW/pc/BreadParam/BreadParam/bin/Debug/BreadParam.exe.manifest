@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="BreadParam.exe" version="1.6.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="BreadParam" version="1.6.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="BreadParam" version="2.0.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="BreadParam.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BreadParam.exe" size="295936">
-      <assemblyIdentity name="BreadParam" version="1.6.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BreadParam.exe" size="297472">
+      <assemblyIdentity name="BreadParam" version="2.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6nULbIPp0DrrQMZ7O6MFWptmZhwvVXO00P9bU8lWW7s=</dsig:DigestValue>
+        <dsig:DigestValue>xkNPuSgK5S8X71r7zAZrJf5hjXL64xjVFkikULR0Vq8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -59,7 +59,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>1NgAxCSw4ibTXzWVy7D6Rw60Qih4Dn37KvGhG5Ora/s=</dsig:DigestValue>
+      <dsig:DigestValue>eSEJjkfolEEv39DK/g+IzGhJd0CZjqwXxowAEpBp2AM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="RASoftware.bmp" size="78470">

@@ -458,11 +458,10 @@ void vParametersRead(void)
  *         
  ********************************************************************/
 void vParamSendToPC(void)
-{
-    delayMs(100);
+{    
+    while(!UART3_TransmitterIsReady());
     UART3_WriteByte(6);
     while(!UART3_TransmitComplete());
-    delayMs(100);
     UART3_Write(VERSION, 6);
     while(!UART3_TransmitComplete());
     UART3_WriteByte(11);

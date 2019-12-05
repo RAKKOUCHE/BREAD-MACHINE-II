@@ -1,5 +1,15 @@
 #include "mdb.h"
 
+/**
+ * \brief Priorité de la tâche MDB.
+ */
+#define MDB_TASK_PRIORITY 3
+
+/**
+ * \brief Taille du tas de la tâche MDB.
+ */
+#define MDB_TASK_STACK 512
+
 /*********************************************************************
  * Function:        void vNAKTO_MDB(const TimerHandle_t HandleTimer)
  * 
@@ -189,8 +199,8 @@ void vMDBInit(void)
 
     if(mdb.hTaskMdb == NULL)
     {
-        xTaskCreate((TaskFunction_t) vTaskMDB, "TSK MBD", 512, NULL, 2,
-                    &mdb.hTaskMdb);
+        xTaskCreate((TaskFunction_t) vTaskMDB, "TSK MBD", MDB_TASK_STACK, NULL,
+                    MDB_TASK_PRIORITY, &mdb.hTaskMdb);
         vTaskSuspend(mdb.hTaskMdb);
     }
 }

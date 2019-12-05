@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,58 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Str_Confirm" xml:space="preserve">
+    <value>Confirmation</value>
+    <comment>Caption de la fenêtre de la confirmation</comment>
+  </data>
+  <data name="Str_Confirm_modify_param" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir modifier les paramètres de la machine ?</value>
+    <comment>Message demandant la confirmation de l'enregistrement des paramètres.</comment>
+  </data>
+  <data name="Str_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Str_Fail_save" xml:space="preserve">
+    <value>Impossible d'enregistrer les paramètres!\r\nLes paramètres enregistrés dans la CPU n'ont pas été lus.</value>
+    <comment>Message d'erreur relatif à l'echec de l'enregistrement des paramètres</comment>
+  </data>
+  <data name="Str_Incorrect_Entry" xml:space="preserve">
+    <value>Saisie incorrecte!...</value>
+    <comment>Message indiquant une erreur de saisie</comment>
+  </data>
+  <data name="Str_Leave_Without_Save" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir quitter sans enregister les paramètres modifiés ?</value>
+  </data>
+  <data name="Str_Number_Machine_Error" xml:space="preserve">
+    <value>Le numéro de la machine doit être compris entre 0 et {0:d}</value>
+    <comment>Message indiquant une erreur dans la saidie du numéro de la machine.</comment>
+  </data>
+  <data name="Str_param_saved" xml:space="preserve">
+    <value>Les nouveaux paramètres sont enregistrés.</value>
+    <comment>Message de fin de sauvegarde des paramètres.</comment>
+  </data>
+  <data name="Str_Phone_Car_Error" xml:space="preserve">
+    <value>Seul les chiffres sont acceptés pour le numéro de téléphone!..</value>
+    <comment>Message indiquant qu'un caractère non numérique a été saisi pour le numero de télépone.</comment>
+  </data>
+  <data name="Str_Phone_Number_Error" xml:space="preserve">
+    <value>Le numéro de téléphone est incohérent!...</value>
+    <comment>Message indiquant une erreur dans la saisie du numéro de téléphone.</comment>
+  </data>
+  <data name="Str_Record" xml:space="preserve">
+    <value>Enregistrement</value>
+    <comment>Caption de la fenêtre d'enregistement.</comment>
+  </data>
+  <data name="Str_Serial_Port_Select" xml:space="preserve">
+    <value>Sélectionnez un port série</value>
+    <comment>Text du combo box de sélection du port série</comment>
+  </data>
+  <data name="Str_zero" xml:space="preserve">
+    <value>0</value>
+  </data>
 </root>
