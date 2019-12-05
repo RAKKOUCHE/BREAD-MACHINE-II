@@ -86,7 +86,7 @@ extern "C"
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
-
+    
     /**
      * \brief Requête du montant de l'audit à l'adresse spécifié
      * @param Address Index dans la structure audits.

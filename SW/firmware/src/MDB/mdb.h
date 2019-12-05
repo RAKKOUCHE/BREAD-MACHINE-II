@@ -29,7 +29,7 @@ extern "C"
 #include "mainboard2.h"
 #include "hd44780.h"
 
-    
+
     /*Defines******************************************************************/
 
 
@@ -42,13 +42,13 @@ extern "C"
      * \brief temps de polling en ms du lecteur cashless.
      */
     //#define MDB_POLLING_MS ((125 + 200) / 6) * MILLISEC //Environ 54
-#define MDB_POLLING_MS (200 /3)
+#define MDB_POLLING_MS (150 /3)
 
     /**
      * \def MDBRETRY
      * \brief Nombre de loop avant de vérifier si un périphérique est disponible
      */
-#define MDBRETRY (((60 * SECONDE) / MDB_POLLING_MS) / 2)
+#define MDBRETRY 60
 
     /**
      * \def MDB_TO
@@ -169,7 +169,7 @@ extern "C"
 
     struct
     {
-        bool isTaskMDBChecked;
+        bool isMDBChecked;
         BYTE byDecimalPos;
         WORD wCurrencyDivider;
         MDB_STATUS state;
@@ -243,18 +243,21 @@ extern "C"
     /**************************************************************************/
 
     /**
-     * @fn byMDBSendCommand
-     * @brief envoie une commande au périphérique MDB
+     * \brief Envoie une commande au périphérique MDB
      * @param[in] byAddress Adresse du périphérique auquel on envoie la commande.
-     * @param[in] byCommand Commande envoyée au périphérique. 
+     * @param[in] byCommand Commande envoyée au périphérique
      * @param[in] byLenParameters Longeur des paramètres à envoyer au 
      * periphérique.
-     * @param[in] ptrParameters Pointeur sur le tableau contenant les paramères à envoyer au périphérique
-     * @param[out] ptrAnswer Pointeur sur le tableau qui contiendra la réponse.  
+     * @param ptrParameters Pointeur sur le tableau contenant les paramères à 
+     * envoyer au périphérique
+     * @param ptrAnswer ptrAnswer Pointeur sur le tableau qui contiendra la 
+     * réponse.  
+     * @return Le nombre d'octet contenu dans la réponse.
      */
     BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
-                          BYTE byLenParameters, void *ptrParameters,
+                          const BYTE byLenParameters, void *ptrParameters,
                           void *ptrAnswer);
+
 
     /**************************************************************************/
 
@@ -266,7 +269,7 @@ extern "C"
      * @param[out] byLenAnswer Longeur de la réponse.
      * @return true si l'opération s'est déroulé correctement.
      */
-    bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE *byLenAnswer);
+    bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE * byLenAnswer);
 
 #ifdef	__cplusplus
 }

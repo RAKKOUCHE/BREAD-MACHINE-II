@@ -12,8 +12,9 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdint.h>
+
     /*Structures***************************************************************/
 
     typedef struct __attribute__((packed))

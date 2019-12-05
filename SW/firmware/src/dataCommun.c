@@ -175,6 +175,7 @@ static void vTOPC(TimerHandle_t timerHandle)
  ********************************************************************/
 void vTaskPcComm(void *vParameters)
 {
+    int toto;
     uint8_t byCheckAnswer = 0XFA;
     while(1)
     {

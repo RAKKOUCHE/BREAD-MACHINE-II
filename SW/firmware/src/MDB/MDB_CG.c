@@ -1,5 +1,4 @@
 #include "mdb_cg.h"
-#include "mainboard2.h"
 
 /*Constante*******************************************************************/
 
@@ -33,6 +32,7 @@ static void vResetCG(void)
     changeGiver.iBeforeRetry = MDBRETRY;
     changeGiver.isInitialized = false;
     changeGiver.isChangerEnable = false;
+    changeGiver.isJustReseted = true;
     changeGiver.state = CG_RESET;
 }
 
@@ -99,8 +99,8 @@ static void vTaskChange(void)
 void vCGInit(void)
 {
     changeGiver.state = CG_INIT;
-    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", 512, NULL,
-                2, &changeGiver.hChangeTask);
+    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", 512, NULL, 2,
+                &changeGiver.hChangeTask);
 }
 
 /******************************************************************************/
@@ -146,7 +146,6 @@ static bool isGetMDBTubeStatus()
                         changeGiver.tubes.byLevel[byIndex];
             }
         }
-        //mainBoardData.isExactChange = (mainBoardData.wAmountExactChange > changeGiver.lAmountInTubes);
         return true;
     }
     else
@@ -389,29 +388,12 @@ static bool isGetDiagnostic(CG_DIAG *diag)
  ********************************************************************/
 bool isSetCoinEnable(const bool isEnable, const COIN_TYPE_ENABLE *coinType)
 {
-    BYTE byIndex;
+    //BYTE byIndex;
     COIN_TYPE_ENABLE wEnable;
     bool isResult = false;
-    if(changeGiver.isInitialized)
-    {
-        memmove(&wEnable, coinType, sizeof(COIN_TYPE_ENABLE));
-        //memset(wEnable.byDispenseEnable, 0XFF, sizeof(wEnable.byDispenseEnable));
-        if(isEnable)
-        {
-            for(byIndex = 0; byIndex < NUMBERCHANNELSCG; byIndex++)
-            {
-                wEnable.coinEnable.wCoinEnable += ((BYTE) ((changeGiver.config.byCoinValue[byIndex] && (changeGiver.config.byCoinValue[byIndex] < 0xFF))) << byIndex);
 
-            }
-            wEnable.coinEnable.wCoinEnable = coinType->coinEnable.wCoinEnable & ((wEnable.coinEnable.wCoinEnable >> 8) + (wEnable.coinEnable.wCoinEnable << 8));
-            // wEnable.dispenseEnable.wDispenseEnable = wEnable.coinEnable.wCoinEnable;
-        }
-        else
-        {
-            wEnable.coinEnable.wCoinEnable = 0;
-        }
-        isResult = isSetMDBCoinType(&wEnable);
-    }
+    wEnable.coinEnable.wCoinEnable = isEnable ? coinType->coinEnable.wCoinEnable >> 8 | coinType->coinEnable.wCoinEnable << 8 : 0;
+    isResult = isSetMDBCoinType(&wEnable);
     return isResult;
 }
 
@@ -443,7 +425,7 @@ void vTaskCG(void)
     BYTE byLenAnswer;
     BYTE byIndex;
     BYTE byChannel;
-    static WORD wVerifCGSetup = 3500;
+    //static WORD wVerifCGSetup = 3500;
     bool isDispensed;
     static long lAmountToDispense;
 
@@ -466,11 +448,12 @@ void vTaskCG(void)
                 changeGiver.state = CG_POLL;
                 if(!isMDBReset(CGADDRESS))
                 {
-                    delayMs(100);
-                    if(!isMDBReset(CGADDRESS))
-                    {
-                        vResetCG();
-                    }
+                    vResetCG();
+                    changeGiver.isInitialized = true;
+                }
+                else
+                {
+                    changeGiver.isInitialized = false;
                 }
             }
             break;
@@ -542,6 +525,11 @@ void vTaskCG(void)
                         //COINS INSERTED
                         if((changeGiver.data[byIndex] & COIN_INSERTED) && !(changeGiver.data[byIndex] & COIN_REFUSED)/*Pièce refusée*/)
                         {
+                            //TODO Faire repartir le timer après une distribution.
+                            if(hTimerCumul)
+                            {
+                                xTimerStart(hTimerCumul, 1000);
+                            }
                             byChannel = changeGiver.data[byIndex] & 0X0F;
                             //Traitement des pièces insérées.
                             setAmountDispo(getAmountDispo() + (long) (changeGiver.config.byCoinValue[byChannel] *
@@ -549,12 +537,11 @@ void vTaskCG(void)
 
                             //TODO afficher le montant à payer.
                             //xTaskNotifyGive(mainBoardData.hDisplayToPay);
-
-                            setAuditValue((uint32_t) (ADDRESSCGIN + (byIndex * sizeof(uint32_t))),
+                            setAuditValue((uint32_t) (ADDRESSCGIN + (byChannel * sizeof(uint32_t))),
                                           (uint32_t) (changeGiver.config.byCoinValue[byChannel] *
                                                       changeGiver.config.byScalingFactor));
                             ++byIndex;
-                            setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
+                            //setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
                         }
                         else
                         {
@@ -622,6 +609,7 @@ void vTaskCG(void)
                                         {
                                             changeGiver.isInitialized = false;
                                             changeGiver.isChangerEnable = true;
+                                            changeGiver.isJustReseted = false;
                                             changeGiver.state = CG_SETUP;
                                             break;
                                         }
@@ -644,15 +632,17 @@ void vTaskCG(void)
                             }
                         }
                     }
+                    if(changeGiver.isJustReseted)
+                    {
+                        byIndex = byLenAnswer;
+                        vResetCG();
+                    }
                     ++byIndex;
                 } while(byIndex < (byLenAnswer - 1));
             }
-
-            if(!--wVerifCGSetup)
+            else
             {
-                wVerifCGSetup = 3500;
-                changeGiver.isChangerEnable = true;
-                changeGiver.state = CG_SETUP;
+                vResetCG();
             }
             break;
         }
@@ -663,7 +653,7 @@ void vTaskCG(void)
         {
             if(changeGiver.isInitialized)
             {
-                (changeGiver.isInitialized = isSetCoinEnable(changeGiver.isChangerEnable, &changeGiver.coins_enable)) ? changeGiver.state = CG_POLL : vResetCG();
+                isSetCoinEnable(changeGiver.isChangerEnable, &changeGiver.coins_enable) ? changeGiver.state = CG_POLL : vResetCG();
             }
             else
             {
@@ -788,8 +778,11 @@ void vTaskCG(void)
                             //                        audits.saudit.dwOverPay += (lAmountToDispense - changeGiver.lAmountDispensed) * changeGiver.config.byScalingFactor;
                             //                        EEpromWriteData(ADDRESS_OVERPAY, &audits.saudit.dwOverPay,
                             //                                        sizeof (audits.saudit.dwOverPay));
-                            xTimerStart(hTimerOverPay, 1000);
-                            setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
+                            if(hTimerOverPay)
+                            {
+                                xTimerStart(hTimerOverPay, 1000);
+                            }
+                            //setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
                             isDispensed = false;
                             setAmountRequested(0);
                         }
@@ -800,11 +793,12 @@ void vTaskCG(void)
                         vLCD_CLEAR();
 
                         vDisplayLCD("Rendu : %.*f\7", mdb.byDecimalPos,
-                               (double) (changeGiver.lAmountDispensed) /
-                               mdb.wCurrencyDivider);
+                                    (double) (changeGiver.lAmountDispensed) /
+                                    mdb.wCurrencyDivider);
                         if(isDispensed)
                         {
                             changeGiver.expandCmd = SUB_ALTERNATIVE_PAYOUT;
+                            xTimerStart(hTimerOverPay, 1000);
                         }
                         else
                         {

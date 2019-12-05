@@ -900,21 +900,21 @@
             // lireToolStripMenuItem
             // 
             this.lireToolStripMenuItem.Name = "lireToolStripMenuItem";
-            this.lireToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.lireToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.lireToolStripMenuItem.Text = "&Lire";
             this.lireToolStripMenuItem.Click += new System.EventHandler(this.BtnRead_Click);
             // 
             // enregisterToolStripMenuItem
             // 
             this.enregisterToolStripMenuItem.Name = "enregisterToolStripMenuItem";
-            this.enregisterToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.enregisterToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.enregisterToolStripMenuItem.Text = "&Ecrire";
             this.enregisterToolStripMenuItem.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(221, 6);
             // 
             // auditToolStripMenuItem
             // 
@@ -1186,7 +1186,6 @@
             this.dataGridViewTelephone.TabIndex = 0;
             this.dataGridViewTelephone.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewTelephone_CellEndEdit);
             this.dataGridViewTelephone.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
-            this.dataGridViewTelephone.Click += new System.EventHandler(this.dataGridViewTelephone_Click);
             // 
             // EnableAudit
             // 
@@ -1451,7 +1450,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
+            this.timer1.Interval = 5000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick_1);
             // 
             // GBSerialPort

@@ -221,7 +221,7 @@ namespace BreadParam
                         byBuffer[1] = Convert.ToByte(value / 0x100);
                         byBuffer[2] = Convert.ToByte(value / 0x10000);
                         byBuffer[3] = Convert.ToByte(value / 0x1000000);
-                        serialPort1.Write(byBuffer, 0, 4);
+                        serialPort1.Write((byte[])byBuffer, 0, 4);
 
                         //Envoie les prix en cash
                         byBuffer = new byte[12];
@@ -233,7 +233,7 @@ namespace BreadParam
                             byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
                             byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000);
                         }
-                        serialPort1.Write(byBuffer, 0, 12);
+                        serialPort1.Write((byte[])byBuffer, 0, 12);
 
                         //Envoie les prix cashless
                         byBuffer = new byte[12];
@@ -245,7 +245,7 @@ namespace BreadParam
                             byBuffer[4 * i + 2] = Convert.ToByte(value / 0x10000);
                             byBuffer[4 * i + 3] = Convert.ToByte(value / 0x1000000);
                         }
-                        serialPort1.Write(byBuffer, 0, 12);
+                        serialPort1.Write((byte[])byBuffer, 0, 12);
 
                         //Envoi les informations des téléphones.
                         byBuffer = new byte[360];
@@ -259,7 +259,7 @@ namespace BreadParam
                             byBuffer[60 * (i + 1) - 8] = Convert.ToByte(dataGridViewTelephone["EnableAudit", i].Value);
                             byBuffer[60 * ( i+1) - 4] = Convert.ToByte(dataGridViewTelephone["EnableAlarm", i].Value);
                         }
-                        serialPort1.Write(byBuffer, 0, 360);
+                        serialPort1.Write((byte[])byBuffer, 0, 360);
 
                         //Envoi les valeurs de sécurité.
                         byBuffer = new byte[12];
@@ -268,7 +268,7 @@ namespace BreadParam
                             byBuffer[(i * 4) + 0] = Convert.ToByte(Trap1UpDown.Value % 0x100);
                             byBuffer[(i * 4) + 1] = Convert.ToByte(Trap1UpDown.Value / 0x100);
                         }
-                        serialPort1.Write(byBuffer, 0, 12);
+                        serialPort1.Write((byte[])byBuffer, 0, 12);
 
                         //Envoi du délai de cumul
                         byBuffer = new byte[4];
@@ -276,7 +276,7 @@ namespace BreadParam
                         {
                             byBuffer[0] = Convert.ToByte(numericCumul.Value);
                         }
-                        serialPort1.Write(byBuffer, 0, 4);
+                        serialPort1.Write((byte[])byBuffer, 0, 4);
 
                         //Envoi la valeur du TO overpay.
                         byBuffer = new byte[4];
@@ -284,7 +284,7 @@ namespace BreadParam
                         {
                             byBuffer[0] = Convert.ToByte(TOUpDown.Value);
                         }
-                        serialPort1.Write(byBuffer, 0, 4);
+                        serialPort1.Write((byte[])byBuffer, 0, 4);
 
                         //Envoi les habilitations des périphériques.
                         byBuffer = new byte[4];
@@ -293,13 +293,13 @@ namespace BreadParam
                             byBuffer[0] += Convert.ToByte(Convert.ToByte(dataGridViewCG["EnableCG", i].Value) << i);
                             byBuffer[2] += Convert.ToByte(Convert.ToByte(dataGridViewBV["EnableBV", i].Value) << i);
                         }
-                        serialPort1.Write(byBuffer, 0, 4);
+                        serialPort1.Write((byte[])byBuffer, 0, 4);
 
                         //Envoi les valeurs des commandes de températures.
                         byBuffer = new byte[8];
                         byBuffer[0] = Convert.ToByte(UDCold.Value);
                         byBuffer[4] = Convert.ToByte(UDHot.Value);
-                        serialPort1.Write(byBuffer, 0, 8);
+                        serialPort1.Write((byte[])byBuffer, 0, 8);
                         MessageBox.Show("Les nouveaux paramètres sont enregistrés.", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     BtnRead_Click(sender, e);
@@ -550,13 +550,13 @@ namespace BreadParam
             {
                 if (IsSerialPortOpen())
                 {
+                    LVersionFW.Text = "";
                     serialPort1.DiscardOutBuffer();
                     serialPort1.DiscardInBuffer();
                     byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS) };
                     serialPort1.Write(byParamRequest, 0, 1);
 
                     //Date FW
-                    LVersionFW.Text = "";
                     int byPos = serialPort1.ReadByte();
                     for (int i = 0; i < byPos; i++)
                     {
@@ -662,8 +662,6 @@ namespace BreadParam
         /// <param name="e"></param>
         private void Timer1_Tick_1(object sender, EventArgs e)
         {
-            byte[] byCheckBoardPresence = { 0XAF };
-            
             if (CBSerialPorts.Items.Count != System.IO.Ports.SerialPort.GetPortNames().Length)
             {
                 CBSerialPorts.Items.Clear();
@@ -679,9 +677,10 @@ namespace BreadParam
                     }
                     serialPort1.PortName = (string)CBSerialPorts.Items[i];
                     serialPort1.Open();
+
+                    byte[] byCheckBoardPresence = new byte[1] { 0XAF };
                     serialPort1.Write(byCheckBoardPresence, 0, 1);
-                    if ((serialPort1.Read(byCheckBoardPresence, 0, 1) == 1) &&
-                        (byCheckBoardPresence[0] == 0xFA))
+                    if ((serialPort1.Read(byCheckBoardPresence, 0, 1) == 1) && (byCheckBoardPresence[0] == 0xFA))
                     {
                         timer1.Enabled = false;
                         CBSerialPorts.SelectedIndex = i;
@@ -792,11 +791,6 @@ namespace BreadParam
                     break;
                 }
             }
-        }
-
-        private void dataGridViewTelephone_Click(object sender, EventArgs e)
-        {
-            
         }
     }
 }

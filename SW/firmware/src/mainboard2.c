@@ -51,6 +51,21 @@
  * \addtogroup main
  * @{
  */
+
+const char STR_MANUFACTURER[] = "MT DISTRIBUTION ";
+const char STR_VERSION[] = " VERSION";
+const char STR_SELECT[] = "   Choisissez   ";
+const char STR_YOUR_PRODUCT[] = " votre produit  ";
+const char STR_CREDIT[] = "Credit: ";
+const char STR_DISPENSE[] = "  Distribution";
+const char STR_IN_PROGRESS[] = "   en cours...";
+const char STR_TO_PAY[] = "A payer:";
+const char STR_TAKE[] = "     Prenez";
+const char STR_YOUR_CHOICE[] = "   votre choix";
+const char STR_RETURN_IN_PROGRESS[] = "Rendu en cours...";
+const char STR_MACHINE[] = "    MACHINE     ";
+const char STR_HS[] = "      VIDE      ";
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -109,7 +124,7 @@ void vTO_OverPay(const TimerHandle_t HandleTimer)
     setAuditValue(ADDRESSOVERPAY, getAmountDispo());
     setAmountDispo(0);
     setAmountRequested(0);
-    setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
+    //setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
 }
 
 /******************************************************************************/
@@ -579,7 +594,6 @@ void MAINBOARD2_Initialize(void)
     vDataInit();
     vMDBInit();
 
-
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
@@ -595,22 +609,40 @@ void MAINBOARD2_Initialize(void)
 
 void MAINBOARD2_Tasks(void)
 {
-
+    static uint32_t oldAmount;
     /* Check the application's current state. */
     switch(mainboard2Data.state)
     {
             /* Application's initial state. */
         case MAINBOARD2_STATE_INIT:
         {
-            vHD44780Init();
+            oldAmount = 0;
+            setAmountDispo(0);
             setMainBoardTaskState(MAINBOARD2_STATE_SERVICE_TASKS);
+            vHD44780Init();
             vLCD_CLEAR();
-            vDisplayLCD("%s", "MT DISTRIBUTION");
+            vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
-            vDisplayLCD(" %s %s", "Version ", VERSION);
-            delayMs(1 * SECONDE);
+            vDisplayLCD(" %s %s", STR_VERSION, VERSION);
+            delayMs(5 * SECONDE);
+#ifndef __DEBUG
+            delayMs(20 * SECONDE);
+#endif 
             vTaskResume(mdb.hTaskMdb);
-            hTimerCumul = xTimerCreate("TO CUMUL", getTOCumul() * SECONDE, false, NULL, vTO_Cumul);
+            if(hTimerOverPay == NULL)
+            {
+                hTimerOverPay = xTimerCreate("TO OVERPAY", getDelayOverpay() ?
+                                             getDelayOverpay() * SECONDE :
+                                             portMAX_DELAY,
+                                             false, NULL, vTO_OverPay);
+            }
+            if(hTimerCumul == NULL)
+            {
+                hTimerCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
+                                           getTOCumul() * SECONDE :
+                                           portMAX_DELAY,
+                                           false, NULL, vTO_Cumul);
+            }
             break;
         }
         case MAINBOARD2_STATE_SERVICE_TASKS:
@@ -619,21 +651,63 @@ void MAINBOARD2_Tasks(void)
             if(getIsRAZAudit())
             {
                 setIsRAZAudit(false);
-                //                mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_CHOICE;
+            }
+            if(oldAmount != getAmountDispo())
+            {
+                mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
+                if((oldAmount = getAmountDispo()) == 0)
+                {
+                    xTimerStop(hTimerOverPay, 1000);
+                    xTimerStop(hTimerCumul, 1000);
+                }
             }
             break;
         }
-
         case MAINBOARD2_STATE_DISPLAY_CHOICE:
             // <editor-fold desc="MAINBOARD2_STATE_DISPLAY_CHOICE"> 
         {
             mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
             vLCD_CLEAR();
-            vDisplayLCD("%s", "   Choisissez");
+            vDisplayLCD("%s", STR_SELECT);
             vLCDGotoXY(1, 2);
-            vDisplayLCD("%s", " votre produit");
+            vDisplayLCD("%s", STR_YOUR_PRODUCT);
             break;
         }// </editor-fold>
+        case MAINBOARD2_STATE_DISPLAY_AMOUNT:
+            // <editor-fold desc="MAINBOARD2_STATE_DISPLAY_AMOUNT"> 
+        {
+            mainboard2Data.state = getAmountDispo() ?
+                    MAINBOARD2_STATE_SERVICE_TASKS :
+                    MAINBOARD2_STATE_DISPLAY_CHOICE;
+            vLCD_CLEAR();
+            vDisplayLCD("%s %.*f\7", "Credit : ", mdb.byDecimalPos, (double) getAmountDispo() / mdb.wCurrencyDivider);
+            break;
+        }// </editor-fold>
+        case MAINBOARD2_STATE_CHANGE:
+            // <editor-fold desc="MAINBOARD2_STATE_CHANGE"> 
+        {
+            vLCD_CLEAR();
+
+            printf("%s", STR_RETURN_IN_PROGRESS);
+            changeGiver.isChangeFinished = false;
+
+            xTaskNotifyGive(changeGiver.hChangeTask);
+            while(!changeGiver.isChangeFinished);
+            delayMs(1000); //Permet de visualiser la somme rendu.
+
+            mainboard2Data.state = getAmountDispo() ?
+                    MAINBOARD2_STATE_DISPLAY_AMOUNT :
+                    MAINBOARD2_STATE_DISPLAY_CHOICE;
+
+            if(!BOT_1_Get() && !BOT_2_Get() && !BOT_3_Get())
+            {
+                changeGiver.state = CG_COIN_TYPE;
+                billValidator.state = BV_BILL_TYPE;
+            }
+
+            break;
+        }// </editor-fold>
+
             /* TODO: implement your application state machine.*/
 
 

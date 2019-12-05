@@ -59,15 +59,6 @@ typedef struct
 } PHONES;
 
 /**
- * \brief Structure contenant l'habilitation des périphériques
- */
-typedef struct
-{
-    uint16_t enable_GG; /*!<Habilitation des canaux du changeur.*/
-    uint16_t enable_BV; /*!<Habilitation des canaux du lecteur de billets.*/
-} ENABLE;
-
-/**
  * \brief type structure contenant les paramètres.
  */
 typedef struct
@@ -114,7 +105,7 @@ const unsigned int __attribute__((space(prog),
    0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 5, 0, 0,
    0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 6, 0, 0,
    0, 0, 0,
-   60, 30,
+   30, 60,
    983071, //Activation par défaut des moyens de paiement 0X001F001F 
    22, 18,
 };
@@ -130,6 +121,103 @@ const unsigned int __attribute__((space(prog),
 // Section: Interface Functions                                               */
 
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         uint8_t getDelayOverpay(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint32_t getDelayOverpay(void)
+{
+    return parameters.data.TOOverpay;
+}
+
+/*********************************************************************
+ * Function:        
+ *         ENABLE getEnableState()
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+ENABLE getEnableState()
+{
+    return parameters.data.enables;
+}
+
 /*********************************************************************
  * Function:        
  *         uint8_t getTOCumul(void)
@@ -175,7 +263,7 @@ const unsigned int __attribute__((space(prog),
  ********************************************************************/
 uint8_t getTOCumul(void)
 {
-    return (uint8_t)parameters.data.TOcumul;
+    return(uint8_t) parameters.data.TOcumul;
 }
 
 /*********************************************************************
@@ -371,8 +459,10 @@ void vParametersRead(void)
  ********************************************************************/
 void vParamSendToPC(void)
 {
+    delayMs(100);
     UART3_WriteByte(6);
     while(!UART3_TransmitComplete());
+    delayMs(100);
     UART3_Write(VERSION, 6);
     while(!UART3_TransmitComplete());
     UART3_WriteByte(11);

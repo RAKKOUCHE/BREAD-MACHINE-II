@@ -1,5 +1,3 @@
-
-
 #include "mdb.h"
 
 /*********************************************************************
@@ -55,12 +53,14 @@ static void vTaskMDB(void)
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while(1)
     {
-        mdb.isTaskMDBChecked = true;
+        LED_MDB_Toggle();
+
         switch(mdb.state)
         {
             case MDB_INIT:
                 // <editor-fold defaultstate="collapsed" desc="MDB_INIT">
             {
+                mdb.isMDBChecked = false;
                 vLCD_CLEAR();
                 vDisplayLCD("%s", "  Verification");
                 vLCDGotoXY(1, 2);
@@ -76,7 +76,7 @@ static void vTaskMDB(void)
                 }
                 mdb.wCurrencyDivider = 1;
                 vCGInit();
-                billValidator.state = BV_INIT;
+                vBVInit();
                 mdb.state = MDB_POLL_CG;
                 break;
             }
@@ -104,8 +104,9 @@ static void vTaskMDB(void)
                 // <editor-fold defaultstate="collapsed" desc="MDB_IDLE">
             {
                 mdb.state = MDB_POLL_CG;
-                if(changeGiver.isInitialized && billValidator.isInitialized)
+                if(!mdb.isMDBChecked && changeGiver.isInitialized && billValidator.isInitialized)
                 {
+                    mdb.isMDBChecked = true;
                     setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
                 }
                 break;
@@ -268,42 +269,64 @@ void vVMCAcknowledge(const BYTE byAcknowledge)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        BYTE byMDBSendCommand(const BYTE byAddress, 
- *                  const BYTE byCommand, BYTE byLenParameters, 
- *                  void *ptrParameters, void *ptrAnswer)
+ * Function:        
+ *         BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
+                      const BYTE byLenParameters, void *ptrParameters,
+                      void *ptrAnswer)
  * 
- * Version:         1.0
+ * Version:
+ *         1.0
  * 
- * Date:            01/01/2017
+ * Author:
+ *         Rachid AKKOUCHE
  * 
- * Author:          Rachid AKKOUCHE    
+ * Date:
+ *         YY/MM/DD
  *
- * PreCondition:    None
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
  *
- * Input:           None
+ * PreCondition:    
+ *         None
  *
- * Output:          None
+ * Input:     
+ *         None
  *
- * Side Effects:    None
+ * Output:
+ *         None
  *
- * Overview:        None
+ * Returns:
+ *         None
  *
- * Note:            None
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
  ********************************************************************/
 BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
-                      const BYTE byLenParameters, void *ptrParameters, void *ptrAnswer)
+                      const BYTE byLenParameters, void *ptrParameters,
+                      void *ptrAnswer)
 {
     BYTE byIndex = 0;
-    uUART_DATA data[34];
+    uUART_DATA data[36];
     BYTE *byPtrParameters, *byPtrAnswer;
     byPtrParameters = ptrParameters;
     byPtrAnswer = ptrAnswer;
     BOOL isRepeat = false;
-    xSemaphoreTake(mdb.hSemaphorePoll, 60 * SECONDE);
+    xSemaphoreTake(mdb.hSemaphorePoll, SECONDE);
 
     //TODO faire clignoter la led MDB
     //    leds.red.state = LED_TOGGLE;
-
     do
     {
         memset(&data, 0, sizeof(data));
@@ -323,54 +346,55 @@ BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
         data[byLenParameters + 1].uartData.bit9th = 0X00;
 
         //Transmission des données
+        mdb.isNAK = false;
         for(byIndex = 0; byIndex < (byLenParameters + 2); byIndex++)
         {
-            mdb.isNAK = false;
-            xTimerChangePeriod(mdb.hTimerMDBNAK, 10, 60 * SECONDE);
-            while(!UART1_TransmitterIsReady());
+            xTimerChangePeriod(mdb.hTimerMDBNAK, 5 * MILLISEC, SECONDE);
+            while(!UART1_TransmitterIsReady() && !mdb.isNAK);
 
             if(!mdb.isNAK)
             {
                 UART1_WriteByte(data[byIndex].wData);
-                while(UART1_TransmitComplete());
-                // PLIB_USART_Transmitter9BitsSend(DRV_USART_INDEX_0, data[byIndex].uartData.byData, (bool) data[byIndex].uartData.bit9th);
+                while(UART1_TransmitComplete() && !mdb.isNAK);
             }
             else
             {
-                xTimerStop(mdb.hTimerMDBNAK, 60 * SECONDE);
                 byPtrAnswer[0] = NAK;
                 break;
             }
         }
-        if(!mdb.isNAK)
-        {
-            xTimerChangePeriod(mdb.hTimerMDBNAK, 1000, 60 * SECONDE);
-            while(!UART1_TransmitterIsReady() && !mdb.isNAK);
-        }
+
         if(!mdb.isNAK)
         {
             //Réception
             byPtrAnswer[byIndex = 0] = NAK;
-            //memset(&byPtrAnswer, 0, sizeof(byPtrAnswer));
-            do
+            //memset(&byPtrAnswer, 0
+            xTimerChangePeriod(mdb.hTimerMDBNAK, 20 * MILLISEC, SECONDE);
+            while(!UART1_ReceiverIsReady() && !mdb.isNAK);
+            if(!mdb.isNAK)
             {
-                xTimerChangePeriod(mdb.hTimerMDBNAK, 1000, 60 * SECONDE);
-                while(!UART1_ReceiverIsReady() && !mdb.isNAK);
-                if(!mdb.isNAK)
+                do
                 {
-                    data[byIndex].wData = UART1_ReadByte();
-                    byPtrAnswer[byIndex] = data[byIndex].uartData.byData;
-                }
-                else
+                    if(byIndex)
+                    {
+                        xTimerChangePeriod(mdb.hTimerMDBNAK, 10 * MILLISEC, SECONDE);
+                        while(!UART1_ReceiverIsReady() && !mdb.isNAK);
+                    }
+                    if(!mdb.isNAK)
+                    {
+                        data[byIndex].wData = UART1_ReadByte();
+                        byPtrAnswer[byIndex] = data[byIndex].uartData.byData;
+                    }
+                    else
+                    {
+                        byPtrAnswer[0] = NAK;
+                    }
+                } while((!(data[byIndex++].wData & 0x0100)) && !mdb.isNAK);
+                //Si la réponse du périphérique est NAK
+                if((byIndex == 1) && (data[byIndex].uartData.byData == 0XFF))
                 {
-                    byPtrAnswer[0] = NAK;
-                    byIndex = 0;
+                    mdb.isNAK = true;
                 }
-            } while((!(data[byIndex++].wData & 0x0100)) && !mdb.isNAK);
-            //Si la réponse du périphérique est NAK
-            if((byIndex == 1) && (data[byIndex].uartData.byData == 0XFF))
-            {
-                mdb.isNAK = true;
             }
         }
         if(!mdb.isNAK)
@@ -382,16 +406,11 @@ BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
                 byIndex = 0;
             }
         }
-        isRepeat = mdb.isNAK ? !isRepeat : false;
-        //        if(mdb.isNAK)
-        //        {
-        //            isRepeat = !isR
-        //        }
-        //        else
-        //        {
-        //            isRepeat
-        //        }
-        xTimerStop(mdb.hTimerMDBNAK, 60 * SECONDE);
+        xTimerStop(mdb.hTimerMDBNAK, SECONDE);
+        if((isRepeat = (mdb.isNAK ? !isRepeat : false)))
+        {
+            delayMs(100);
+        }
     } while(isRepeat);
     if(mdb.isNAK)
     {

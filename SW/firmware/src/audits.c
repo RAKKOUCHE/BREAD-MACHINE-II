@@ -319,7 +319,6 @@ static void vTaskAudit(void *vParameters)
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Interface Functions                                               */
-/* ************************************************************************** */
 
 /* ************************************************************************** */
 
@@ -418,9 +417,9 @@ uint32_t getAuditValue(uint32_t Address)
  ********************************************************************/
 void setAuditValue(uint32_t Address, uint32_t value)
 {
-    memmove(&audits.dataBuffer.buffer[Address], &value, sizeof(uint32_t));
-    DRV_AT24_Write(audits.hDrvAT24, (void*) value, sizeof(value), Address);
-    while(DRV_AT24_TransferStatusGet(audits.hDrvAT24) == DRV_AT24_TRANSFER_STATUS_BUSY);
+    audits.record.dwAddress = Address;
+    audits.record.dwValue = value;
+    xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
 }
 
 /*********************************************************************

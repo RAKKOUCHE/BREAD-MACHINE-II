@@ -39,8 +39,8 @@
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.h</file>
         </group>
         <group name="MT DISTRIBUTION">
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_CG.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
         </group>
     </open-files>

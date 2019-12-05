@@ -18,6 +18,9 @@ extern "C"
 #include <GenericTypeDefs.h>
 #include "mdb.h"    
 #include "hd44780.h"
+#include "mainboard2.h"
+#include "FreeRTOS.h"
+#include "queue.h"
 
     /*Defines******************************************************************/
 
@@ -136,11 +139,14 @@ extern "C"
      */
     typedef struct
     {
-        BYTE byScalingFactor; /*!< Facteur de multiplication appliqué à tous les montants du périphérique.*/
-        BYTE byDecimalPlace; /*!< Position de la virgule en partant du chiffre le moins significatif. */
-        BYTE byCoinRouting[2];
-        BYTE byCoinValue[NUMBERCHANNELSCG];
-        MDBGENERICDEVICECONFIG deviceConfig;
+        MDBGENERICDEVICECONFIG deviceConfig; /*!<Niveau MDB, Country code*/
+        BYTE byScalingFactor; /*!< Facteur de multiplication appliqué à tous les 
+                               * montants du périphérique.*/
+        BYTE byDecimalPlace; /*!< Position de la virgule en partant du chiffre 
+                              * le moins significatif. */
+        BYTE byCoinRouting[2]; /*!<Liste des pièces pouvant entrer dans les 
+                                * tubes.*/
+        BYTE byCoinValue[NUMBERCHANNELSCG]; /*!Valeur des pièces.*/
     } CG_CONFIG;
 
     /**
@@ -202,8 +208,12 @@ extern "C"
     {
         bool isChangerEnable;
         bool isInitialized;
-        int iBeforeRetry;
         bool isChangeFinished;
+        bool isJustReseted;
+        BYTE byDUMMY[10];
+        BYTE data[36];
+        BYTE byCoinsBuffer[NUMBERCHANNELSCG + 1];
+        int iBeforeRetry;
         long lAmountInTubes;
         long lAmountDispensed;
         EXPANSION_CMD expandCmd;
@@ -211,11 +221,8 @@ extern "C"
         CG_CONFIG config;
         TUBE_STATUS tubes;
         CG_DIAG diagnostic;
-        BYTE byDUMMY[10];
         COIN_TYPE_ENABLE coins_enable;
         CG_IDENTIFICATION id;
-        BYTE data[36];
-        BYTE byCoinsBuffer[NUMBERCHANNELSCG + 1];
         TaskHandle_t hChangeTask;
     }
     CHANGE_GIVER;

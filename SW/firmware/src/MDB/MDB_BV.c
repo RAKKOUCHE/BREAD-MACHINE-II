@@ -228,9 +228,9 @@ void vTaskBV(void)
         case BV_INIT:
             // <editor-fold defaultstate="collapsed" desc="BV_INIT">
         {
-            billValidator.wBeforeRetry = 0; //pas de délai avant de lancer la communication
-            billValidator.byBillType.byBillEnable[0] = 0;
-            billValidator.byBillType.byBillEnable[1] = 0X03;
+            billValidator.wBeforeRetry = 0; //pas de délai avant de lancer la communication            
+            billValidator.byBillType.wBillEnable = getEnableState().enable_BV;
+            billValidator.byBillType.wBillEnable = billValidator.byBillType.wBillEnable << 8 | billValidator.byBillType.wBillEnable >> 8;
             billValidator.state = BV_RESET; //Après ça on lance un reset.
             break;
         }
@@ -244,11 +244,12 @@ void vTaskBV(void)
                 billValidator.state = BV_POLL;
                 if(!isMDBReset(BVADDRESS))
                 {
-                    delayMs(100);
-                    if(!isMDBReset(BVADDRESS))
-                    {
-                        vResetBV();
-                    }
+                    vResetBV();
+                    billValidator.isInitialized = true;
+                }
+                else
+                {
+                    billValidator.isInitialized = false;
                 }
             }
             break;
@@ -310,7 +311,10 @@ void vTaskBV(void)
                                 {
                                     setAmountDispo(getAmountDispo() + (long) (billValidator.config.byBillValue[byChannel] *
                                                                               billValidator.config.wScalingFactor));
-                                    setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
+                                    setAuditValue((uint32_t) (ADDRESSBVIN + (byChannel * sizeof(uint32_t))),
+                                                  (uint32_t) (changeGiver.config.byCoinValue[byChannel] *
+                                                              changeGiver.config.byScalingFactor));
+
                                     break;
                                 }
                                 case RETURNED:
@@ -450,8 +454,8 @@ void vTaskBV(void)
             {
                 if((billValidator.isStackerFull = (billValidator.i16BillInStacker < 0)))
                 {
-                   //TODO envoyé message sms
-                   // vSendSMS("Caisse lecteur de billets pleine.");
+                    //TODO envoyé message sms
+                    // vSendSMS("Caisse lecteur de billets pleine.");
                 }
                 billValidator.i16BillInStacker = abs(billValidator.i16BillInStacker);
                 billValidator.i16BillInStacker = (billValidator.i16BillInStacker >> 8) | (billValidator.i16BillInStacker << 8);
@@ -522,3 +526,51 @@ void vTaskBV(void)
 }
 
 /******************************************************************************/
+
+/*********************************************************************
+ * Function:        
+ *         void vBVInit(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void vBVInit(void)
+{
+    billValidator.state = BV_INIT;
+}

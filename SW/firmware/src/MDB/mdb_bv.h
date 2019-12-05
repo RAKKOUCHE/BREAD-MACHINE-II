@@ -163,6 +163,11 @@ extern "C" {
      */
     bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType);
 
+    /**
+     * \brief Initialisation de la tâche du lecteur du billets.
+     */
+    void vBVInit(void);
+    
     /**************************************************************************/
 #ifdef	__cplusplus
 }
