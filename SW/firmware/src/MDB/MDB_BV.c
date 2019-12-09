@@ -309,12 +309,17 @@ void vTaskBV(void)
                             {
                                 case STACKED:
                                 {
+                                    if(hTOCumul)
+                                    {
+                                        xTimerReset(hTOCumul, 1000);
+                                    }
                                     setAmountDispo(getAmountDispo() + (long) (billValidator.config.byBillValue[byChannel] *
                                                                               billValidator.config.wScalingFactor));
-                                    setAuditValue((uint32_t) (ADDRESSBVIN + (byChannel * sizeof(uint32_t))),
-                                                  (uint32_t) (changeGiver.config.byCoinValue[byChannel] *
-                                                              changeGiver.config.byScalingFactor));
-
+                                    setAuditValue((uint32_t) (ADDRESSBVIN + (byChannel *
+                                                                             sizeof(uint32_t))),
+                                                  getAuditValue((uint32_t) (ADDRESSBVIN +
+                                                                            (byChannel *
+                                                                             sizeof(uint32_t)))) + 1);
                                     break;
                                 }
                                 case RETURNED:
@@ -405,7 +410,7 @@ void vTaskBV(void)
 
                         }
                         ++byIndex;
-                    } while(byIndex < (byLenAnswer - 1));
+                    }while(byIndex < (byLenAnswer - 1));
                 }
             }
             else

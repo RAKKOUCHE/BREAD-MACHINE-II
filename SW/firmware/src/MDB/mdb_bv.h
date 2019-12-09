@@ -24,7 +24,7 @@ extern "C" {
     /**
      * \brief Nombre de canaux du lecteur de billets
      */
-#define NUMBERCHANNELSBV 16
+#define NUMBERCHANNELSBV 8
 
     /**
      * \def CGADDRESS

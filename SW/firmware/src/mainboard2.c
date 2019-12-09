@@ -11,7 +11,7 @@
  * et peut appeler les routines API des modules MPLAB Harmony du système, 
  * tels que les pilotes,  services système et middleware.  Toutefois, il
  *  n'appelle aucune des interfaces système (telles que les fonctions 
- * "Initialiser" et "Tâches") des modules du système ou  faire des suppositions 
+ * "Initialiser" et "Tâches") des modules du système ou  faire des suppositions cumul
  * sur le moment où ces fonctions sont exécutées s'appellent.  C'est de la 
  * responsabilité du système spécifique à la configuration fichiers.
  * 
@@ -121,7 +121,7 @@ static MAINBOARD2_DATA mainboard2Data;
  ********************************************************************/
 void vTO_OverPay(const TimerHandle_t HandleTimer)
 {
-    setAuditValue(ADDRESSOVERPAY, getAmountDispo());
+    setAuditValue(ADDRESSOVERPAY, getAmountDispo() + getAuditValue(ADDRESSOVERPAY));
     setAmountDispo(0);
     setAmountRequested(0);
     //setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
@@ -626,7 +626,7 @@ void MAINBOARD2_Tasks(void)
             vDisplayLCD(" %s %s", STR_VERSION, VERSION);
             delayMs(5 * SECONDE);
 #ifndef __DEBUG
-            delayMs(20 * SECONDE);
+            delayMs(15 * SECONDE);
 #endif 
             vTaskResume(mdb.hTaskMdb);
             if(hTimerOverPay == NULL)
@@ -636,9 +636,9 @@ void MAINBOARD2_Tasks(void)
                                              portMAX_DELAY,
                                              false, NULL, vTO_OverPay);
             }
-            if(hTimerCumul == NULL)
+            if(hTOCumul == NULL)
             {
-                hTimerCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
+                hTOCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
                                            getTOCumul() * SECONDE :
                                            portMAX_DELAY,
                                            false, NULL, vTO_Cumul);
@@ -652,13 +652,14 @@ void MAINBOARD2_Tasks(void)
             {
                 setIsRAZAudit(false);
             }
+            
             if(oldAmount != getAmountDispo())
             {
                 mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
                 if((oldAmount = getAmountDispo()) == 0)
                 {
                     xTimerStop(hTimerOverPay, 1000);
-                    xTimerStop(hTimerCumul, 1000);
+                    xTimerStop(hTOCumul, 1000);
                 }
             }
             break;
@@ -688,7 +689,7 @@ void MAINBOARD2_Tasks(void)
         {
             vLCD_CLEAR();
 
-            printf("%s", STR_RETURN_IN_PROGRESS);
+            vDisplayLCD("%s", STR_RETURN_IN_PROGRESS);
             changeGiver.isChangeFinished = false;
 
             xTaskNotifyGive(changeGiver.hChangeTask);

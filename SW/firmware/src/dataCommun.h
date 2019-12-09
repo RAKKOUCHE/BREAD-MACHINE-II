@@ -27,6 +27,7 @@
 
 #include "definitions.h"
 #include "driver/usart/drv_usart.h"
+#include "timers.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus

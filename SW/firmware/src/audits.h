@@ -17,6 +17,18 @@
 #ifndef _AUDITS_H    /* Guard against multiple inclusion */
 #define _AUDITS_H
 
+#include <string.h>
+#include <machine/types.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "globaldef.h"
+#include "config/../configuration.h"
+#include "driver/at24/drv_at24.h"
+#include "peripheral/gpio/plib_gpio.h"
+#include "hd44780.h"
+#include "peripheral/uart/plib_uart3.h"
+#include "MDB/mdb_bv.h"
 #include "MDB/mdb_cg.h"
 
 
@@ -51,12 +63,11 @@ extern "C"
 
 #define ADDRESSBASEAUDIT 0
 #define ADDRESSCGIN ADDRESSBASEAUDIT /*0*/
-#define ADDRESSCGOUT (ADDRESSCGIN + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*64*/
-#define ADDRESSBVIN (ADDRESSCGOUT + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*128*/
-#define ADDRESSPRODUCT (ADDRESSBVIN + (NUMBERCHANNELSBV) * sizeof(uint32_t))) /*192*/
-#define ADDRESSCASH (ADDRESSPRODUCT + (PRODUCT_NUMBER * sizeof(uint32_t))) /*204*/
-#define ADDRESSCL (ADDRESSCASH + sizeof(uint32_t)) /*208*/
-#define ADDRESSOVERPAY (ADDRESSCL + sizeof(uint32_t) /*212*/
+#define ADDRESSCGOUT (ADDRESSCGIN + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*32*/
+#define ADDRESSBVIN (ADDRESSCGOUT + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*64*/
+#define ADDRESSPRODUCT (ADDRESSBVIN + (NUMBERCHANNELSBV) * sizeof(uint32_t))) /*96*/
+#define ADDRESSOVERPAY (ADDRESSPRODUCT +  (PRODUCT_NUMBER * sizeof(uint32_t)) /*108*/
+#define ADDRESSCL (ADDRESSOVERPAY + sizeof(uint32_t)) /*112*/
 
     // *****************************************************************************
     // *****************************************************************************

@@ -68,8 +68,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.TotalInBV = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.CoinsInCash = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBoxAuditCGOUT = new System.Windows.Forms.GroupBox();
             this.dataGridViewAuditCGOUT = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -160,6 +158,12 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.btnReadParam = new System.Windows.Forms.Button();
+            this.BtnSaveParam = new System.Windows.Forms.Button();
+            this.groupBoxParams = new System.Windows.Forms.GroupBox();
+            this.groupBoxAudits = new System.Windows.Forms.GroupBox();
+            this.BtnReadAudits = new System.Windows.Forms.Button();
+            this.BtnRAXAudits = new System.Windows.Forms.Button();
             this.groupBoxAudit.SuspendLayout();
             this.groupBoxAuditCGOUT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAuditCGOUT)).BeginInit();
@@ -191,6 +195,8 @@
             this.GBSerialPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UDCold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UDHot)).BeginInit();
+            this.groupBoxParams.SuspendLayout();
+            this.groupBoxAudits.SuspendLayout();
             this.SuspendLayout();
             // 
             // TotalOutCG
@@ -273,8 +279,6 @@
             this.groupBoxAudit.Controls.Add(this.label10);
             this.groupBoxAudit.Controls.Add(this.TotalInBV);
             this.groupBoxAudit.Controls.Add(this.label11);
-            this.groupBoxAudit.Controls.Add(this.CoinsInCash);
-            this.groupBoxAudit.Controls.Add(this.label4);
             this.groupBoxAudit.Controls.Add(this.groupBoxAuditCGOUT);
             this.groupBoxAudit.Controls.Add(this.groupBoxauditProduit);
             this.groupBoxAudit.Controls.Add(this.groupBoxAuditBV);
@@ -302,7 +306,7 @@
             this.lCashLess.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lCashLess.Enabled = false;
             this.lCashLess.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lCashLess.Location = new System.Drawing.Point(1288, 218);
+            this.lCashLess.Location = new System.Drawing.Point(1288, 204);
             this.lCashLess.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lCashLess.Name = "lCashLess";
             this.lCashLess.Size = new System.Drawing.Size(91, 28);
@@ -314,7 +318,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(1179, 227);
+            this.label10.Location = new System.Drawing.Point(1179, 213);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(101, 17);
@@ -345,32 +349,6 @@
             this.label11.Size = new System.Drawing.Size(88, 17);
             this.label11.TabIndex = 7;
             this.label11.Text = "Total billets :";
-            // 
-            // CoinsInCash
-            // 
-            this.CoinsInCash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CoinsInCash.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.CoinsInCash.Enabled = false;
-            this.CoinsInCash.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CoinsInCash.Location = new System.Drawing.Point(1288, 176);
-            this.CoinsInCash.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.CoinsInCash.Name = "CoinsInCash";
-            this.CoinsInCash.Size = new System.Drawing.Size(91, 28);
-            this.CoinsInCash.TabIndex = 12;
-            this.CoinsInCash.Text = "0.00";
-            this.CoinsInCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CoinsInCash.Visible = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1143, 185);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(137, 17);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Total pièces caisse :";
-            this.label4.Visible = false;
             // 
             // groupBoxAuditCGOUT
             // 
@@ -445,7 +423,6 @@
             this.MontantOutCG.Name = "MontantOutCG";
             this.MontantOutCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantOutCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantOutCG.Width = 125;
             // 
             // groupBoxauditProduit
             // 
@@ -583,7 +560,6 @@
             this.MontantInBV.ReadOnly = true;
             this.MontantInBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInBV.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInBV.Width = 125;
             // 
             // groupBoxAuditCGIN
             // 
@@ -651,7 +627,6 @@
             this.MontantInCG.ReadOnly = true;
             this.MontantInCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
-            this.MontantInCG.Width = 125;
             // 
             // LOverPay
             // 
@@ -793,7 +768,6 @@
             this.Prix.Name = "Prix";
             this.Prix.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Prix.ToolTipText = "Prix du produit";
-            this.Prix.Width = 125;
             // 
             // CashLess
             // 
@@ -804,7 +778,6 @@
             this.CashLess.MinimumWidth = 90;
             this.CashLess.Name = "CashLess";
             this.CashLess.ToolTipText = "Prix du produit par carte bancaire";
-            this.CashLess.Width = 125;
             // 
             // LabelVersionFW
             // 
@@ -971,7 +944,7 @@
             // 
             this.serialPort1.ParityReplace = ((byte)(255));
             this.serialPort1.ReadBufferSize = 1024;
-            this.serialPort1.ReadTimeout = 1000;
+            this.serialPort1.ReadTimeout = 500;
             this.serialPort1.WriteBufferSize = 1024;
             this.serialPort1.WriteTimeout = 5000;
             // 
@@ -1575,6 +1548,68 @@
             this.label16.TabIndex = 29;
             this.label16.Text = "°";
             // 
+            // btnReadParam
+            // 
+            this.btnReadParam.Location = new System.Drawing.Point(42, 20);
+            this.btnReadParam.Name = "btnReadParam";
+            this.btnReadParam.Size = new System.Drawing.Size(120, 30);
+            this.btnReadParam.TabIndex = 30;
+            this.btnReadParam.Text = "&Lecture";
+            this.btnReadParam.UseVisualStyleBackColor = true;
+            this.btnReadParam.Click += new System.EventHandler(this.BtnRead_Click);
+            // 
+            // BtnSaveParam
+            // 
+            this.BtnSaveParam.Location = new System.Drawing.Point(42, 55);
+            this.BtnSaveParam.Name = "BtnSaveParam";
+            this.BtnSaveParam.Size = new System.Drawing.Size(120, 30);
+            this.BtnSaveParam.TabIndex = 31;
+            this.BtnSaveParam.Text = "&Enregisrer";
+            this.BtnSaveParam.UseVisualStyleBackColor = true;
+            this.BtnSaveParam.Click += new System.EventHandler(this.BtnSave_Click);
+            // 
+            // groupBoxParams
+            // 
+            this.groupBoxParams.Controls.Add(this.btnReadParam);
+            this.groupBoxParams.Controls.Add(this.BtnSaveParam);
+            this.groupBoxParams.Location = new System.Drawing.Point(1229, 238);
+            this.groupBoxParams.Name = "groupBoxParams";
+            this.groupBoxParams.Size = new System.Drawing.Size(180, 100);
+            this.groupBoxParams.TabIndex = 34;
+            this.groupBoxParams.TabStop = false;
+            this.groupBoxParams.Text = "&Paramètres";
+            // 
+            // groupBoxAudits
+            // 
+            this.groupBoxAudits.Controls.Add(this.BtnReadAudits);
+            this.groupBoxAudits.Controls.Add(this.BtnRAXAudits);
+            this.groupBoxAudits.Location = new System.Drawing.Point(1228, 351);
+            this.groupBoxAudits.Name = "groupBoxAudits";
+            this.groupBoxAudits.Size = new System.Drawing.Size(180, 100);
+            this.groupBoxAudits.TabIndex = 35;
+            this.groupBoxAudits.TabStop = false;
+            this.groupBoxAudits.Text = "&Audits";
+            // 
+            // BtnReadAudits
+            // 
+            this.BtnReadAudits.Location = new System.Drawing.Point(42, 20);
+            this.BtnReadAudits.Name = "BtnReadAudits";
+            this.BtnReadAudits.Size = new System.Drawing.Size(120, 30);
+            this.BtnReadAudits.TabIndex = 30;
+            this.BtnReadAudits.Text = "&Lecture";
+            this.BtnReadAudits.UseVisualStyleBackColor = true;
+            this.BtnReadAudits.Click += new System.EventHandler(this.BtnAudit_Click);
+            // 
+            // BtnRAXAudits
+            // 
+            this.BtnRAXAudits.Location = new System.Drawing.Point(42, 55);
+            this.BtnRAXAudits.Name = "BtnRAXAudits";
+            this.BtnRAXAudits.Size = new System.Drawing.Size(120, 30);
+            this.BtnRAXAudits.TabIndex = 31;
+            this.BtnRAXAudits.Text = "&RAZ";
+            this.BtnRAXAudits.UseVisualStyleBackColor = true;
+            this.BtnRAXAudits.Click += new System.EventHandler(this.BtnRazAudit_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.BtnExit;
@@ -1583,6 +1618,8 @@
             this.BackColor = System.Drawing.SystemColors.Highlight;
             this.CancelButton = this.BtnExit;
             this.ClientSize = new System.Drawing.Size(1431, 959);
+            this.Controls.Add(this.groupBoxAudits);
+            this.Controls.Add(this.groupBoxParams);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
@@ -1623,7 +1660,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BreadParam II";
-            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBoxAudit.ResumeLayout(false);
@@ -1660,6 +1696,8 @@
             this.GBSerialPort.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UDCold)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UDHot)).EndInit();
+            this.groupBoxParams.ResumeLayout(false);
+            this.groupBoxAudits.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1710,8 +1748,6 @@
         private System.Windows.Forms.DataGridView dataGridViewAuditProduit;
         private System.Windows.Forms.GroupBox groupBoxAuditCGOUT;
         private System.Windows.Forms.DataGridView dataGridViewAuditCGOUT;
-        private System.Windows.Forms.Label CoinsInCash;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label TotalInBV;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBoxTel;
@@ -1770,6 +1806,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CanalCG;
         private System.Windows.Forms.DataGridViewCheckBoxColumn EnableCG;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueCG;
+        private System.Windows.Forms.Button btnReadParam;
+        private System.Windows.Forms.Button BtnSaveParam;
+        private System.Windows.Forms.GroupBox groupBoxParams;
+        private System.Windows.Forms.GroupBox groupBoxAudits;
+        private System.Windows.Forms.Button BtnReadAudits;
+        private System.Windows.Forms.Button BtnRAXAudits;
     }
 }
 

@@ -54,7 +54,17 @@ namespace BreadParam
         /// Flag indiquant une modification
         /// </summary>
         bool isParametersModified;
-                                               
+
+        /// <summary>
+        /// Tableau contenant la valeur des pièces acceptées par le changeur.
+        /// </summary>
+        uint[] coinsValue;
+
+        /// <summary>
+        /// Tableau contant la valeur des billets acceptés par le lecteur de billets.
+        /// </summary>
+        uint[] billsValue;
+
         /// <summary>
         /// Header indiquant les paramètres en cours de transmission 
         /// </summary>
@@ -90,6 +100,8 @@ namespace BreadParam
         public Form1()
         {
             InitializeComponent();
+            coinsValue = new uint[8];
+            billsValue = new uint[8];
         }
 
 
@@ -170,6 +182,7 @@ namespace BreadParam
                 dataGridViewTelephone.Rows.Add(false, false, "0033612345678");
             }
             isParametersReaded = isParametersModified = false;
+            timer1.Enabled = true;
         }
 
         /// <summary>
@@ -349,12 +362,13 @@ namespace BreadParam
 
         private void BtnAudit_Click(object sender, EventArgs e)
         {
+            int byLength;
             byte[] byBuffer;
             Double TotalAmountInCG = 0;
             Double TotalAmountOutCG = 0;
             Double TotalAmountInBv = 0;
             Double OverPay;
-            Double InCash;
+            Double CashLess;
             try
             {
                 if (IsSerialPortOpen())
@@ -364,7 +378,13 @@ namespace BreadParam
 
                     byte[] byAuditRequest = { Convert.ToByte(HEADER.AUDITS, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byAuditRequest, 0, 1);
-                    byte byLength = Convert.ToByte(serialPort1.ReadByte());
+                    byLength = 0;
+                    byBuffer = new byte[sizeof(uint)];
+                    for (int i = 0; i < sizeof(uint); i++)
+                    {
+                        byBuffer[i] = Convert.ToByte(serialPort1.ReadByte(), CultureInfo.CurrentCulture);
+                    }
+                    byLength = byBuffer[0] + (byBuffer[1] * 100) + (byBuffer[2] * 10000) + (byBuffer[3] * 1000000);
                     byBuffer = new byte[byLength];
                     for (int byIndex = 0; byIndex < byLength; byIndex++)
                     {
@@ -374,43 +394,44 @@ namespace BreadParam
                     {
                         dataGridViewAuditCGIN["MontantInCG", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
                             Convert.ToDouble(byBuffer[byIndex * 4] + (byBuffer[(byIndex * 4) + 1] * 0X100) +
-                            (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) / 100);
+                            (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) * coinsValue[byIndex] / 100);
                         TotalAmountInCG += Convert.ToDouble(byBuffer[byIndex * 4] + (byBuffer[(byIndex * 4) + 1] * 0X100) +
-                            (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) / 100;
+                            (byBuffer[(byIndex * 4) + 2] * 0X10000) + (byBuffer[(byIndex * 4) + 3] * 0X1000000)) * coinsValue[byIndex] / 100;
                     }
                     TotalInCG.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG);
 
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
                         dataGridViewAuditCGOUT["MontantOutCG", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
-                            Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100);
-                        TotalAmountOutCG += Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) / 100;
+                            Convert.ToDouble(byBuffer[32 + (byIndex * 4)] + (byBuffer[32 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[32 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[32 + (byIndex * 4) + 3] * 0X1000000)) * coinsValue[byIndex] / 100);
+                        TotalAmountOutCG += Convert.ToDouble(byBuffer[32 + (byIndex * 4)] + (byBuffer[32 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[32 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[32 + (byIndex * 4) + 3] * 0X1000000)) * coinsValue[byIndex] / 100;
                     }
                     TotalOutCG.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountOutCG);
 
                     for (int byIndex = 0; byIndex < 8; byIndex++)
                     {
                         dataGridViewAuditBV["MontantInBV", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}",
-                            Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
-                            (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100);
-                        TotalAmountInBv += Convert.ToDouble(byBuffer[128 + (byIndex * 4)] + (byBuffer[128 + ((byIndex * 4) + 1)] * 0X100) +
-                         (byBuffer[128 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[128 + (byIndex * 4) + 3] * 0X1000000)) / 100;
+                            Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
+                            (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) * billsValue[byIndex] / 100);
+                        TotalAmountInBv += Convert.ToDouble(byBuffer[64 + (byIndex * 4)] + (byBuffer[64 + ((byIndex * 4) + 1)] * 0X100) +
+                         (byBuffer[64 + (byIndex * 4) + 2] * 0X10000) + (byBuffer[64 + (byIndex * 4) + 3] * 0X1000000)) * billsValue[byIndex] / 100;
                     }
                     TotalInBV.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInBv);
 
                     for (int byIndex = 0; byIndex < 3; byIndex++)
                     {
-                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}", byBuffer[192 + (byIndex * 4)] +
-                            (byBuffer[192 + ((byIndex * 4) + 1)] * 0X100) + (byBuffer[192 + (byIndex * 4) + 2] * 0X10000) +
-                            (byBuffer[192 + (byIndex * 4) + 3] * 0X1000000));
+                        dataGridViewAuditProduit["NumProduitAudit", byIndex].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}", byBuffer[96 + (byIndex * 4)] +
+                            (byBuffer[96 + ((byIndex * 4) + 1)] * 0X100) + (byBuffer[96 + (byIndex * 4) + 2] * 0X10000) +
+                            (byBuffer[96 + (byIndex * 4) + 3] * 0X1000000));
                     }
-                    OverPay = Convert.ToDouble(byBuffer[204] + (byBuffer[205] * 0X100) + (byBuffer[206] * 0X10000) + (byBuffer[207] * 0X1000000)) / 100;
+
+                    OverPay = Convert.ToDouble(byBuffer[108] + (byBuffer[109] * 0X100) + (byBuffer[110] * 0X10000) + (byBuffer[111] * 0X1000000)) / 100;
                     LOverPay.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", OverPay);
-                    InCash = Convert.ToDouble(byBuffer[208] + (byBuffer[209] * 0X100) + (byBuffer[210] * 0X10000) + (byBuffer[211] * 0X1000000));
-                    CoinsInCash.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", InCash);
-                    Total.Text = String.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG + TotalAmountInBv + /*OverPay + InCash*/ -TotalAmountOutCG);
+                    CashLess = Convert.ToDouble(byBuffer[112] + (byBuffer[113] * 0X100) + (byBuffer[114] * 0X10000) + (byBuffer[115] * 0X1000000));
+                    lCashLess.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", CashLess);
+                    Total.Text = String.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG + TotalAmountInBv + OverPay /*+ InCash*/ - TotalAmountOutCG);
 
                 }
             }
@@ -512,12 +533,12 @@ namespace BreadParam
                         serialPort1.PortName = CBSerialPorts.SelectedItem.ToString();
                         serialPort1.Open();
                     }
-                    toolStripComLabel.Text = serialPort1.PortName;                    
+                    toolStripComLabel.Text = serialPort1.PortName;
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message,BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -542,12 +563,13 @@ namespace BreadParam
                 {
                     dataGridViewAuditProduit[1, byIndex].Value = 0;
                 }
-                TotalInCG.Text = TotalOutCG.Text = TotalInBV.Text = CoinsInCash.Text = TotalInCG.Text = 
-                    LOverPay.Text = Total.Text = string.Format(CultureInfo.CurrentCulture,"{0:F2}", Convert.ToDouble(0));
                 byte[] byAuditRequest = { Convert.ToByte(HEADER.RAZAUDITS, CultureInfo.CurrentCulture) };
                 serialPort1.Write(byAuditRequest, 0, 1);
-                Thread.Sleep(2000);
-                BtnAudit_Click(sender, e);
+                if (serialPort1.ReadByte() == 0xFF)
+                {
+                    BtnAudit_Click(sender, e);
+                }
+                MessageBox.Show(BreadParam.Properties.Resources.Str_Reset_Audit);
             }
             catch (Exception exception)
             {
@@ -666,11 +688,33 @@ namespace BreadParam
                     UDHot.Value = byBuffer[416];
                     isParametersReaded = true;
                     isParametersModified = false;
+
+                    for (int i = 0; i < 32; i++)
+                    {
+                        byBuffer[i] = Convert.ToByte(serialPort1.ReadByte(), CultureInfo.CurrentCulture);
+                    }
+                    for (int i = 0; i < 8; i++)
+                    {
+                        coinsValue[i] = Convert.ToUInt32(byBuffer[i * 4] + (byBuffer[1 + (i * 4)] * 0x100) + (byBuffer[2 + (i * 4)] * 0x10000) + (byBuffer[3 + (i * 4)] * 0x1000000));
+                        dataGridViewCG["ValueCG", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDecimal(coinsValue[i]) / 100);
+
+                    }
+                    for (int i = 0; i < 32; i++)
+                    {
+                        byBuffer[i] = Convert.ToByte(serialPort1.ReadByte(), CultureInfo.CurrentCulture);
+                    }
+                    for (int i = 0; i < 8; i++)
+                    {
+                        billsValue[i] = Convert.ToUInt32(byBuffer[i * 4] + (byBuffer[1 + (i * 4)] * 0x100) + (byBuffer[2 + (i * 4)] * 0x10000) + (byBuffer[3 + (i * 4)] * 0x1000000));
+                        dataGridViewBV["ValueBV", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDecimal(billsValue[i]) / 100);
+
+                    }
+
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exception.Message, BreadParam.Properties.Resources.Str_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -702,9 +746,8 @@ namespace BreadParam
                     serialPort1.Write(byCheckBoardPresence, 0, 1);
                     if ((serialPort1.Read(byCheckBoardPresence, 0, 1) == 1) && (byCheckBoardPresence[0] == 0xFA))
                     {
-                        timer1.Enabled = false;
+                        serialPort1.ReadTimeout = 5000;
                         CBSerialPorts.SelectedIndex = i;
-                        //CBSerialPorts.Text = serialPort1.PortName;
                         Refresh();
                         BtnRead_Click(sender, e);
                         BtnAudit_Click(sender, e);
@@ -787,7 +830,6 @@ namespace BreadParam
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
         }
 
         private void Trap1UpDown_Leave(object sender, EventArgs e)

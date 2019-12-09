@@ -160,6 +160,15 @@ namespace BreadParam.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remise à zéro des audits effectuée.
+        /// </summary>
+        public static string Str_Reset_Audit {
+            get {
+                return ResourceManager.GetString("Str_Reset_Audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Sélectionnez un port série.
         /// </summary>
         public static string Str_Serial_Port_Select {

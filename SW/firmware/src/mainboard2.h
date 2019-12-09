@@ -130,7 +130,7 @@ extern "C"
     /**
      * \brief Handle timer de cumul.
      */
-    TimerHandle_t hTimerCumul;
+    TimerHandle_t hTOCumul;
     
     /**
      * \brief Handle du to déclenchant la procédure de trop perçu.

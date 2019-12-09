@@ -18,7 +18,6 @@
 #include <xc-pic32m.h>
 
 #include "dataCommun.h"
-#include "timers.h"
 
 /**
  * \addtogroup dataRecord

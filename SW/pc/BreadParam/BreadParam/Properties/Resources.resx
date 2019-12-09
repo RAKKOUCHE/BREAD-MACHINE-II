@@ -159,6 +159,10 @@
     <value>Enregistrement</value>
     <comment>Caption de la fenêtre d'enregistement.</comment>
   </data>
+  <data name="Str_Reset_Audit" xml:space="preserve">
+    <value>Remise à zéro des audits effectuée</value>
+    <comment>Message concluant la remise à zéro des audits</comment>
+  </data>
   <data name="Str_Serial_Port_Select" xml:space="preserve">
     <value>Sélectionnez un port série</value>
     <comment>Text du combo box de sélection du port série</comment>

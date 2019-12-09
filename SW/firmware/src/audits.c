@@ -13,21 +13,7 @@
  *  
  ***************************************************************************/
 /* ************************************************************************** */
-
-#include <string.h>
-#include <machine/types.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "globaldef.h"
-#include "config/../configuration.h"
-#include "driver/at24/drv_at24.h"
-#include "peripheral/gpio/plib_gpio.h"
 #include "audits.h"
-#include "hd44780.h"
-#include "peripheral/uart/plib_uart3.h"
-#include "MDB/mdb_bv.h"
-#include "MDB/mdb_cg.h"
 
 /**
  * \addtogroup audits
@@ -109,19 +95,17 @@ typedef struct
  */
 typedef struct
 {
-    uint32_t dwCG_in[NUMBERCHANNELSCG]; /*!<Tableau du nombre de pièces par canal 
+    uint32_t dwCG_IN[NUMBERCHANNELSCG]; /*!<Tableau du nombre de pièces par canal 
                                         * acceptées par le rendeur.*/
     uint32_t dwCG_OUT[NUMBERCHANNELSCG]; /*!<<Tableau du nombre de pièces par 
                                          * canal retournées par le rendeur.*/
-    uint32_t dwBV_in[NUMBERCHANNELSBV]; /*!<Tableau du nombre de billets par 
+    uint32_t dwBV_IN[NUMBERCHANNELSBV]; /*!<Tableau du nombre de billets par 
                                         * canal acceptés par le lecteur de 
                                         * billets.*/
     uint32_t dwProductsOut[PRODUCT_NUMBER]; /*!<Tableau du nombre de produits 
                                              * distribués.*/
-    uint32_t dwInCash; /*!<Montant en caisse.*/
-    uint32_t dwCashLess; /*!<Montant payé en cash less.*/
     uint32_t dwOverPay; /*!<Montant du trop perçu en cts.*/
-
+    uint32_t dwCashLess; /*!<Montant payé en cash less.*/
 } SAUDITS;
 
 /**
@@ -282,6 +266,8 @@ static void vTaskAudit(void *vParameters)
                                 LED_SYS_Clear();
                             }
                             setIsRAZAudit(true);
+
+                            UART3_WriteByte(0XFF);
                         }
                     }
                 }
@@ -296,14 +282,15 @@ static void vTaskAudit(void *vParameters)
                 xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
                 break;
             }// </editor-fold>
+
             case AUDITS_STATE_SEND_TO_PC:
                 // <editor-fold desc="AUDITS_SEND_TO_PC"> 
             {
                 audits.state = AUDITS_STATE_IDLE;
-                uint32_t dwDataSize = sizeof(SAUDITS);
+                uint32_t dwDataSize = sizeof(audits);
                 UART3_Write(&dwDataSize, sizeof(dwDataSize));
                 while(!UART3_TransmitComplete());
-                UART3_Write(&audits.dataBuffer.saudit, sizeof(SAUDITS));
+                UART3_Write(&audits.dataBuffer.saudit, sizeof(audits));
                 while(!UART3_TransmitComplete());
                 break;
             }// </editor-fold>
@@ -419,6 +406,7 @@ void setAuditValue(uint32_t Address, uint32_t value)
 {
     audits.record.dwAddress = Address;
     audits.record.dwValue = value;
+    memmove(&audits.dataBuffer.buffer[Address], &value, sizeof(value));
     xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
 }
 

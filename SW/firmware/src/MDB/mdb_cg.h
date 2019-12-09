@@ -27,7 +27,7 @@ extern "C"
     /**
      * \brief Nombre de canaux du changeur.
      */
-#define NUMBERCHANNELSCG 16
+#define NUMBERCHANNELSCG 8
 
     /**
      * \def CGADDRESS

@@ -1,6 +1,5 @@
 /* ************************************************************************** */
 
-#include <machine/types.h>
 
 /** Descriptive File Name
  * 
@@ -106,7 +105,7 @@ const unsigned int __attribute__((space(prog),
    0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 6, 0, 0,
    0, 0, 0,
    30, 60,
-   983071, //Activation par défaut des moyens de paiement 0X001F001F 
+   983103, //Activation par défaut des moyens de paiement 0X001F001F 
    22, 18,
 };
 
@@ -363,7 +362,7 @@ void vParametersWrite(void)
     NVM_PageErase(NVM_MEDIA_START_ADDRESS);
     while(NVM_IsBusy());
     NVM_RowWrite(parameters.buffer, NVM_MEDIA_START_ADDRESS);
-    while(NVM_IsBusy());
+    while(NVM_IsBusy());    
 }
 
 /*********************************************************************
@@ -458,7 +457,14 @@ void vParametersRead(void)
  *         
  ********************************************************************/
 void vParamSendToPC(void)
-{    
+{
+
+    union
+    {
+        uint32_t value;
+        uint8_t buffer[sizeof(uint32_t)];
+    } values;
+    uint8_t byChannel;
     while(!UART3_TransmitterIsReady());
     UART3_WriteByte(6);
     while(!UART3_TransmitComplete());
@@ -475,6 +481,18 @@ void vParamSendToPC(void)
 
     UART3_Write(&parameters.data, sizeof(PARAMETERS));
     while(!UART3_TransmitComplete());
+    for(byChannel = 0; byChannel < 8; byChannel++)
+    {
+        values.value = changeGiver.config.byCoinValue[byChannel] * changeGiver.config.byScalingFactor;
+        UART3_Write(values.buffer, sizeof(uint32_t));
+        while(!UART3_TransmitComplete());
+    }
+    for(byChannel = 0; byChannel < 8; byChannel++)
+    {
+        values.value = billValidator.config.byBillValue[byChannel] * billValidator.config.wScalingFactor;
+        UART3_Write(values.buffer, sizeof(uint32_t));
+        while(!UART3_TransmitComplete());
+    }
 }
 
 /*********************************************************************
@@ -533,6 +551,10 @@ void vParametersGetFromPC(void)
         if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
         {
             while(!UART3_TransmitComplete());
+            changeGiver.coins_enable.coinEnable.wCoinEnable = parameters.data.enables.enable_GG;
+            isSetCoinEnable(true, &changeGiver.coins_enable);
+            billValidator.byBillType.wBillEnable = parameters.data.enables.enable_BV;
+            isSetBillEnable(true, &billValidator.byBillType);            
             vParametersWrite();
         }
         vParametersRead();

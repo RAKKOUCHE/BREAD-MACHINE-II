@@ -536,9 +536,9 @@ void vTaskCG(void)
                         if((changeGiver.data[byIndex] & COIN_INSERTED) && !(changeGiver.data[byIndex] & COIN_REFUSED)/*Pièce refusée*/)
                         {
                             //TODO Faire repartir le timer après une distribution.
-                            if(hTimerCumul)
+                            if(hTOCumul)
                             {
-                                xTimerStart(hTimerCumul, 1000);
+                              xTimerReset(hTOCumul, 1000);
                             }
                             byChannel = changeGiver.data[byIndex] & 0X0F;
                             //Traitement des pièces insérées.
@@ -547,9 +547,12 @@ void vTaskCG(void)
 
                             //TODO afficher le montant à payer.
                             //xTaskNotifyGive(mainBoardData.hDisplayToPay);
-                            setAuditValue((uint32_t) (ADDRESSCGIN + (byChannel * sizeof(uint32_t))),
-                                          (uint32_t) (changeGiver.config.byCoinValue[byChannel] *
-                                                      changeGiver.config.byScalingFactor));
+                            
+                            setAuditValue((uint32_t) (ADDRESSCGIN + (byChannel *
+                                                                     sizeof(uint32_t))),
+                                          getAuditValue((uint32_t) (ADDRESSCGIN +
+                                                                    (byChannel *
+                                                                     sizeof(uint32_t)))) + 1);
                             ++byIndex;
                             //setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_AMOUNT);
                         }
@@ -728,7 +731,7 @@ void vTaskCG(void)
                     // <editor-fold defaultstate="collapsed" desc="SUB_ALTERNATIVE_PAYOUT">
                 {
                     //                    SYS_WDT_TimerClear();
-                    xTimerStop(hTimerCumul, 1000);
+                    xTimerStop(hTOCumul, 1000);
 
                     byIndex = 0;
                     do
@@ -771,11 +774,12 @@ void vTaskCG(void)
                                  */
                                 changeGiver.lAmountDispensed += (changeGiver.byCoinsBuffer[byIndex] * changeGiver.config.byCoinValue[byIndex] *
                                                                  changeGiver.config.byScalingFactor);
-                                setAuditValue(ADDRESSCGOUT + (byIndex * sizeof(uint32_t)),
-                                              getAuditValue(ADDRESSCGOUT + (byIndex * 4)) +
-                                              (changeGiver.byCoinsBuffer[byIndex] *
-                                               changeGiver.config.byCoinValue[byIndex] *
-                                               changeGiver.config.byScalingFactor));
+                                setAuditValue((uint32_t) (ADDRESSCGOUT + (byIndex *
+                                                                         sizeof(uint32_t))),
+                                              getAuditValue((uint32_t) (ADDRESSCGOUT +
+                                                                        (byIndex *
+                                                                         sizeof(uint32_t)))) + 1);
+
                                 setAmountDispo(getAmountDispo() -
                                                (changeGiver.byCoinsBuffer[byIndex] * changeGiver.config.byCoinValue[byIndex]
                                                 * changeGiver.config.byScalingFactor));
@@ -787,7 +791,7 @@ void vTaskCG(void)
                         {
                             //                        audits.saudit.dwOverPay += (lAmountToDispense - changeGiver.lAmountDispensed) * changeGiver.config.byScalingFactor;
                             //                        EEpromWriteData(ADDRESS_OVERPAY, &audits.saudit.dwOverPay,
-                            //                                        sizeof (audits.saudit.dwOverPay));
+                            //                                        sizeof (audits.saudit.dwOverPay));audits.saudit.dwOverPay += (lAmountToDispense - changeGiver.lAmountDispensed) * changeGiver.config.byScalingFactor;
                             if(hTimerOverPay)
                             {
                                 xTimerStart(hTimerOverPay, 1000);

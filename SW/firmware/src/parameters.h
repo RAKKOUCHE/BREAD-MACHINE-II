@@ -21,12 +21,14 @@
 /* ************************************************************************** */
 
 #include <string.h>
+#include <machine/types.h>
 #include "peripheral/nvm/plib_nvm.h"
 #include "peripheral/uart/plib_uart3.h"
 #include "FreeRTOS.h"
 #include "timers.h"
 #include "mainboard2.h"
 #include "dataCommun.h"
+#include "MDB/mdb_cg.h"
 
 
 /* Provide C++ Compatibility */
