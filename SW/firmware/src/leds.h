@@ -1,22 +1,22 @@
 /* ************************************************************************** */
-/** Descriptive File Name
-
-  @Company
-    Company Name
-
-  @File Name
-    filename.h
-
-  @Summary
-    Brief description of the file.
-
-  @Description
-    Describe the purpose of this file.
- */
-/* ************************************************************************** */
+/**
+ * \author Rachid AKKOUCHE
+ * 
+ *  Company RASoftware
+ * 
+ * \date 2019 11 08
+ * 
+ * \file hd44780.h
+ * 
+ * \brief Fichier entête de la gestion des leds du clavier.
+ * 
+ * \details Ce fichier fournit les prototypes et les définitions utilisés par le
+ * programme pour  gérer les leds du clavier.
+ *  
+ ***************************************************************************/
 
 #ifndef _LEDS_H    /* Guard against multiple inclusion */
-#define _LEDS_H
+#define _EXAMPLE_FILE_NAME_H
 
 
 /* ************************************************************************** */
@@ -29,7 +29,6 @@
  */
 
 /* TODO:  Include other files here if needed. */
-
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -48,26 +47,6 @@ extern "C"
         banner.
      */
 
-
-    /* ************************************************************************** */
-    /** Descriptive Constant Name
-
-      @Summary
-        Brief one-line summary of the constant.
-    
-      @Description
-        Full description, explaining the purpose and usage of the constant.
-        <p>
-        Additional description in consecutive paragraphs separated by HTML 
-        paragraph breaks, as necessary.
-        <p>
-        Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
-    
-      @Remarks
-        Any additional remarks
-     */
-
-
     // *****************************************************************************
     // *****************************************************************************
     // Section: Data Types
@@ -78,28 +57,29 @@ extern "C"
         banner.
      */
 
+    /**
+     * \brief Enumération des états des leds.
+     */
+    typedef enum
+    {
+        LED_OFF, /*!<Led éteinte.*/
+        LED_ON, /*!<Led allumée.*/
+        LED_BLINK, /*!|Led clignotante.*/
+        //LED_CHASE, /*!<Led défilante.*/
+        LED_IDLE, /*!<Aucune modification de l'état de la led.*/
+    } LED_STATE;
+
+    /**
+     * \brief Enumération activation des leds
+     */
+    typedef enum
+    {
+        disable, /*!<Led ignorée.*/
+        enable, /*!Led en service.*/
+    } LED_ENABLE;
+
 
     // *****************************************************************************
-
-    /** Descriptive Data Type Name
-
-      @Summary
-        Brief one-line summary of the data type.
-    
-      @Description
-        Full description, explaining the purpose and usage of the data type.
-        <p>
-        Additional description in consecutive paragraphs separated by HTML 
-        paragraph breaks, as necessary.
-        <p>
-        Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
-
-      @Remarks
-        Any additional remarks
-        <p>
-        Describe enumeration elements and structure and union members above each 
-        element or member.
-     */
 
     // *****************************************************************************
     // *****************************************************************************
@@ -111,57 +91,32 @@ extern "C"
         banner.
      */
 
-    // *****************************************************************************
+
     /**
-      @Function
-        int ExampleFunctionName ( int param1, int param2 ) 
-
-      @Summary
-        Brief one-line description of the function.
-
-      @Description
-        Full description, explaining the purpose and usage of the function.
-        <p>
-        Additional description in consecutive paragraphs separated by HTML 
-        paragraph breaks, as necessary.
-        <p>
-        Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
-
-      @Precondition
-        List and describe any required preconditions. If there are no preconditions,
-        enter "None."
-
-      @Parameters
-        @param param1 Describe the first parameter to the function.
-    
-        @param param2 Describe the second parameter to the function.
-
-      @Returns
-        List (if feasible) and describe the return values of the function.
-        <ul>
-          <li>1   Indicates an error occurred
-          <li>0   Indicates an error did not occur
-        </ul>
-
-      @Remarks
-        Describe any special behavior not described above.
-        <p>
-        Any additional remarks.
-
-      @Example
-        @code
-        if(ExampleFunctionName(1, 2) == 0)
-        {
-            return 3;
-        }
+     * \brief Etabli l'état d'une led.
+     * \param[in] ledNum Numéro de la led concernée.
+     * \param[in] etat Etat de la led concernée.
      */
+    void setLedState(const uint8_t ledNum, const LED_STATE etat);
+
+    /**
+     * \brief Active ou desactive la led.
+     * \param[in] ledNum Numéro de la led concernée.
+     * \param[in] en Enable pour activer, Disable pour desactiver
+     */
+    void setLedEnable(const uint8_t ledNum, const LED_ENABLE en);
+
+    /**
+     * \brief Initialisation du module des leds.
+     */
+    void vLEDs_Keyb_Init(void);
 
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _LEDS_H */
+#endif /* _EXAMPLE_FILE_NAME_H */
 
 /* *****************************************************************************
  End of File

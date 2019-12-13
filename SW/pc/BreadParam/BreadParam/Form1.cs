@@ -38,7 +38,7 @@ namespace BreadParam
         /// <summary>
         /// Longueur maximum du numéro de téléphone
         /// </summary>
-        const Byte lenPhoneNumber = 16;
+        const Byte lenPhoneNumber = 13;
 
         /// <summary>
         /// Buffer à usage général.
@@ -265,10 +265,21 @@ namespace BreadParam
                         byBuffer = new byte[360];
                         for (int i = 0; i < 6; i++)
                         {
-                            byte[] array = Encoding.ASCII.GetBytes(dataGridViewTelephone["Numero", i].Value.ToString().Trim());
-                            for (int j = 0; j < 13; j++)
+                            byte[] array1 = Encoding.ASCII.GetBytes(dataGridViewTelephone["Numero", i].Value.ToString().Trim());
+                            byte[] array2 = new byte[13];
+                            int j;
+                            for (j = 0; j < 13 - array1.Length; j++)
                             {
-                                byBuffer[60 * i + (j * 4)] = Convert.ToByte(array[j] - 0x30);
+                                array2[j] = 0x20;
+                            }
+
+                            for (int k = j; k < 13; k++)
+                            {
+                                array2[k] = array1[k - j];
+                            }
+                            for (j = 0; j < 13; j++)
+                            {
+                                byBuffer[60 * i + (j * 4)] = Convert.ToByte(array2[j]);// - 0x30);
                             }
                             byBuffer[(60 * (i + 1)) - 8] = Convert.ToByte(dataGridViewTelephone["EnableAudit", i].Value, CultureInfo.CurrentCulture);
                             byBuffer[(60 * (i + 1)) - 4] = Convert.ToByte(dataGridViewTelephone["EnableAlarm", i].Value, CultureInfo.CurrentCulture);
@@ -491,7 +502,7 @@ namespace BreadParam
                 {
                     sResult = ((DataGridView)sender).CurrentCell.Value.ToString().Replace(" ", "");
                     sResult = sResult.Replace(".", "");
-                    if ((sResult.Length >= lenPhoneNumber) || (sResult.Length < 6))
+                    if ((sResult.Length > lenPhoneNumber) || (sResult.Length < 6))
                     {
                         throw new Exception(BreadParam.Properties.Resources.Str_Phone_Number_Error);
                     }
@@ -647,9 +658,19 @@ namespace BreadParam
                     //Téléphones
                     for (int i = 0; i < 6; i++)
                     {
-                        dataGridViewTelephone["Numero", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}", byBuffer[i * 60 + 28], byBuffer[i * 60 + 32], byBuffer[i * 60 + 36],
-                            byBuffer[i * 60 + 40], byBuffer[i * 60 + 44], byBuffer[i * 60 + 48], byBuffer[i * 60 + 52], byBuffer[i * 60 + 56], byBuffer[i * 60 + 60], byBuffer[i * 60 + 64], byBuffer[i * 60 + 68],
-                            byBuffer[i * 60 + 72], byBuffer[i * 60 + 76]);
+                        string s = "";
+                        for (int k = 0; k < 13; k++)
+                        {
+                            if ((byBuffer[(i * 60) + (28 + (k * 4))]) != 0x20)
+                            {
+                                s += string.Format(CultureInfo.CurrentCulture, "{0:d}", (byBuffer[(i * 60) + (28 + (k * 4))]) - 0x30);
+                            }
+                        }
+                        dataGridViewTelephone["Numero", i].Value = s;
+                        //dataGridViewTelephone["Numero", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:d}{1:d}{2:d}{3:d}{4:d}{5:d}{6:d}{7:d}{8:d}{9:d}{10:d}{11:d}{12:d}",
+                        //    byBuffer[i * 60 + 28] - 0x30, byBuffer[i * 60 + 32] - 0x30, byBuffer[i * 60 + 36] - 0x30, byBuffer[i * 60 + 40] - 0x30, byBuffer[i * 60 + 44] - 0x30,
+                        //    byBuffer[i * 60 + 48] - 0x30, byBuffer[i * 60 + 52] - 0x30, byBuffer[i * 60 + 56] - 0x30, byBuffer[i * 60 + 60] - 0x30, byBuffer[i * 60 + 64] - 0x30,
+                        //    byBuffer[i * 60 + 68] - 0x30, byBuffer[i * 60 + 72] - 0x30, byBuffer[i * 60 + 76] - 0x30);
                         dataGridViewTelephone["EnableAudit", i].Value = byBuffer[i * 60 + 80] & 0x01;
                         dataGridViewTelephone["EnableAlarm", i].Value = byBuffer[i * 60 + 84] & 0x01;
                     }
@@ -709,7 +730,6 @@ namespace BreadParam
                         dataGridViewBV["ValueBV", i].Value = string.Format(CultureInfo.CurrentCulture, "{0:F2}", Convert.ToDecimal(billsValue[i]) / 100);
 
                     }
-
                 }
             }
             catch (Exception exception)

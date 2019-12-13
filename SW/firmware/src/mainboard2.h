@@ -54,8 +54,9 @@
 #include "hd44780.h"
 #include "globaldef.h"
 #include "parameters.h"
+#include "leds.h"
 #include "peripheral/gpio/plib_gpio.h"
-#include "config/default/peripheral/uart/plib_uart3.h"
+#include "peripheral/uart/plib_uart3.h"
 #include "dataCommun.h"
 #include "MDB/mdb.h"
 
@@ -98,7 +99,6 @@ extern "C"
         MAINBOARD2_STATE_DISPLAY_CHOICE, /*!<Affichage choix du produit.*/
         MAINBOARD2_STATE_DISPLAY_AMOUNT, /*!<Affichage du montant disponible.*/
         MAINBOARD2_STATE_CHANGE, /*!<Lance la procédure de change.*/
-
     } MAINBOARD2_STATES;
 
 

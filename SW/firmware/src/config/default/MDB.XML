@@ -2521,7 +2521,7 @@
         </Integer>
         <Integer dnOrder="8" id="FREERTOS_TOTAL_HEAP_SIZE">
           <Values dnOrder="0">
-            <User dnOrder="0" value="56000"/>
+            <User dnOrder="0" value="64000"/>
           </Values>
         </Integer>
         <Boolean dnOrder="9" id="FREERTOS_USE_CONFIGASSERT">
@@ -2913,7 +2913,8 @@
         </File>
       </Symbols>
     </UniqueComponent>
-    <UniqueComponent dnOrder="6" id="uart1">
+    <UniqueComponent dnOrder="6" id="rcon"/>
+    <UniqueComponent dnOrder="7" id="uart1">
       <Symbols dnOrder="0">
         <Integer dnOrder="0" id="BAUD_RATE">
           <Values dnOrder="0">
@@ -2952,7 +2953,7 @@
         </Boolean>
       </Symbols>
     </UniqueComponent>
-    <UniqueComponent dnOrder="7" id="uart3">
+    <UniqueComponent dnOrder="8" id="uart3">
       <Symbols dnOrder="0">
         <Integer dnOrder="0" id="BAUD_RATE">
           <Values dnOrder="0">
@@ -2988,7 +2989,8 @@
     </UniqueComponent>
   </Components>
   <UserData>
-    <ComponentGraph dnOrder="0" id="__ROOTVIEW">
+    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="0"/>
+    <ComponentGraph dnOrder="1" id="__ROOTVIEW">
       <ElementPositions dnOrder="0">
         <ElementPosition dnOrder="0" id="FreeRTOS" x="2" y="120"/>
         <ElementPosition dnOrder="1" id="Group0" x="310" y="26"/>
@@ -2996,16 +2998,16 @@
         <ElementPosition dnOrder="3" id="HarmonyCore" x="2" y="204"/>
         <ElementPosition dnOrder="4" id="core" x="32" y="14"/>
         <ElementPosition dnOrder="5" id="dfp" x="12" y="66"/>
-        <ElementPosition dnOrder="6" id="uart1" x="580" y="20"/>
-        <ElementPosition dnOrder="7" id="uart3" x="420" y="20"/>
+        <ElementPosition dnOrder="6" id="rcon" x="740" y="20"/>
+        <ElementPosition dnOrder="7" id="uart1" x="580" y="20"/>
+        <ElementPosition dnOrder="8" id="uart3" x="420" y="20"/>
       </ElementPositions>
     </ComponentGraph>
-    <ComponentGraph dnOrder="1" id="Group2">
+    <ComponentGraph dnOrder="2" id="Group2">
       <ElementPositions dnOrder="0">
         <ElementPosition dnOrder="0" id="nvm" x="20" y="20"/>
       </ElementPositions>
     </ComponentGraph>
-    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="2"/>
     <ComponentGraph dnOrder="3" id="Group0">
       <ElementPositions dnOrder="0">
         <ElementPosition dnOrder="0" id="drv_at24" x="180" y="20"/>

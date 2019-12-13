@@ -97,12 +97,12 @@ const unsigned int __attribute__((space(prog),
    1,
    100, 100, 100,
    100, 100, 100,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 1, 0, 0,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 2, 0, 0,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 3, 0, 0,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 4, 0, 0,
-   0, 0, 3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 5, 0, 0,
-   0, 0, 3, 3, 6, 5, 1, 6, 0, 4, 0, 4, 6, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X31, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X32, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X33, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X34, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X35, 0, 0,
+   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X36, 0, 0,
    0, 0, 0,
    30, 60,
    983103, //Activation par défaut des moyens de paiement 0X001F001F 
@@ -543,10 +543,10 @@ void vParametersGetFromPC(void)
     //TODO placer un timer et effectuer les vérifications
     UART3_WriteByte(0X5A);
     while(!UART3_TransmitComplete());
-    pcCom.isTOReached = false;
+//    pcCom.isTOReached = false;
     xTimerStart(pcCom.hTimerTO_PC, 1000);
-    while(!UART3_ReceiverIsReady() && !pcCom.isTOReached);
-    if(!pcCom.isTOReached)
+    while(!UART3_ReceiverIsReady());// && !pcCom.isTOReached);
+//    if(!pcCom.isTOReached)
     {
         if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
         {

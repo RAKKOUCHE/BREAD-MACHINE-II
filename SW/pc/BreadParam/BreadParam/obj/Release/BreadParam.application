@@ -4,7 +4,7 @@
   <description asmv2:publisher="BreadParam" asmv2:product="BreadParam" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="BreadParam.exe.manifest" size="5129">
@@ -14,7 +14,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uOqonuEKONp1Ef6EPa8U/CygEzL586mkugYEtpb5XoM=</dsig:DigestValue>
+        <dsig:DigestValue>2G6+nr6+RpuwDdxp8aqaczLnaUvii2sYyl5MHKbYhN0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

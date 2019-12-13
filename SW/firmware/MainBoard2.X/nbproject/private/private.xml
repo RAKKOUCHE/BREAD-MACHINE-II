@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="8">
-        <file>
-            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</url>
-            <bookmark id="3">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="7">
-                <name/>
-                <line>174</line>
-                <key/>
-            </bookmark>
-            <bookmark id="8">
-                <name/>
-                <line>208</line>
-                <key/>
-            </bookmark>
-        </file>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
         <file>
             <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.c</url>
             <bookmark id="2">
@@ -29,6 +11,37 @@
             <bookmark id="1">
                 <name/>
                 <line>291</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</url>
+            <bookmark id="3">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+            <bookmark id="7">
+                <name/>
+                <line>173</line>
+                <key/>
+            </bookmark>
+            <bookmark id="8">
+                <name/>
+                <line>207</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.c</url>
+            <bookmark id="9">
+                <name/>
+                <line>75</line>
+                <key/>
+            </bookmark>
+            <bookmark id="10">
+                <name/>
+                <line>114</line>
                 <key/>
             </bookmark>
         </file>
@@ -52,20 +65,24 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="MT DISTRIBUTION">
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/initialization.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_BV.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/driver/at24/src/drv_at24.c</file>
-        </group>
         <group>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/uart/plib_uart3.c</file>
+        </group>
+        <group name="MT DISTRIBUTION">
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/gpio/plib_gpio.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.c</file>
+            <file>file:/D:/Program%20Files%20(x86)/Microchip/MPLABX/v5.30/packs/Microchip/PIC32MX_DFP/1.1.215/include/proc/p32mx470f512l.h</file>
         </group>
     </open-files>
 </project-private>

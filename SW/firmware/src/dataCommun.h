@@ -70,7 +70,7 @@ extern "C"
         PCCOMM_STATE state; /*!<Etat de la tâche de communication avec le PC.*/
         TaskHandle_t handlePcCom; /*!<Handle de la tâche de communication avec le PC.*/
         TimerHandle_t hTimerTO_PC; /*!<Timer du TO de la communication.*/
-        bool isTOReached; /*!<Flag indiquant que le TO est dépassé.*/
+        //bool isTOReached; /*!<Flag indiquant que le TO est dépassé.*/
     } pcCom;
 
     // *****************************************************************************

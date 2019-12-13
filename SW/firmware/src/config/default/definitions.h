@@ -57,6 +57,7 @@
 #include "peripheral/evic/plib_evic.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "peripheral/rcon/plib_rcon.h"
 #include "peripheral/nvm/plib_nvm.h"
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"

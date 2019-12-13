@@ -14,3 +14,18 @@ D:\Projets\MTDistribution\BreadMachine\SW\PC\BreadParam\BreadParam\obj\Release\B
 D:\Projets\MTDistribution\BreadMachine\SW\PC\BreadParam\BreadParam\obj\Release\BreadParam.csproj.CoreCompileInputs.cache
 D:\Projets\MTDistribution\BreadMachine\SW\PC\BreadParam\BreadParam\obj\Release\BreadParam.TrustInfo.xml
 D:\Projets\MTDistribution\BreadMachine\SW\PC\BreadParam\BreadParam\obj\Release\BreadParam.csprojAssemblyReference.cache
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\bin\Release\BreadParam.exe.config
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\bin\Release\BreadParam.exe.manifest
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\bin\Release\BreadParam.application
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\bin\Release\BreadParam.exe
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\bin\Release\BreadParam.pdb
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.csprojAssemblyReference.cache
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.Form1.resources
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.FormApropos.resources
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.Properties.Resources.resources
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.csproj.GenerateResource.cache
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.TrustInfo.xml
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.exe.manifest
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.application
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.exe
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.pdb

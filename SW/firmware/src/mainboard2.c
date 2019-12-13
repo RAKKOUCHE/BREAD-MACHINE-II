@@ -593,7 +593,7 @@ void MAINBOARD2_Initialize(void)
     vAuditsInit();
     vDataInit();
     vMDBInit();
-
+    vLEDs_Keyb_Init();
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */

@@ -42,7 +42,7 @@ extern "C"
      * \brief temps de polling en ms du lecteur cashless.
      */
     //#define MDB_POLLING_MS ((125 + 200) / 6) * MILLISEC //Environ 54
-#define MDB_POLLING_MS (150 /3)
+#define MDB_POLLING_MS (150)
 
     /**
      * \def MDBRETRY
