@@ -120,6 +120,8 @@
       <itemPath>../src/delay_us.h</itemPath>
       <itemPath>../src/leds.h</itemPath>
       <itemPath>../src/mainboard2.h</itemPath>
+      <itemPath>../src/clavier.h</itemPath>
+      <itemPath>../src/DS18B20.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -216,6 +218,8 @@
       <itemPath>../src/leds.c</itemPath>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/mainboard2.c</itemPath>
+      <itemPath>../src/clavier.c</itemPath>
+      <itemPath>../src/DS18B20.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

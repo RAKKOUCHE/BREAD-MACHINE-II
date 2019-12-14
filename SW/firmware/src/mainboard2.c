@@ -52,6 +52,17 @@
  * @{
  */
 
+/**
+ * \brief Nom du timer de choix.
+ */
+#define CHOICE_TIMER_NAME "Choice tmr"
+
+/**
+ * \brief Temps d'affichage de la selection.
+ */
+#define CHOICE_TIMER_DELAY (20 * SECONDE)
+
+
 const char STR_MANUFACTURER[] = "MT DISTRIBUTION ";
 const char STR_VERSION[] = " VERSION";
 const char STR_SELECT[] = "   Choisissez   ";
@@ -65,6 +76,8 @@ const char STR_YOUR_CHOICE[] = "   votre choix";
 const char STR_RETURN_IN_PROGRESS[] = "Rendu en cours...";
 const char STR_MACHINE[] = "    MACHINE     ";
 const char STR_HS[] = "      VIDE      ";
+const char STR_CHOICE[] = "Choix : ";
+const char STR_PRICE[] = "Prix ";
 
 // *****************************************************************************
 // *****************************************************************************
@@ -131,6 +144,55 @@ void vTO_OverPay(const TimerHandle_t HandleTimer)
 
 /*********************************************************************
  * Function:        
+ *         static void vTO_DisplaySelection(const TimerHandle_t handleTimer)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void vTO_DisplaySelection(const TimerHandle_t handleTimer)
+{
+    clrSelection();
+    mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_SELECT;
+}
+
+/*********************************************************************
+ * Function:        
  *         void vTO_Cumul(const TimerHandle_t handleTimer)
  * 
  * Author:
@@ -169,7 +231,6 @@ void vTO_OverPay(const TimerHandle_t HandleTimer)
  *         None
  *         
  ********************************************************************/
-
 void vTO_Cumul(const TimerHandle_t handleTimer)
 {
     setMainBoardTaskState(MAINBOARD2_STATE_CHANGE);
@@ -561,14 +622,10 @@ void setMDBChecked(bool isChecked)
     mainboard2Data.isMDBChecked = isChecked;
 }
 
-
-
 // *****************************************************************************
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
-
-
 
 // *****************************************************************************
 // *****************************************************************************
@@ -593,7 +650,9 @@ void MAINBOARD2_Initialize(void)
     vAuditsInit();
     vDataInit();
     vMDBInit();
-    vLEDs_Keyb_Init();
+    vLEDsKeybInit();
+    vKeyboardInit();
+
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
@@ -609,12 +668,14 @@ void MAINBOARD2_Initialize(void)
 
 void MAINBOARD2_Tasks(void)
 {
-    static uint32_t oldAmount;
+    static uint32_t oldAmount = 0;
+    static uint8_t oldChoice = 0;
     /* Check the application's current state. */
     switch(mainboard2Data.state)
     {
             /* Application's initial state. */
         case MAINBOARD2_STATE_INIT:
+            // <editor-fold desc="MAINBOARD2_STATE_INIT"> 
         {
             oldAmount = 0;
             setAmountDispo(0);
@@ -639,20 +700,28 @@ void MAINBOARD2_Tasks(void)
             if(hTOCumul == NULL)
             {
                 hTOCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
-                                           getTOCumul() * SECONDE :
-                                           portMAX_DELAY,
-                                           false, NULL, vTO_Cumul);
+                                        getTOCumul() * SECONDE :
+                                        portMAX_DELAY,
+                                        false, NULL, vTO_Cumul);
+            }
+            if(hTimerDisplaySelection == NULL)
+            {
+                hTimerDisplaySelection = xTimerCreate(CHOICE_TIMER_NAME,
+                                                      CHOICE_TIMER_DELAY,
+                                                      false, NULL,
+                                                      vTO_DisplaySelection);
             }
             break;
-        }
+        }// </editor-fold>
         case MAINBOARD2_STATE_SERVICE_TASKS:
+            // <editor-fold desc="MAINBOARD2_STATE_SERVICE_TASKS">         
         {
             LED_SYS_Toggle();
             if(getIsRAZAudit())
             {
                 setIsRAZAudit(false);
             }
-            
+
             if(oldAmount != getAmountDispo())
             {
                 mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
@@ -662,16 +731,41 @@ void MAINBOARD2_Tasks(void)
                     xTimerStop(hTOCumul, 1000);
                 }
             }
+            if(getSelection() && (getSelection() != oldChoice))
+            {
+                oldChoice = getSelection();
+                uint8_t byIndex;
+                for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+                {
+                    setLedState(byIndex, LED_OFF);
+                }
+                setLedState(oldChoice - 1, LED_ON);
+                if(getAmountDispo())
+                {
+                    mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
+                }
+                else
+                {
+                    vLCD_CLEAR();
+                    vDisplayLCD("%s%u", STR_CHOICE, getSelection());
+                    vLCDGotoXY(1, 2);
+                    vDisplayLCD("%s %.*f\7", STR_PRICE, mdb.byDecimalPos,
+                                (double) getProductPrice(getSelection() - 1) / mdb.wCurrencyDivider);
+                    xTimerStart(hTimerDisplaySelection, 1000);
+                }
+            }
             break;
-        }
-        case MAINBOARD2_STATE_DISPLAY_CHOICE:
+        }// </editor-fold>
+        case MAINBOARD2_STATE_DISPLAY_SELECT:
             // <editor-fold desc="MAINBOARD2_STATE_DISPLAY_CHOICE"> 
         {
+            oldChoice = 0;
             mainboard2Data.state = MAINBOARD2_STATE_SERVICE_TASKS;
             vLCD_CLEAR();
             vDisplayLCD("%s", STR_SELECT);
             vLCDGotoXY(1, 2);
             vDisplayLCD("%s", STR_YOUR_PRODUCT);
+            setLedChase(true);
             break;
         }// </editor-fold>
         case MAINBOARD2_STATE_DISPLAY_AMOUNT:
@@ -679,9 +773,21 @@ void MAINBOARD2_Tasks(void)
         {
             mainboard2Data.state = getAmountDispo() ?
                     MAINBOARD2_STATE_SERVICE_TASKS :
-                    MAINBOARD2_STATE_DISPLAY_CHOICE;
+                    MAINBOARD2_STATE_DISPLAY_SELECT;
             vLCD_CLEAR();
-            vDisplayLCD("%s %.*f\7", "Credit : ", mdb.byDecimalPos, (double) getAmountDispo() / mdb.wCurrencyDivider);
+            vDisplayLCD("%s %.*f\7", STR_CREDIT, mdb.byDecimalPos,
+                        (double) getAmountDispo() / mdb.wCurrencyDivider);
+            if(getSelection())
+            {
+                xTimerStop(hTimerDisplaySelection, 1000);
+                vLCDGotoXY(1, 2);
+                if(getAmountDispo() < getProductPrice((getSelection() - 1)))
+                {
+                    vDisplayLCD("%s %.*f\7", STR_TO_PAY, mdb.byDecimalPos,
+                                (double) (getProductPrice(getSelection() - 1) -
+                                          getAmountDispo()) / mdb.wCurrencyDivider);
+                }
+            }
             break;
         }// </editor-fold>
         case MAINBOARD2_STATE_CHANGE:
@@ -698,7 +804,7 @@ void MAINBOARD2_Tasks(void)
 
             mainboard2Data.state = getAmountDispo() ?
                     MAINBOARD2_STATE_DISPLAY_AMOUNT :
-                    MAINBOARD2_STATE_DISPLAY_CHOICE;
+                    MAINBOARD2_STATE_DISPLAY_SELECT;
 
             if(!BOT_1_Get() && !BOT_2_Get() && !BOT_3_Get())
             {
@@ -710,8 +816,6 @@ void MAINBOARD2_Tasks(void)
         }// </editor-fold>
 
             /* TODO: implement your application state machine.*/
-
-
             /* The default state should never be executed. */
         default:
         {
@@ -726,5 +830,5 @@ void MAINBOARD2_Tasks(void)
  */
 
 /*******************************************************************************
- End of File
+End of File
  */

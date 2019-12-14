@@ -54,11 +54,13 @@
 #include "hd44780.h"
 #include "globaldef.h"
 #include "parameters.h"
-#include "leds.h"
 #include "peripheral/gpio/plib_gpio.h"
 #include "peripheral/uart/plib_uart3.h"
 #include "dataCommun.h"
 #include "MDB/mdb.h"
+#include "clavier.h"
+#include "leds.h"
+
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -96,7 +98,7 @@ extern "C"
         /* Application's state machine's initial state. */
         MAINBOARD2_STATE_INIT = 0, /*!<Initialisation de l'application.*/
         MAINBOARD2_STATE_SERVICE_TASKS, /*!<Etat de l'application en fonctionnement.*/
-        MAINBOARD2_STATE_DISPLAY_CHOICE, /*!<Affichage choix du produit.*/
+        MAINBOARD2_STATE_DISPLAY_SELECT, /*!<Affichage choix du produit.*/
         MAINBOARD2_STATE_DISPLAY_AMOUNT, /*!<Affichage du montant disponible.*/
         MAINBOARD2_STATE_CHANGE, /*!<Lance la procédure de change.*/
     } MAINBOARD2_STATES;
@@ -137,6 +139,11 @@ extern "C"
      */
     TimerHandle_t hTimerOverPay;
 
+    /**
+     * \brief Handle du to déclenhant l'annulation de l'affichage du choix.
+     */
+    TimerHandle_t hTimerDisplaySelection;
+    
     // *****************************************************************************
     // *****************************************************************************
     // Section: Application Routines

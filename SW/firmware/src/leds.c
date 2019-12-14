@@ -1,5 +1,4 @@
 /* ************************************************************************** */
-
 /**
  * \author Rachid AKKOUCHE
  * 
@@ -12,7 +11,7 @@
  * \brief Fichier source de la gestion des leds du clavier
  * 
  * \details Ce fichier fournit les fonctions et les définitions utilisés par le
- programme pour  gérer les leds du clavier
+ *  programme pour  gérer les leds du clavier
  *  
  ***************************************************************************/
 
@@ -34,6 +33,7 @@
 #include "leds.h"
 #include "globaldef.h"
 #include "peripheral/gpio/plib_gpio.h"
+#include "MDB/mdb.h"
 
 /* TODO:  Include other files here if needed. */
 
@@ -50,17 +50,17 @@
 /**
  * \brief Priorité de la tâche de gestion des leds.
  */
-#define TASK_LED_PRIORITY 1
+#define LED_TASK_PRIORITY 1
 
 /**
  * \brief Mom en clair de la tâche
  */
-#define TASK_LED_NAME "Led task"
+#define LED_TASK_NAME "Led task"
 
 /**
  * \brief Dimension de la pile de la  tâche
  */
-#define TASK_LED_STACK 512
+#define LED_TASK_STACK 512
 
 /**
  * \brief Délai pour la tâche.
@@ -101,56 +101,59 @@ static void vTaskLed(void *vParameter)
     static uint8_t byIndex = 0;
     while(1)
     {
-        if(leds.isChase)
+        if(mdb.isMDBChecked)
         {
-            if(PORTD >> (leds.listEnable[byIndex] && 1))
+            if(leds.isChase)
             {
-                LATDCLR = 1 << leds.listEnable[byIndex];                
-            }
-            if(++byIndex >= leds.numEnable)
-            {
-                byIndex = 0;
-            }
-            LATDSET = 1 << leds.listEnable[byIndex];                
-        }
-        else
-        {
-            for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
-            {
-                if(leds.led[byIndex].enableState == enable)
+                if((PORTD >> leds.listEnable[byIndex]) & 1)
                 {
-                    switch(leds.led[byIndex].ledState)
+                    LATDCLR = (1 << leds.listEnable[byIndex]);
+                }
+                if(++byIndex >= leds.numEnable)
+                {
+                    byIndex = 0;
+                }
+                LATDSET = (1 << leds.listEnable[byIndex]);
+            }
+            else
+            {
+                for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+                {
+                    if(leds.led[byIndex].enableState == enable)
                     {
-                        case LED_OFF:
-                            // <editor-fold desc="LED_OFF"> 
+                        switch(leds.led[byIndex].ledState)
                         {
-                            LATDCLR = (1 << (4 + byIndex));
-                            leds.led[byIndex].ledState = LED_IDLE;
-                            break;
-                        }// </editor-fold>
-                        case LED_ON:
-                            // <editor-fold desc="LED_ON"> 
-                        {
-                            LATDSET = (1 << (4 + byIndex));
-                            leds.led[byIndex].ledState = LED_IDLE;
-                            break;
-                        }// </editor-fold>
-                        case LED_BLINK:
-                            // <editor-fold desc="LED_BLINK"> 
-                        {
-                            LATDINV = (1 << (4 + byIndex));
-                            break;
-                        }// </editor-fold>
-                        case LED_IDLE:
-                            // <editor-fold desc="LED_IDLE"> 
-                        {
+                            case LED_OFF:
+                                // <editor-fold desc="LED_OFF"> 
+                            {
+                                LATDCLR = (1 << (4 + byIndex));
+                                leds.led[byIndex].ledState = LED_IDLE;
+                                break;
+                            }// </editor-fold>
+                            case LED_ON:
+                                // <editor-fold desc="LED_ON"> 
+                            {
+                                LATDSET = (1 << (4 + byIndex));
+                                leds.led[byIndex].ledState = LED_IDLE;
+                                break;
+                            }// </editor-fold>
+                            case LED_BLINK:
+                                // <editor-fold desc="LED_BLINK"> 
+                            {
+                                LATDINV = (1 << (4 + byIndex));
+                                break;
+                            }// </editor-fold>
+                            case LED_IDLE:
+                                // <editor-fold desc="LED_IDLE"> 
+                            {
 
-                            break;
-                        }// </editor-fold>
-                        default:
-                        {
+                                break;
+                            }// </editor-fold>
+                            default:
+                            {
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
@@ -311,7 +314,7 @@ void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
  *         None
  *         
  ********************************************************************/
-void setLedChase(BOOL isOn)
+void setLedChase(const BOOL isOn)
 {
     uint8_t byIndex;
     if((leds.isChase = isOn))
@@ -337,7 +340,7 @@ void setLedChase(BOOL isOn)
 
 // *****************************************************************************
 
-void vLEDs_Keyb_Init(void)
+void vLEDsKeybInit(void)
 {
     uint8_t byIndex;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
@@ -345,14 +348,9 @@ void vLEDs_Keyb_Init(void)
         setLedEnable(byIndex, enable);
         setLedState(byIndex, LED_OFF);
     }
-#ifdef __DEBUG
-    setLedEnable(0, disable);
-#endif 
-    setLedChase(TRUE);
-
     if(leds.taskLed == NULL)
     {
-        xTaskCreate(vTaskLed, TASK_LED_NAME, TASK_LED_STACK, NULL, TASK_LED_PRIORITY, &leds.taskLed);
+        xTaskCreate(vTaskLed, LED_TASK_NAME, LED_TASK_STACK, NULL, LED_TASK_PRIORITY, &leds.taskLed);
     }
 }
 

@@ -1,5 +1,7 @@
 #include "mdb.h"
 
+#define MDB_TASK_NAME "TSK MDB"
+
 /**
  * \brief Priorité de la tâche MDB.
  */
@@ -64,7 +66,6 @@ static void vTaskMDB(void)
     while(1)
     {
         LED_MDB_Toggle();
-
         switch(mdb.state)
         {
             case MDB_INIT:
@@ -117,7 +118,7 @@ static void vTaskMDB(void)
                 if(!mdb.isMDBChecked && changeGiver.isInitialized && billValidator.isInitialized)
                 {
                     mdb.isMDBChecked = true;
-                    setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_CHOICE);
+                    setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_SELECT);
                 }
                 break;
             }
@@ -199,7 +200,7 @@ void vMDBInit(void)
 
     if(mdb.hTaskMdb == NULL)
     {
-        xTaskCreate((TaskFunction_t) vTaskMDB, "TSK MBD", MDB_TASK_STACK, NULL,
+        xTaskCreate((TaskFunction_t) vTaskMDB, MDB_TASK_NAME, MDB_TASK_STACK, NULL,
                     MDB_TASK_PRIORITY, &mdb.hTaskMdb);
         vTaskSuspend(mdb.hTaskMdb);
     }

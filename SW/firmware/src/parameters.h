@@ -66,13 +66,20 @@ extern "C"
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
-
+    
+    /**
+     * \brief Prix d'un produit.
+     * @param num Numéro du produit -1 
+     * @return Prix du produit en centimes.
+     */
+    uint32_t getProductPrice(uint8_t num);
+    
     /**
      * \brief Lit le delay de trop perçu.
      * @return Delai de trop percu.
      */
     uint32_t getDelayOverpay(void);
-    
+
     /**
      * \brief Lit les activations des périphériques dans les paramètres.
      * @return Structure contenant les mots contenant les flags d'activations des\

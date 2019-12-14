@@ -123,6 +123,54 @@ const unsigned int __attribute__((space(prog),
 
 /*********************************************************************
  * Function:        
+ *         uint32 getProductPrice(uint8_t num)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint32_t getProductPrice(uint8_t num)
+{
+    return parameters.data.prices[num];
+}
+
+/*********************************************************************
+ * Function:        
  *         uint8_t getDelayOverpay(void)
  * 
  * Version:

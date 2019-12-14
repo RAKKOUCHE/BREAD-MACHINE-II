@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="11">
         <file>
             <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/audits.c</url>
             <bookmark id="2">
@@ -11,6 +11,14 @@
             <bookmark id="1">
                 <name/>
                 <line>291</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</url>
+            <bookmark id="11">
+                <name/>
+                <line>749</line>
                 <key/>
             </bookmark>
         </file>
@@ -41,7 +49,7 @@
             </bookmark>
             <bookmark id="10">
                 <name/>
-                <line>114</line>
+                <line>116</line>
                 <key/>
             </bookmark>
         </file>
@@ -74,15 +82,12 @@
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/uart/plib_uart3.c</file>
         </group>
         <group name="MT DISTRIBUTION">
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/gpio/plib_gpio.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/DS18B20.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/hd44780.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/DS18B20.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/hd44780.h</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.h</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.c</file>
-            <file>file:/D:/Program%20Files%20(x86)/Microchip/MPLABX/v5.30/packs/Microchip/PIC32MX_DFP/1.1.215/include/proc/p32mx470f512l.h</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_CG.c</file>
         </group>
     </open-files>
 </project-private>
