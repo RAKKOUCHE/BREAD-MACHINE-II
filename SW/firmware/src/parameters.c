@@ -506,7 +506,7 @@ void vParametersWrite(void)
     NVM_PageErase(NVM_MEDIA_START_ADDRESS);
     while(NVM_IsBusy());
     NVM_RowWrite(parameters.buffer, NVM_MEDIA_START_ADDRESS);
-    while(NVM_IsBusy());    
+    while(NVM_IsBusy());
 }
 
 /*********************************************************************
@@ -627,13 +627,13 @@ void vParamSendToPC(void)
     while(!UART3_TransmitComplete());
     for(byChannel = 0; byChannel < 8; byChannel++)
     {
-        values.value = changeGiver.config.byCoinValue[byChannel] * changeGiver.config.byScalingFactor;
+        values.value = getCoinValue(byChannel);
         UART3_Write(values.buffer, sizeof(uint32_t));
         while(!UART3_TransmitComplete());
     }
     for(byChannel = 0; byChannel < 8; byChannel++)
     {
-        values.value = billValidator.config.byBillValue[byChannel] * billValidator.config.wScalingFactor;
+        values.value = getBillValue(byChannel);
         UART3_Write(values.buffer, sizeof(uint32_t));
         while(!UART3_TransmitComplete());
     }
@@ -684,26 +684,24 @@ void vParamSendToPC(void)
  ********************************************************************/
 void vParametersGetFromPC(void)
 {
-    //TODO placer un timer et effectuer les vérifications
+    BILL_TYPE billType;
+    COIN_TYPE coinType;
     UART3_WriteByte(0X5A);
     while(!UART3_TransmitComplete());
-//    pcCom.isTOReached = false;
     xTimerStart(pcCom.hTimerTO_PC, 1000);
-    while(!UART3_ReceiverIsReady());// && !pcCom.isTOReached);
-//    if(!pcCom.isTOReached)
+    while(!UART3_ReceiverIsReady());
+    if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
     {
-        if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
-        {
-            while(!UART3_TransmitComplete());
-            changeGiver.coins_enable.coinEnable.wCoinEnable = parameters.data.enables.enable_GG;
-            isSetCoinEnable(true, &changeGiver.coins_enable);
-            billValidator.byBillType.wBillEnable = parameters.data.enables.enable_BV;
-            isSetBillEnable(true, &billValidator.byBillType);            
-            vParametersWrite();
-        }
-        vParametersRead();
+        while(!UART3_TransmitComplete());
+        setCoinEnableMask(parameters.data.enables.enable_GG);
+        coinType = getCoinType();
+        isSetCoinEnable(true, &coinType);
+        setBillEnableMask(parameters.data.enables.enable_BV);
+        billType = getBillType();
+        isSetBillEnable(true, &billType); // &billValidator.byBillType);            
+        vParametersWrite();
     }
-    //vParamSendToPC();
+    vParametersRead();
 }
 
 /**

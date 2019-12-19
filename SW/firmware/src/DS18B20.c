@@ -1,10 +1,4 @@
 /* ************************************************************************** */
-
-#include "peripheral/gpio/plib_gpio.h"
-
-
-#include "delay_us.h"
-
 /**
  * \author Rachid AKKOUCHE
  * 

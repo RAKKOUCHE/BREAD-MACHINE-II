@@ -23,6 +23,17 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
+#include <stdio.h>
+#include <stdbool.h>
+#include <GenericTypeDefs.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+#include "peripheral/gpio/plib_gpio.h"
+#include "globaldef.h"
+#include "delay_us.h"
+#include "mainboard2.h"
 
 /* This section lists the other files that are included in this file.
  */

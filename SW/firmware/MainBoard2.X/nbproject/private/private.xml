@@ -62,12 +62,12 @@
             </bookmark>
             <bookmark id="5">
                 <name/>
-                <line>550</line>
+                <line>647</line>
                 <key/>
             </bookmark>
             <bookmark id="6">
                 <name/>
-                <line>776</line>
+                <line>873</line>
                 <key/>
             </bookmark>
         </file>
@@ -85,7 +85,10 @@
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/gpio/plib_gpio.h</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/DS18B20.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/MDB_CG.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/MDB/mdb_cg.h</file>
         </group>
     </open-files>
 </project-private>

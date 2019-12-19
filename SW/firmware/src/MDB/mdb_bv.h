@@ -9,18 +9,19 @@
 #define	MDB_BV_H
 
 #ifdef	__cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-    
+
     /*Defines******************************************************************/
 
 #include <stdbool.h>
 #include <stdio.h>
 #include "mdbGeneric.h"
 #include "mdb.h"
-    
-    
+
+
     /**
      * \brief Nombre de canaux du lecteur de billets
      */
@@ -36,50 +37,50 @@ extern "C" {
 
     /*Enums********************************************************************/
 
-    typedef enum __attribute__((packed)) {
+    typedef enum
+    {
         STACKED = 0B00000000,
-                ESCROW = 0B00010000,
-                RETURNED = 0B00100000,
-                REJECTED = 0B01000000,
-    }
-    BILL_INTRODUCED;
+        ESCROW = 0B00010000,
+        RETURNED = 0B00100000,
+        REJECTED = 0B01000000,
+    } BILL_INTRODUCED;
 
-    typedef enum __attribute__((packed)) {
+    typedef enum
+    {
         BV_RESET = 0X00,
-                BV_SETUP = 0X01,
-                BV_SECURITY = 0X02,
-                BV_POLL = 0X03,
-                BV_BILL_TYPE = 0X04,
-                BV_ESCROW = 0X05,
-                BV_STACKER = 0X06,
-                BV_EXPANSION_CMD = 0X07,
-                BV_INIT,
-    }
-    BV_STATUS;
+        BV_SETUP = 0X01,
+        BV_SECURITY = 0X02,
+        BV_POLL = 0X03,
+        BV_BILL_TYPE = 0X04,
+        BV_ESCROW = 0X05,
+        BV_STACKER = 0X06,
+        BV_EXPANSION_CMD = 0X07,
+        BV_INIT,
+    } BV_STATUS;
 
-    typedef enum __attribute__((packed)) {
+    typedef enum
+    {
         LEVEL1_ID_WO_OPTIONS = 0x00,
-                LEVEL2_ENABLE_FEATURE = 0X01,
-                LEVEL2_ID_W_OPTIONS = 0x02,
-    }
-    BV_SUB_CMD;
+        LEVEL2_ENABLE_FEATURE = 0X01,
+        LEVEL2_ID_W_OPTIONS = 0x02,
+    } BV_SUB_CMD;
 
-    typedef enum __attribute__((packed)) {
+    typedef enum
+    {
         BV_MOTOR_DEFAULT = 0B00000001,
-                BV_SENSOR_DEFAULT = 0B00000010,
-                BV_BUSY = 0B00000011,
-                BV_ROM_ERROR = 0B00000100,
-                BV_JAM_ACCEPTANCE = 0B00000101,
-                BV_JUST_RESET = 0B00000110,
-                BV_BILL_REMOVED = 0B00000111,
-                BV_CASHBOX_OPEN = 0B00001000,
-                BV_DISABLED = 0B00001001,
-                BV_INVALID_ESCROW = 0B00001010,
-                BV_REFUSED = 0B00001011,
-                BV_BILL_REMOVAL = 0B00001100,
+        BV_SENSOR_DEFAULT = 0B00000010,
+        BV_BUSY = 0B00000011,
+        BV_ROM_ERROR = 0B00000100,
+        BV_JAM_ACCEPTANCE = 0B00000101,
+        BV_JUST_RESET = 0B00000110,
+        BV_BILL_REMOVED = 0B00000111,
+        BV_CASHBOX_OPEN = 0B00001000,
+        BV_DISABLED = 0B00001001,
+        BV_INVALID_ESCROW = 0B00001010,
+        BV_REFUSED = 0B00001011,
+        BV_BILL_REMOVAL = 0B00001100,
 
-    }
-    BV_STATUS_ACCEPTED;
+    } BV_STATUS_ACCEPTED;
 
     /*Structures***************************************************************/
 
@@ -87,22 +88,23 @@ extern "C" {
      * \typedef BillType
      * \brief Strucute contenant la validation des pièces.
      */
-    typedef struct __attribute__((packed)) {
+    typedef struct
+    {
 
-        union __attribute__((packed)) {
-
+        union
+        {
             uint8_t byBillEnable[2];
             uint16_t wBillEnable;
         };
         uint8_t byEscrowEnable[2];
-    }
-    BILL_TYPE;
+    } BILL_TYPE;
 
     /**
      * \typedef ChangeGiverConfig
      * \brief structure contenant la configuration des rendeurs
      */
-    typedef struct __attribute__((packed)) {
+    typedef struct
+    {
         MDBGENERICDEVICECONFIG deviceConfig;
         uint16_t wScalingFactor; /*!< Facteur de multiplication appliqué à tous les montants du périphérique.*/
         uint8_t byDecimalPlace; /*!< Position de la virgule en partant du chiffre le moins significatif. */
@@ -110,48 +112,68 @@ extern "C" {
         uint8_t bySecurityLevel[2];
         uint8_t byEscrow;
         uint8_t byBillValue[NUMBERCHANNELSBV];
-    }
-    BV_CONFIG;
+    } BV_CONFIG;
 
     /**
      * \typedef BV_IDENTIFICATION
      * \brief Structure contenant l'identification et les options du lecteur.
      */
-    typedef struct __attribute__((packed)) {
+    typedef struct
+    {
         uint8_t ManufacturerCode[3];
         uint8_t SerialNumber[12];
         uint8_t Model[12];
         uint8_t SWVersion[2];
         uint8_t Optionnal[4];
-    }
-    BV_IDENTIFICATION;
-
-    typedef struct __attribute__((packed)) {
-        bool isStackerFull;
-        bool isEnable;
-        bool isInitialized;
-        uint16_t wBeforeRetry;
-        BILL_TYPE byBillType;
-        int16_t i16BillInStacker;
-        BV_SUB_CMD expandCmd;
-        BV_STATUS state;
-        BV_CONFIG config;
-        BV_IDENTIFICATION id;
-        uint8_t data[36];
-    }
-    BILL_VALIDATOR;
+    } BV_IDENTIFICATION;
 
     /*Variables****************************************************************/
 
-    BILL_VALIDATOR billValidator;
 
     /*Prototypes***************************************************************/
+
+    /**
+     * \brief
+     * @param status
+     */
+    void setBV_State(BV_STATUS status);
+
+    /**
+     * \brief Requête du mask d'inhibiton des billets.
+     * @return Mask d'inhibition du lecteur de billets.
+     */
+    uint32_t getBillEnableMask(void);
+
+    /**
+     * \brief Defini le mask d'inhition du lecteur de billets.
+     * @param[in] mask Masque d'inhibition.
+     */
+    void setBillEnableMask(const uint32_t mask);
+
+    /**
+     * \brief Requête de la valeur en cts d'un billet
+     * @param byChannel Numéro du canal.
+     * @return Valeur en cts des billets acceptés dans le canal.
+     */
+    uint32_t getBillValue(uint8_t byChannel);
 
     /**
      * @fn vTaskBV
      * @brief tâche parcourant les etats du lecteur de billet.
      */
     void vTaskBV(void);
+
+    /**
+     * \brief
+     * @return 
+     */
+    bool getIsBVInitialized(void);
+    
+    /**
+     * \brief 
+     * @return 
+     */
+    BILL_TYPE getBillType(void);
 
     /**
      * @fn isSetBillEnable
@@ -167,7 +189,7 @@ extern "C" {
      * \brief Initialisation de la tâche du lecteur du billets.
      */
     void vBVInit(void);
-    
+
     /**************************************************************************/
 #ifdef	__cplusplus
 }

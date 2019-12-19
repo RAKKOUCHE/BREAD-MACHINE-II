@@ -25,6 +25,15 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
+#include <GenericTypeDefs.h>
+#include <machine/types.h>
+#include <string.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "globaldef.h"
+#include "peripheral/gpio/plib_gpio.h"
+#include "MDB/mdb.h"
+
 /* This section lists the other files that are included in this file.
  */
 

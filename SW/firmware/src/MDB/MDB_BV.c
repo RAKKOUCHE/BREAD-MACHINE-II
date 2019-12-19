@@ -1,5 +1,20 @@
 #include "mdb_bv.h"
 
+struct
+{
+    bool isStackerFull;
+    bool isEnable;
+    bool isInitialized;
+    uint16_t wBeforeRetry;
+    BILL_TYPE byBillType;
+    int16_t i16BillInStacker;
+    BV_SUB_CMD expandCmd;
+    BV_STATUS state;
+    BV_CONFIG config;
+    BV_IDENTIFICATION id;
+    uint8_t data[36];
+} billValidator;
+
 /*********************************************************************
  * Function:        static bool isGetBVtackerStatus()
  * 
@@ -75,7 +90,6 @@ static bool isBVEnableFeature()
  ********************************************************************/
 static bool isGetBVId(BV_IDENTIFICATION *Idenfication, bool boWOptions)
 {
-
     BYTE byOption = boWOptions ? LEVEL2_ID_W_OPTIONS : LEVEL1_ID_WO_OPTIONS;
     if(byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byOption), &byOption,
                         Idenfication) == (sizeof(BV_IDENTIFICATION)- (4 * (BYTE)!boWOptions)) + 1)
@@ -155,6 +169,150 @@ static void vResetBV(void)
 /******************************************************************************/
 
 /*********************************************************************
+ * Function:        
+ *         bool getIsBVInitialized(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getIsBVInitialized(void)
+{
+    return billValidator.isInitialized;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setBV_State(BV_STATUS status)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setBV_State(BV_STATUS status)
+{
+    billValidator.state = status;
+}
+
+/*********************************************************************
+ * Function:        
+ *         BILL_TYPE* getBillType(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+BILL_TYPE getBillType(void)
+{
+    return billValidator.byBillType;
+}
+
+/*********************************************************************
  * Function:        bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType)
  * 
  * Version:         1.0
@@ -195,6 +353,150 @@ bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType)
 }
 
 /******************************************************************************/
+
+/*********************************************************************
+ * Function:        
+ *         uint32_t getBillEnableMask(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint32_t getBillEnableMask(void)
+{
+    return billValidator.byBillType.wBillEnable;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setBillEnableMask(uint32_t mask)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setBillEnableMask(const uint32_t mask)
+{
+    billValidator.byBillType.wBillEnable = mask;
+}
+
+/*********************************************************************
+ * Function:        
+ *         uint32_t getBilleValue(uint8_t byChannel)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint32_t getBillValue(uint8_t byChannel)
+{
+    return billValidator.config.byBillValue[byChannel] * billValidator.config.wScalingFactor;
+}
 
 /*********************************************************************
  * Function:        void vTaskBV(void)
@@ -410,7 +712,7 @@ void vTaskBV(void)
 
                         }
                         ++byIndex;
-                    }while(byIndex < (byLenAnswer - 1));
+                    } while(byIndex < (byLenAnswer - 1));
                 }
             }
             else

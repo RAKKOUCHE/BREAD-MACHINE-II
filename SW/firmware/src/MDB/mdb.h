@@ -13,6 +13,7 @@
 extern "C"
 {
 #endif
+    
     /*Includes*****************************************************************/
 #include <GenericTypeDefs.h>    
 #include <stdio.h>
@@ -29,13 +30,7 @@ extern "C"
 #include "mainboard2.h"
 #include "hd44780.h"
 
-
-    /*Defines******************************************************************/
-
-
-#define VERIFGSM "Verification GSM"
-    //#define PATIENCE     "   Patience..."
-#define PATIENCE     "  Un instant..."
+    /*Defines*******************************************************/
 
     /**
      * \def MDB_POLLING_MS
@@ -158,13 +153,13 @@ extern "C"
      * @return handle de la tâche MDB.
      */
     TaskHandle_t getHandleMDB(void);
-    
+
     /**
      * \brief Requête de la position du point dçimal.
      * @return Un octet contenant la position du point décimal.
      */
     uint8_t getMDBDecimalPos(void);
-    
+
     /**
      * \brief Défini la position de la virgule.
      * @param value Position de la virgule
@@ -176,7 +171,7 @@ extern "C"
      * @param divider Dviseur.
      */
     void setMDBCurrencyDivider(uint16_t divider);
-    
+
     /**
      * \brief requête du flag indiquant que la chaine MDB est prête.
      * @return true si la chaîne MDB est prête.
@@ -187,7 +182,7 @@ extern "C"
      * @return Le diviseur MDB
      */
     uint16_t getMDBCurrencyDivider(void);
-    
+
     /**
      * \brief Requête de la configuration du périphérique.
      * @param byDeviceAddress Adresse du périphérique.

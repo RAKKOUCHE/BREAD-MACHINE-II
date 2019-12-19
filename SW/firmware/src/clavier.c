@@ -24,13 +24,8 @@
 /* This section lists the other files that are included in this file.
  */
 
-#include <machine/types.h>
 
 #include "clavier.h"
-#include "globaldef.h"
-#include "freertos.h"
-#include "task.h"
-#include "MDB/mdb.h"
 
 /* TODO:  Include other files here if needed. */
 

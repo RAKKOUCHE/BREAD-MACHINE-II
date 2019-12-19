@@ -78,6 +78,8 @@ const char STR_MACHINE[] = "    MACHINE     ";
 const char STR_HS[] = "      VIDE      ";
 const char STR_CHOICE[] = "Choix : ";
 const char STR_PRICE[] = "Prix ";
+const char STR_VERIFGSM[] = "Verification GSM";
+const char STR_PATIENCE[] = "  Un instant...";
 
 // *****************************************************************************
 // *****************************************************************************
@@ -705,10 +707,11 @@ void MAINBOARD2_Tasks(void)
             vLCD_CLEAR();
 
             vDisplayLCD("%s", STR_RETURN_IN_PROGRESS);
-            changeGiver.isChangeFinished = false;
-
-            xTaskNotifyGive(changeGiver.hChangeTask);
-            while(!changeGiver.isChangeFinished);
+            
+            
+            setIsCangeFinished(false);
+            xTaskNotifyGive(getChangeTaskHandle());
+            while(!getIsChangeFinished());
             delayMs(1000); //Permet de visualiser la somme rendu.
 
             mainboard2Data.state = getAmountDispo() ?
@@ -717,8 +720,8 @@ void MAINBOARD2_Tasks(void)
 
             if(!BOT_1_Get() && !BOT_2_Get() && !BOT_3_Get())
             {
-                changeGiver.state = CG_COIN_TYPE;
-                billValidator.state = BV_BILL_TYPE;
+                setChangeGiverTaskState(CG_COIN_TYPE);
+                setBV_State(BV_BILL_TYPE);
             }
 
             break;

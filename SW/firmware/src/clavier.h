@@ -24,6 +24,11 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
+#include <machine/types.h>
+#include "globaldef.h"
+#include "freertos.h"
+#include "task.h"
+#include "MDB/mdb.h"
 
 /* This section lists the other files that are included in this file.
  */

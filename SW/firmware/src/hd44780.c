@@ -25,18 +25,7 @@
  */
 
 /* TODO:  Include other files here if needed. */
-#include <stdio.h>
-#include <stdbool.h>
-#include <GenericTypeDefs.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
 #include "hd44780.h"
-#include "peripheral/gpio/plib_gpio.h"
-#include "globaldef.h"
-#include "timers.h"
-#include "delay_us.h"
-#include "mainboard2.h"
 
 /* ************************************************************************** */
 

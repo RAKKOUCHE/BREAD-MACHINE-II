@@ -160,7 +160,7 @@ static void vTaskMDB(void)
                 // <editor-fold defaultstate="collapsed" desc="MDB_IDLE">
             {
                 mdb.state = MDB_POLL_CG;
-                if(!mdb.isMDBChecked && changeGiver.isInitialized && billValidator.isInitialized)
+                if(!mdb.isMDBChecked && getGCInitialized() && getIsBVInitialized())
                 {
                     mdb.isMDBChecked = true;
                     setMainBoardTaskState(MAINBOARD2_STATE_DISPLAY_SELECT);
