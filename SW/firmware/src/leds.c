@@ -101,7 +101,7 @@ static void vTaskLed(void *vParameter)
     static uint8_t byIndex = 0;
     while(1)
     {
-        if(mdb.isMDBChecked)
+        if(getIsMDBChecked())
         {
             if(leds.isChase)
             {

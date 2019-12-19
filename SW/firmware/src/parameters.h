@@ -68,6 +68,18 @@ extern "C"
     // *****************************************************************************
     
     /**
+     * \brief Requête de la température de lancement du chauffage.
+     * @return Température de déclenchment du chauffage.
+     */
+    uint32_t getAlarmHeater(void);
+    
+    /**
+     * \brief Requête de la température de lancement du groupe froid.
+     * @return Température de déclemchement du groupe froid.
+     */
+    uint32_t getAlarmCold(void);
+    
+    /**
      * \brief Prix d'un produit.
      * @param num Numéro du produit -1 
      * @return Prix du produit en centimes.

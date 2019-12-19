@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 
+#include "peripheral/gpio/plib_gpio.h"
 
-/** Descriptive File Name
+
+#include "delay_us.h"
+
+/**
+ * \author Rachid AKKOUCHE
  * 
+ *  Company RASoftware
  * 
- * Company
- *      RASoftware  
- * \file parameters.c
+ * \date 2019 11 08
  * 
- * \brief Source des paramètres
- */
-/* ************************************************************************** */
+ * \file hd44780.c
+ * 
+ * \brief Fichier source de la gestion de la sonde température DS18B20
+ * 
+ * \details Ce fichier fournit les fonctions et les définitions utilisés par le
+ * programme pour gestion de la sonde température DS18B20.
+ *  
+ ***************************************************************************/
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -18,112 +27,725 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
-#include "parameters.h"
+#include "DS18B20.h"
 
-/**
- * \addtogroup parameters
- * @{
+/* This section lists the other files that are included in this file.
  */
+
+/* TODO:  Include other files here if needed. */
+
+
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: File Scope or Global Data                                         */
 /* ************************************************************************** */
+
+/**
+ * \brief Nom en clair de la tâche de gestion de la sonde de température DS18B20.
+ */
+#define DS18B20_TASK_NAME "TEMP TSK"
+
+/**
+ * \brief Priority de la tâche de gestion de la sonde de température DS18B20.
+ */
+#define DS18B20_TASK_PRIORITY 1
+
+/**
+ * \brief Profondeur de la pile de la gestion de la sonde de température DS18B20.
+ */
+#define DS18B20_TASK_STACK 512
+
+/**
+ * \brief Delay entre 2 vérifications de la sonde.
+ */
+#define DS18B20_TASK_DELAY (60 * SECONDE)
+
+/**
+ * \brief Configuration 9 bits
+ */
+#define RESOLUTION9 0B00000000
+
+/**
+ * \brief Configuration 10 bits
+ */
+#define RESOLUTION10 0B00100000
+
+/**
+ * \brief Configuration 11 bits
+ */
+#define RESOLUTION11 0B01000000
+
+/**
+ * \brief Configuration 12 bits
+ */
+#define RESOLUTION12 0B01100000
+
 /* ************************************************************************** */
 
 /**
- * \brief Taille des lignes.
+ * \brief Enumération des commandes du ds18b20
  */
-#define NVM_FLASH_ROWSIZE          (512U)
+typedef enum
+{
+    READ_ROM = 0X33, /*!<Lecture du code unique.*/
+    MATCH_ROM = 0X33, /*!<Adressage du composants.*/
+    SKIP_ROM = 0XCC, /*!<Broadcast des commandes.*/
+    ALARM_SEARCH = 0XEC, /*!<Recherche une alarme.*/
+    CONVERT_T = 0X44, /*!<Demande conversion.*/
+    WRITE_SCRATCHPAD = 0X4E, /*!<Enregistre les alarmes et la configuration.*/
+    READ_SCRATCHPAD = 0XBE, /*!<Lit les données des registres.*/
+    COPY_SCRATCHPAD = 0X48, /*!<Enregistre les alarmes et la configuration dans 
+                             * l'eeprom du DS18B20.*/
+    RECALL_E2 = 0XB8, /*!<Relit les alarmes et la configuration dans l'eeprom.*/
+    READ_PSU = 0XB4, /*!<Lit le type d'alimentation du DS18B20.*/
+} COMMANDES;
 
 /**
- * brief Taille des pages
- */
-#define NVM_FLASH_PAGESIZE         (4096U)
-
-/**
- * \brief Adresse des donées en flash
- */
-#define NVM_MEDIA_START_ADDRESS 0X9D070000
-
-/**
- * \brief Structure contenant les informations sur un numéro de téléphone
+ * \brief Structure contenant la mémoire du ds18b20.
  */
 typedef struct
 {
-    unsigned int phone[13]; /*!<Numéro de téléphone en sur 12 chiffres.*/
-    unsigned int isAuditInform; /*!<La consultation des audits est autorisée sur ce ab
-                         * numéro*/
-    unsigned int isAlarmed; /*!<Ce numéro sera informé de l'activité de la 
-                               * machine.*/
-} PHONES;
+    uint8_t Temp_LSB; /*!<Partie basse de la température.*/
+    uint8_t Temp_MSB; /*!<Partie haute de la température.*/
+    uint8_t Temp_HI; /*!<Température haute alarme.*/
+    uint8_t Temp_LO; /*!<Température basse alarme.*/
+    uint8_t Config; /*!<Registre de configuration.*/
+    uint8_t Reserved1; /*!<NU.*/
+    uint8_t Reserved2; /*!<NU.*/
+    uint8_t Reserved3; /*!<NU.*/
+    uint8_t CRC; /*!<CRC.*/
+} SCRATCHPAD;
 
 /**
- * \brief type structure contenant les paramètres.
+ * \brief Structure contenant les variables utilisées par le module DS18B20
  */
-typedef struct
+struct
 {
-    uint32_t id; /*!<Identification de la machine.*/
-    uint32_t prices[3]; /*!<Prix des produits en cash.*/
-    uint32_t pricesCL[3]; /*!<Prix des produits en cashless.*/
-    PHONES phones[6]; /*!<Numéro et activation des numéros de t'léphones.*/
-    uint32_t sensitivity[3]; /*!<Sensitivité de la sécurité des trappes.*/
-    uint32_t TOcumul; /*!<Délai maximum accordé pour réinsérer une autre pièce.*/
-    uint32_t TOOverpay; /*!<Délai maximum de maintien du trop perçu*/
 
     union
     {
-        ENABLE enables;
-        uint32_t u32Enables;
+        SCRATCHPAD scratchpad; /*!<Registre du DS1B20.*/
+        uint8_t byScratchpad[sizeof(SCRATCHPAD)]; /*!<Buffer contenant les DS1B20.*/
     };
-    int32_t heater; /*!<Températirue de déclenchement du chauffage.*/
-    int32_t cooler; /*!<Températeur de déclenchement du refroidissement.*/
-} PARAMETERS;
+    uint8_t laserCode[8]; /*!<lASER code unique du DS18B20.*/
+    double Temperature;
+    TaskHandle_t hDS18B20; /*!<Handle de la tâche.*/
+} ds18b20;
 
-/**
- * \brief Variable contant les apram
- */
-static union
-{
-    uint32_t buffer[sizeof(PARAMETERS) / sizeof(uint32_t)]; /*!<Buffer des paramètres.*/
-    PARAMETERS data; /*!<Paramètres de la machine.*/
-} parameters;
-
-/**
- * \brief constante en flash contenant les paramètres sauvegardés.
- */
-const unsigned int __attribute__((space(prog),
-                                  address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
-= {
-   1,
-   100, 100, 100,
-   100, 100, 100,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X31, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X32, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X33, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X34, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X35, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X36, 0, 0,
-   0, 0, 0,
-   30, 60,
-   983103, //Activation par défaut des moyens de paiement 0X001F001F 
-   22, 18,
-};
 
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
-/* ************************************************************************** */
+
 /* ************************************************************************** */
 
+/*********************************************************************
+ * Function:        
+ *         static bool vReset(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static bool vReset(void)
+{
+    uint8_t byIndex;
+    DQ_OutputEnable();
+    DQ_Clear();
+    Delay10us(48);
+    DQ_InputEnable();
+    while(!DQ_Get());
+    while(DQ_Get());
+    for(byIndex = 0; byIndex < 4; byIndex++)
+    {
+        Delay10us(1);
+        if(DQ_Get())
+        {
+            return false;
+        }
+    }
+    Delay10us(20);
+    if(!DQ_Get())
+    {
+        return false;
+    }
+    Delay10us(25);
+    return true;
+}
+
+/*********************************************************************
+ * Function:        
+ *         static uint8_t OneWireReadByte()
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static uint8_t OneWireReadByte()
+{
+    uint8_t byIndex, data = 0;
+
+    for(byIndex = 0; byIndex < 8; byIndex++)
+    {
+        DQ_OutputEnable();
+        DQ_Clear();
+        Delay10us(1);
+        DQ_InputEnable();
+        Delay10us(1);
+        data += (DQ_Get() & 1) << byIndex;
+        Delay10us(4);
+    }
+    return data;
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void OneWireWriteByte(uint8_t data)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void OneWireWriteByte(uint8_t data)
+{
+    uint8_t byIndex;
+    for(byIndex = 0; byIndex < 8; byIndex++)
+    {
+        DQ_OutputEnable();
+        DQ_Clear();
+        Delay10us(1);
+        if((data >> byIndex) & 0x01)
+        {
+            DQ_InputEnable();
+        }
+        Delay10us(5);
+        DQ_InputEnable();
+        Delay10us(1);
+    }
+    Delay10us(1);
+}
+
+/*********************************************************************
+ * Function:        
+ *         static byte CRC(uint* byffer, uint8_t lenght)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint8_t dsCRC8(const uint8_t *addr, uint8_t len)
+{
+    uint8_t crc = 0;
+    uint8_t i;
+    while(len--)
+    {
+        uint8_t inbyte = *addr++;
+        for(i = 8; i; i--)
+        {
+            uint8_t mix = (crc ^ inbyte) & 0x01;
+            crc >>= 1;
+            if(mix) crc ^= 0x8C;
+            inbyte >>= 1;
+        }
+    }
+    return crc;
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void sendCommand(COMMANDES commande)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void sendCommand(COMMANDES commande)
+{
+    OneWireWriteByte(commande);
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void ReadROM(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static bool ReadROM(void)
+{
+    bool isResult = false;
+    uint8_t byIndex;
+    if(vReset())
+    {
+        sendCommand(READ_ROM);
+
+        for(byIndex = 0; byIndex < 8; byIndex++)
+        {
+            ds18b20.laserCode[byIndex] = OneWireReadByte();
+        }
+        isResult = (ds18b20.laserCode[7] == dsCRC8(ds18b20.laserCode, 7));
+    }
+    return isResult;
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void ds18b20ReadScratchPad()
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static bool ds18b20ReadScratchPad()
+{
+    uint8_t byIndex;
+    bool isResult = false;
+    if(vReset())
+    {
+        sendCommand(SKIP_ROM);
+        sendCommand(READ_SCRATCHPAD);
+        for(byIndex = 0; byIndex < 9; byIndex++)
+        {
+            ds18b20.byScratchpad[byIndex] = OneWireReadByte();
+        }
+        isResult = ds18b20.byScratchpad[8] == dsCRC8(ds18b20.byScratchpad, 8);
+    }
+    return isResult;
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void converT(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void converT(void)
+{
+    if(vReset())
+    {
+        sendCommand(SKIP_ROM);
+        sendCommand(CONVERT_T);
+        delayMs(2);
+    }
+}
+
+/*********************************************************************
+ * Function:        
+ *         double getds18b20Temp(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+double getds18b20Temp()
+{
+    uint8_t byIndex;
+    double data;
+
+    double result = 0;
+    converT();
+    if(ds18b20ReadScratchPad())
+    {
+        data = 0.0625;
+        for(byIndex = 0; byIndex < 8; byIndex++)
+        {
+
+            result += ((ds18b20.scratchpad.Temp_LSB >> byIndex) & 0x01) * data;
+            data *= 2;
+        }
+        for(byIndex = 0; byIndex < 3; byIndex++)
+        {
+            result += ((ds18b20.scratchpad.Temp_MSB >> byIndex) & 0x01) * data;
+            data *= 2;
+        }
+    }
+    return result;
+}
+
+/* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         static void vTaskTemperature(void *vParameters)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void vTaskTemperature(void *vParameters)
+{
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    while(1)
+    {
+        if((ds18b20.Temperature = getds18b20Temp()))
+        {
+            ds18b20.Temperature > (double) getAlarmHeater() ? COLD_Set() : COLD_Clear();
+            ds18b20.Temperature < (double) getAlarmCold() ? HEATER_Set() : HEATER_Clear();
+        }
+        vTaskDelayUntil(&xLastWakeTime, DS18B20_TASK_DELAY);
+    }
+}
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Interface Functions                                               */
-
 /* ************************************************************************** */
 
 /*********************************************************************
  * Function:        
- *         uint32_t getAlarmHeater(void)
+ *         double getTemp(void)
  * 
  * Version:
  *         1.0
@@ -164,14 +786,14 @@ const unsigned int __attribute__((space(prog),
  *         None
  *         
  ********************************************************************/
-uint32_t getAlarmHeater(void)
+double getTemp(void)
 {
-    return parameters.data.heater;
+    return ds18b20.Temperature;
 }
 
 /*********************************************************************
  * Function:        
- *         uint32_t getAlarmCold(void)
+ *         void vDS18B20Init(void)
  * 
  * Version:
  *         1.0
@@ -212,503 +834,15 @@ uint32_t getAlarmHeater(void)
  *         None
  *         
  ********************************************************************/
-uint32_t getAlarmCold(void)
+void vDS18B20Init(void)
 {
-    return parameters.data.cooler;
-}
-
-/*********************************************************************
- * Function:        
- *         uint32 getProductPrice(uint8_t num)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-uint32_t getProductPrice(uint8_t num)
-{
-    return parameters.data.prices[num];
-}
-
-/*********************************************************************
- * Function:        
- *         uint8_t getDelayOverpay(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-uint32_t getDelayOverpay(void)
-{
-    return parameters.data.TOOverpay;
-}
-
-/*********************************************************************
- * Function:        
- *         ENABLE getEnableState()
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-ENABLE getEnableState()
-{
-    return parameters.data.enables;
-}
-
-/*********************************************************************
- * Function:        
- *         uint8_t getTOCumul(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-uint8_t getTOCumul(void)
-{
-    return(uint8_t) parameters.data.TOcumul;
-}
-
-/*********************************************************************
- * Function:        
- *         uint16_t getChannelEnable(bool isChangeGiver)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-uint16_t getChannelEnable(bool isChangeGiver)
-{
-    return isChangeGiver ? parameters.data.enables.enable_GG :
-            parameters.data.enables.enable_BV;
-}
-
-/*********************************************************************
- * Function:        
- *         void vParametreWrite(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         19/11/12
- *
- * Summary:
- *         Enregistre les paramètres en flash.
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-void vParametersWrite(void)
-{
-    NVM_PageErase(NVM_MEDIA_START_ADDRESS);
-    while(NVM_IsBusy());
-    NVM_RowWrite(parameters.buffer, NVM_MEDIA_START_ADDRESS);
-    while(NVM_IsBusy());    
-}
-
-/*********************************************************************
- * Function:        
- *         void vParametersRead(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         19/11/12
- *
- * Summary:
- *         Lit les paramètres en flash
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-void vParametersRead(void)
-{
-    memmove(&parameters, &gNVMFlashReserveArea, sizeof(parameters));
-}
-
-/*********************************************************************
- * Function:        
- *         void vParamSendToPC(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-void vParamSendToPC(void)
-{
-
-    union
+    if(ds18b20.hDS18B20 == NULL)
     {
-        uint32_t value;
-        uint8_t buffer[sizeof(uint32_t)];
-    } values;
-    uint8_t byChannel;
-    while(!UART3_TransmitterIsReady());
-    UART3_WriteByte(6);
-    while(!UART3_TransmitComplete());
-    UART3_Write(VERSION, 6);
-    while(!UART3_TransmitComplete());
-    UART3_WriteByte(11);
-    while(!UART3_TransmitComplete());
-    UART3_Write(__DATE__, 11);
-    while(!UART3_TransmitComplete());
-
-    uint32_t dwParameterSize = sizeof(PARAMETERS);
-    UART3_Write(&dwParameterSize, sizeof(dwParameterSize));
-    while(!UART3_TransmitComplete());
-
-    UART3_Write(&parameters.data, sizeof(PARAMETERS));
-    while(!UART3_TransmitComplete());
-    for(byChannel = 0; byChannel < 8; byChannel++)
-    {
-        values.value = changeGiver.config.byCoinValue[byChannel] * changeGiver.config.byScalingFactor;
-        UART3_Write(values.buffer, sizeof(uint32_t));
-        while(!UART3_TransmitComplete());
-    }
-    for(byChannel = 0; byChannel < 8; byChannel++)
-    {
-        values.value = billValidator.config.byBillValue[byChannel] * billValidator.config.wScalingFactor;
-        UART3_Write(values.buffer, sizeof(uint32_t));
-        while(!UART3_TransmitComplete());
+        xTaskCreate(vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
+                    NULL, DS18B20_TASK_PRIORITY, &ds18b20.hDS18B20);
     }
 }
 
-/*********************************************************************
- * Function:        
- *         void vParametersGetFromPC(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-void vParametersGetFromPC(void)
-{
-    //TODO placer un timer et effectuer les vérifications
-    UART3_WriteByte(0X5A);
-    while(!UART3_TransmitComplete());
-//    pcCom.isTOReached = false;
-    xTimerStart(pcCom.hTimerTO_PC, 1000);
-    while(!UART3_ReceiverIsReady());// && !pcCom.isTOReached);
-//    if(!pcCom.isTOReached)
-    {
-        if(UART3_Read(&parameters.data, sizeof(PARAMETERS)))
-        {
-            while(!UART3_TransmitComplete());
-            changeGiver.coins_enable.coinEnable.wCoinEnable = parameters.data.enables.enable_GG;
-            isSetCoinEnable(true, &changeGiver.coins_enable);
-            billValidator.byBillType.wBillEnable = parameters.data.enables.enable_BV;
-            isSetBillEnable(true, &billValidator.byBillType);            
-            vParametersWrite();
-        }
-        vParametersRead();
-    }
-    //vParamSendToPC();
-}
-
-/**
- * @}
- */
 /* *****************************************************************************
-End of File
+ End of File
  */

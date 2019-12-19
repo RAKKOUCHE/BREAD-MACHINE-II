@@ -181,6 +181,12 @@ extern "C"
     // *****************************************************************************
 
     /**
+     * \brief Requête sur la disponibilité de l'afficheur.
+     * @return True si l'afficheur est opérationnel.
+     */
+    bool isLCDInitialized(void);
+    
+    /**
      * 
      * @param format
      * @param ...

@@ -145,8 +145,8 @@ static bool isGetMDBTubeStatus()
     {
         vVMCAcknowledge(ACK);
         changeGiver.lAmountInTubes = 0;
-        mdb.byDecimalPos = changeGiver.config.byDecimalPlace;
-        mdb.wCurrencyDivider = decimalDivider(mdb.byDecimalPos);
+        setMDBDecimalPoint( changeGiver.config.byDecimalPlace);
+        setMDBCurrencyDivider(decimalDivider(getMDBDecimalPos()));
         for(byIndex = 0; byIndex < NUMBERCHANNELSCG; byIndex++)
         {
             if((changeGiver.config.byCoinValue[byIndex] < 0xFF) && changeGiver.tubes.byLevel[byIndex])
@@ -806,9 +806,9 @@ void vTaskCG(void)
                         }
                         vLCD_CLEAR();
 
-                        vDisplayLCD("Rendu : %.*f\7", mdb.byDecimalPos,
+                        vDisplayLCD("Rendu : %.*f\7", getMDBDecimalPos(),
                                     (double) (changeGiver.lAmountDispensed) /
-                                    mdb.wCurrencyDivider);
+                                    getMDBCurrencyDivider());
                         if(isDispensed)
                         {
                             changeGiver.expandCmd = SUB_ALTERNATIVE_PAYOUT;

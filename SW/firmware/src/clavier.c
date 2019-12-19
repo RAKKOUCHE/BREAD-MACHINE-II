@@ -135,7 +135,7 @@ static void vTaskKeyboard(void *vParameter)
     KEY_STATES lkState;
     while(1)
     {
-        if(mdb.isMDBChecked)
+        if(getIsMDBChecked())
         {
             for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
             {

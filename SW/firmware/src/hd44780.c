@@ -11,7 +11,7 @@
  * \brief Fichier source de la gestion de l'afficheur.
  * 
  * \details Ce fichier fournit les fonctions et les définitions utilisés par le
- programme pour  gérer l'afficheur.
+ * programme pour  gérer l'afficheur.
  *  
  ***************************************************************************/
 
@@ -786,6 +786,54 @@ static void vCreateChar(const uint8_t Code, const uint8_t *pBuffer)
 
 /*********************************************************************
  * Function:        
+ *         bool isLCDInitialized(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool isLCDInitialized(void)
+{
+    return lcd.isLCDInitialized;
+}
+
+/*********************************************************************
+ * Function:        
  *         void _mon_putc(const char data)
  * 
  * Version:
@@ -908,6 +956,7 @@ bool getIsLCDIntialiazed(void)
 {
     return lcd.isLCDInitialized;
 }
+
 /*********************************************************************
  * Function:        
  *         void vLCD_HOME()
@@ -1484,12 +1533,12 @@ void vLCDInit(void)
     }
     if(!lcd.hTO_LCD)
     {
-        lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL, 
+        lcd.hTO_LCD = xTimerCreate(LCD_TO_TIMER_NAME, LCD_TO, false, NULL,
                                    vTO_LCD);
     }
     if(!lcd.hTaskLCD)
     {
-        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL, 
+        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL,
                     LCD_TASK_PRIORITY, &lcd.hTaskLCD);
     }
 }

@@ -12,6 +12,51 @@
  */
 #define MDB_TASK_STACK 512
 
+typedef enum
+{
+    MDB_INIT,
+    MDB_POLL_CG,
+    MDB_POLL_BV,
+    MDB_IDLE,
+}
+MDB_STATUS;
+
+typedef struct
+{
+    BYTE byData;
+    BYTE bit9th;
+}
+UARTDATA;
+
+typedef union
+{
+    UARTDATA uartData;
+    WORD wData;
+}
+uUART_DATA;
+
+/*Variables****************************************************************/
+
+struct
+{
+    bool isMDBChecked;
+    BYTE byDecimalPos;
+    WORD wCurrencyDivider;
+    MDB_STATUS state;
+    /**
+     \brief Indique le TO pour la réponse du périphérique MDB est atteint.
+     */
+    bool isNAK;
+
+    /**
+     *\brief Handle du timer utilisé pour le TO de la réponse d'un périphérique MDB.
+     */
+    TimerHandle_t hTimerMDBNAK;
+    SemaphoreHandle_t hSemaphoreTask;
+    SemaphoreHandle_t hSemaphorePoll;
+    TaskHandle_t hTaskMdb;
+} mdb;
+
 /*********************************************************************
  * Function:        void vNAKTO_MDB(const TimerHandle_t HandleTimer)
  * 
@@ -191,7 +236,7 @@ static BYTE byCheckSum(BYTE byLen, const uUART_DATA* ptrBuffer)
  ********************************************************************/
 void vMDBInit(void)
 {
-    setMDBChecked(false);
+    mdb.isMDBChecked = false;
     if(mdb.hSemaphorePoll == NULL)
     {
         xSemaphoreGive(mdb.hSemaphorePoll = xSemaphoreCreateBinary());
@@ -207,6 +252,293 @@ void vMDBInit(void)
 }
 
 /******************************************************************************/
+
+/*********************************************************************
+ * Function:        
+ *         TaskHandle_t getHandleMDB(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+TaskHandle_t getHandleMDB(void)
+{
+    return mdb.hTaskMdb;
+}
+
+/*********************************************************************
+ * Function:        
+ *         uint8_t getMDBDecimalPoint(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint8_t getMDBDecimalPos(void)
+{
+    return mdb.byDecimalPos;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setMDBDecimalPoint(uint8_t value)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setMDBDecimalPoint(uint8_t value)
+{
+    mdb.byDecimalPos = value;
+}
+
+/*********************************************************************
+ * Function:        
+ *         void setMDBCurrencyDivider(uint16_t divider)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setMDBCurrencyDivider(uint16_t divider)
+{
+    mdb.wCurrencyDivider = divider;
+}
+
+/*********************************************************************
+ * Function:        
+ *         bool getisMDBChecked(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getIsMDBChecked(void)
+{
+    return mdb.isMDBChecked;
+}
+/*********************************************************************
+ * Function:        
+ *         uint16_t getMDBCurrencyDivider(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+uint16_t getMDBCurrencyDivider(void)
+{
+    return mdb.wCurrencyDivider;
+}
 
 /*********************************************************************
  * Function:        WORD decimalDivider(BYTE byDecimal)
@@ -238,7 +570,6 @@ WORD decimalDivider(BYTE byDecimal)
     }
     return wResult;
 }
-
 /******************************************************************************/
 
 /*********************************************************************

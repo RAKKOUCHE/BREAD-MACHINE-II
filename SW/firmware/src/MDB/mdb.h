@@ -140,53 +140,8 @@ extern "C"
 #define SUB_DIAGNOSTICS 0xFF
 
     /*Enumerations*************************************************************/
-    typedef enum __attribute__((packed))
-    {
-        MDB_INIT,
-            MDB_POLL_CG,
-            MDB_POLL_BV,
-            MDB_IDLE,
-    }
-    MDB_STATUS;
 
     /*Structures***************************************************************/
-
-    typedef struct __attribute__((packed))
-    {
-        BYTE byData;
-        BYTE bit9th;
-    }
-    UARTDATA;
-
-    typedef union
-    {
-        UARTDATA uartData;
-        WORD wData;
-    }
-    uUART_DATA;
-
-    /*Variables****************************************************************/
-
-    struct
-    {
-        bool isMDBChecked;
-        BYTE byDecimalPos;
-        WORD wCurrencyDivider;
-        MDB_STATUS state;
-        /**
-         \brief Indique le TO pour la réponse du périphérique MDB est atteint.
-         */
-        bool isNAK;
-
-        /**
-         *\brief Handle du timer utilisé pour le TO de la réponse d'un périphérique MDB.
-         */
-        TimerHandle_t hTimerMDBNAK;
-        SemaphoreHandle_t hSemaphoreTask;
-        SemaphoreHandle_t hSemaphorePoll;
-        TaskHandle_t hTaskMdb;
-    } mdb;
-
 
     /*Prototypes***************************************************************/
 
@@ -198,6 +153,41 @@ extern "C"
 
     /**************************************************************************/
 
+    /**
+     * brief Requête du handle de la  tâche MDB.
+     * @return handle de la tâche MDB.
+     */
+    TaskHandle_t getHandleMDB(void);
+    
+    /**
+     * \brief Requête de la position du point dçimal.
+     * @return Un octet contenant la position du point décimal.
+     */
+    uint8_t getMDBDecimalPos(void);
+    
+    /**
+     * \brief Défini la position de la virgule.
+     * @param value Position de la virgule
+     */
+    void setMDBDecimalPoint(uint8_t value);
+
+    /**
+     * \brief Défini la valeur du diviseur.
+     * @param divider Dviseur.
+     */
+    void setMDBCurrencyDivider(uint16_t divider);
+    
+    /**
+     * \brief requête du flag indiquant que la chaine MDB est prête.
+     * @return true si la chaîne MDB est prête.
+     */
+    bool getIsMDBChecked(void);
+    /**
+     * \brief Requête du diviseur MDB.
+     * @return Le diviseur MDB
+     */
+    uint16_t getMDBCurrencyDivider(void);
+    
     /**
      * \brief Requête de la configuration du périphérique.
      * @param byDeviceAddress Adresse du périphérique.

@@ -66,7 +66,7 @@
 const char STR_MANUFACTURER[] = "MT DISTRIBUTION ";
 const char STR_VERSION[] = " VERSION";
 const char STR_SELECT[] = "   Choisissez   ";
-const char STR_YOUR_PRODUCT[] = " votre produit  ";
+const char STR_YOUR_PRODUCT[] = "un produit  ";
 const char STR_CREDIT[] = "Credit: ";
 const char STR_DISPENSE[] = "  Distribution";
 const char STR_IN_PROGRESS[] = "   en cours...";
@@ -526,102 +526,6 @@ void setAmountDispo(uint32_t amount)
 }
 // *****************************************************************************
 
-/*********************************************************************
- * Function:        
- *         bool getMDBChecked(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-bool getMDBChecked(void)
-{
-    return mainboard2Data.isMDBChecked;
-}
-
-/*********************************************************************
- * Function:        
- *         void setMDBChecked(bool isChecked)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:    
- *         None
- *
- * Input:     
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- * 
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- * 
- * Remarks:
- *         None
- *         
- ********************************************************************/
-void setMDBChecked(bool isChecked)
-{
-    mainboard2Data.isMDBChecked = isChecked;
-}
-
 // *****************************************************************************
 // Section: Application Local Functions
 // *****************************************************************************
@@ -652,6 +556,7 @@ void MAINBOARD2_Initialize(void)
     vMDBInit();
     vLEDsKeybInit();
     vKeyboardInit();
+    vDS18B20Init();
 
     /* TODO: Initialize your application's state machine and other
      * parameters.
@@ -689,7 +594,7 @@ void MAINBOARD2_Tasks(void)
 #ifndef __DEBUG
             delayMs(15 * SECONDE);
 #endif 
-            vTaskResume(mdb.hTaskMdb);
+            vTaskResume(getHandleMDB());
             if(hTimerOverPay == NULL)
             {
                 hTimerOverPay = xTimerCreate("TO OVERPAY", getDelayOverpay() ?
@@ -721,7 +626,11 @@ void MAINBOARD2_Tasks(void)
             {
                 setIsRAZAudit(false);
             }
-
+            if(getIsMDBChecked() && !getAmountDispo() && (getTemp() > 0.0));
+            {
+                vLCDGotoXY(12, 2);
+                vDisplayLCD("%.1f²", getTemp());
+            }
             if(oldAmount != getAmountDispo())
             {
                 mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
@@ -749,8 +658,8 @@ void MAINBOARD2_Tasks(void)
                     vLCD_CLEAR();
                     vDisplayLCD("%s%u", STR_CHOICE, getSelection());
                     vLCDGotoXY(1, 2);
-                    vDisplayLCD("%s %.*f\7", STR_PRICE, mdb.byDecimalPos,
-                                (double) getProductPrice(getSelection() - 1) / mdb.wCurrencyDivider);
+                    vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
+                                (double) getProductPrice(getSelection() - 1) / getMDBCurrencyDivider());
                     xTimerStart(hTimerDisplaySelection, 1000);
                 }
             }
@@ -775,17 +684,17 @@ void MAINBOARD2_Tasks(void)
                     MAINBOARD2_STATE_SERVICE_TASKS :
                     MAINBOARD2_STATE_DISPLAY_SELECT;
             vLCD_CLEAR();
-            vDisplayLCD("%s %.*f\7", STR_CREDIT, mdb.byDecimalPos,
-                        (double) getAmountDispo() / mdb.wCurrencyDivider);
+            vDisplayLCD("%s %.*f\7", STR_CREDIT, getMDBDecimalPos(),
+                        (double) getAmountDispo() / getMDBCurrencyDivider());
             if(getSelection())
             {
                 xTimerStop(hTimerDisplaySelection, 1000);
                 vLCDGotoXY(1, 2);
                 if(getAmountDispo() < getProductPrice((getSelection() - 1)))
                 {
-                    vDisplayLCD("%s %.*f\7", STR_TO_PAY, mdb.byDecimalPos,
+                    vDisplayLCD("%s %.*f\7", STR_TO_PAY, getMDBDecimalPos(),
                                 (double) (getProductPrice(getSelection() - 1) -
-                                          getAmountDispo()) / mdb.wCurrencyDivider);
+                                          getAmountDispo()) / getMDBCurrencyDivider());
                 }
             }
             break;

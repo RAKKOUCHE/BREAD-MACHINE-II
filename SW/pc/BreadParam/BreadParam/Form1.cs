@@ -322,8 +322,8 @@ namespace BreadParam
 
                         //Envoi les valeurs des commandes de températures.
                         byBuffer = new byte[8];
-                        byBuffer[0] = Convert.ToByte(UDCold.Value);
-                        byBuffer[4] = Convert.ToByte(UDHot.Value);
+                        byBuffer[0] = Convert.ToByte(UDHot.Value);
+                        byBuffer[4] = Convert.ToByte(UDCold.Value);
                         serialPort1.Write((byte[])byBuffer, 0, 8);
                         MessageBox.Show(BreadParam.Properties.Resources.Str_param_saved, BreadParam.Properties.Resources.Str_Record, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }

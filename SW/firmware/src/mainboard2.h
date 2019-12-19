@@ -60,6 +60,7 @@
 #include "MDB/mdb.h"
 #include "clavier.h"
 #include "leds.h"
+#include "DS18B20.h"
 
 
 // DOM-IGNORE-BEGIN
@@ -126,7 +127,7 @@ extern "C"
         MAINBOARD2_STATES state; /*!<Etat de la tâche principale de l'application.*/
         int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
         uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
-        bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
+        //bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
     } MAINBOARD2_DATA;
 
     /**
@@ -178,18 +179,18 @@ extern "C"
      * @param amount Montant disponible;
      */
     void setAmountDispo(uint32_t amount);
-    
-    /**
-     * \brief Lit le flag indiquant si les péruiphériques MDB sont prêt.
-     * @return true si les périphériques sont initialisés
-     */
-    bool getMDBChecked(void);
-    
-    /**
-     * brief Fixe l'état du flag indiquant si le périphérique sont prêt
-     * @param isChecked Etat du flag choisi.
-     */
-    void setMDBChecked(bool isChecked);
+//    
+//    /**
+//     * \brief Lit le flag indiquant si les péruiphériques MDB sont prêt.
+//     * @return true si les périphériques sont initialisés
+//     */
+//    bool getMDBChecked(void);
+//    
+//    /**
+//     * brief Fixe l'état du flag indiquant si le périphérique sont prêt
+//     * @param isChecked Etat du flag choisi.
+//     */
+//    void setMDBChecked(bool isChecked);
 
     // *****************************************************************************
     // *****************************************************************************
