@@ -119,10 +119,10 @@
       <itemPath>../src/hd44780.h</itemPath>
       <itemPath>../src/delay_us.h</itemPath>
       <itemPath>../src/leds.h</itemPath>
-      <itemPath>../src/mainboard2.h</itemPath>
       <itemPath>../src/DS18B20.h</itemPath>
       <itemPath>../src/contacts.h</itemPath>
       <itemPath>../src/moteurs.h</itemPath>
+      <itemPath>../src/mainboard2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -217,11 +217,11 @@
       <itemPath>../src/hd44780.c</itemPath>
       <itemPath>../src/delay_us.c</itemPath>
       <itemPath>../src/leds.c</itemPath>
-      <itemPath>../src/main.c</itemPath>
-      <itemPath>../src/mainboard2.c</itemPath>
       <itemPath>../src/DS18B20.c</itemPath>
       <itemPath>../src/contacts.c</itemPath>
       <itemPath>../src/moteurs.c</itemPath>
+      <itemPath>../src/main.c</itemPath>
+      <itemPath>../src/mainboard2.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

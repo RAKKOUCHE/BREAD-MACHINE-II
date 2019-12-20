@@ -203,8 +203,7 @@ void SYS_Initialize ( void* data )
 
 
 
-    HEATER_Clear();
-    HEATER_OutputEnable();
+
 	UART3_Initialize();
 
     I2C1_Initialize();

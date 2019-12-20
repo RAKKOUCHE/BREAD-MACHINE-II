@@ -189,22 +189,22 @@
 #define BTNRTN_OutputEnable()      (TRISACLR = (1<<10))
 #define BTNRTN_InputEnable()       (TRISASET = (1<<10))
 #define BTNRTN_PIN                  GPIO_PIN_RA10
-/*** Macros for PWR pin ***/
-#define PWR_Set()               (LATBSET = (1<<8))
-#define PWR_Clear()             (LATBCLR = (1<<8))
-#define PWR_Toggle()            (LATBINV= (1<<8))
-#define PWR_Get()               ((PORTB >> 8) & 0x1)
-#define PWR_OutputEnable()      (TRISBCLR = (1<<8))
-#define PWR_InputEnable()       (TRISBSET = (1<<8))
-#define PWR_PIN                  GPIO_PIN_RB8
 /*** Macros for BRK pin ***/
-#define BRK_Set()               (LATBSET = (1<<9))
-#define BRK_Clear()             (LATBCLR = (1<<9))
-#define BRK_Toggle()            (LATBINV= (1<<9))
-#define BRK_Get()               ((PORTB >> 9) & 0x1)
-#define BRK_OutputEnable()      (TRISBCLR = (1<<9))
-#define BRK_InputEnable()       (TRISBSET = (1<<9))
-#define BRK_PIN                  GPIO_PIN_RB9
+#define BRK_Set()               (LATBSET = (1<<8))
+#define BRK_Clear()             (LATBCLR = (1<<8))
+#define BRK_Toggle()            (LATBINV= (1<<8))
+#define BRK_Get()               ((PORTB >> 8) & 0x1)
+#define BRK_OutputEnable()      (TRISBCLR = (1<<8))
+#define BRK_InputEnable()       (TRISBSET = (1<<8))
+#define BRK_PIN                  GPIO_PIN_RB8
+/*** Macros for PWR pin ***/
+#define PWR_Set()               (LATBSET = (1<<9))
+#define PWR_Clear()             (LATBCLR = (1<<9))
+#define PWR_Toggle()            (LATBINV= (1<<9))
+#define PWR_Get()               ((PORTB >> 9) & 0x1)
+#define PWR_OutputEnable()      (TRISBCLR = (1<<9))
+#define PWR_InputEnable()       (TRISBSET = (1<<9))
+#define PWR_PIN                  GPIO_PIN_RB9
 /*** Macros for CMD_CARROUSEL_1 pin ***/
 #define CMD_CARROUSEL_1_Set()               (LATBSET = (1<<10))
 #define CMD_CARROUSEL_1_Clear()             (LATBCLR = (1<<10))

@@ -26,7 +26,6 @@
  */
 
 #include "moteurs.h"
-#include "peripheral/gpio/plib_gpio.h"
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -83,7 +82,154 @@ struct
 
 /*********************************************************************
  * Function:        
- *         void vTaskMoteur(void *vParameter)
+ *         static void setPower(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void powerMotor(void)
+{
+    BRK_Set();
+    PWR_Set();
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void breakMotor(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void breakMotor(void)
+{
+    BRK_Clear();
+    PWR_Clear();
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void freeMotor(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void freeMotor(void)
+{
+    BRK_Set();
+    PWR_Clear();
+}
+
+/*********************************************************************
+ * Function:        
+ *         static void vTaskMoteur(void *vParameter)
  * 
  * Version:
  *         1.0
@@ -134,8 +280,9 @@ static void vTaskMoteur(void *vParameter)
             case MOTORS_INIT:
                 // <editor-fold desc="MOTORS_INIT"> 
             {
-                PWR_Set();
                 motors.state = MOTORS_IDLE;
+                breakMotor();
+                freeMotor();
                 break;
             }// </editor-fold>
             case MOTORS_IDLE:

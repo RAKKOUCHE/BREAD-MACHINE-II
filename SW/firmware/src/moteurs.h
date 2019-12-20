@@ -31,6 +31,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "globaldef.h"
+#include "peripheral/gpio/plib_gpio.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
