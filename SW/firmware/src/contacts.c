@@ -24,10 +24,7 @@
 /* This section lists the other files that are included in this file.
  */
 
-
-#include "clavier.h"
-
-/* TODO:  Include other files here if needed. */
+#include "contacts.h"
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -56,6 +53,16 @@
 #define CLAVIER_TASK_DELAY (50 * MILLISEC)
 
 /**
+ * \brief
+ */
+#define SHIFT_TIMER_NAME "Shift TO"
+
+/**
+ * \brief
+ */
+#define SHIFT_TIMER_DELAY (10 * SECONDE)
+
+/**
  * \brief structure contenant les variables d'une  touche.
  */
 typedef struct
@@ -68,10 +75,12 @@ typedef struct
  */
 struct
 {
+    bool isKeyShifted;
     uint8_t selection;
-    KEY keys[PRODUCT_NUMBER];
-    TaskHandle_t hKeyBoard;
-} clavier;
+    KEY keys[7];
+    TaskHandle_t hSwitchTask;
+    TimerHandle_t hShiftTO;
+} switchs;
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -79,6 +88,54 @@ struct
 /* ************************************************************************** */
 
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         static void vShift_TO(const TimerHandle_t HandleTimer)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+static void vShift_TO(const TimerHandle_t HandleTimer)
+{
+    switchs.hShiftTO = false;
+}
 
 /*********************************************************************
  * Function:        
@@ -132,9 +189,16 @@ static void vTaskKeyboard(void *vParameter)
     {
         if(getIsMDBChecked())
         {
-            for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+            for(byIndex = 0; byIndex < 7; byIndex++)
             {
-                lkState = (KEY_STATES) (PORTD >> (7 + byIndex) & 1);
+                if(byIndex < 3)
+                {
+                    lkState = (KEY_STATES)((PORTD >> (7 + byIndex) & 1));
+                }
+                else
+                {
+                    lkState = (KEY_STATES)((PORTE >> byIndex) & 1);
+                }
                 switch(getKeyState(byIndex))
                 {
                     case KEY_HI:
@@ -154,7 +218,7 @@ static void vTaskKeyboard(void *vParameter)
                     {
                         if(lkState == KEY_LO)
                         {
-                            clavier.selection = byIndex + 1;
+                            switchs.selection = byIndex + 1;
                             setKeyState(byIndex, KEY_USED);
                         }
                         else
@@ -189,6 +253,102 @@ static void vTaskKeyboard(void *vParameter)
 /* ************************************************************************** */
 
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        
+ *         void setShiftState(bool state)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+void setShiftState(const bool state)
+{
+    switchs.isKeyShifted = state;
+}
+
+/*********************************************************************
+ * Function:        
+ *         bool getShiftState(void)
+ * 
+ * Version:
+ *         1.0
+ * 
+ * Author:
+ *         Rachid AKKOUCHE
+ * 
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ * 
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:    
+ *         None
+ *
+ * Input:     
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ * 
+ * Example:
+ *         <code>
+ *         FUNC_NAME(FUNC_PARAM)
+ *         <code>
+ * 
+ * Remarks:
+ *         None
+ *         
+ ********************************************************************/
+bool getShiftState(void)
+{
+    return switchs.isKeyShifted;
+}
 
 /*********************************************************************
  * Function:        
@@ -235,7 +395,7 @@ static void vTaskKeyboard(void *vParameter)
  ********************************************************************/
 void setKeyState(const uint8_t numKey, KEY_STATES state)
 {
-    clavier.keys[numKey].state = state;
+    switchs.keys[numKey].state = state;
 }
 
 /*********************************************************************
@@ -283,7 +443,7 @@ void setKeyState(const uint8_t numKey, KEY_STATES state)
  ********************************************************************/
 KEY_STATES getKeyState(const uint8_t numKey)
 {
-    return clavier.keys[numKey].state;
+    return switchs.keys[numKey].state;
 }
 
 /*********************************************************************
@@ -331,7 +491,7 @@ KEY_STATES getKeyState(const uint8_t numKey)
  ********************************************************************/
 uint8_t getSelection()
 {
-    return clavier.selection;
+    return switchs.selection;
 }
 
 /*********************************************************************
@@ -379,7 +539,7 @@ uint8_t getSelection()
  ********************************************************************/
 void clrSelection()
 {
-    clavier.selection = 0;
+    switchs.selection = 0;
 }
 
 /*********************************************************************
@@ -428,14 +588,19 @@ void clrSelection()
 void vKeyboardInit(void)
 {
     uint8_t byIndex;
-    clavier.selection = 0;
+    switchs.selection = 0;
+    switchs.isKeyShifted = false;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
     {
         setKeyState(byIndex, (KEY_STATES) (PORTD >> (7 + byIndex) & 1));
     }
-    if(clavier.hKeyBoard == NULL)
+    if(switchs.hSwitchTask == NULL)
     {
-        xTaskCreate(vTaskKeyboard, CLAVIER_TASK_NAME, CLAVIER_TASK_STACK, NULL, CLAVIER_TASK_PRIORITY, &clavier.hKeyBoard);
+        xTaskCreate(vTaskKeyboard, CLAVIER_TASK_NAME, CLAVIER_TASK_STACK, NULL, CLAVIER_TASK_PRIORITY, &switchs.hSwitchTask);
+    }
+    if(switchs.hShiftTO == NULL)
+    {
+        switchs.hShiftTO = xTimerCreate(SHIFT_TIMER_NAME, 10 * SECONDE, pdFALSE, NULL, vShift_TO);
     }
 }
 

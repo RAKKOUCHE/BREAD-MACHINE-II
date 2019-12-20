@@ -209,7 +209,7 @@ extern "C"
      * \brief
      * @param isFinished
      */
-    void setIsCangeFinished(const bool isFinished);
+    void setIsChangeFinished(const bool isFinished);
     
     /**
      * \brief

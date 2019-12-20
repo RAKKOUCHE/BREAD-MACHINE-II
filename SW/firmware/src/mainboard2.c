@@ -559,6 +559,7 @@ void MAINBOARD2_Initialize(void)
     vLEDsKeybInit();
     vKeyboardInit();
     vDS18B20Init();
+    vMotorsInit();
 
     /* TODO: Initialize your application's state machine and other
      * parameters.
@@ -575,6 +576,7 @@ void MAINBOARD2_Initialize(void)
 
 void MAINBOARD2_Tasks(void)
 {
+    uint8_t byIndex;
     static uint32_t oldAmount = 0;
     static uint8_t oldChoice = 0;
     /* Check the application's current state. */
@@ -628,7 +630,7 @@ void MAINBOARD2_Tasks(void)
             {
                 setIsRAZAudit(false);
             }
-            if(getIsMDBChecked() && !getAmountDispo() && (getTemp() > 0.0));
+            if(getIsMDBChecked() && !getAmountDispo() && (getTemp() > 0.0))
             {
                 vLCDGotoXY(12, 2);
                 vDisplayLCD("%.1f²", getTemp());
@@ -645,24 +647,38 @@ void MAINBOARD2_Tasks(void)
             if(getSelection() && (getSelection() != oldChoice))
             {
                 oldChoice = getSelection();
-                uint8_t byIndex;
-                for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+                if(oldChoice < 4)
                 {
-                    setLedState(byIndex, LED_OFF);
+                    for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+                    {
+                        setLedState(byIndex, LED_OFF);
+                    }
+                    setLedState(oldChoice - 1, LED_ON);
                 }
-                setLedState(oldChoice - 1, LED_ON);
+                if(oldChoice == 4)
+                {
+                    setShiftState(!getShiftState());
+                }
+                if((oldChoice > 4) && getShiftState())
+                {
+                    setShiftState(true);
+                }
+
                 if(getAmountDispo())
                 {
                     mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
                 }
                 else
                 {
-                    vLCD_CLEAR();
-                    vDisplayLCD("%s%u", STR_CHOICE, getSelection());
-                    vLCDGotoXY(1, 2);
-                    vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
-                                (double) getProductPrice(getSelection() - 1) / getMDBCurrencyDivider());
-                    xTimerStart(hTimerDisplaySelection, 1000);
+                    if(getSelection() < 4)
+                    {
+                        vLCD_CLEAR();
+                        vDisplayLCD("%s%u", STR_CHOICE, getSelection());
+                        vLCDGotoXY(1, 2);
+                        vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
+                                    (double) getProductPrice(getSelection() - 1) / getMDBCurrencyDivider());
+                        xTimerStart(hTimerDisplaySelection, 1000);
+                    }
                 }
             }
             break;
@@ -707,9 +723,9 @@ void MAINBOARD2_Tasks(void)
             vLCD_CLEAR();
 
             vDisplayLCD("%s", STR_RETURN_IN_PROGRESS);
-            
-            
-            setIsCangeFinished(false);
+
+
+            setIsChangeFinished(false);
             xTaskNotifyGive(getChangeTaskHandle());
             while(!getIsChangeFinished());
             delayMs(1000); //Permet de visualiser la somme rendu.
@@ -723,7 +739,6 @@ void MAINBOARD2_Tasks(void)
                 setChangeGiverTaskState(CG_COIN_TYPE);
                 setBV_State(BV_BILL_TYPE);
             }
-
             break;
         }// </editor-fold>
 

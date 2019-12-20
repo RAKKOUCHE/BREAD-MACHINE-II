@@ -58,10 +58,11 @@
 #include "peripheral/uart/plib_uart3.h"
 #include "dataCommun.h"
 #include "MDB/mdb.h"
-#include "clavier.h"
+#include "contacts.h"
 #include "leds.h"
 #include "DS18B20.h"
-
+#include "contacts.h"
+#include "moteurs.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

@@ -15,8 +15,8 @@
  */
 /* ************************************************************************** */
 
-#ifndef _CLAVIER_H    /* Guard against multiple inclusion */
-#define _CLAVIER_H
+#ifndef _MOTEURS_H    /* Guard against multiple inclusion */
+#define _MOTEURS_H
 
 
 /* ************************************************************************** */
@@ -24,17 +24,13 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include <machine/types.h>
-#include "globaldef.h"
-#include "freertos.h"
-#include "task.h"
-#include "MDB/mdb.h"
 
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
-
+#include "FreeRTOS.h"
+#include "task.h"
+#include "globaldef.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -49,22 +45,19 @@ extern "C"
     /* ************************************************************************** */
     /* ************************************************************************** */
 
+    /*  A brief description of a section can be given directly below the section
+        banner.
+     */
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Data Types
     // *****************************************************************************
     // *****************************************************************************
 
-    /**
-     * brief Enumération des états de la touche.
+    /*  A brief description of a section can be given directly below the section
+        banner.
      */
-    typedef enum
-    {
-        KEY_LO, /*!<La touche vient d'être appuyée.*/
-        KEY_HI, /*!<La touche est relachée.*/
-        KEY_CHECKED, /*!<La touche est vérifiée.*/
-        KEY_USED, /*!<La touche est toujours utilisée.*/
-    } KEY_STATES;
 
     // *****************************************************************************
     // *****************************************************************************
@@ -72,42 +65,23 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
-    /**
-     * \brief Demande l'état du clavier.
-     * \param[in] Numéro de la touche.
-     * \return Etat du clavier.
+    /*  A brief description of a section can be given directly below the section
+        banner.
      */
-    KEY_STATES getKeyState(const uint8_t numKey);
-    
+
+    // *****************************************************************************
+
     /**
-     * \brief Fxe l'état du clavier.
-     * @param numKey Numéro de la touche concernée.
-     * @param state Etat à envoyé à la touche.
+     * \brief
      */
-    void setKeyState(const uint8_t numKey, KEY_STATES state);    
-    
-    /**
-     * \brief Demande la touche utilisée
-     * @return 0 Si aucune touche n'est utilisée. Sinon le numéro de la touche.
-     */
-    uint8_t getSelection();
-    
-    /**
-     * \brief Positionne la sélection à zéro.
-     */
-    void clrSelection();
-    
-    /**
-     * \brief Initialisation du clavier.
-     */
-    void vKeyboardInit(void);    
+    void vMotorsInit(void);
 
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _CLAVIER_H */
+#endif /* _MOTEURS_H */
 
 /* *****************************************************************************
  End of File

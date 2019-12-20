@@ -631,7 +631,7 @@ void setChangeGiverTaskState(CG_STATUS state)
  *         None
  *         
  ********************************************************************/
-void setIsCangeFinished(const bool isFinished)
+void setIsChangeFinished(const bool isFinished)
 {
     changeGiver.isChangeFinished = isFinished;
 }

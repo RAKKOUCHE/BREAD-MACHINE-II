@@ -1961,8 +1961,7 @@ UpdateToLatestRevision=1
 PartTypes=0
 
 [NetInfos]
-Net1=NetName=DQ|NetColor=$006E6EFF
-Net2=NetName=THERMO.DQ_13|NetColor=$006E6EFF
+Net1=NetName=BTN MOTOR 3_5|NetColor=$006EFF6E
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
