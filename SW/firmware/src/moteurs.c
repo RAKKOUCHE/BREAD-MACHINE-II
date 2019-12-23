@@ -56,6 +56,11 @@
  */
 #define MOTOR_TASK_PRIORITY 3
 
+/**
+ * \brief Nombre de moteurs dans le distributeur.
+ * \details 3 convoyeurs, 3 trappes.
+ */
+#define MOTEURS_NUMBER (PRODUCT_NUMBER * 2) 
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
 /* ************************************************************************** */
@@ -69,14 +74,20 @@ typedef enum
 {
     MOTORS_INIT,
     MOTORS_OFF,
-    MOTORS_ON,
     MOTORS_BREAK,
+    MOTORS_FORWARD,
+    MOTORS_REVERSE,
     MOTORS_IDLE,
 } MOTORS_SATE;
 
-struct
+typedef struct
 {
     MOTORS_SATE state;
+} MOTOR;
+
+struct
+{
+    MOTOR motor[MOTEURS_NUMBER];
     TaskHandle_t hMotorHandle;
 } motors;
 
@@ -123,7 +134,7 @@ struct
  *         None
  *         
  ********************************************************************/
-static void powerMotor(void)
+static void powerMotors(void)
 {
     BRK_Set();
     PWR_Set();
@@ -172,7 +183,7 @@ static void powerMotor(void)
  *         None
  *         
  ********************************************************************/
-static void breakMotor(void)
+static void actvateBreakMotors(void)
 {
     BRK_Clear();
     PWR_Clear();
@@ -221,7 +232,7 @@ static void breakMotor(void)
  *         None
  *         
  ********************************************************************/
-static void freeMotor(void)
+static void freeMotors(void)
 {
     BRK_Set();
     PWR_Clear();
@@ -275,25 +286,124 @@ static void vTaskMoteur(void *vParameter)
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while(1)
     {
-        switch(motors.state)
+        uint8_t byIndex;
+        for(byIndex = 0; byIndex < MOTEURS_NUMBER; byIndex++)
         {
-            case MOTORS_INIT:
-                // <editor-fold desc="MOTORS_INIT"> 
+            switch(motors.motor[byIndex].state)
             {
-                motors.state = MOTORS_IDLE;
-                breakMotor();
-                freeMotor();
-                break;
-            }// </editor-fold>
-            case MOTORS_IDLE:
-                // <editor-fold desc="MOTORS_IDLE"> 
-            {
+                case MOTORS_INIT:
+                    // <editor-fold desc="MOTORS_INIT"> 
+                {
+                    motors.motor[byIndex].state = MOTORS_IDLE;
+                    actvateBreakMotors();
+                    freeMotors();
+                    break;
+                }// </editor-fold>
+                case MOTORS_OFF:
+                    // <editor-fold desc="MOTORS_OFF">
+                {
+                    motors.motor[byIndex].state = MOTORS_IDLE;
+                    switch(byIndex / 3)
+                    {
+                        case 0:
+                            // <editor-fold desc="Caroussels">
+                        {
+                            freeMotors();
+                            LATBSET = 1 < (byIndex + 10);
+                            break;
+                        }// </editor-fold>
+                        case 1:
+                            // <editor-fold desc="Trappes">
+                        {
+                            LATBCLR = 3 < ((byIndex * 2) + 2);
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }// </editor-fold>
+                case MOTORS_BREAK:
+                    // <editor-fold desc="MOTORS_BREAK">
+                {
+                    motors.motor[byIndex].state = MOTORS_IDLE;
+                    switch(byIndex / 3)
+                    {
+                        case 0:
+                            // <editor-fold desc="Caroussels">
+                        {
+                            actvateBreakMotors();
+                            LATBCLR = (1 < (byIndex + 10));
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+                            break;
+                        }
+                    }
 
-                break;
-            }// </editor-fold>
-            default:
-            {
-                break;
+                    break;
+                }// </editor-fold>
+                case MOTORS_FORWARD:
+                    // <editor-fold desc="MOTORS_FORWARD">
+                {
+                    motors.motor[byIndex].state = MOTORS_IDLE;
+                    switch(byIndex/3)
+                    {
+                        case 0:
+                            // <editor-fold desc="0">
+                        {
+                            powerMotors();
+                            LATBCLR =  (1 < (byIndex + 10));
+                            break;
+                        }// </editor-fold>
+                        case 1:
+                            // <editor-fold desc="1">
+                        {
+                            LATBSET = (1 < ((byIndex * 2) + 2));
+                            LATBCLR = (1 < ((byIndex * 2) + 3));
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+                            break;
+                        }
+                    }
+
+                    break;
+                }// </editor-fold>
+                case MOTORS_REVERSE:
+                    // <editor-fold desc="MOTORS_REVERSE">
+                {
+                    switch(byIndex / 3)
+                    {
+                        case 1:
+                            // <editor-fold desc="1">
+                        {
+                            LATBCLR = (1 < ((byIndex * 2) + 2));
+                            LATBSET = (1 < ((byIndex * 2) + 3));
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+                            break;
+                        }
+                    }
+
+                    break;
+                }// </editor-fold>
+                case MOTORS_IDLE:
+                    // <editor-fold desc="MOTORS_IDLE"> 
+                {
+
+                    break;
+                }// </editor-fold>
+                default:
+                {
+                    break;
+                }
             }
         }
         vTaskDelayUntil(&xLastWakeTime, MOTOR_DELAY);
@@ -354,7 +464,11 @@ static void vTaskMoteur(void *vParameter)
  ********************************************************************/
 void vMotorsInit(void)
 {
-    motors.state = MOTORS_INIT;
+    uint8_t byIndex;
+    for(byIndex = 0; byIndex < MOTEURS_NUMBER; byIndex++)
+    {
+        motors.motor[byIndex].state = MOTORS_INIT;
+    }
     if(motors.hMotorHandle == NULL)
     {
         xTaskCreate(vTaskMoteur, MOTOR_TASK_NAME, MOTOR_TASK_STACK, NULL, MOTOR_TASK_PRIORITY, &motors.hMotorHandle);
