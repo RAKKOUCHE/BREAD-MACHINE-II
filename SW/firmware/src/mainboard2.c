@@ -47,6 +47,11 @@
 // *****************************************************************************
 
 #include "mainboard2.h"
+#include "contacts.h"
+#include "MDB/mdb_bv.h"
+#include "globaldef.h"
+#include "moteurs.h"
+
 /**
  * \addtogroup main
  * @{
@@ -644,10 +649,22 @@ void MAINBOARD2_Tasks(void)
                     xTimerStop(hTOCumul, 1000);
                 }
             }
-            if(getSelection() && (getSelection() != oldChoice))
+            if((getSelection() != oldChoice))
             {
                 oldChoice = getSelection();
-                if(oldChoice < 4)
+                if(!oldChoice)
+                {
+                    for(byIndex = 0; byIndex < 6; byIndex++)
+                    {
+                        if(getIsMotorInUse(byIndex))
+                        {
+                            setMotorState(byIndex, MOTORS_BREAK);
+                            delayMs(200);
+                           setMotorState(byIndex, MOTORS_OFF);
+                        }
+                    }
+                }
+                if(oldChoice && (oldChoice < 4))
                 {
                     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
                     {
@@ -659,21 +676,31 @@ void MAINBOARD2_Tasks(void)
                 {
                     setShiftState(!getShiftState());
                 }
-                if((oldChoice > 4) && getShiftState())
+                if(oldChoice > 4)
                 {
-                    setShiftState(true);
+                    if(getShiftState())
+                    {
+                        setShiftState(true);
+                        setMotorState(oldChoice - 2, 
+                                      (getLastDir(oldChoice-2) == REVERSE) ? 
+                                          MOTORS_FORWARD : 
+                                          MOTORS_REVERSE);                        
+                    }
+                    else
+                    {                        
+                        setMotorState(oldChoice - 5, MOTORS_FORWARD);
+                    }
                 }
-
                 if(getAmountDispo())
                 {
                     mainboard2Data.state = MAINBOARD2_STATE_DISPLAY_AMOUNT;
                 }
                 else
                 {
-                    if(getSelection() < 4)
+                    if(oldChoice &&( oldChoice < 4))
                     {
                         vLCD_CLEAR();
-                        vDisplayLCD("%s%u", STR_CHOICE, getSelection());
+                        vDisplayLCD("%s%u", STR_CHOICE, oldChoice);
                         vLCDGotoXY(1, 2);
                         vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
                                     (double) getProductPrice(getSelection() - 1) / getMDBCurrencyDivider());

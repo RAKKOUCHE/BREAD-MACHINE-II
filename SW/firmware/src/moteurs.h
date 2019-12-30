@@ -28,10 +28,12 @@
 /* This section lists the other files that are included in this file.
  */
 
+#include <GenericTypeDefs.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "globaldef.h"
 #include "peripheral/gpio/plib_gpio.h"
+#include "delay_us.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -60,6 +62,29 @@ extern "C"
         banner.
      */
 
+    /**
+     * \brief
+     */
+    typedef enum
+    {
+        REVERSE,
+        FORWARD,
+    }DIRECTION;
+
+    /**
+     * \brief
+     */
+    typedef enum
+    {
+        MOTORS_INIT,
+        MOTORS_OFF,
+        MOTORS_BREAK,
+        MOTORS_FORWARD,
+        MOTORS_REVERSE,
+        MOTORS_IDLE,
+    } MOTORS_SATE;
+
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
@@ -71,6 +96,49 @@ extern "C"
      */
 
     // *****************************************************************************
+
+    /**
+     * \brief
+     * @param num
+     * @return 
+     */
+    DIRECTION getLastDir(uint8_t num);
+    
+    /**
+     * \brief
+     * @param num
+     * @param direction
+     */
+    void setLastDir(uint8_t num, DIRECTION direction);
+    
+    /**
+     * \brief
+     * @param 
+     * @param 
+     * @return 
+     */
+    bool getIsMotorInUse(const uint8_t num);
+
+//    /**
+//     * \brief
+//     * @param num
+//     * @param isInUse
+//     */
+//    void setIsMotorInUse(const uint8_t num, const BOOL isInUse);
+
+    /**
+     * \brief
+     * @param num
+     * @param state
+     */
+    void setMotorState(const uint8_t num, const MOTORS_SATE state);
+
+    /**
+     * \brief
+     * @param num
+     * @return 
+     */
+    MOTORS_SATE getMotorState(const uint8_t num);
 
     /**
      * \brief

@@ -57,6 +57,10 @@
 
 int main ( void )
  {
+    PWR_OutputEnable();
+    PWR_Clear();
+    BRK_OutputEnable();
+    BRK_Set();
     /* Initialize all modules */
     SYS_Initialize ( NULL );
 

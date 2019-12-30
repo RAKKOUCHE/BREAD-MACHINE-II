@@ -602,7 +602,7 @@ static void converT(void)
     {
         sendCommand(SKIP_ROM);
         sendCommand(CONVERT_T);
-        delayMs(2);
+        delayMs(750);
     }
 }
 

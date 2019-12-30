@@ -45,7 +45,7 @@
 /**
  * \brief Profondeur de la pile
  */
-#define CLAVIER_TASK_STACK 512
+#define CLAVIER_TASK_STACK 1024
 
 /**
  * \brief Delay de la tâche des touches.
@@ -78,6 +78,7 @@ struct
     bool isKeyShifted;
     uint8_t selection;
     KEY keys[7];
+    KEY door_switches[7];
     TaskHandle_t hSwitchTask;
     TimerHandle_t hShiftTO;
 } switchs;
@@ -134,7 +135,7 @@ struct
  ********************************************************************/
 static void vShift_TO(const TimerHandle_t HandleTimer)
 {
-    switchs.hShiftTO = false;
+    switchs.isKeyShifted = false;
 }
 
 /*********************************************************************
@@ -193,11 +194,11 @@ static void vTaskKeyboard(void *vParameter)
             {
                 if(byIndex < 3)
                 {
-                    lkState = (KEY_STATES)((PORTD >> (7 + byIndex) & 1));
+                    lkState = (KEY_STATES) ((PORTD >> (7 + byIndex) & 1));
                 }
                 else
                 {
-                    lkState = (KEY_STATES)((PORTE >> byIndex) & 1);
+                    lkState = (KEY_STATES) ((PORTE >> byIndex) & 1);
                 }
                 switch(getKeyState(byIndex))
                 {
@@ -233,6 +234,7 @@ static void vTaskKeyboard(void *vParameter)
                         if(lkState == KEY_HI)
                         {
                             setKeyState(byIndex, KEY_HI);
+                            switchs.selection = 0;
                         }
                         break;
                     }// </editor-fold>
@@ -299,7 +301,9 @@ static void vTaskKeyboard(void *vParameter)
  ********************************************************************/
 void setShiftState(const bool state)
 {
-    switchs.isKeyShifted = state;
+    (switchs.isKeyShifted = state) ?
+            xTimerStart(switchs.hShiftTO, 1000) :
+            xTimerStop(switchs.hShiftTO, 1000);
 }
 
 /*********************************************************************

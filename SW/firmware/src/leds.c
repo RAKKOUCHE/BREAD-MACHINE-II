@@ -56,7 +56,7 @@
 /**
  * \brief Délai pour la tâche.
  */
-#define TASK_LED_DELAY (250 * MILLISEC)
+#define TASK_LED_DELAY (130 * MILLISEC)
 
 /**
  * \Structure contenant les variables d'une led.

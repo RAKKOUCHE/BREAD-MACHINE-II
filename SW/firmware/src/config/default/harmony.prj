@@ -267,8 +267,8 @@
           <Name dnOrder="1">FreeRTOSConfig.h</Name>
           <LogicalPath dnOrder="2">config/default</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">AE877F45BCD5DF338CB961782A0617D7</GeneratedChecksum>
-          <UserChecksum dnOrder="5">AE877F45BCD5DF338CB961782A0617D7</UserChecksum>
+          <GeneratedChecksum dnOrder="4">B65795A40420DD705C2909BE3102BB55</GeneratedChecksum>
+          <UserChecksum dnOrder="5">B65795A40420DD705C2909BE3102BB55</UserChecksum>
         </File>
         <File dnOrder="33">
           <Type dnOrder="0">HEADER</Type>
