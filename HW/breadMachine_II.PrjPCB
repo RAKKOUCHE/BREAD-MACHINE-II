@@ -1960,17 +1960,6 @@ UpdateVariants=1
 UpdateToLatestRevision=1
 PartTypes=0
 
-[NetInfos]
-Net1=NetName=BREAK|NetColor=clYellow
-Net2=NetName=CMD CARROUSEL 1|NetColor=$00FF6EFF
-Net3=NetName=MOTORS DRIVERS.BREAK_13|NetColor=clYellow
-Net4=NetName=MOTORS DRIVERS.CMD CARROUSEL 1_13|NetColor=$00FF6EFF
-Net5=NetName=MOTORS DRIVERS.PWR_13|NetColor=$00FF6E6E
-Net6=NetName=NetQ12_1|NetColor=clYellow
-Net7=NetName=NetQ18_1|NetColor=$00FF6E6E
-Net8=NetName=NetQ22_1|NetColor=$00FF6EFF
-Net9=NetName=PWR|NetColor=$00FF6E6E
-
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
 ComparisonOptions1=Kind=Net Class|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0

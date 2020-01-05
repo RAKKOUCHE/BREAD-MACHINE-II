@@ -674,6 +674,7 @@ void MAINBOARD2_Tasks(void)
                 }
                 if(oldChoice == 4)
                 {
+                    //Check du git du 5/1/2020
                     setShiftState(!getShiftState());
                 }
                 if(oldChoice > 4)
