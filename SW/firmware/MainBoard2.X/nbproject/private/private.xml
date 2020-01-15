@@ -78,7 +78,14 @@
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/moteurs.c</file>
         </group>
         <group name="MT DISTRIBUTION">
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
+            <file>file:/D:/Program%20Files%20(x86)/Microchip/MPLABX/v5.30/packs/Microchip/PIC32MX_DFP/1.1.215/xc32/startup/crt0.S</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/trap_security.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/contacts.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mdb/MDB_CG.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mdb/MDB.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/DS18B20.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/main.c</file>
         </group>
     </open-files>
 </project-private>

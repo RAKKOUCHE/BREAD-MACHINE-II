@@ -98,6 +98,9 @@ void CLK_Initialize( void )
     {
         __builtin_mtc0(12, 0,(__builtin_mfc0(12, 0) | 0x0001)); /* enable interrupts */
     }
+    /* Make FRC as the input clock for USB */
+    OSCCONSET = _OSCCON_UFRCEN_MASK;
+
 
     /* Set up Reference Clock */
     /* ROSEL =  FRC */
@@ -117,7 +120,7 @@ void CLK_Initialize( void )
         __builtin_mtc0(12, 0,(__builtin_mfc0(12, 0) | 0x0001));
     }
     /* Peripheral Module Disable Configuration */
-    PMD1SET = 0x1101;
+    PMD1SET = 0x1100;
     PMD2SET = 0x3;
     PMD3SET = 0x1f001f;
     PMD4SET = 0x1e;

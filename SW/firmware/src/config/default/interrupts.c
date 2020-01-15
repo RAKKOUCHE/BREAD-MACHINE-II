@@ -51,6 +51,7 @@
 
 #include "configuration.h"
 #include "definitions.h"
+#include "trap_security.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,12 +60,22 @@
 // *****************************************************************************
 
 
+void ADC_InterruptHandler( void );
 void I2C_1_InterruptHandler( void );
 
 
 
 /* All the handlers are defined here.  Each will call its PLIB-specific function. */
 
+
+void ADC_Handler (void)
+{
+    ADC_Disable();
+    ADC_InterruptHandler();
+    
+    vTaskNotifyGiveFromISR(getADCTaskHandle(), NULL);
+
+}
 
 void I2C_1_Handler (void)
 {

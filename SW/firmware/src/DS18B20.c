@@ -52,8 +52,12 @@
 /**
  * \brief Delay entre 2 vérifications de la sonde.
  */
+#ifdef __DEBUG
+#define DS18B20_TASK_DELAY (60 * SECONDE)
+#else
 #define DS18B20_TASK_DELAY (60 * SECONDE)
 
+#endif
 /**
  * \brief Configuration 9 bits
  */
@@ -726,8 +730,22 @@ static void vTaskTemperature(void *vParameters)
     {
         if((ds18b20.Temperature = getds18b20Temp()))
         {
-            ds18b20.Temperature > (double) getAlarmHeater() ? COLD_Set() : COLD_Clear();
-            ds18b20.Temperature < (double) getAlarmCold() ? HEATER_Set() : HEATER_Clear();
+            if(ds18b20.Temperature > ((double) getAlarmHeater() + 0.25))
+            {
+                COLD_Set();
+            }
+            if(ds18b20.Temperature < ((double) getAlarmHeater() - 0.25))
+            {
+                COLD_Clear();
+            }
+            if(ds18b20.Temperature > ((double) getAlarmCold() + 0.25))
+            {
+                HEATER_Clear();
+            }
+            if(ds18b20.Temperature < ((double) getAlarmCold() - 0.25))
+            {
+                HEATER_Set();
+            }
         }
         vTaskDelayUntil(&xLastWakeTime, DS18B20_TASK_DELAY);
     }
@@ -832,6 +850,8 @@ void vDS18B20Init(void)
 {
     if(ds18b20.hDS18B20 == NULL)
     {
+        HEATER_Clear();
+        COLD_Clear();
         xTaskCreate(vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
                     NULL, DS18B20_TASK_PRIORITY, &ds18b20.hDS18B20);
     }

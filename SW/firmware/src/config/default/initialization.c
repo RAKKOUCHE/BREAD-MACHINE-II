@@ -82,8 +82,8 @@
 #pragma config FPLLIDIV =   DIV_2
 #pragma config FPLLMUL =    MUL_24
 #pragma config FPLLODIV =   DIV_1
-#pragma config UPLLEN =     OFF
-#pragma config UPLLIDIV =   DIV_2
+#pragma config UPLLEN =     ON
+#pragma config UPLLIDIV =   DIV_12
 
 /*** DEVCFG3 ***/
 #pragma config FSRSSEL =    PRIORITY_7
@@ -208,6 +208,8 @@ void SYS_Initialize ( void* data )
 
     I2C1_Initialize();
 	UART1_Initialize();
+
+    ADC_Initialize();
 
 
     sysObj.drvAT24 = DRV_AT24_Initialize(DRV_AT24_INDEX, (SYS_MODULE_INIT *)&drvAT24InitData);

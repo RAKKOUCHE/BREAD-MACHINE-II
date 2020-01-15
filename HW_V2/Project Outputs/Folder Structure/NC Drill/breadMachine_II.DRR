@@ -1,0 +1,24 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: breadMachine_II.PcbDoc   01/10/2019  15:02:39
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : breadMachine_II.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      16mil (0.406mm)                                           Round             200       PTH        0.00inch (0.00mm)
+T2      30mil (0.762mm)                                           Round             99        PTH        0.00inch (0.00mm)
+T3      35mil (0.889mm)                                           Round             3         PTH        0.00inch (0.00mm)
+T4      40mil (1.016mm)                                           Round             100       PTH        0.00inch (0.00mm)
+T5      47mil (1.194mm)                                           Round             15        PTH        0.00inch (0.00mm)
+T6      55mil (1.397mm)                                           Round             12        PTH        0.00inch (0.00mm)
+T7      60mil (1.524mm)                                           Round             10        PTH        0.00inch (0.00mm)
+T8      90mil (2.286mm)                                           Round             2         PTH        0.00inch (0.00mm)
+T9      166mil (4.216mm)                                          Round             6         PTH        0.00inch (0.00mm)
+T10     40mil (1.016mm)                                           Round             3         NPTH       0.00inch (0.00mm)
+T11     90mil (2.286mm)                                           Round             4         NPTH       0.00inch (0.00mm)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              454
+
+Total Processing Time (hh:mm:ss) : 00:00:00

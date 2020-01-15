@@ -861,6 +861,7 @@ void vTaskCG(void)
             {
                 changeGiver.iBeforeRetry = MDBRETRY;
                 changeGiver.state = CG_POLL;
+                
                 if(!isMDBReset(CGADDRESS))
                 {
                     vResetCG();

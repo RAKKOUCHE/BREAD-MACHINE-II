@@ -51,6 +51,7 @@
 #include "MDB/mdb_bv.h"
 #include "globaldef.h"
 #include "moteurs.h"
+#include "trap_security.h"
 
 /**
  * \addtogroup main
@@ -565,6 +566,7 @@ void MAINBOARD2_Initialize(void)
     vKeyboardInit();
     vDS18B20Init();
     vMotorsInit();
+    vADCInit();
 
     /* TODO: Initialize your application's state machine and other
      * parameters.
@@ -660,7 +662,7 @@ void MAINBOARD2_Tasks(void)
                         {
                             setMotorState(byIndex, MOTORS_BREAK);
                             delayMs(200);
-                           setMotorState(byIndex, MOTORS_OFF);
+                            setMotorState(byIndex, MOTORS_OFF);
                         }
                     }
                 }
@@ -682,13 +684,13 @@ void MAINBOARD2_Tasks(void)
                     if(getShiftState())
                     {
                         setShiftState(true);
-                        setMotorState(oldChoice - 2, 
-                                      (getLastDir(oldChoice-2) == REVERSE) ? 
-                                          MOTORS_FORWARD : 
-                                          MOTORS_REVERSE);                        
+                        setMotorState(oldChoice - 2,
+                                      (getLastDir(oldChoice - 2) == REVERSE) ?
+                                      MOTORS_FORWARD :
+                                      MOTORS_REVERSE);
                     }
                     else
-                    {                        
+                    {
                         setMotorState(oldChoice - 5, MOTORS_FORWARD);
                     }
                 }
@@ -698,7 +700,7 @@ void MAINBOARD2_Tasks(void)
                 }
                 else
                 {
-                    if(oldChoice &&( oldChoice < 4))
+                    if(oldChoice && (oldChoice < 4))
                     {
                         vLCD_CLEAR();
                         vDisplayLCD("%s%u", STR_CHOICE, oldChoice);

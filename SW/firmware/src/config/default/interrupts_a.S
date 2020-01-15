@@ -52,6 +52,37 @@
 #include <xc.h>
 #include "ISR_Support.h"
 
+   .extern  ADC_Handler
+
+   .section .vector_23,code, keep
+   .equ     __vector_dispatch_23, IntVectorADC_Handler
+   .global  __vector_dispatch_23
+   .set     nomicromips
+   .set     noreorder
+   .set     nomips16
+   .set     noat
+   .ent  IntVectorADC_Handler
+
+IntVectorADC_Handler:
+    la    $26,  _ADC_Handler
+    jr    $26
+    nop
+    .end    IntVectorADC_Handler
+
+   .section .ADC_Handler_vector_text, code, keep
+   .set     nomicromips
+   .set     noreorder
+   .set     nomips16
+   .set     noat
+   .ent  _ADC_Handler
+
+_ADC_Handler:
+    portSAVE_CONTEXT
+    la    s6,  ADC_Handler
+    jalr  s6
+    nop
+    portRESTORE_CONTEXT
+    .end    _ADC_Handler
    .extern  I2C_1_Handler
 
    .section .vector_32,code, keep

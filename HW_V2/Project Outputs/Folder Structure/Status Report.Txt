@@ -1,0 +1,10 @@
+Output: Bill of Materials
+Type  : BOM
+From  : Variant [[No Variations]] of PCB Document [breadMachine_II.PcbDoc]
+   Generated File[Bill of Materials-breadMachine_II.xls]
+
+
+Files Generated   : 1
+Documents Printed : 0
+
+Finished Output Generation At 15:02:42 On 01/10/2019

@@ -2,10 +2,6 @@
 
 #include <machine/types.h>
 
-
-#include <GenericTypeDefs.h>
-
-
 /** Descriptive File Name
 
   @Company
