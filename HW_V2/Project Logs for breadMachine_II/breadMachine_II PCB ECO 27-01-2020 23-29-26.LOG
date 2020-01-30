@@ -1,0 +1,4 @@
+Added Pin To Net: NetName=NetC26_1 Pin=C26-1
+Added Pin To Net: NetName=GND Pin=C26-2
+Added Member To Class: ClassName=U_MCU Member=Component C26 10µF
+Added Member To Class: ClassName=U_MCU Member=Component C31 100nF

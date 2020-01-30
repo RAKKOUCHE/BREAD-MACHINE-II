@@ -72,7 +72,7 @@ typedef struct
 
     union
     {
-        ENABLE enables;
+        ENABLE enables; /*!<Habilitation des canaux.*/
         uint32_t u32Enables;
     };
     int32_t heater; /*!<Températirue de déclenchement du chauffage.*/

@@ -55,25 +55,25 @@
 // *****************************************************************************
 // *****************************************************************************
 
-int main ( void )
- {
+int main(void)
+{
     PWR_OutputEnable();
     PWR_Clear();
     BRK_OutputEnable();
     BRK_Set();
     /* Initialize all modules */
-    SYS_Initialize ( NULL );
+    SYS_Initialize(NULL);
 
-    while ( true )
+    while(true)
     {
         /* Maintain state machines of all polled MPLAB Harmony modules. */
-        SYS_Tasks ( );
+        SYS_Tasks();
     }
     /* Execution should not come here during normal operation */
-    return ( EXIT_FAILURE );
+    return( EXIT_FAILURE);
 }
 
 /*******************************************************************************
  End of File
-*/
+ */
 

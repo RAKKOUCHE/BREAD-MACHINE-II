@@ -57,7 +57,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=NWYRYYMB
+DocumentUniqueId=YWVYQXJD
 
 [Document2]
 DocumentPath=MCU.SchDoc
@@ -827,7 +827,7 @@ OutputDefault20=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=Microsoft Print to PDF
+TargetPrinter=KONICA MINOLTA magicolor 1680MF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 
 [OutputGroup3]
@@ -1959,6 +1959,12 @@ SelectedOnly=0
 UpdateVariants=1
 UpdateToLatestRevision=1
 PartTypes=0
+
+[NetInfos]
+Net1=NetName=MCP2200.MCP2200TX_13|NetColor=$006E6EFF
+Net2=NetName=MODEM.GSM TX_13|NetColor=$00FF6E6E
+Net3=NetName=TX GSM|NetColor=$00FF6E6E
+Net4=NetName=TX_2200|NetColor=$006E6EFF
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0

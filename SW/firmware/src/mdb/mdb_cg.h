@@ -134,13 +134,13 @@ extern "C"
     typedef struct
     {
         MDBGENERICDEVICECONFIG deviceConfig; /*!<Niveau MDB, Country code*/
-        BYTE byScalingFactor; /*!< Facteur de multiplication appliqué à tous les 
+        uint8_t byScalingFactor; /*!< Facteur de multiplication appliqué à tous les 
                                * montants du périphérique.*/
-        BYTE byDecimalPlace; /*!< Position de la virgule en partant du chiffre 
+        uint8_t byDecimalPlace; /*!< Position de la virgule en partant du chiffre 
                               * le moins significatif. */
-        BYTE byCoinRouting[2]; /*!<Liste des pièces pouvant entrer dans les 
+        uint8_t byCoinRouting[2]; /*!<Liste des pièces pouvant entrer dans les 
                                 * tubes.*/
-        BYTE byCoinValue[NUMBERCHANNELSCG]; /*!Valeur des pièces.*/
+        uint8_t byCoinValue[NUMBERCHANNELSCG]; /*!Valeur des pièces.*/
     } CG_CONFIG;
 
     /**
@@ -149,8 +149,8 @@ extern "C"
      */
     typedef struct
     {
-        BYTE byFull[2];
-        BYTE byLevel[16];
+        uint8_t byFull[2];
+        uint8_t byLevel[16];
     } TUBE_STATUS;
 
     /**
@@ -162,7 +162,7 @@ extern "C"
 
         union
         {
-            BYTE byCoinEnable[2];
+            uint8_t byCoinEnable[2];
             WORD wCoinEnable;
         };
         WORD wDispenseEnable;
@@ -174,11 +174,11 @@ extern "C"
      */
     typedef struct
     {
-        BYTE ManufacturerCode[3];
-        BYTE SerialNumber[12];
-        BYTE Model[12];
-        BYTE SWVersion[2];
-        BYTE Optionnal[4];
+        uint8_t ManufacturerCode[3];
+        uint8_t SerialNumber[12];
+        uint8_t Model[12];
+        uint8_t SWVersion[2];
+        uint8_t Optionnal[4];
     } CG_IDENTIFICATION;
 
     typedef struct

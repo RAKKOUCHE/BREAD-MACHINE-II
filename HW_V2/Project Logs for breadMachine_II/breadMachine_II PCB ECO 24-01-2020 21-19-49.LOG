@@ -1,0 +1,33 @@
+Change Component Footprint: Designator=P24 Old Footprint=CO3P508 - 2 New Footprint=CO3P381
+Change Component Comment : Designator=P24 Old Comment=24VDC New Comment=COOLER
+Change component parameters: Designator = "P24"; Footprint = "CO3P381"; UniqueID = "\IDVCZODY\BCBHISTN"
+Change component parameters. Clean all parameters for all variants
+Change component parameters (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Added Component: Designator=R34(R 0805(2012))
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Coefficient de température"; Value = "± 100"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "http://www.farnell.com/datasheets/1716700.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.farnell.com/datasheets/1716700.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "MC0.1W08051%1KFR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MSL"; Value = "MSL 1 - Illimité"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "5000=0,001 (EUR)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Product Range"; Value = "MULTICOMP - MC Series"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Puissance"; Value = "100"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistor Mounting"; Value = "CMS"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "YES"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Résistance"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "2129113"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tension"; Value = "150"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tolérance de résistance"; Value = "± 1%"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de boîtier de résistance"; Value = "0805"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de packaging"; Value = "Full Reel"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de résistance"; Value = "Couche épaisse"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetP24_2 Pin=P24-2
+Added Pin To Net: NetName=NetQ49_1 Pin=R34-1
+Added Pin To Net: NetName=TX MDB Pin=R34-2
+Added Member To Class: ClassName=U_THERMOMETER Member=Component P24 COOLER
+Added Member To Class: ClassName=U_MDB Member=Component R34 1K

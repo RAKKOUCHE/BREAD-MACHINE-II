@@ -1,0 +1,6 @@
+Change Component Footprint: Designator=U3 Old Footprint=TQFP100PF New Footprint=TQFP100PT
+Added Member To Class: ClassName=U_PSU Member=Component F1 10A
+Added Member To Class: ClassName=U_PSU Member=Component F2 1A
+Added Member To Class: ClassName=U_MCU Member=Component P7 ICD connector
+Added Member To Class: ClassName=U_MOTOR DRIVER Member=Component Q47 IRFZ44N
+Added Member To Class: ClassName=U_MCU Member=Component U3 PIC32MX575F512L

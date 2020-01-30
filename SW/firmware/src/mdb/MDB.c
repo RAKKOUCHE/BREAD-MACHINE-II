@@ -23,8 +23,8 @@ MDB_STATUS;
 
 typedef struct
 {
-    BYTE byData;
-    BYTE bit9th;
+    uint8_t byData;
+    uint8_t bit9th;
 }
 UARTDATA;
 
@@ -40,7 +40,7 @@ uUART_DATA;
 struct
 {
     bool isMDBChecked;
-    BYTE byDecimalPos;
+    uint8_t byDecimalPos;
     WORD wCurrencyDivider;
     MDB_STATUS state;
     /**
@@ -181,7 +181,7 @@ static void vTaskMDB(void)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        BYTE byCheckSum(BYTE byLen, const uUART_DATA* ptrBuffer)
+ * Function:        uint8_t byCheckSum(uint8_t byLen, const uUART_DATA* ptrBuffer)
  * 
  * Version:         1.0
  * 
@@ -201,9 +201,9 @@ static void vTaskMDB(void)
  *
  * Note:            None
  ********************************************************************/
-static BYTE byCheckSum(BYTE byLen, const uUART_DATA* ptrBuffer)
+static uint8_t byCheckSum(uint8_t byLen, const uUART_DATA* ptrBuffer)
 {
-    BYTE byResult = 0;
+    uint8_t byResult = 0;
     while(byLen--)
     {
         byResult += (ptrBuffer[byLen].uartData.byData) & 0X00FF;
@@ -541,7 +541,7 @@ uint16_t getMDBCurrencyDivider(void)
 }
 
 /*********************************************************************
- * Function:        WORD decimalDivider(BYTE byDecimal)
+ * Function:        WORD decimalDivider(uint8_t byDecimal)
  * 
  * Version:         1.0
  * 
@@ -561,7 +561,7 @@ uint16_t getMDBCurrencyDivider(void)
  *
  * Note:            None
  ********************************************************************/
-WORD decimalDivider(BYTE byDecimal)
+WORD decimalDivider(uint8_t byDecimal)
 {
     WORD wResult = 1;
     while(byDecimal--)
@@ -573,7 +573,7 @@ WORD decimalDivider(BYTE byDecimal)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        void vVMCAcknowledge(const BYTE byAcknowledge)
+ * Function:        void vVMCAcknowledge(const uint8_t byAcknowledge)
  * 
  * Version:         1.0
  * 
@@ -593,7 +593,7 @@ WORD decimalDivider(BYTE byDecimal)
  *
  * Note:            None
  ********************************************************************/
-void vVMCAcknowledge(const BYTE byAcknowledge)
+void vVMCAcknowledge(const uint8_t byAcknowledge)
 {
     uUART_DATA uaAcknowledge;
     uaAcknowledge.wData = byAcknowledge;
@@ -612,8 +612,8 @@ void vVMCAcknowledge(const BYTE byAcknowledge)
 
 /*********************************************************************
  * Function:        
- *         BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
-                      const BYTE byLenParameters, void *ptrParameters,
+ *         uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
+                      const uint8_t byLenParameters, void *ptrParameters,
                       void *ptrAnswer)
  * 
  * Version:
@@ -655,16 +655,16 @@ void vVMCAcknowledge(const BYTE byAcknowledge)
  *         None
  *         
  ********************************************************************/
-BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
-                      const BYTE byLenParameters, void *ptrParameters,
+uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
+                      const uint8_t byLenParameters, void *ptrParameters,
                       void *ptrAnswer)
 {
-    BYTE byIndex = 0;
+    uint8_t byIndex = 0;
     uUART_DATA data[36];
-    BYTE *byPtrParameters, *byPtrAnswer;
+    uint8_t *byPtrParameters, *byPtrAnswer;
     byPtrParameters = ptrParameters;
     byPtrAnswer = ptrAnswer;
-    BOOL isRepeat = false;
+    bool isRepeat = false;
     xSemaphoreTake(mdb.hSemaphorePoll, SECONDE);
 
     //TODO faire clignoter la led MDB
@@ -679,7 +679,7 @@ BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
         //Complete le buffer à transmettre
         for(byIndex = 1; byIndex <= byLenParameters; byIndex++)
         {
-            data[byIndex].uartData.byData = (BYTE) byPtrParameters[byIndex - 1];
+            data[byIndex].uartData.byData = (uint8_t) byPtrParameters[byIndex - 1];
             data[byIndex].uartData.bit9th = 0X00;
         }
 
@@ -765,8 +765,8 @@ BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, 
- *                  BYTE *byLenAnswer)
+ * Function:        bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, 
+ *                  uint8_t *byLenAnswer)
  * 
  * Version:         1.0
  * 
@@ -786,10 +786,10 @@ BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
  *
  * Note:            None
  ********************************************************************/
-bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE * byLenAnswer)
+bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer)
 {
 
-    BYTE byResult = byMDBSendCommand(byDeviceAddress, CMD_POLL, 0, NULL,
+    uint8_t byResult = byMDBSendCommand(byDeviceAddress, CMD_POLL, 0, NULL,
                                      byResponse);
     if(byResult > 1)
     {
@@ -803,7 +803,7 @@ bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE * byLenAnswer)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        bool isMDBReset(const BYTE byDeviceAddress)
+ * Function:        bool isMDBReset(const uint8_t byDeviceAddress)
  * 
  * Version:         1.0
  * 
@@ -823,17 +823,17 @@ bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE * byLenAnswer)
  *
  * Note:            None
  ********************************************************************/
-bool isMDBReset(const BYTE byDeviceAddress)
+bool isMDBReset(const uint8_t byDeviceAddress)
 {
-    BYTE byAcknowledge;
+    uint8_t byAcknowledge;
     return((byMDBSendCommand(byDeviceAddress, CMD_RESET, 0, NULL, &byAcknowledge) == 1) && (byAcknowledge == ACK));
 }
 
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        bool isGetMDBConfig(const BYTE byDeviceAddress, 
- *                  void *byStatus, const BYTE byLen)
+ * Function:        bool isGetMDBConfig(const uint8_t byDeviceAddress, 
+ *                  void *byStatus, const uint8_t byLen)
  * 
  * Version:         1.0
  * 
@@ -853,7 +853,7 @@ bool isMDBReset(const BYTE byDeviceAddress)
  *
  * Note:            None
  ********************************************************************/
-bool isGetMDBConfig(const BYTE byDeviceAddress, void *byStatus, const BYTE byLen)
+bool isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen)
 {
     if(byMDBSendCommand(byDeviceAddress, CMD_SETUP, 0, NULL, byStatus) > 1)
     {

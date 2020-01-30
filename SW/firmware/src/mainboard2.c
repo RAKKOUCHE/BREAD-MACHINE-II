@@ -601,7 +601,7 @@ void MAINBOARD2_Tasks(void)
             vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
             vDisplayLCD(" %s %s", STR_VERSION, VERSION);
-            delayMs(5 * SECONDE);
+            delayMs(1 * SECONDE);
 #ifndef __DEBUG
             delayMs(15 * SECONDE);
 #endif 
@@ -679,7 +679,11 @@ void MAINBOARD2_Tasks(void)
                     //Check du git du 5/1/2020
                     setShiftState(!getShiftState());
                 }
+#ifdef __DEBUG
                 if(oldChoice > 4)
+#else
+                if(oldChoice > 4 && DOOR_Get())
+#endif
                 {
                     if(getShiftState())
                     {
@@ -711,6 +715,43 @@ void MAINBOARD2_Tasks(void)
                     }
                 }
             }
+            if(getIsDoorMoved())
+            {//La porte vient d'être fermée.
+                clrIsDoorMoved();
+                if(!DOOR_Get())
+                {
+                    //TODO test des trappes.
+                    for(byIndex = 3; byIndex < 3 + PRODUCT_NUMBER; byIndex++)
+                    {
+                        setMotorState(byIndex, MOTORS_REVERSE);
+                        while(getDoorSwitchState(byIndex - 2) != KEY_USED)
+                        {
+                            Nop();
+                        }
+                        setMotorState(byIndex, MOTORS_OFF);
+                        delayMs(500 * MILLISEC);
+                        setMotorState(byIndex, MOTORS_FORWARD);
+                        while(getDoorSwitchState(byIndex + 1) != KEY_USED)
+                        {
+                            
+                            //toto control de la consomation si la valeur est à zéro
+                        }
+                        setMotorState(byIndex, MOTORS_OFF);
+                        //                        while(true)
+                        //                        {
+                        //
+                        //                        }
+
+                    }
+
+                    //TODO vérication de la présence des produits
+                }
+                else
+                {
+                    //TODO Envoyer un sms.
+                }
+            }
+
             break;
         }// </editor-fold>
         case MAINBOARD2_STATE_DISPLAY_SELECT:
