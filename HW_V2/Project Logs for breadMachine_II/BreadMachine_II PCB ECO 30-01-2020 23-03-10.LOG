@@ -1,0 +1,51 @@
+Added Component: Designator=U2(SOIC-SO20_N)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Boîtier de CI numérique"; Value = "SOIC"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Catégories d'approbation"; Value = "AEC-Q100"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "http://bcove.me/dhsaedkn"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://bcove.me/dhsaedkn"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "http://www.farnell.com/datasheets/1481574.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "http://www.farnell.com/datasheets/1481574.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3Description"; Value = "http://www.farnell.com/cad/1671246.zip"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3URL"; Value = "http://www.farnell.com/cad/1671246.zip"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Fréquence"; Value = "12"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Gamme de tension d'alimentation"; Value = "3V à 5.5"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "MICROCHIP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "MCP2200-I/SO"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MSL"; Value = "MSL 1 - Illimité"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Nombre de broches"; Value = "20"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=2.05, 10=2.04, 25=1.67, 50=1.6, 100=1.42 (EUR)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "YES"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Stock 1"; Value = "1653"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "1781148"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SVHC"; Value = "No SVHC (15-Jun-2015)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Température de fonctionnement"; Value = "-40°C à +85"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Température de fonctionnement max.."; Value = "85"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Température d'utilisation min"; Value = "-40"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tension, alimentation max.."; Value = "5.5"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tension, alimentation min."; Value = "3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de boîtier d'interface"; Value = "SOIC"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de packaging"; Value = "Pièce"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de pont"; Value = "USB à UART<!--FANDB--><div class="features-and-benefits-container"><div class="features-and-benefits-desc-container"><span class="features-and-benefits-container-desc">USB 2.0 to UART Protocol Converter with GPIO in SOIC-20 Package</span></div><div class="features-and-benefits-description"><span class="features-benefits-value">The MCP2200-I/SO is a USB to UART serial converter which enables USB connectivity in applications that have a UART interface. The device reduces external components by integrating the USB termination resistors. The MCP2200-I/SO also has 256 bytes of integrated user EEPROM.</span></div><div class="features-and-benefits-list"><ul class="features-and-benefits-list-list"><li class="features-and-benefits-list-item">Supports full-speed USB (12 Mb/s)</li><li class="features-and-benefits-list-item">Implements USB protocol composite device"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type de synthétiseur"; Value = "-"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=5V Pin=U2-1
+Added Pin To Net: NetName=NetC15_1 Pin=U2-2
+Added Pin To Net: NetName=NetC16_1 Pin=U2-3
+Added Pin To Net: NetName=NetR38_2 Pin=U2-4
+Added Pin To Net: NetName=NetU2_5 Pin=U2-5
+Added Pin To Net: NetName=NetU2_6 Pin=U2-6
+Added Pin To Net: NetName=NetU2_7 Pin=U2-7
+Added Pin To Net: NetName=NetU2_8 Pin=U2-8
+Added Pin To Net: NetName=NetU2_9 Pin=U2-9
+Added Pin To Net: NetName=RX_2200 Pin=U2-10
+Added Pin To Net: NetName=NetU2_11 Pin=U2-11
+Added Pin To Net: NetName=NetU2_11 Pin=U2-13
+Added Pin To Net: NetName=NetU2_14 Pin=U2-14
+Added Pin To Net: NetName=NetU2_15 Pin=U2-15
+Added Pin To Net: NetName=NetU2_16 Pin=U2-16
+Added Pin To Net: NetName=NetC17_2 Pin=U2-17
+Added Pin To Net: NetName=D1_10_N Pin=U2-18
+Added Pin To Net: NetName=D1_10_P Pin=U2-19
+Added Pin To Net: NetName=GND Pin=U2-20
+Added Member To Class: ClassName=U_RS232_2_USB Member=Component U2 MCP2200-I/SO

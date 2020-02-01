@@ -1,10 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : D:\Projets\MTDistribution\BreadMachine II\HW_V2\BreadMachine_II.PcbDoc
-Date     : 30/01/2020
-Time     : 21:29:37
-
-Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('to_gnd')),(All)
-Rule Violations :0
+Date     : 01/02/2020
+Time     : 23:51:18
 
 Processing Rule : Clearance Constraint (Gap=12mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
 Rule Violations :0
@@ -12,13 +9,10 @@ Rule Violations :0
 Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('to_gnd')),(All)
+Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('BOT_GND')),(All)
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('to_gnd')),(All)
-Rule Violations :0
-
-Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('to_gnd')),(All)
+Processing Rule : Clearance Constraint (Gap=12mil) (InNamedPolygon('TOP_GND')),(All)
 Rule Violations :0
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
@@ -30,25 +24,25 @@ Rule Violations :0
 Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=30mil) (Max=200mil) (Preferred=50mil) (InNet('NetC39_1'))
-Rule Violations :0
-
 Processing Rule : Width Constraint (Min=8mil) (Max=200mil) (Preferred=12mil) (All)
 Rule Violations :0
 
 Processing Rule : Width Constraint (Min=10mil) (Max=100mil) (Preferred=50mil) (InNet('NetP11_3'))
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=20mil) (Max=200mil) (Preferred=50mil) (InNet('NetD22_3'))
+Processing Rule : Width Constraint (Min=30mil) (Max=100mil) (Preferred=50mil) (InNet('NetC39_1'))
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=30mil) (InNet('5V'))
+Processing Rule : Width Constraint (Min=20mil) (Max=200mil) (Preferred=50mil) (InNet('NetD22_3'))
 Rule Violations :0
 
 Processing Rule : Width Constraint (Min=10mil) (Max=200mil) (Preferred=50mil) (InNet('24V'))
 Rule Violations :0
 
 Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=20mil) (InNet('3.3V'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=30mil) (InNet('5V'))
 Rule Violations :0
 
 Processing Rule : SMD Neck-Down Constraint (Percent=400%) (All)
@@ -81,4 +75,4 @@ Rule Violations :0
 
 Violations Detected : 0
 Waived Violations : 0
-Time Elapsed        : 00:00:03
+Time Elapsed        : 00:00:02

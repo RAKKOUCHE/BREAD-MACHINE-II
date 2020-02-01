@@ -1,0 +1,74 @@
+Protel Design System Design Rule Check
+PCB File : D:\Projets\MTDistribution\BreadMachine II\HW_V2\BreadMachine_II.PcbDoc
+Date     : 31/01/2020
+Time     : 09:56:39
+
+Processing Rule : Clearance Constraint (Gap=12mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=20mil) (Max=200mil) (Preferred=50mil) (InNet('NetD22_3'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=8mil) (Max=200mil) (Preferred=12mil) (All)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=30mil) (Max=80mil) (Preferred=50mil) (InNet('NetC39_1'))
+   Violation between Width Constraint: Track (3350.63mil,1745mil)(3662.1mil,1745mil) on Top Layer Actual Width = 100mil, Target Width = 80mil
+   Violation between Width Constraint: Track (3661.785mil,1744.685mil)(3662.1mil,1745mil) on Top Layer Actual Width = 100mil, Target Width = 80mil
+Rule Violations :2
+
+Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=30mil) (InNet('5V'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=100mil) (Preferred=50mil) (InNet('NetP11_3'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=20mil) (InNet('3.3V'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=200mil) (Preferred=50mil) (InNet('24V'))
+Rule Violations :0
+
+Processing Rule : SMD Neck-Down Constraint (Percent=400%) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=30mil) (Conductor Width=15mil) (Air Gap=20mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=2000mil) (All)
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=0mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk To Solder Mask (Clearance=4mil) (IsPad),(All)
+Rule Violations :0
+
+Processing Rule : Silk to Silk (Clearance=6mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 2
+Waived Violations : 0
+Time Elapsed        : 00:00:09

@@ -57,7 +57,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=YWVYQXJD
+DocumentUniqueId=JJKGYBKQ
 
 [Document2]
 DocumentPath=MCU.SchDoc
@@ -451,23 +451,6 @@ GenerateClassCluster=0
 DocumentUniqueId=
 
 [Document25]
-DocumentPath=breadMachine_II.Annotation
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=
-
-[Document26]
 DocumentPath=KEYBOARD.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -484,7 +467,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=QYBLFPBP
 
-[Document27]
+[Document26]
 DocumentPath=KEYBOARD.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -501,7 +484,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document28]
+[Document27]
 DocumentPath=breadMachine_II.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -518,7 +501,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document29]
+[Document28]
 DocumentPath=MDB.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -535,96 +518,113 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
+[Document29]
+DocumentPath=breadMachine_II.Annotation
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
 [GeneratedDocument1]
-DocumentPath=Project Outputs\Folder Structure\BOM\Bill of Materials-breadMachine_II.xls
+DocumentPath=Dossier\Generate Files\BOM\Bill of Materials-breadMachine_II.xls
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Project Outputs\Folder Structure\NC Drill\breadMachine_II.DRR
+DocumentPath=Dossier\Generate Files\NC Drill\breadMachine_II-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.EXTREP
+DocumentPath=Dossier\Generate Files\NC Drill\breadMachine_II-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GBL
+DocumentPath=Dossier\Generate Files\NC Drill\breadMachine_II.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GBO
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GBP
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GBS
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GKO
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GM1
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GM3
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GM13
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GM15
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GM3
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GPB
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GM13
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GPT
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GM15
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GTL
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GTO
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GTP
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.GTS
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs\Folder Structure\NC Drill\breadMachine_II.LDP
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.REP
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Project Outputs\Folder Structure\Gerber\breadMachine_II.RUL
+DocumentPath=Dossier\Generate Files\NC Drill\breadMachine_II.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=Project Outputs\Folder Structure\NC Drill\breadMachine_II.TXT
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.REP
 DItemRevisionGUID=
 
 [GeneratedDocument23]
-DocumentPath=Project Outputs\breadMachine_II.xls
+DocumentPath=Dossier\Generate Files\Gerber\breadMachine_II.RUL
 DItemRevisionGUID=
 
 [GeneratedDocument24]
@@ -632,7 +632,7 @@ DocumentPath=Project Outputs\Design Rule Check - breadMachine_II.html
 DItemRevisionGUID=
 
 [GeneratedDocument25]
-DocumentPath=Project Outputs\Folder Structure\Pick Place\Pick Place for breadMachine_II.txt
+DocumentPath=Dossier\Generate Files\Pick Place\Pick Place for breadMachine_II.txt
 DItemRevisionGUID=
 
 [SearchPath1]
@@ -1159,7 +1159,7 @@ Configuration4_Item1=CaptionAsName
 Configuration4_Name2=ForceUpdateSettings
 Configuration4_Item2=False
 Configuration4_Name3=General
-Configuration4_Item3=OpenExported=True|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=False|IncludeVaultData=True|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=|TemplateVaultGuid=|TemplateRevisionGuid=|BatchMode=5|FormWidth=1200|FormHeight=710|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=USD|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=1|UseDirectApi=False|BomSetName=
+Configuration4_Item3=OpenExported=True|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=False|IncludeVaultData=True|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=d:\altium\Templates\BOM Default Template.XLT|TemplateVaultGuid=|TemplateRevisionGuid=|BatchMode=5|FormWidth=1200|FormHeight=710|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=USD|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=1|UseDirectApi=False|BomSetName=
 Configuration4_Name4=GroupOrder
 Configuration4_Item4=Comment=True|Footprint=True
 Configuration4_Name5=SortOrder
@@ -1959,12 +1959,6 @@ SelectedOnly=0
 UpdateVariants=1
 UpdateToLatestRevision=1
 PartTypes=0
-
-[NetInfos]
-Net1=NetName=MCP2200.MCP2200TX_13|NetColor=$006E6EFF
-Net2=NetName=MODEM.GSM TX_13|NetColor=$00FF6E6E
-Net3=NetName=TX GSM|NetColor=$00FF6E6E
-Net4=NetName=TX_2200|NetColor=$006E6EFF
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
