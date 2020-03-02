@@ -1041,7 +1041,7 @@ void vLCD_HOME()
 void vLCD_CLEAR()
 {
     vLCD_Command(LCD_CLEAR);
-    delayMs(3);
+    delayMs(1);
 }
 
 /*********************************************************************

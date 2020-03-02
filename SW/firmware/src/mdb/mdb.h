@@ -190,14 +190,14 @@ extern "C"
      * @param byLen Taille de la striucture qui contient la ocnfiguration.
      * @return true si la réponse du périphérique est correcte.
      */
-    bool isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen);
+    bool isGetMDBConfig(const BYTE byDeviceAddress, void *byStatus, const BYTE byLen);
 
     /**
      * \brief Efectue la commande reset sur le périphérique
      * @param byDeviceAddress Adresse du périphérique
      * @return true si la réponse du périphérique est correcte
      */
-    bool isMDBReset(const uint8_t byDeviceAddress);
+    bool isMDBReset(const BYTE byDeviceAddress);
 
     /**
      * @fn decimalDivider
@@ -206,7 +206,7 @@ extern "C"
      * @param[in] byDecimal position de la virgule du module
      * @return le diviseur.
      */
-    WORD decimalDivider(uint8_t byDecimal);
+    WORD decimalDivider(BYTE byDecimal);
 
     /**************************************************************************/
 
@@ -223,7 +223,7 @@ extern "C"
      * @brief Renvoie ack ou nack en réponse au périphérique.
      * @param[in] byAcknowledge
      */
-    void vVMCAcknowledge(const uint8_t byAcknowledge);
+    void vVMCAcknowledge(const BYTE byAcknowledge);
 
     /**************************************************************************/
 
@@ -239,8 +239,8 @@ extern "C"
      * réponse.  
      * @return Le nombre d'octet contenu dans la réponse.
      */
-    uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
-                          const uint8_t byLenParameters, void *ptrParameters,
+    BYTE byMDBSendCommand(const BYTE byAddress, const BYTE byCommand,
+                          const BYTE byLenParameters, void *ptrParameters,
                           void *ptrAnswer);
 
 
@@ -254,7 +254,7 @@ extern "C"
      * @param[out] byLenAnswer Longeur de la réponse.
      * @return true si l'opération s'est déroulé correctement.
      */
-    bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer);
+    bool isMDBPoll(const BYTE byDeviceAddress, BYTE *byResponse, BYTE * byLenAnswer);
 
 #ifdef	__cplusplus
 }

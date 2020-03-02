@@ -59,8 +59,8 @@ static bool isGetBVtackerStatus()
  */
 static bool isBVEnableFeature()
 {
-    uint8_t byAcknowledge;
-    uint8_t byParameters[5] = {SUB_BILL_FEATURE_ENABLE, 0X00, 0X00, 0X00, 0X0F};
+    BYTE byAcknowledge;
+    BYTE byParameters[5] = {SUB_BILL_FEATURE_ENABLE, 0X00, 0X00, 0X00, 0X0F};
     return((byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byParameters),
                              byParameters, &byAcknowledge) == 1) && (byAcknowledge == ACK));
 }
@@ -90,9 +90,9 @@ static bool isBVEnableFeature()
  ********************************************************************/
 static bool isGetBVId(BV_IDENTIFICATION *Idenfication, bool boWOptions)
 {
-    uint8_t byOption = boWOptions ? LEVEL2_ID_W_OPTIONS : LEVEL1_ID_WO_OPTIONS;
+    BYTE byOption = boWOptions ? LEVEL2_ID_W_OPTIONS : LEVEL1_ID_WO_OPTIONS;
     if(byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byOption), &byOption,
-                        Idenfication) == (sizeof(BV_IDENTIFICATION)- (4 * (uint8_t)!boWOptions)) + 1)
+                        Idenfication) == (sizeof(BV_IDENTIFICATION)- (4 * (BYTE)!boWOptions)) + 1)
     {
         vVMCAcknowledge(ACK);
         return(true);
@@ -129,8 +129,8 @@ static bool isGetBVId(BV_IDENTIFICATION *Idenfication, bool boWOptions)
  ********************************************************************/
 static bool isSetMDBillType()
 {
-    uint8_t byBuffer[4];
-    uint8_t byAcknowledge;
+    BYTE byBuffer[4];
+    BYTE byAcknowledge;
     memset(byBuffer, 0X00, sizeof(byBuffer));
     memmove(byBuffer, billValidator.byBillType.byBillEnable, sizeof(billValidator.byBillType.byBillEnable));
     return((byMDBSendCommand(BVADDRESS, CMD_BILL_TYPE, sizeof(byBuffer),
@@ -521,9 +521,9 @@ uint32_t getBillValue(uint8_t byChannel)
  ********************************************************************/
 void vTaskBV(void)
 {
-    uint8_t byLenAnswer;
-    uint8_t byIndex;
-    uint8_t byChannel;
+    BYTE byLenAnswer;
+    BYTE byIndex;
+    BYTE byChannel;
 
     switch(billValidator.state)
     {

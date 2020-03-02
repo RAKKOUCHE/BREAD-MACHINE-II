@@ -83,29 +83,21 @@ extern "C"
      * @return 
      */
     bool getShiftState(void);
-//    
-//    /**
-//     * \brief Demande l'état du clavier.
-//     * \param[in] Numéro de la touche.
-//     * \return Etat du clavier.
-//     */
-//    KEY_STATES getKeyState(const uint8_t numKey);
-
+    
     /**
-     * \brief
-     * @param byIndex
-     * @return 
+     * \brief Demande l'état du clavier.
+     * \param[in] Numéro de la touche.
+     * \return Etat du clavier.
      */
-    KEY_STATES getDoorSwitchState(const uint8_t byIndex);
-//    
-//    /**
-//     * \brief Fxe l'état du clavier.
-//     * @param numKey Numéro de la touche concernée.
-//     * @param state Etat à envoyé à la touche.
-//     */
-//    void setKeyState(const uint8_t numKey, const KEY_STATES state);    
-//    
-     
+    KEY_STATES getKeyState(const uint8_t numKey);
+    
+    /**
+     * \brief Fxe l'état du clavier.
+     * @param numKey Numéro de la touche concernée.
+     * @param state Etat à envoyé à la touche.
+     */
+    void setKeyState(const uint8_t numKey, KEY_STATES state);    
+    
     /**
      * \brief Demande la touche utilisée
      * @return 0 Si aucune touche n'est utilisée. Sinon le numéro de la touche.
@@ -116,17 +108,6 @@ extern "C"
      * \brief Positionne la sélection à zéro.
      */
     void clrSelection();
-    
-    /**
-     * \brief
-     */
-    void clrIsDoorMoved(void);
-    
-    /**
-     * \brief
-     * @return 
-     */
-    bool getIsDoorMoved(void);
     
     /**
      * \brief Initialisation du clavier.

@@ -1,0 +1,15 @@
+Change Component Footprint: Designator=P24 Old Footprint=CO3P381 New Footprint=CO3P508 - 2
+Change component parameters: Designator = "P24" ("P24"); Footprint = "CO3P381"; UniqueID = "\IDVCZODY\YDTGYKQP" ("\IDVCZODY\YDTGYKQP")
+Change component parameters (AddParameter): Name = "ComponentLink1Description"; Value = "http://www.farnell.com/cad/1652960.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.farnell.com/cad/1652960.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink2Description"; Value = "http://www.farnell.com/datasheets/1650926.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink2URL"; Value = "http://www.farnell.com/datasheets/1650926.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "TE CONNECTIVITY / BUCHANAN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "796636-3"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Pricing 1"; Value = "10=0,68, 100=0,51, 500=0,43, 1000=0,36, 2000=0,35, 5000=0,33 (EUR)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "YES"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "Farnell"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "2059780"; VariantName = "[No Variations]"

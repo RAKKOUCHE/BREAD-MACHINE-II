@@ -2,3 +2,5 @@
 Version=1.0
 [Project1]
 ProjectPath=breadMachine_II.PrjPCB
+[Project2]
+ProjectPath=..\HW_V2\breadMachine_II.PrjPCB
