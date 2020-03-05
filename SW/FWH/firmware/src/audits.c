@@ -74,7 +74,7 @@
  * \brief Adresse du flag d'initialisation dans l'eeprom
  */
 //#define ADDRESS_FLAG (DRV_AT24_EEPROM_FLASH_SIZE - sizeof(uint32_t))
-#define ADDRESS_FLAG  (sizeof(UAUDITS) - sizeof(DWORD) - 1)
+#define ADDRESS_FLAG  (sizeof(UAUDITS) - sizeof(DWORD))
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -190,10 +190,14 @@ static struct
 static void vTaskAudit(void *vParameters)
 {
 
-    unsigned int total;
-    I2C_BUS_STATE toto;
-    uint8_t bufferToto[144];
+    unsigned int byIndex;
     TickType_t xLastWakeTime = xTaskGetTickCount();
+
+    union
+    {
+        uint8_t byteBuffer[4];
+        uint32_t dwBuffer;
+    } dwDataSize;
     while(1)
     {
         switch(audits.state)
@@ -214,19 +218,20 @@ static void vTaskAudit(void *vParameters)
             {
                 audits.record.dwAddress = ADDRESS_FLAG;
 
-
-                toto = EEPromReadData(audits.record.dwAddress, &audits.record.dwValue, sizeof(audits.record.dwValue));
+                EEPromReadData(audits.record.dwAddress, &audits.record.dwValue, sizeof(audits.record.dwValue));
 
                 if(audits.record.dwValue != AUDITS_USED_FLAG)
                 {
                     audits.record.dwAddress = ADDRESS_FLAG;
                     audits.record.dwValue = AUDITS_USED_FLAG;
-                    toto = EEpromWriteData(ADDRESSBASEAUDIT, &audits.dataBuffer.saudit, sizeof(SAUDITS));
-                    xQueueSendToBack(audits.hAuditQueue, &audits.record, 1000);
+                    memset(audits.dataBuffer.buffer, 0, sizeof(audits.dataBuffer));
+                    memmove(&audits.dataBuffer.buffer[ADDRESS_FLAG], &audits.record.dwValue, sizeof(audits.record.dwValue));
+
+                    EEpromWriteData(ADDRESSBASEAUDIT, &audits.dataBuffer.saudit, sizeof(UAUDITS));
                 }
                 else
                 {
-                    toto = EEPromReadData(ADDRESSBASEAUDIT, audits.dataBuffer.buffer, sizeof(SAUDITS));
+                    EEPromReadData(ADDRESSBASEAUDIT, audits.dataBuffer.buffer, sizeof(SAUDITS));
                 }
                 audits.state = AUDITS_STATE_IDLE;
                 break;
@@ -236,7 +241,7 @@ static void vTaskAudit(void *vParameters)
             {
                 if(xQueueReceive(audits.hAuditQueue, &audits.record, 10))
                 {
-                    toto = EEpromWriteData(audits.record.dwAddress, &audits.record.dwValue, sizeof(audits.record.dwValue));
+                    EEpromWriteData(audits.record.dwAddress, &audits.record.dwValue, sizeof(audits.record.dwValue));
 
                     delayMs(5);
                     Nop();
@@ -263,7 +268,7 @@ static void vTaskAudit(void *vParameters)
                                 LED_SYS_Clear();
                             }
                             setIsRAZAudit(true);
-                            while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+                            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
                             PLIB_USART_TransmitterByteSend(USART_ID_2, 0Xff);
                         }
                     }
@@ -284,19 +289,20 @@ static void vTaskAudit(void *vParameters)
                 // <editor-fold desc="AUDITS_SEND_TO_PC">
             {
                 audits.state = AUDITS_STATE_IDLE;
-                uint32_t dwDataSize = sizeof(audits);
-                while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-                total = 0;
-                do
+                dwDataSize.dwBuffer = sizeof(audits);
+                while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+
+                for(byIndex = 0; byIndex < sizeof(dwDataSize); byIndex++)
                 {
-                    total += DRV_USART_Write(hUartParameters, &dwDataSize, sizeof(dwDataSize));
-                } while(total < sizeof(dwDataSize));
-                while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-                total = 0;
-                do
+                    PLIB_USART_TransmitterByteSend(USART_ID_2, dwDataSize.byteBuffer[byIndex]);
+                    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+                }
+
+                for(byIndex = 0; byIndex < sizeof(audits); byIndex++)
                 {
-                    total += DRV_USART_Write(hUartParameters, &audits.dataBuffer.saudit, sizeof(audits));
-                } while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+                    PLIB_USART_TransmitterByteSend(USART_ID_2, audits.dataBuffer.buffer[byIndex]);
+                    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+                }
                 break;
             }// </editor-fold>
             default:

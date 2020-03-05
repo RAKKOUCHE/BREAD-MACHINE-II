@@ -19,9 +19,8 @@
 /* ************************************************************************** */
 
 #include "parameters.h"
-#include "peripheral/usart/plib_usart.h"
-#include "driver/usart/drv_usart_definitions.h"
-
+#include "driver/nvm/drv_nvm.h"
+#include "peripheral/nvm/processor/nvm_p32mx575f512l.h"
 /**
  * \addtogroup parameters
  * @{
@@ -86,29 +85,30 @@ typedef struct
  */
 static union
 {
-    uint32_t buffer[sizeof(PARAMETERS) / sizeof(uint32_t)]; /*!<Buffer des paramètres.*/
+    uint32_t dwBuffer[sizeof(PARAMETERS) / sizeof(uint32_t)]; /*!<Buffer des paramètres.*/
+    uint8_t buffer[sizeof(PARAMETERS)]; /*!<Buffer des paramètres.*/
     PARAMETERS data; /*!<Paramètres de la machine.*/
-} parameters;
+} parameters, backToto;
 
 /**
  * \brief constante en flash contenant les paramètres sauvegardés.
  */
-const unsigned int __attribute__((space(prog),
-                                  address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
+const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
 = {
    1,
    100, 100, 100,
    100, 100, 100,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X31, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X32, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X33, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X34, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X35, 0, 0,
-   0X30, 0X30, 0X33, 0X33, 0X31, 0X32, 0X33, 0X34, 0X35, 0X36, 0X37, 0X38, 0X36, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
+   0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
    0, 0, 0,
    30, 60,
    983103, //Activation par défaut des moyens de paiement 0X001F001F
    22, 18,
+   0, 0,
 };
 
 
@@ -506,13 +506,38 @@ uint16_t getChannelEnable(bool isChangeGiver)
  ********************************************************************/
 void vParametersWrite(void)
 {
-    uint32_t buffer[DRV_FLASH_PAGE_SIZE / sizeof(uint32_t)] = {0};
     uint8_t byIndex;
-    DRV_FLASH_ErasePage(flash.handle, DRV_NVM_MEDIA_START_ADDRESS);
+    //    uint32_t buffer[DRV_FLASH_PAGE_SIZE / sizeof(uint32_t)] = {0};
+    //
+    //    memmove(buffer, parameters.buffer, sizeof(parameters));
+
+
     vTaskSuspendAll();
-    while(DRV_FLASH_IsBusy());
-    DRV_FLASH_WriteRow(flash.handle, DRV_NVM_MEDIA_START_ADDRESS, buffer);
-    while(DRV_FLASH_IsBusy());
+    DRV_FLASH0_ErasePage(DRV_NVM_MEDIA_START_ADDRESS);
+    while(DRV_FLASH0_IsBusy());
+    DRV_FLASH0_WriteRow(DRV_NVM_MEDIA_START_ADDRESS, parameters.dwBuffer);
+    while(DRV_FLASH0_IsBusy());
+    //
+    //    DRV_HANDLE NVMHandle = DRV_NVM_Open(NVM_ID_0, DRV_IO_INTENT_READWRITE);
+    //    DRV_NVM_W
+    //    NVM_PageErase(NVM_MEDIA_START_ADDRESS);
+    //    while(NVM_IsBusy());
+    //    NVM_RowWrite(parameters.buffer, NVM_MEDIA_START_ADDRESS);
+    //    while(NVM_IsBusy());
+
+
+
+    xTaskResumeAll();
+    delayMs(100);
+
+
+
+    //DRV_FLASH_ErasePage(flash.handle, DRV_NVM_MEDIA_START_ADDRESS);
+
+    //while(DRV_FLASH_IsBusy());
+    //    DRV_FLASH_WriteRow(flash.handle, DRV_NVM_MEDIA_START_ADDRESS, buffer);
+    //
+    //    while(DRV_FLASH_IsBusy());
     //
     //
     //    for(byIndex = 0; byIndex < PRODUCTS_NUMBER; byIndex++)
@@ -577,8 +602,8 @@ void vParametersWrite(void)
  ********************************************************************/
 void vParametersRead(void)
 {
-    hUartParameters = DRV_USART_Open(sysObj.drvUsart2, DRV_IO_INTENT_READWRITE);
-    memmove(&parameters, &gNVMFlashReserveArea, sizeof(parameters));
+    memmove(&parameters.buffer, &gNVMFlashReserveArea, sizeof(parameters));
+    memmove(&backToto.buffer, &gNVMFlashReserveArea, sizeof(backToto));
 }
 
 /*********************************************************************
@@ -627,63 +652,64 @@ void vParametersRead(void)
 void vParamSendToPC(void)
 {
 
-    union
-    {
-        uint32_t value;
-        uint8_t buffer[sizeof(uint32_t)];
-    } values;
+    uint32_t value;
     uint8_t byChannel;
-    unsigned int total;
     uint32_t dwParameterSize = sizeof(PARAMETERS);
-
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+    int byIndex;
+    uint8_t dwBuffer[11];
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
     PLIB_USART_TransmitterByteSend(USART_ID_2, 6);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    total = 0;
-    do
+    memmove(dwBuffer, VERSION, 6);
+
+    for(byIndex = 0; byIndex < 6; byIndex++)
     {
-        total += DRV_USART_Write(hUartParameters, VERSION, 6);
-    } while(total < 6);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    PLIB_USART_TransmitterByteSend(USART_ID_2, 11);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    total = 0;
-    do
-    {
-        total += DRV_USART_Write(hUartParameters, __DATE__, 11);
-    } while(total < 11);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    total = 0;
-    do
-    {
-        total += DRV_USART_Write(hUartParameters, &dwParameterSize, sizeof(dwParameterSize));
-    } while(total < sizeof(dwParameterSize));
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    total = 0;
-    do
-    {
-        total += DRV_USART_Write(hUartParameters, &parameters.data, dwParameterSize);
-    } while(total < dwParameterSize);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    for(byChannel = 0; byChannel < 8; byChannel++)
-    {
-        values.value = getCoinValue(byChannel);
-        total = 0;
-        do
-        {
-            total += DRV_USART_Write(hUartParameters, values.buffer, sizeof(uint32_t));
-        } while(total < sizeof(uint32_t));
-        while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
     }
+
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+    PLIB_USART_TransmitterByteSend(USART_ID_2, 11);
+    memmove(dwBuffer, __DATE__, 11);
+    for(byIndex = 0; byIndex < 11; byIndex++)
+    {
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+    }
+
+    memmove(dwBuffer, &dwParameterSize, sizeof(dwParameterSize));
+    for(byIndex = 0; byIndex < sizeof(dwParameterSize); byIndex++)
+    {
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+    }
+
+    for(byIndex = 0; byIndex < dwParameterSize; byIndex++)
+    {
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+        PLIB_USART_TransmitterByteSend(USART_ID_2, parameters.buffer[byIndex]);
+    }
+
     for(byChannel = 0; byChannel < 8; byChannel++)
     {
-        values.value = getBillValue(byChannel);
-        total = 0;
-        do
+        value = getCoinValue(byIndex);
+        memmove(dwBuffer, &value, 4);
+        for(byIndex = 0; byIndex < 4; byIndex++)
         {
-            total += DRV_USART_Write(hUartParameters, values.buffer, sizeof(uint32_t));
-        } while(total < sizeof(uint32_t));
-        while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+            PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+        }
+    }
+
+    for(byChannel = 0; byChannel < 8; byChannel++)
+    {
+        value = getBillValue(byIndex);
+        memmove(dwBuffer, &value, 4);
+        for(byIndex = 0; byIndex < 4; byIndex++)
+        {
+
+            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+            PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+        }
     }
 }
 
@@ -733,18 +759,21 @@ void vParamSendToPC(void)
 void vParametersGetFromPC(void)
 {
     unsigned int total = 0;
+    int byIndex;
     BILL_TYPE billType;
     COIN_TYPE coinType;
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
+
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
     PLIB_USART_TransmitterByteSend(USART_ID_2, 0X5A);
     xTimerStart(pcCom.hTimerTO_PC, 1000);
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_TRANSMIT_EMPTY));
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_RECEIVER_EMPTY));
-    do
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+
+    for(byIndex = 0; byIndex < sizeof(PARAMETERS); byIndex++)
     {
-        total += DRV_USART_Read(hUartParameters, &parameters.data, sizeof(PARAMETERS));
-    } while(total < sizeof(PARAMETERS));
-    while(!(DRV_USART_TransferStatus(hUartParameters) & DRV_USART_TRANSFER_STATUS_RECEIVER_EMPTY));
+        while(!PLIB_USART_ReceiverDataIsAvailable(USART_ID_2));
+        parameters.buffer[byIndex] = PLIB_USART_ReceiverByteReceive(USART_ID_2);
+
+    }
     xTimerStop(pcCom.hTimerTO_PC, 1000);
     setCoinEnableMask(parameters.data.enables.enable_GG);
 
@@ -755,8 +784,7 @@ void vParametersGetFromPC(void)
     billType = getBillType();
     isSetBillEnable(true, &billType); // &billValidator.byBillType);
     vParametersWrite();
-    delayMs(100);
-    vParametersRead();
+    //vParametersRead();
 }
 
 /**

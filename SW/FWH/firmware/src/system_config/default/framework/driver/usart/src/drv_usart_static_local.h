@@ -12,7 +12,7 @@
 
   Description:
     Driver Local Data Structures for static implementation
- *******************************************************************************/
+*******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -36,7 +36,7 @@ INCLUDING BUT NOT LIMITED TO ANY  INCIDENTAL,  SPECIAL,  INDIRECT,  PUNITIVE  OR
 CONSEQUENTIAL DAMAGES, LOST  PROFITS  OR  LOST  DATA,  COST  OF  PROCUREMENT  OF
 SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE  THEREOF),  OR  OTHER  SIMILAR  COSTS.
- *******************************************************************************/
+*******************************************************************************/
 //DOM-IGNORE-END
 
 #ifndef _DRV_USART_STATIC_LOCAL_H
@@ -62,220 +62,55 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-extern "C"
-{
+    extern "C" {
 
 #endif
-    // DOM-IGNORE-END
+// DOM-IGNORE-END
 
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: Data Type Definitions
-    // *****************************************************************************
-    // *****************************************************************************
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Type Definitions
+// *****************************************************************************
+// *****************************************************************************
 
-    /* USART FIFO+RX(8+1) size */
+/* USART FIFO+RX(8+1) size */
 #define _DRV_USART_RX_DEPTH     9
 
-    // *****************************************************************************
-    /* USART Driver Buffer Handle Macros
 
-      Summary:
-        USART driver Buffer Handle Macros
+// *****************************************************************************
+/* USART Static Driver Instance Object
 
-      Description:
-        Buffer handle related utility macros. USART driver buffer handle is a
-        combination of buffer token and the buffer object index. The token
-        is a 16 bit number that is incremented for every new read or write request
-        and is used along with the buffer object index to generate a new buffer
-        handle for every request.
+  Summary:
+    Object used to keep any data required for the static USART driver.
 
-      Remarks:
-        None
-     */
+  Description:
+    This object is used to keep track of any data that must be maintained to
+    manage the USART static driver.
 
-#define _DRV_USART_BUFFER_TOKEN_MAX         (0xFFFF)
-#define _DRV_USART_MAKE_HANDLE(token, index) ((token) << 16 | (index))
-#define _DRV_USART_UPDATE_BUFFER_TOKEN(token) \
-{ \
-    (token)++; \
-    if ((token) >= _DRV_USART_BUFFER_TOKEN_MAX) \
-        (token) = 0; \
-    else \
-        (token) = (token); \
-}
+  Remarks:
+    None.
+*/
 
-    /* USART Buffer Object Flags */
-    typedef enum
-    {
-        /* Indicates this buffer was submitted by a read write function */
-        DRV_USART_BUFFER_OBJ_FLAG_READ_WRITE = 1 << 0,
+typedef struct
+{
 
-        /* Indicates this buffer was submitted by a buffer add read write function
-         */
-        DRV_USART_BUFFER_OBJ_FLAG_BUFFER_ADD = 1 << 1
-
-    } DRV_USART_BUFFER_OBJ_FLAGS;
-
-    // *****************************************************************************
-
-    /* USART Driver Buffer States
-
-       Summary
-        Identifies the possible state of the buffer that can result from a
-        buffer add/delete request.
-
-       Description
-        This enumeration identifies the possible state of the buffer that can
-        result from a buffer add/delete request by the client by calling,
-          - DRV_USART_BufferAddRead : Updates state to DRV_USART_BUFFER_IS_IN_READ_QUEUE
-          - DRV_USART_BufferAddWrite : Updates state to DRV_USART_BUFFER_IS_IN_WRITE_QUEUE
-          - DRV_USART_BufferRemove : Updates state to DRV_USART_BUFFER_IS_FREE.
-
-       Remarks:
-        DRV_USART_BUFFER_IS_FREE is the state of the buffer which is in the
-        free buffer pool.
-
-     */
-
-    typedef enum
-    {
-        /* Buffer is not added to either write or read queue. In other words,
-         * the buffer is in the free pool. */
-        DRV_USART_BUFFER_IS_FREE,
-
-        /* Buffer is added to the write queue. */
-        DRV_USART_BUFFER_IS_IN_WRITE_QUEUE,
-
-        /* Buffer is added to the read queue */
-        DRV_USART_BUFFER_IS_IN_READ_QUEUE
-
-    } DRV_USART_BUFFER_STATE;
-
-    // *****************************************************************************
-
-    /* USART Driver Buffer Object
-
-      Summary:
-        Object used to keep track of a client's buffer.
-
-      Description:
-        This object is used to keep track of a client's buffer in the driver's
-        queue.
-
-      Remarks:
-        None.
-     */
-
-    typedef struct _DRV_USART_BUFFER_OBJ
-    {
-        /* Driver instance to which the buffer object belongs to */
-        uint8_t drvInstance;
-
-        /* This flag tracks whether this object is in use */
-        volatile bool inUse;
-
-        /* Pointer to the application read or write buffer */
-        uint8_t * buffer;
-
-        /* Tracks how much data has been transferred */
-        size_t nCurrentBytes;
-
-        /* Number of bytes to be transferred */
-        size_t size;
-
-        /* Next buffer pointer */
-        struct _DRV_USART_BUFFER_OBJ * next;
-
-        /* Previous buffer pointer */
-        struct _DRV_USART_BUFFER_OBJ * previous;
-
-        /* Flags that indicate the type of buffer */
-        DRV_USART_BUFFER_OBJ_FLAGS flags;
-
-        /* Current state of the buffer */
-        DRV_USART_BUFFER_STATE currentState;
-
-        /* Buffer Handle that was assigned to this buffer when it was added to the
-         * queue. */
-        DRV_USART_BUFFER_HANDLE bufferHandle;
-
-    } DRV_USART_BUFFER_OBJ;
+    /* Client specific error */
+    DRV_USART_ERROR error;
 
 
-    // *****************************************************************************
-
-    /* USART Static Driver Instance Object
-
-      Summary:
-        Object used to keep any data required for the static USART driver.
-
-      Description:
-        This object is used to keep track of any data that must be maintained to
-        manage the USART static driver.
-
-      Remarks:
-        None.
-     */
-
-    typedef struct
-    {
-        /* Keeps track if the driver is in interrupt context
-           and if so the nesting levels. */
-        uint32_t interruptNestingCount;
-
-        /* The buffer Q for the write operations */
-        DRV_USART_BUFFER_OBJ *queueWrite;
-
-        /* The buffer Q for the read operations */
-        DRV_USART_BUFFER_OBJ *queueRead;
-
-        /* Current read queue size */
-        size_t queueSizeCurrentRead;
-
-        /* Current write queue size */
-        size_t queueSizeCurrentWrite;
-
-        /* Application Context associated with the client */
-        uintptr_t context;
-
-        /* Event handler for this function */
-        DRV_USART_BUFFER_EVENT_HANDLER eventHandler;
-
-        /* Client specific error */
-        DRV_USART_ERROR error;
+    /* Hardware instance mutex */
+    OSAL_MUTEX_DECLARE(mutexDriverInstance);
 
 
-        /* Hardware instance mutex */
-        OSAL_MUTEX_DECLARE(mutexDriverInstance);
+} DRV_USART_OBJ;
 
-        /* Create a semaphore for read function*/
-        OSAL_SEM_DECLARE(semReadDone);
+// *****************************************************************************
+// *****************************************************************************
+// Section: Local functions.
+// *****************************************************************************
+// *****************************************************************************
 
-        /* Create a semaphore for write function*/
-        OSAL_SEM_DECLARE(semWriteDone);
-
-    } DRV_USART_OBJ;
-
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: Local functions.
-    // *****************************************************************************
-    // *****************************************************************************
-    void _DRV_USART0_BufferQueueTxTasks(void);
-    void _DRV_USART0_BufferQueueRxTasks(void);
-    void _DRV_USART0_BufferQueueErrorTasks(void);
-    void _DRV_USART0_ErrorConditionClear(void);
-    void _DRV_USART1_BufferQueueTxTasks(void);
-    void _DRV_USART1_BufferQueueRxTasks(void);
-    void _DRV_USART1_BufferQueueErrorTasks(void);
-    void _DRV_USART1_ErrorConditionClear(void);
-    void _DRV_USART2_BufferQueueTxTasks(void);
-    void _DRV_USART2_BufferQueueRxTasks(void);
-    void _DRV_USART2_BufferQueueErrorTasks(void);
-    void _DRV_USART2_ErrorConditionClear(void);
-
-    // DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
@@ -285,5 +120,5 @@ extern "C"
 
 /*******************************************************************************
  End of File
- */
+*/
 

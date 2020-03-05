@@ -98,8 +98,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 /*** FLASH Driver Initialization Data ***/
-// <editor-fold defaultstate="collapsed" desc="DRV_USART Initialization Data">
-// </editor-fold>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -139,11 +137,11 @@ SYSTEM_OBJECTS sysObj;
     See prototype in system/common/sys_module.h.
  */
 
-void SYS_Initialize(void* data)
+void SYS_Initialize ( void* data )
 {
     /* Core Processor Initialization */
-    SYS_CLK_Initialize(NULL);
-    SYS_DEVCON_Initialize(SYS_DEVCON_INDEX_0, (SYS_MODULE_INIT*) NULL);
+    SYS_CLK_Initialize( NULL );
+    SYS_DEVCON_Initialize(SYS_DEVCON_INDEX_0, (SYS_MODULE_INIT*)NULL);
     SYS_DEVCON_PerformanceConfig(SYS_CLK_SystemFrequencyGet());
     SYS_DEVCON_JTAGDisable();
 
@@ -152,12 +150,9 @@ void SYS_Initialize(void* data)
     /* Initialize ADC */
     DRV_ADC_Initialize();
 
-    sysObj.drvFlash0 = DRV_FLASH_Initialize(DRV_FLASH_INDEX_0, (SYS_MODULE_INIT *) NULL);
+    sysObj.drvFlash0 = DRV_FLASH_Initialize(DRV_FLASH_INDEX_0, (SYS_MODULE_INIT *)NULL);
     /* Initialize the NVM Driver */
-    sysObj.drvNvm = DRV_NVM_Initialize(DRV_NVM_INDEX_0, (SYS_MODULE_INIT *) NULL);
-    sysObj.drvUsart0 = DRV_USART_Initialize(DRV_USART_INDEX_0, (SYS_MODULE_INIT *) NULL);
-    sysObj.drvUsart1 = DRV_USART_Initialize(DRV_USART_INDEX_1, (SYS_MODULE_INIT *) NULL);
-    sysObj.drvUsart2 = DRV_USART_Initialize(DRV_USART_INDEX_2, (SYS_MODULE_INIT *) NULL);
+    sysObj.drvNvm = DRV_NVM_Initialize(DRV_NVM_INDEX_0, (SYS_MODULE_INIT *)NULL);
 
     /* Initialize System Services */
     SYS_PORTS_Initialize();
@@ -174,5 +169,5 @@ void SYS_Initialize(void* data)
 
 /*******************************************************************************
  End of File
- */
+*/
 

@@ -28,8 +28,11 @@
 #include "timers.h"
 #include "dataCommun.h"
 #include "MDB/mdb_cg.h"
-#include "driver/usart/drv_usart_definitions.h"
 #include "system_definitions.h"
+#include "peripheral/usart/plib_usart.h"
+#include "peripheral/usart/processor/usart_p32mx575f512l.h"
+#include "peripheral/reset/templates/reset_SoftwareResetTrigger_Default.h"
+
 
 
 /* Provide C++ Compatibility */
@@ -47,6 +50,7 @@ extern "C"
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Data Types
@@ -65,7 +69,7 @@ extern "C"
     /**
      * \brief
      */
-    DRV_HANDLE hUartParameters;
+    //DRV_HANDLE hUartParameters;
 
     // *****************************************************************************
     // *****************************************************************************

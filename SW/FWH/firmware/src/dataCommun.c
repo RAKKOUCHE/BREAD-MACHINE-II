@@ -16,10 +16,8 @@
 /* ************************************************************************** */
 
 #include "dataCommun.h"
-#include "driver/usart/drv_usart_definitions.h"
 #include "peripheral/usart/plib_usart.h"
 #include "peripheral/usart/processor/usart_p32mx575f512l.h"
-#include "system/reset/sys_reset.h"
 
 /**
  * \addtogroup dataRecord
@@ -177,7 +175,8 @@ static void vTOPC(TimerHandle_t timerHandle)
 void vTaskPcComm(void *vParameters)
 {
 
-    uint8_t byCheckAnswer = 0XFA;
+    //    uint8_t byCheckAnswer = 0XFA;
+    uint8_t toto;
     while(1)
     {
         switch(pcCom.state)
@@ -185,6 +184,16 @@ void vTaskPcComm(void *vParameters)
             case STATE_PCCOMM_INIT:
                 // <editor-fold desc="STATE_PCCOMM_INIT">
             {
+                PLIB_USART_BaudRateSet(USART_ID_2, SYS_CLK_BUS_PERIPHERAL_1, 19200);
+
+                PLIB_USART_OperationModeSelect(USART_ID_2, USART_ENABLE_TX_RX_USED);
+
+                PLIB_USART_TransmitterEnable(USART_ID_2);
+
+                PLIB_USART_ReceiverEnable(USART_ID_2);
+
+                PLIB_USART_Enable(USART_ID_2);
+
                 pcCom.hTimerTO_PC = xTimerCreate(PCCOM_TASK_TIMER_NAME,
                                                  PCCOM_TIMER_TO, false,
                                                  NULL, vTOPC);
@@ -229,8 +238,8 @@ void vTaskPcComm(void *vParameters)
                             // <editor-fold desc="PCCOM_CHECK">
                         {
                             while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-                            PLIB_USART_TransmitterByteSend(USART_ID_2, 1);
-                            while(!PLIB_USART_TransmitterBufferIsFull(USART_ID_2));
+                            PLIB_USART_TransmitterByteSend(USART_ID_2, 0xFA);
+                            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
                             break;
                         }// </editor-fold>
                         default:

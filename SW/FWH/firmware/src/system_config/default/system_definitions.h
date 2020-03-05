@@ -49,14 +49,13 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include <stdbool.h>
 #include "system/common/sys_common.h"
 #include "system/common/sys_module.h"
-#include "driver/flash/drv_flash.h"
+#include "driver/flash/drv_flash.h" 
 #include "system/devcon/sys_devcon.h"
-#include "system/reset/sys_reset.h"
+      #include "system/reset/sys_reset.h"
 #include "system/clk/sys_clk.h"
 #include "system/int/sys_int.h"
 #include "driver/adc/drv_adc_static.h"
 #include "peripheral/int/plib_int.h"
-#include "driver/usart/drv_usart_static.h"
 #include "driver/nvm/drv_nvm.h"
 #include "system/ports/sys_ports.h"
 #include "FreeRTOS.h"
@@ -67,54 +66,49 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-extern "C"
-{
+extern "C" {
 
 #endif
-    // DOM-IGNORE-END
+// DOM-IGNORE-END
 
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: Type Definitions
-    // *****************************************************************************
-    // *****************************************************************************
+// *****************************************************************************
+// *****************************************************************************
+// Section: Type Definitions
+// *****************************************************************************
+// *****************************************************************************
 
-    // *****************************************************************************
+// *****************************************************************************
+/* System Objects
 
-    /* System Objects
+  Summary:
+    Structure holding the system's object handles
 
-      Summary:
-        Structure holding the system's object handles
+  Description:
+    This structure contains the object handles for all objects in the
+    MPLAB Harmony project's system configuration.
 
-      Description:
-        This structure contains the object handles for all objects in the
-        MPLAB Harmony project's system configuration.
+  Remarks:
+    These handles are returned from the "Initialize" functions for each module
+    and must be passed into the "Tasks" function for each module.
+*/
 
-      Remarks:
-        These handles are returned from the "Initialize" functions for each module
-        and must be passed into the "Tasks" function for each module.
-     */
+typedef struct
+{
+    SYS_MODULE_OBJ  drvFlash0;
 
-    typedef struct
-    {
-        SYS_MODULE_OBJ drvFlash0;
+    SYS_MODULE_OBJ  drvNvm;
 
-        SYS_MODULE_OBJ drvUsart0;
-        SYS_MODULE_OBJ drvUsart1;
-        SYS_MODULE_OBJ drvUsart2;
-        SYS_MODULE_OBJ drvNvm;
+} SYSTEM_OBJECTS;
 
-    } SYSTEM_OBJECTS;
+// *****************************************************************************
+// *****************************************************************************
+// Section: extern declarations
+// *****************************************************************************
+// *****************************************************************************
 
-    // *****************************************************************************
-    // *****************************************************************************
-    // Section: extern declarations
-    // *****************************************************************************
-    // *****************************************************************************
+extern SYSTEM_OBJECTS sysObj;
 
-    extern SYSTEM_OBJECTS sysObj;
-
-    //DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
@@ -123,5 +117,5 @@ extern "C"
 #endif /* _SYS_DEFINITIONS_H */
 /*******************************************************************************
  End of File
- */
+*/
 

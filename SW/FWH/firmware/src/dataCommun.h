@@ -31,6 +31,11 @@
 #include "FreeRTOS.h"
 #include "timers.h"
 #include "audits.h"
+#include "driver/usart/drv_usart_definitions.h"
+#include "peripheral/usart/plib_usart.h"
+#include "peripheral/usart/processor/usart_p32mx575f512l.h"
+#include "system/reset/sys_reset.h"
+
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus

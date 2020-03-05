@@ -64,10 +64,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 
-
-static void _SYS_Tasks(void);
-
-
+ 
+static void _SYS_Tasks ( void );
+ 
+ 
 static void _MAINBOARD_Tasks(void);
 
 
@@ -83,27 +83,28 @@ static void _MAINBOARD_Tasks(void);
 
   Remarks:
     See prototype in system/common/sys_module.h.
- */
+*/
 
-void SYS_Tasks(void)
+void SYS_Tasks ( void )
 {
     /* Create OS Thread for Sys Tasks. */
     xTaskCreate((TaskFunction_t) _SYS_Tasks,
                 "Sys Tasks",
                 1024, NULL, 1, NULL);
 
-
-
+ 
+ 
     /* Create OS Thread for MAINBOARD Tasks. */
     xTaskCreate((TaskFunction_t) _MAINBOARD_Tasks,
                 "MAINBOARD Tasks",
                 512, NULL, 1, NULL);
 
     /**************
-     * Start RTOS *
+     * Start RTOS * 
      **************/
     vTaskStartScheduler(); /* This function never returns. */
 }
+
 
 /*******************************************************************************
   Function:
@@ -111,23 +112,16 @@ void SYS_Tasks(void)
 
   Summary:
     Maintains state machines of system modules.
- */
-static void _SYS_Tasks(void)
+*/
+static void _SYS_Tasks ( void)
 {
     while(1)
     {
         /* Maintain system services */
 
         /* Maintain Device Drivers */
-        DRV_USART_TasksTransmit(sysObj.drvUsart0);
-        DRV_USART_TasksError(sysObj.drvUsart0);
-        DRV_USART_TasksReceive(sysObj.drvUsart0);
-        DRV_USART_TasksTransmit(sysObj.drvUsart1);
-        DRV_USART_TasksError(sysObj.drvUsart1);
-        DRV_USART_TasksReceive(sysObj.drvUsart1);
-        DRV_USART_TasksTransmit(sysObj.drvUsart2);
-        DRV_USART_TasksError(sysObj.drvUsart2);
-        DRV_USART_TasksReceive(sysObj.drvUsart2);
+ 
+ 
 
         /* Maintain Middleware */
 
@@ -136,13 +130,16 @@ static void _SYS_Tasks(void)
     }
 }
 
+ 
+ 
+
 /*******************************************************************************
   Function:
     void _MAINBOARD_Tasks ( void )
 
   Summary:
     Maintains state machine of MAINBOARD.
- */
+*/
 
 static void _MAINBOARD_Tasks(void)
 {

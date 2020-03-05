@@ -85,6 +85,8 @@
         </group>
         <group>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/nvm/plib_nvm.c</file>
         </group>
     </open-files>
 </project-private>

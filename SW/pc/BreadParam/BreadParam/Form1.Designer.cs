@@ -43,9 +43,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -55,6 +52,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TotalOutCG = new System.Windows.Forms.Label();
             this.Total = new System.Windows.Forms.Label();
@@ -92,9 +92,6 @@
             this.LDateFW = new System.Windows.Forms.Label();
             this.GBPrice = new System.Windows.Forms.GroupBox();
             this.dataGridViewPrice = new System.Windows.Forms.DataGridView();
-            this.NumProd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Prix = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CashLess = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LabelVersionFW = new System.Windows.Forms.Label();
             this.MachineID = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -164,6 +161,9 @@
             this.groupBoxAudits = new System.Windows.Forms.GroupBox();
             this.BtnReadAudits = new System.Windows.Forms.Button();
             this.BtnRAXAudits = new System.Windows.Forms.Button();
+            this.NumProd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Prix = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CashLess = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxAudit.SuspendLayout();
             this.groupBoxAuditCGOUT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAuditCGOUT)).BeginInit();
@@ -255,7 +255,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1154, 68);
+            this.label7.Location = new System.Drawing.Point(1155, 68);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 17);
@@ -423,13 +423,14 @@
             this.MontantOutCG.Name = "MontantOutCG";
             this.MontantOutCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantOutCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
+            this.MontantOutCG.Width = 100;
             // 
             // groupBoxauditProduit
             // 
             this.groupBoxauditProduit.AutoSize = true;
             this.groupBoxauditProduit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.groupBoxauditProduit.Controls.Add(this.dataGridViewAuditProduit);
-            this.groupBoxauditProduit.Location = new System.Drawing.Point(866, 23);
+            this.groupBoxauditProduit.Location = new System.Drawing.Point(867, 23);
             this.groupBoxauditProduit.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxauditProduit.Name = "groupBoxauditProduit";
             this.groupBoxauditProduit.Padding = new System.Windows.Forms.Padding(4);
@@ -560,6 +561,7 @@
             this.MontantInBV.ReadOnly = true;
             this.MontantInBV.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInBV.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
+            this.MontantInBV.Width = 100;
             // 
             // groupBoxAuditCGIN
             // 
@@ -627,6 +629,7 @@
             this.MontantInCG.ReadOnly = true;
             this.MontantInCG.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MontantInCG.ToolTipText = "Montant de la pièce acceptée dans le canal correspondant";
+            this.MontantInCG.Width = 100;
             // 
             // LOverPay
             // 
@@ -645,7 +648,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1194, 145);
+            this.label3.Location = new System.Drawing.Point(1195, 145);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(86, 17);
@@ -743,42 +746,6 @@
             this.dataGridViewPrice.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             this.dataGridViewPrice.CurrentCellChanged += new System.EventHandler(this.MachineID_TextChanged);
             // 
-            // NumProd
-            // 
-            this.NumProd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NumProd.DefaultCellStyle = dataGridViewCellStyle14;
-            this.NumProd.HeaderText = "Prod.";
-            this.NumProd.MaxInputLength = 1;
-            this.NumProd.MinimumWidth = 6;
-            this.NumProd.Name = "NumProd";
-            this.NumProd.ReadOnly = true;
-            this.NumProd.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NumProd.ToolTipText = "Numéro du produit";
-            this.NumProd.Width = 60;
-            // 
-            // Prix
-            // 
-            this.Prix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Prix.DefaultCellStyle = dataGridViewCellStyle15;
-            this.Prix.HeaderText = "Prix";
-            this.Prix.MaxInputLength = 10;
-            this.Prix.MinimumWidth = 90;
-            this.Prix.Name = "Prix";
-            this.Prix.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Prix.ToolTipText = "Prix du produit";
-            // 
-            // CashLess
-            // 
-            this.CashLess.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.CashLess.DefaultCellStyle = dataGridViewCellStyle16;
-            this.CashLess.HeaderText = "CashLess";
-            this.CashLess.MinimumWidth = 90;
-            this.CashLess.Name = "CashLess";
-            this.CashLess.ToolTipText = "Prix du produit par carte bancaire";
-            // 
             // LabelVersionFW
             // 
             this.LabelVersionFW.AutoSize = true;
@@ -791,7 +758,7 @@
             // 
             // MachineID
             // 
-            this.MachineID.Location = new System.Drawing.Point(147, 45);
+            this.MachineID.Location = new System.Drawing.Point(147, 46);
             this.MachineID.Margin = new System.Windows.Forms.Padding(4);
             this.MachineID.MaxLength = 12;
             this.MachineID.Name = "MachineID";
@@ -835,6 +802,7 @@
             this.helpStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(1431, 28);
             this.menuStrip1.TabIndex = 20;
             this.menuStrip1.Text = "menuStrip1";
@@ -934,7 +902,7 @@
             this.CBSerialPorts.Location = new System.Drawing.Point(17, 31);
             this.CBSerialPorts.Margin = new System.Windows.Forms.Padding(4);
             this.CBSerialPorts.Name = "CBSerialPorts";
-            this.CBSerialPorts.Size = new System.Drawing.Size(162, 24);
+            this.CBSerialPorts.Size = new System.Drawing.Size(161, 24);
             this.CBSerialPorts.Sorted = true;
             this.CBSerialPorts.TabIndex = 2;
             this.CBSerialPorts.Text = "Sélectionner un port...";
@@ -942,6 +910,7 @@
             // 
             // serialPort1
             // 
+            this.serialPort1.BaudRate = 19200;
             this.serialPort1.ParityReplace = ((byte)(255));
             this.serialPort1.ReadBufferSize = 1024;
             this.serialPort1.ReadTimeout = 500;
@@ -1120,7 +1089,7 @@
             // 
             this.groupBoxTel.AutoSize = true;
             this.groupBoxTel.Controls.Add(this.dataGridViewTelephone);
-            this.groupBoxTel.Location = new System.Drawing.Point(734, 357);
+            this.groupBoxTel.Location = new System.Drawing.Point(733, 357);
             this.groupBoxTel.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxTel.Name = "groupBoxTel";
             this.groupBoxTel.Padding = new System.Windows.Forms.Padding(4);
@@ -1231,7 +1200,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(744, 259);
+            this.label2.Location = new System.Drawing.Point(744, 258);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 17);
@@ -1274,7 +1243,9 @@
             this.groupBox3.Controls.Add(this.RBFixed3);
             this.groupBox3.Controls.Add(this.Trap3UpDown);
             this.groupBox3.Location = new System.Drawing.Point(501, 22);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Size = new System.Drawing.Size(160, 135);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
@@ -1283,7 +1254,8 @@
             // RBAuto3
             // 
             this.RBAuto3.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RBAuto3.Location = new System.Drawing.Point(17, 93);
+            this.RBAuto3.Location = new System.Drawing.Point(17, 94);
+            this.RBAuto3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBAuto3.Name = "RBAuto3";
             this.RBAuto3.Size = new System.Drawing.Size(104, 22);
             this.RBAuto3.TabIndex = 2;
@@ -1296,6 +1268,7 @@
             // 
             this.RBFixed3.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.RBFixed3.Location = new System.Drawing.Point(17, 60);
+            this.RBFixed3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBFixed3.Name = "RBFixed3";
             this.RBFixed3.Size = new System.Drawing.Size(104, 22);
             this.RBFixed3.TabIndex = 1;
@@ -1325,7 +1298,9 @@
             this.groupBox2.Controls.Add(this.RBFixed2);
             this.groupBox2.Controls.Add(this.Trap2UpDown);
             this.groupBox2.Location = new System.Drawing.Point(259, 22);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Size = new System.Drawing.Size(160, 135);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
@@ -1334,7 +1309,8 @@
             // RBAuto2
             // 
             this.RBAuto2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RBAuto2.Location = new System.Drawing.Point(17, 93);
+            this.RBAuto2.Location = new System.Drawing.Point(17, 94);
+            this.RBAuto2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBAuto2.Name = "RBAuto2";
             this.RBAuto2.Size = new System.Drawing.Size(104, 22);
             this.RBAuto2.TabIndex = 2;
@@ -1347,6 +1323,7 @@
             // 
             this.RBFixed2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.RBFixed2.Location = new System.Drawing.Point(17, 60);
+            this.RBFixed2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBFixed2.Name = "RBFixed2";
             this.RBFixed2.Size = new System.Drawing.Size(104, 22);
             this.RBFixed2.TabIndex = 1;
@@ -1376,7 +1353,9 @@
             this.GBTrap1.Controls.Add(this.RBFixed1);
             this.GBTrap1.Controls.Add(this.Trap1UpDown);
             this.GBTrap1.Location = new System.Drawing.Point(31, 22);
+            this.GBTrap1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GBTrap1.Name = "GBTrap1";
+            this.GBTrap1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GBTrap1.Size = new System.Drawing.Size(160, 135);
             this.GBTrap1.TabIndex = 0;
             this.GBTrap1.TabStop = false;
@@ -1385,7 +1364,8 @@
             // RBAuto1
             // 
             this.RBAuto1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RBAuto1.Location = new System.Drawing.Point(17, 93);
+            this.RBAuto1.Location = new System.Drawing.Point(17, 94);
+            this.RBAuto1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBAuto1.Name = "RBAuto1";
             this.RBAuto1.Size = new System.Drawing.Size(104, 22);
             this.RBAuto1.TabIndex = 2;
@@ -1398,6 +1378,7 @@
             // 
             this.RBFixed1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.RBFixed1.Location = new System.Drawing.Point(17, 60);
+            this.RBFixed1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBFixed1.Name = "RBFixed1";
             this.RBFixed1.Size = new System.Drawing.Size(104, 22);
             this.RBFixed1.TabIndex = 1;
@@ -1432,8 +1413,10 @@
             this.GBSerialPort.Controls.Add(this.RBSerialFixed);
             this.GBSerialPort.Controls.Add(this.CBSerialPorts);
             this.GBSerialPort.Location = new System.Drawing.Point(1163, 87);
+            this.GBSerialPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GBSerialPort.Name = "GBSerialPort";
-            this.GBSerialPort.Size = new System.Drawing.Size(246, 135);
+            this.GBSerialPort.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GBSerialPort.Size = new System.Drawing.Size(245, 135);
             this.GBSerialPort.TabIndex = 7;
             this.GBSerialPort.TabStop = false;
             this.GBSerialPort.Text = "Port série";
@@ -1443,6 +1426,7 @@
             this.RBSerialAuto.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.RBSerialAuto.Checked = true;
             this.RBSerialAuto.Location = new System.Drawing.Point(17, 95);
+            this.RBSerialAuto.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBSerialAuto.Name = "RBSerialAuto";
             this.RBSerialAuto.Size = new System.Drawing.Size(104, 22);
             this.RBSerialAuto.TabIndex = 0;
@@ -1454,7 +1438,8 @@
             // RBSerialFixed
             // 
             this.RBSerialFixed.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RBSerialFixed.Location = new System.Drawing.Point(17, 67);
+            this.RBSerialFixed.Location = new System.Drawing.Point(17, 66);
+            this.RBSerialFixed.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RBSerialFixed.Name = "RBSerialFixed";
             this.RBSerialFixed.Size = new System.Drawing.Size(104, 22);
             this.RBSerialFixed.TabIndex = 1;
@@ -1524,7 +1509,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(979, 259);
+            this.label14.Location = new System.Drawing.Point(979, 258);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(15, 17);
             this.label14.TabIndex = 27;
@@ -1533,24 +1518,27 @@
             // label15
             // 
             this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(979, 289);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(14, 17);
+            this.label15.Size = new System.Drawing.Size(25, 17);
             this.label15.TabIndex = 28;
-            this.label15.Text = "°";
+            this.label15.Text = "°C";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.Location = new System.Drawing.Point(979, 319);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(14, 17);
+            this.label16.Size = new System.Drawing.Size(25, 17);
             this.label16.TabIndex = 29;
-            this.label16.Text = "°";
+            this.label16.Text = "°C";
             // 
             // btnReadParam
             // 
-            this.btnReadParam.Location = new System.Drawing.Point(42, 20);
+            this.btnReadParam.Location = new System.Drawing.Point(43, 20);
+            this.btnReadParam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReadParam.Name = "btnReadParam";
             this.btnReadParam.Size = new System.Drawing.Size(120, 30);
             this.btnReadParam.TabIndex = 30;
@@ -1560,7 +1548,8 @@
             // 
             // BtnSaveParam
             // 
-            this.BtnSaveParam.Location = new System.Drawing.Point(42, 55);
+            this.BtnSaveParam.Location = new System.Drawing.Point(43, 55);
+            this.BtnSaveParam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnSaveParam.Name = "BtnSaveParam";
             this.BtnSaveParam.Size = new System.Drawing.Size(120, 30);
             this.BtnSaveParam.TabIndex = 31;
@@ -1573,7 +1562,9 @@
             this.groupBoxParams.Controls.Add(this.btnReadParam);
             this.groupBoxParams.Controls.Add(this.BtnSaveParam);
             this.groupBoxParams.Location = new System.Drawing.Point(1229, 238);
+            this.groupBoxParams.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxParams.Name = "groupBoxParams";
+            this.groupBoxParams.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxParams.Size = new System.Drawing.Size(180, 100);
             this.groupBoxParams.TabIndex = 34;
             this.groupBoxParams.TabStop = false;
@@ -1584,7 +1575,9 @@
             this.groupBoxAudits.Controls.Add(this.BtnReadAudits);
             this.groupBoxAudits.Controls.Add(this.BtnRAXAudits);
             this.groupBoxAudits.Location = new System.Drawing.Point(1228, 351);
+            this.groupBoxAudits.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxAudits.Name = "groupBoxAudits";
+            this.groupBoxAudits.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxAudits.Size = new System.Drawing.Size(180, 100);
             this.groupBoxAudits.TabIndex = 35;
             this.groupBoxAudits.TabStop = false;
@@ -1592,7 +1585,8 @@
             // 
             // BtnReadAudits
             // 
-            this.BtnReadAudits.Location = new System.Drawing.Point(42, 20);
+            this.BtnReadAudits.Location = new System.Drawing.Point(43, 20);
+            this.BtnReadAudits.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnReadAudits.Name = "BtnReadAudits";
             this.BtnReadAudits.Size = new System.Drawing.Size(120, 30);
             this.BtnReadAudits.TabIndex = 30;
@@ -1602,13 +1596,50 @@
             // 
             // BtnRAXAudits
             // 
-            this.BtnRAXAudits.Location = new System.Drawing.Point(42, 55);
+            this.BtnRAXAudits.Location = new System.Drawing.Point(43, 55);
+            this.BtnRAXAudits.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnRAXAudits.Name = "BtnRAXAudits";
             this.BtnRAXAudits.Size = new System.Drawing.Size(120, 30);
             this.BtnRAXAudits.TabIndex = 31;
             this.BtnRAXAudits.Text = "&RAZ";
             this.BtnRAXAudits.UseVisualStyleBackColor = true;
             this.BtnRAXAudits.Click += new System.EventHandler(this.BtnRazAudit_Click);
+            // 
+            // NumProd
+            // 
+            this.NumProd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NumProd.DefaultCellStyle = dataGridViewCellStyle14;
+            this.NumProd.HeaderText = "Prod.";
+            this.NumProd.MaxInputLength = 1;
+            this.NumProd.MinimumWidth = 6;
+            this.NumProd.Name = "NumProd";
+            this.NumProd.ReadOnly = true;
+            this.NumProd.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NumProd.ToolTipText = "Numéro du produit";
+            this.NumProd.Width = 60;
+            // 
+            // Prix
+            // 
+            this.Prix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Prix.DefaultCellStyle = dataGridViewCellStyle15;
+            this.Prix.HeaderText = "Prix";
+            this.Prix.MaxInputLength = 10;
+            this.Prix.MinimumWidth = 90;
+            this.Prix.Name = "Prix";
+            this.Prix.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Prix.ToolTipText = "Prix du produit";
+            // 
+            // CashLess
+            // 
+            this.CashLess.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.CashLess.DefaultCellStyle = dataGridViewCellStyle16;
+            this.CashLess.HeaderText = "CashLess";
+            this.CashLess.MinimumWidth = 90;
+            this.CashLess.Name = "CashLess";
+            this.CashLess.ToolTipText = "Prix du produit par carte bancaire";
             // 
             // Form1
             // 
@@ -1786,9 +1817,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MontantInBV;
         private System.Windows.Forms.DataGridViewTextBoxColumn Canal;
         private System.Windows.Forms.DataGridViewTextBoxColumn MontantInCG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NumProd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Prix;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CashLess;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown UDCold;
         private System.Windows.Forms.Label label12;
@@ -1812,6 +1840,9 @@
         private System.Windows.Forms.GroupBox groupBoxAudits;
         private System.Windows.Forms.Button BtnReadAudits;
         private System.Windows.Forms.Button BtnRAXAudits;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NumProd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Prix;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CashLess;
     }
 }
 

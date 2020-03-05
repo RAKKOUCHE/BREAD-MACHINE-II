@@ -71,11 +71,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 void IntHandlerDrvAdc(void)
 {
-    /* Clear ADC Interrupt Flag */
-    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
+   /* Clear ADC Interrupt Flag */
+   PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
 }
-
-
+ 
 /*******************************************************************************
  End of File
- */
+*/

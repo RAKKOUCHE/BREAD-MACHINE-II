@@ -28,6 +28,8 @@
 #include "MDB/mdb_cg.h"
 #include "eeprom.h"
 #include "peripheral/nvm/processor/nvm_p32mx575f512l.h"
+#include "peripheral/usart/plib_usart.h"
+#include "peripheral/usart/processor/usart_p32mx575f512l.h"
 
 
 /* ************************************************************************** */

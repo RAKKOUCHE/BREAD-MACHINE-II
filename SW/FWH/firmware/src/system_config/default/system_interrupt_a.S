@@ -8,7 +8,7 @@
     Raw ISR definitions.
 
   Description:
-    This file contains a definitions of the raw ISRs required to support the
+    This file contains a definitions of the raw ISRs required to support the 
     interrupt sub-system.
 *******************************************************************************/
 
@@ -60,7 +60,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
    .ent  IntVectorDrvAdc
 
 IntVectorDrvAdc:
-    la    $26,  _IntHandlerDrvAdc
+    la    $26,  _IntHandlerDrvAdc         
     jr    $26
     nop
 	.end	IntVectorDrvAdc
@@ -82,7 +82,7 @@ _IntHandlerDrvAdc:
 
 
 
-
+ 
 /*******************************************************************************
  End of File
  */

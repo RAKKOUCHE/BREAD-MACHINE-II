@@ -199,7 +199,7 @@ namespace BreadParam
         //    {
         //        ui16Result += byBuffer[byIndex];
         //    }
-        //    return Convert.ToByte((ui16Result % 256));
+        //    return (Byte)((ui16Result % 256));
         //}
 
 
@@ -216,25 +216,25 @@ namespace BreadParam
             {
                 if (IsSerialPortOpen() && (MessageBox.Show(BreadParam.Properties.Resources.Str_Confirm_modify_param, BreadParam.Properties.Resources.Str_Confirm, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK))
                 {
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
                     if (!isParametersReaded)
                     {
                         throw new Exception(BreadParam.Properties.Resources.Str_Fail_save);
                     }
-                    serialPort1.DiscardOutBuffer();
-                    serialPort1.DiscardInBuffer();
 
                     byte[] byParamSave = { Convert.ToByte(HEADER.SAVE_PARAM, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byParamSave, 0, 1);
-                    byParamSave[0] = Convert.ToByte(serialPort1.ReadByte());
+                    byParamSave[0] = (Byte)(serialPort1.ReadByte());
                     if (byParamSave[0] == 0X5A)
                     {
                         //Envoie l'identification de la machine.
                         byBuffer = new byte[4];
                         value = Int32.Parse(MachineID.Text, CultureInfo.CurrentCulture);
-                        byBuffer[0] = Convert.ToByte(value % 0x100);
-                        byBuffer[1] = Convert.ToByte(value / 0x100);
-                        byBuffer[2] = Convert.ToByte(value / 0x10000);
-                        byBuffer[3] = Convert.ToByte(value / 0x1000000);
+                        byBuffer[0] = (Byte)(value % 0x100);
+                        byBuffer[1] = (Byte)(value / 0x100);
+                        byBuffer[2] = (Byte)(value / 0x10000);
+                        byBuffer[3] = (Byte)(value / 0x1000000);
                         serialPort1.Write((byte[])byBuffer, 0, 4);
 
                         //Envoie les prix en cash
@@ -277,11 +277,13 @@ namespace BreadParam
 
                         //Envoi les valeurs de sécurité.
                         byBuffer = new byte[12];
-                        for (int i = 0; i < 3; i++)
-                        {
-                            byBuffer[(i * 4) + 0] = Convert.ToByte(Trap1UpDown.Value % 0x100);
-                            byBuffer[(i * 4) + 1] = Convert.ToByte(Trap1UpDown.Value / 0x100);
-                        }
+                        byBuffer[0] = (byte)(Trap1UpDown.Value % 0x100);
+                        byBuffer[1] = (byte)(Trap1UpDown.Value / 0x100);
+                        byBuffer[4] = (byte)(Trap2UpDown.Value % 0x100);
+                        byBuffer[5] = (byte)(Trap2UpDown.Value / 0x100);
+                        byBuffer[8] = (byte)(Trap3UpDown.Value % 0x100);
+                        byBuffer[9] = (byte)(Trap3UpDown.Value / 0x100);
+
                         serialPort1.Write((byte[])byBuffer, 0, 12);
 
                         //Envoi du délai de cumul
@@ -584,7 +586,6 @@ namespace BreadParam
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
         private void BtnRead_Click(object sender, EventArgs e)
         {
             int byPos;
@@ -593,6 +594,9 @@ namespace BreadParam
             {
                 if (IsSerialPortOpen())
                 {
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
+
                     byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS, CultureInfo.CurrentCulture) };
                     serialPort1.Write(byParamRequest, 0, 1);
                     byPos = serialPort1.ReadByte();
@@ -627,14 +631,7 @@ namespace BreadParam
                     }
 
                     //Identification
-                    MachineID.Text = string.Format(CultureInfo.CurrentCulture, "{0,0:D}", (byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000)));
-
-                    //Activation periphériques
-                    for (int i = 0; i < 8; i++)
-                    {
-                        dataGridViewCG["EnableCG", i].Value = (byBuffer[408] >> i) & 0X01;
-                        dataGridViewBV["EnableBV", i].Value = (byBuffer[410] >> i) & 0X01;
-                    }
+                    MachineID.Text = string.Format(CultureInfo.CurrentCulture, "{0,0:D}", byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000));
 
                     //Prix
                     for (int i = 0; i < 3; i++)
@@ -684,8 +681,17 @@ namespace BreadParam
                     }
                     TOUpDown.Value = byBuffer[400];
                     numericCumul.Value = byBuffer[404];
+
                     UDCold.Value = byBuffer[412];
                     UDHot.Value = byBuffer[416];
+
+                    //Activation periphériques
+                    for (int i = 0; i < 8; i++)
+                    {
+                        dataGridViewCG["EnableCG", i].Value = (byBuffer[408] >> i) & 0X01;
+                        dataGridViewBV["EnableBV", i].Value = (byBuffer[410] >> i) & 0X01;
+                    }
+
                     isParametersReaded = true;
                     isParametersModified = false;
 
@@ -724,6 +730,8 @@ namespace BreadParam
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        byte[] byCheckBoardPresence = new byte[1] { 0XAF };
+
         private void Timer1_Tick_1(object sender, EventArgs e)
         {
             if (CBSerialPorts.Items.Count != System.IO.Ports.SerialPort.GetPortNames().Length)
@@ -731,6 +739,7 @@ namespace BreadParam
                 CBSerialPorts.Items.Clear();
                 CBSerialPorts.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
             }
+
             for (int i = 0; i < CBSerialPorts.Items.Count; i++)
             {
                 try
@@ -741,9 +750,11 @@ namespace BreadParam
                     }
                     serialPort1.PortName = (string)CBSerialPorts.Items[i];
                     serialPort1.Open();
+                    serialPort1.DiscardOutBuffer();
+                    serialPort1.DiscardInBuffer();
 
-                    byte[] byCheckBoardPresence = new byte[1] { 0XAF };
                     serialPort1.Write(byCheckBoardPresence, 0, 1);
+                    Thread.Sleep(10);
                     if ((serialPort1.Read(byCheckBoardPresence, 0, 1) == 1) && (byCheckBoardPresence[0] == 0xFA))
                     {
                         serialPort1.ReadTimeout = 5000;
