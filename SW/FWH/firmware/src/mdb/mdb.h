@@ -18,7 +18,7 @@ extern "C"
 #include <GenericTypeDefs.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
+//#include "globaldef.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
@@ -28,7 +28,6 @@ extern "C"
 #include "mdb_bv.h"
 #include "mainboard.h"
 #include "hd44780.h"
-#include "communDef.h"
 
     /*Defines*******************************************************/
 

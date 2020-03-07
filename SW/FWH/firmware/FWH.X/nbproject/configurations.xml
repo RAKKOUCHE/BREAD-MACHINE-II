@@ -1292,7 +1292,7 @@
         </archiverTool>
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
-          <parseOnProdLoad>false</parseOnProdLoad>
+          <parseOnProdLoad>true</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
@@ -1316,16 +1316,16 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../../../../../../../Microchip/Harmony/v2_06/framework;../src;../src/system_config/default;../src/default;../src/system_config/default/framework;../src/system_config/default/FreeRTOS;../src/system_config/default/FreeRTOS/portable/MPLAB/PIC32MX"/>
+                  value=".;..;..\src;..\src\system_config\default\;..\src\system_config\default\FreeRTOS;..\src\system_config\default\FreeRTOS\portable\MPLAB\PIC32MX;..\src\system_config\default\framework;..\..\..\..\..\..\..\Microchip\Harmony\v2_06\framework"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="isolate-each-function" value="true"/>
+        <property key="isolate-each-function" value="false"/>
         <property key="make-warnings-into-errors" value="false"/>
         <property key="optimization-level" value=""/>
         <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
-        <property key="preprocessor-macros" value="__XC"/>
+        <property key="preprocessor-macros" value="_XC"/>
         <property key="strict-ansi" value="false"/>
         <property key="support-ansi" value="false"/>
         <property key="toplevel-reordering" value=""/>

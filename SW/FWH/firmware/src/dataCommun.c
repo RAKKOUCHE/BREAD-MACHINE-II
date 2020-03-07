@@ -184,6 +184,7 @@ void vTaskPcComm(void *vParameters)
             case STATE_PCCOMM_INIT:
                 // <editor-fold desc="STATE_PCCOMM_INIT">
             {
+                PLIB_USART_LineControlModeSelect(USART_ID_2, USART_8N1);
                 PLIB_USART_BaudRateSet(USART_ID_2, SYS_CLK_BUS_PERIPHERAL_1, 19200);
 
                 PLIB_USART_OperationModeSelect(USART_ID_2, USART_ENABLE_TX_RX_USED);

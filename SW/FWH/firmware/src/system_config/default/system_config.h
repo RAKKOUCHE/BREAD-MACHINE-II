@@ -84,7 +84,7 @@ extern "C" {
    
 /*** Ports System Service Configuration ***/
 #define SYS_PORT_AD1PCFG        ~0xe003
-#define SYS_PORT_CNPUE          0x3f2603
+#define SYS_PORT_CNPUE          0xf2603
 #define SYS_PORT_CNEN           0x0
 #define SYS_PORT_A_TRIS         0x3DF0
 #define SYS_PORT_A_LAT          0xC000
@@ -129,7 +129,7 @@ extern "C" {
 #define DRV_NVM_INTERRUPT_MODE          false
 #define DRV_NVM_BUFFER_OBJECT_NUMBER    5
 #define DRV_NVM_MEDIA_SIZE              32
-#define DRV_NVM_MEDIA_START_ADDRESS     0X9D070000
+#define DRV_NVM_MEDIA_START_ADDRESS     0x9D010000
 #define DRV_NVM_ERASE_WRITE_ENABLE
 
 

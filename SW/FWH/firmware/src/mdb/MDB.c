@@ -24,7 +24,7 @@ MDB_STATUS;
 typedef struct
 {
     uint8_t byData;
-    uint8_t bit9th;
+    bool isBit9th;
 }
 UARTDATA;
 
@@ -110,7 +110,6 @@ static void vTaskMDB(void)
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while(1)
     {
-        LED_MDB_Toggle();
         switch(mdb.state)
         {
             case MDB_INIT:
@@ -121,6 +120,14 @@ static void vTaskMDB(void)
                 vDisplayLCD("%s", "  Verification");
                 vLCDGotoXY(1, 2);
                 vDisplayLCD("%s", "      MDB");
+
+                PLIB_USART_LineControlModeSelect(USART_ID_4, USART_9N2);
+                PLIB_USART_BaudRateSet(USART_ID_4, SYS_CLK_BUS_PERIPHERAL_1, 9600);
+                PLIB_USART_OperationModeSelect(USART_ID_4, USART_ENABLE_TX_RX_USED);
+                PLIB_USART_TransmitterEnable(USART_ID_4);
+                PLIB_USART_ReceiverEnable(USART_ID_4);
+                PLIB_USART_Enable(USART_ID_4);
+
                 if(mdb.hSemaphoreTask == NULL)
                 {
                     mdb.hSemaphoreTask = xSemaphoreCreateBinary();
@@ -600,6 +607,13 @@ void vVMCAcknowledge(const uint8_t byAcknowledge)
     uaAcknowledge.wData = byAcknowledge;
     mdb.isNAK = false;
     xTimerStart(mdb.hTimerMDBNAK, 60 * SECONDE);
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
+    if(!mdb.isNAK)
+    {
+        PLIB_USART_Transmitter9BitsSend(USART_ID_4, uaAcknowledge.uartData.byData, uaAcknowledge.uartData.isBit9th);
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
+    }
+
     //    while(!UART4_TransmitterIsReady() && !mdb.isNAK);
     //    if(!mdb.isNAK)
     //    {
@@ -666,39 +680,37 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
     byPtrParameters = ptrParameters;
     byPtrAnswer = ptrAnswer;
     BOOL isRepeat = false;
+    uint8_t toto;
     xSemaphoreTake(mdb.hSemaphorePoll, SECONDE);
 
-    //TODO faire clignoter la led MDB
-    //    leds.red.state = LED_TOGGLE;
     do
     {
         memset(&data, 0, sizeof(data));
         //Formate la transmision du premier mot
         data[0].uartData.byData = (byAddress + byCommand);
-        data[0].uartData.bit9th = 0X01;
+        data[0].uartData.isBit9th = true;
 
         //Complete le buffer à transmettre
         for(byIndex = 1; byIndex <= byLenParameters; byIndex++)
         {
             data[byIndex].uartData.byData = (uint8_t) byPtrParameters[byIndex - 1];
-            data[byIndex].uartData.bit9th = 0X00;
+            data[byIndex].uartData.isBit9th = false;
         }
 
         //Calcul du checksum de la transmission
         data[byLenParameters + 1].uartData.byData = byCheckSum(byLenParameters + 1, data);
-        data[byLenParameters + 1].uartData.bit9th = 0X00;
+        data[byLenParameters + 1].uartData.isBit9th = false;
 
         //Transmission des données
         mdb.isNAK = false;
         for(byIndex = 0; byIndex < (byLenParameters + 2); byIndex++)
         {
             xTimerChangePeriod(mdb.hTimerMDBNAK, 5 * MILLISEC, SECONDE);
-            //            while(!UART4_TransmitterIsReady() && !mdb.isNAK);
-
+            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
             if(!mdb.isNAK)
             {
-                //                UART4_WriteByte(data[byIndex].wData);
-                //                while(UART4_TransmitComplete() && !mdb.isNAK);
+                PLIB_USART_Transmitter9BitsSend(USART_ID_4, data[byIndex].uartData.byData, data[byIndex].uartData.isBit9th);
+
             }
             else
             {
@@ -707,57 +719,57 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
             }
         }
 
+        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
+
         if(!mdb.isNAK)
         {
             //Réception
             byPtrAnswer[byIndex = 0] = NAK;
-            //memset(&byPtrAnswer, 0
-            xTimerChangePeriod(mdb.hTimerMDBNAK, 20 * MILLISEC, SECONDE);
-            //            while(!UART4_ReceiverIsReady() && !mdb.isNAK);
-            if(!mdb.isNAK)
+            memset(&data, 0, sizeof(data));
+            xTimerChangePeriod(mdb.hTimerMDBNAK, 500 * MILLISEC, SECONDE);
+            do
             {
-                do
+                Delay10us(5);
+                while(!PLIB_USART_ReceiverDataIsAvailable(USART_ID_4) & !mdb.isNAK);
+                if(!mdb.isNAK)
                 {
-                    if(byIndex)
+                    data[byIndex].wData = PLIB_USART_Receiver9BitsReceive(USART_ID_4);
+                    byPtrAnswer[byIndex] = data[byIndex].uartData.byData;
+                    //Si la réponse du périphérique est NAK                    
+                    if((byIndex == 1) && (data[byIndex].uartData.byData == 0XFF))
                     {
-                        xTimerChangePeriod(mdb.hTimerMDBNAK, 10 * MILLISEC, SECONDE);
-                        //                        while(!UART4_ReceiverIsReady() && !mdb.isNAK);
+                        mdb.isNAK = true;
                     }
-                    if(!mdb.isNAK)
-                    {
-                        //                        data[byIndex].wData = UART4_ReadByte();
-                        byPtrAnswer[byIndex] = data[byIndex].uartData.byData;
-                    }
-                    else
-                    {
-                        byPtrAnswer[0] = NAK;
-                    }
-                } while((!(data[byIndex++].wData & 0x0100)) && !mdb.isNAK);
-                //Si la réponse du périphérique est NAK
-                if((byIndex == 1) && (data[byIndex].uartData.byData == 0XFF))
+                }
+            } while(!data[byIndex++].uartData.isBit9th && !mdb.isNAK);
+            if(!mdb.isNAK && byIndex > 1)
+            {
+
+
+
+                toto = byIndex;
+                toto = byCheckSum(byIndex - 1, data);
+                toto = data[byIndex - 1].uartData.byData;
+                if(byCheckSum(byIndex - 1, data) != data[byIndex - 1].uartData.byData)
                 {
                     mdb.isNAK = true;
                 }
             }
-        }
-        if(!mdb.isNAK)
-        {
-            if(byCheckSum(byIndex - 1, data) != data[byIndex - 1].uartData.byData)
+            xTimerStop(mdb.hTimerMDBNAK, SECONDE);
+            if((isRepeat = (mdb.isNAK ? !isRepeat : false)))
             {
-                byPtrAnswer[0] = NAK;
-                mdb.isNAK = true;
-                byIndex = 0;
+                delayMs(100);
             }
-        }
-        xTimerStop(mdb.hTimerMDBNAK, SECONDE);
-        if((isRepeat = (mdb.isNAK ? !isRepeat : false)))
-        {
-            delayMs(100);
         }
     } while(isRepeat);
     if(mdb.isNAK)
     {
+        byPtrAnswer[0] = NAK;
         byIndex = 0;
+    }
+    else
+    {
+        LED_MDB_Toggle();
     }
     xSemaphoreGive(mdb.hSemaphorePoll);
 
