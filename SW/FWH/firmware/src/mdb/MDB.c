@@ -12,7 +12,7 @@
  */
 #define MDB_TASK_STACK 512
 
-typedef enum
+typedef  enum __attribute__((packed))
 {
     MDB_INIT,
     MDB_POLL_CG,
@@ -28,7 +28,7 @@ typedef struct
 }
 UARTDATA;
 
-typedef union
+typedef union __attribute__((packed))
 {
     UARTDATA uartData;
     WORD wData;
@@ -121,7 +121,7 @@ static void vTaskMDB(void)
                 vLCDGotoXY(1, 2);
                 vDisplayLCD("%s", "      MDB");
 
-                PLIB_USART_LineControlModeSelect(USART_ID_4, USART_9N2);
+                PLIB_USART_LineControlModeSelect(USART_ID_4, USART_9N1);
                 PLIB_USART_BaudRateSet(USART_ID_4, SYS_CLK_BUS_PERIPHERAL_1, 9600);
                 PLIB_USART_OperationModeSelect(USART_ID_4, USART_ENABLE_TX_RX_USED);
                 PLIB_USART_TransmitterEnable(USART_ID_4);
@@ -607,20 +607,11 @@ void vVMCAcknowledge(const uint8_t byAcknowledge)
     uaAcknowledge.wData = byAcknowledge;
     mdb.isNAK = false;
     xTimerStart(mdb.hTimerMDBNAK, 60 * SECONDE);
-    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4));
     if(!mdb.isNAK)
     {
-        PLIB_USART_Transmitter9BitsSend(USART_ID_4, uaAcknowledge.uartData.byData, uaAcknowledge.uartData.isBit9th);
-        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
+        PLIB_USART_Transmitter9BitsSend(USART_ID_4, uaAcknowledge.uartData.byData, false);
     }
-
-    //    while(!UART4_TransmitterIsReady() && !mdb.isNAK);
-    //    if(!mdb.isNAK)
-    //    {
-    //        UART4_WriteByte(uaAcknowledge.wData);
-    //        while(!UART4_TransmitComplete() && !mdb.isNAK);
-    //    }
-
     xTimerStop(mdb.hTimerMDBNAK, 60 * SECONDE);
 }
 /******************************************************************************/
@@ -679,8 +670,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
     uint8_t *byPtrParameters, *byPtrAnswer;
     byPtrParameters = ptrParameters;
     byPtrAnswer = ptrAnswer;
-    BOOL isRepeat = false;
-    uint8_t toto;
+    BOOL isRepeat = false;    
     xSemaphoreTake(mdb.hSemaphorePoll, SECONDE);
 
     do
@@ -710,7 +700,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
             if(!mdb.isNAK)
             {
                 PLIB_USART_Transmitter9BitsSend(USART_ID_4, data[byIndex].uartData.byData, data[byIndex].uartData.isBit9th);
-
+                
             }
             else
             {
@@ -718,18 +708,16 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
                 break;
             }
         }
-
+        
         while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
-
+        
         if(!mdb.isNAK)
         {
             //Réception
             byPtrAnswer[byIndex = 0] = NAK;
-            memset(&data, 0, sizeof(data));
             xTimerChangePeriod(mdb.hTimerMDBNAK, 500 * MILLISEC, SECONDE);
             do
-            {
-                Delay10us(5);
+            {               
                 while(!PLIB_USART_ReceiverDataIsAvailable(USART_ID_4) & !mdb.isNAK);
                 if(!mdb.isNAK)
                 {
@@ -742,17 +730,13 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
                     }
                 }
             } while(!data[byIndex++].uartData.isBit9th && !mdb.isNAK);
-            if(!mdb.isNAK && byIndex > 1)
+            if(!mdb.isNAK)
             {
-
-
-
-                toto = byIndex;
-                toto = byCheckSum(byIndex - 1, data);
-                toto = data[byIndex - 1].uartData.byData;
                 if(byCheckSum(byIndex - 1, data) != data[byIndex - 1].uartData.byData)
                 {
+                    byPtrAnswer[0] = NAK;
                     mdb.isNAK = true;
+                    byIndex = 0;
                 }
             }
             xTimerStop(mdb.hTimerMDBNAK, SECONDE);
@@ -764,11 +748,10 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
     } while(isRepeat);
     if(mdb.isNAK)
     {
-        byPtrAnswer[0] = NAK;
         byIndex = 0;
     }
     else
-    {
+    {        
         LED_MDB_Toggle();
     }
     xSemaphoreGive(mdb.hSemaphorePoll);
@@ -904,6 +887,7 @@ void vDisplayRefused(void)
 {
     //Traitement des espèces non identifiées.
     vLCD_CLEAR();
+    delayMs(100);
     vDisplayLCD("%s", "Refusee...");
     delayMs(1000);
     if(getAmountDispo())

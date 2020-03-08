@@ -67,7 +67,7 @@
  * \brief structure contenant les informations relatives au canal
  * analogique.
  */
-typedef struct __attribute__((packed))
+typedef struct
 {
     bool isDataAvailable; /*!<Indique si la valeur est utilisable.*/
     //    ADC_INPUT_POSITIVE id; /*!<Identifiant du canal analogique.*/

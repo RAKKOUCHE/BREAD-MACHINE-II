@@ -17,10 +17,6 @@ const uint8_t changeBase[] = {250, 200, 100, 50, 20, 10, 0, 0};
 /*****************************************************************************/
 struct
 {
-    BOOL isChangerEnable;
-    BOOL isInitialized;
-    BOOL isChangeFinished;
-    BOOL isJustReseted;
     uint8_t byDUMMY[10];
     uint8_t data[36];
     uint8_t byCoinsBuffer[NUMBERCHANNELSCG + 1];
@@ -35,6 +31,10 @@ struct
     COIN_TYPE coins_enable;
     CG_IDENTIFICATION id;
     TaskHandle_t hChangeTask;
+    BOOL isChangerEnable;
+    BOOL isInitialized;
+    BOOL isChangeFinished;
+    BOOL isJustReseted;
 } changeGiver;
 
 /*********************************************************************

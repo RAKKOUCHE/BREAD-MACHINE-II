@@ -25,7 +25,7 @@ extern "C"
 #define EEPROM_DEVICE_ADDRESS 0XA0
 
     /*Enumérations*************************************************************/
-    typedef enum __attribute__((packed))
+    typedef enum
     {
         I2C_OK,
             I2C_NOT_IDLE,

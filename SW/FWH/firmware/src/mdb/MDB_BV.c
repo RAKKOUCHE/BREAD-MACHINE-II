@@ -1,6 +1,6 @@
 #include "mdb_bv.h"
 
-struct
+struct __attribute__((packed))
 {
     BOOL isStackerFull;
     BOOL isEnable;

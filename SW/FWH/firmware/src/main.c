@@ -70,10 +70,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 int main(void)
 {
-
-    //Securisation des commandes moteurs.
-   
-            
+    //Securisation des commandes moteurs.          
     PWR_OutputEnable();
     PWR_Clear(); //Desactive la tension positive des moteurs des carrousels.
     BRK_OutputEnable();

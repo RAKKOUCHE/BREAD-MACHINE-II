@@ -37,50 +37,54 @@ extern "C"
 
     /*Enums********************************************************************/
 
-    typedef enum
+    typedef enum __attribute__((packed))
     {
         STACKED = 0B00000000,
-        ESCROW = 0B00010000,
-        RETURNED = 0B00100000,
-        REJECTED = 0B01000000,
-    } BILL_INTRODUCED;
+            ESCROW = 0B00010000,
+            RETURNED = 0B00100000,
+            REJECTED = 0B01000000,
+    }
+    BILL_INTRODUCED;
 
-    typedef enum
+    typedef enum __attribute__((packed))
     {
         BV_RESET = 0X00,
-        BV_SETUP = 0X01,
-        BV_SECURITY = 0X02,
-        BV_POLL = 0X03,
-        BV_BILL_TYPE = 0X04,
-        BV_ESCROW = 0X05,
-        BV_STACKER = 0X06,
-        BV_EXPANSION_CMD = 0X07,
-        BV_INIT,
-    } BV_STATUS;
+            BV_SETUP = 0X01,
+            BV_SECURITY = 0X02,
+            BV_POLL = 0X03,
+            BV_BILL_TYPE = 0X04,
+            BV_ESCROW = 0X05,
+            BV_STACKER = 0X06,
+            BV_EXPANSION_CMD = 0X07,
+            BV_INIT,
+    }
+    BV_STATUS;
 
-    typedef enum
+    typedef enum __attribute__((packed))
     {
         LEVEL1_ID_WO_OPTIONS = 0x00,
-        LEVEL2_ENABLE_FEATURE = 0X01,
-        LEVEL2_ID_W_OPTIONS = 0x02,
-    } BV_SUB_CMD;
+            LEVEL2_ENABLE_FEATURE = 0X01,
+            LEVEL2_ID_W_OPTIONS = 0x02,
+    }
+    BV_SUB_CMD;
 
-    typedef enum
+    typedef enum __attribute__((packed))
     {
         BV_MOTOR_DEFAULT = 0B00000001,
-        BV_SENSOR_DEFAULT = 0B00000010,
-        BV_BUSY = 0B00000011,
-        BV_ROM_ERROR = 0B00000100,
-        BV_JAM_ACCEPTANCE = 0B00000101,
-        BV_JUST_RESET = 0B00000110,
-        BV_BILL_REMOVED = 0B00000111,
-        BV_CASHBOX_OPEN = 0B00001000,
-        BV_DISABLED = 0B00001001,
-        BV_INVALID_ESCROW = 0B00001010,
-        BV_REFUSED = 0B00001011,
-        BV_BILL_REMOVAL = 0B00001100,
+            BV_SENSOR_DEFAULT = 0B00000010,
+            BV_BUSY = 0B00000011,
+            BV_ROM_ERROR = 0B00000100,
+            BV_JAM_ACCEPTANCE = 0B00000101,
+            BV_JUST_RESET = 0B00000110,
+            BV_BILL_REMOVED = 0B00000111,
+            BV_CASHBOX_OPEN = 0B00001000,
+            BV_DISABLED = 0B00001001,
+            BV_INVALID_ESCROW = 0B00001010,
+            BV_REFUSED = 0B00001011,
+            BV_BILL_REMOVAL = 0B00001100,
 
-    } BV_STATUS_ACCEPTED;
+    }
+    BV_STATUS_ACCEPTED;
 
     /*Structures***************************************************************/
 
@@ -88,10 +92,10 @@ extern "C"
      * \typedef BillType
      * \brief Strucute contenant la validation des pièces.
      */
-    typedef struct
+    typedef struct __attribute__((packed))
     {
 
-        union
+        union __attribute__((packed))
         {
             uint8_t byBillEnable[2];
             uint16_t wBillEnable;
@@ -103,7 +107,7 @@ extern "C"
      * \typedef ChangeGiverConfig
      * \brief structure contenant la configuration des rendeurs
      */
-    typedef struct
+    typedef struct __attribute__((packed))
     {
         MDBGENERICDEVICECONFIG deviceConfig;
         uint16_t wScalingFactor; /*!< Facteur de multiplication appliqué à tous les montants du périphérique.*/
@@ -118,7 +122,7 @@ extern "C"
      * \typedef BV_IDENTIFICATION
      * \brief Structure contenant l'identification et les options du lecteur.
      */
-    typedef struct
+    typedef struct __attribute__((packed))
     {
         uint8_t ManufacturerCode[3];
         uint8_t SerialNumber[12];
