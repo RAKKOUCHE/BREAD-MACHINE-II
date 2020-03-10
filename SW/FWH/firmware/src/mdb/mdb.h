@@ -176,7 +176,7 @@ extern "C"
      * @return true si la chaîne MDB est prête.
      */
     BOOL getIsMDBChecked(void);
-    /**
+    /**Checked
      * \brief Requête du diviseur MDB.
      * @return Le diviseur MDB
      */

@@ -56,7 +56,7 @@
 /**
  * \brief Priorité de la tâche de l'afficheur.
  */
-#define LCD_TASK_PRIORITY 3
+#define LCD_TASK_PRIORITY 2
 
 /**
  * \brief Nombre d'éléments dans la queue utilisée pour l'affichage.

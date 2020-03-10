@@ -590,9 +590,14 @@ void MAINBOARD_Tasks(void)
         case MAINBOARD_STATE_INIT:
             // <editor-fold desc="MAINBOARD_STATE_INIT">
         {
-            setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
+            setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);            
             oldAmount = 0;
             setAmountDispo(0);
+            
+            setLastDir(3, BOT_1StateGet() ? REVERSE : FORWARD);
+            setLastDir(4, BOT_2StateGet() ? REVERSE : FORWARD);
+            setLastDir(5, BOT_3StateGet() ? REVERSE : FORWARD);
+                    
             vHD44780Init();
             vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
@@ -657,8 +662,6 @@ void MAINBOARD_Tasks(void)
                         if(getIsMotorInUse(byIndex))
                         {
                             setMotorState(byIndex, MOTORS_BREAK);
-                            delayMs(200);
-                            setMotorState(byIndex, MOTORS_OFF);
                         }
                     }
                 }
@@ -672,8 +675,7 @@ void MAINBOARD_Tasks(void)
                 }
                 if(oldChoice == 4)
                 {
-                    //Check du git du 5/1/2020
-                    setShiftState(!getShiftState());
+                    shiftStateToggle();
                 }
                 if(oldChoice > 4)
                 {
@@ -681,9 +683,8 @@ void MAINBOARD_Tasks(void)
                     {
                         setShiftState(true);
                         setMotorState(oldChoice - 2,
-                                      (getLastDir(oldChoice - 2) == REVERSE) ?
-                                      MOTORS_FORWARD :
-                                      MOTORS_REVERSE);
+                                      (getLastDir(oldChoice - 2) == FORWARD) ?
+                                      MOTORS_REVERSE : MOTORS_FORWARD);
                     }
                     else
                     {

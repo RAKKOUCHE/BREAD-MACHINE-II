@@ -354,7 +354,7 @@ static void vTaskMoteur(void *vParameter)
                 case MOTORS_BREAK:
                     // <editor-fold desc="MOTORS_BREAK">
                 {
-                    motors.motor[byIndex].state = MOTORS_IDLE;
+                    motors.motor[byIndex].state = MOTORS_OFF;
                     switch(byIndex)
                     {
                         case 0:
@@ -421,28 +421,37 @@ static void vTaskMoteur(void *vParameter)
                         case 3:
                             // <editor-fold desc="Trappe 1">
                         {
-                            CMD_TRAP_P12_Clear();
-                            CMD_TRAP_N11_Set();
-                            CMD_TRAP_N12_Clear();
-                            CMD_TRAP_P11_Set();
+                            if(BOT_1_Get())
+                            {
+                                CMD_TRAP_P12_Clear();
+                                CMD_TRAP_N11_Set();
+                                CMD_TRAP_N12_Clear();
+                                CMD_TRAP_P11_Set();
+                            }
                             break;
                         }// </editor-fold>
                         case 4:
                             // <editor-fold desc="Trappe 2">
                         {
-                            CMD_TRAP_P22_Clear();
-                            CMD_TRAP_N21_Set();
-                            CMD_TRAP_N22_Clear();
-                            CMD_TRAP_P21_Set();
+                            if(BOT_2_Get())
+                            {
+                                CMD_TRAP_P22_Clear();
+                                CMD_TRAP_N21_Set();
+                                CMD_TRAP_N22_Clear();
+                                CMD_TRAP_P21_Set();
+                            }
                             break;
                         }// </editor-fold>
                         case 5:
                             // <editor-fold desc="Trappe 3">
                         {
-                            CMD_TRAP_P32_Clear();
-                            CMD_TRAP_N31_Set();
-                            CMD_TRAP_N32_Clear();
-                            CMD_TRAP_P31_Set();
+                            if(BOT_3_Get())
+                            {
+                                CMD_TRAP_P32_Clear();
+                                CMD_TRAP_N31_Set();
+                                CMD_TRAP_N32_Clear();
+                                CMD_TRAP_P31_Set();
+                            }
                             break;
                         }// </editor-fold>
                         default:
@@ -472,28 +481,37 @@ static void vTaskMoteur(void *vParameter)
                         case 3:
                             // <editor-fold desc="Trappe 1">
                         {
-                            CMD_TRAP_P11_Clear();
-                            CMD_TRAP_N12_Set();
-                            CMD_TRAP_N11_Clear();
-                            CMD_TRAP_P12_Set();
+                            if(TOP_1_Get())
+                            {
+                                CMD_TRAP_P11_Clear();
+                                CMD_TRAP_N12_Set();
+                                CMD_TRAP_N11_Clear();
+                                CMD_TRAP_P12_Set();
+                            }
                             break;
                         }// </editor-fold>
                         case 4:
                             // <editor-fold desc="Trappe 2">
                         {
-                            CMD_TRAP_P21_Clear();
-                            CMD_TRAP_N22_Set();
-                            CMD_TRAP_N21_Clear();
-                            CMD_TRAP_P22_Set();
+                            if(TOP_2_Get())
+                            {
+                                CMD_TRAP_P21_Clear();
+                                CMD_TRAP_N22_Set();
+                                CMD_TRAP_N21_Clear();
+                                CMD_TRAP_P22_Set();
+                            }
                             break;
                         }// </editor-fold>
                         case 5:
                             // <editor-fold desc="Trappe 3">
                         {
-                            CMD_TRAP_P31_Clear();
-                            CMD_TRAP_N32_Set();
-                            CMD_TRAP_N31_Clear();
-                            CMD_TRAP_P32_Set();
+                            if(TOP_3_Get())
+                            {
+                                CMD_TRAP_P31_Clear();
+                                CMD_TRAP_N32_Set();
+                                CMD_TRAP_N31_Clear();
+                                CMD_TRAP_P32_Set();
+                            }
                             break;
                         }// </editor-fold>
                         default:
@@ -501,7 +519,6 @@ static void vTaskMoteur(void *vParameter)
                             break;
                         }
                     }
-
                     break;
                 }// </editor-fold>
                 case MOTORS_IDLE:
@@ -520,7 +537,22 @@ static void vTaskMoteur(void *vParameter)
     }
 }
 
-DIRECTION getLastDir(uint8_t num)
+/*********************************************************************
+ * Function:        DIRECTION getLastDir(uint8_t num)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+DIRECTION getLastDir(const uint8_t num)
 {
     return motors.motor[num].lastdir;
 }
@@ -568,7 +600,7 @@ DIRECTION getLastDir(uint8_t num)
  *         None
  *
  ********************************************************************/
-void setLastDir(uint8_t num, DIRECTION direction)
+void setLastDir(const uint8_t num, const DIRECTION direction)
 {
     motors.motor[num].lastdir = direction;
 }

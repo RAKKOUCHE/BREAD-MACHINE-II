@@ -91,6 +91,11 @@ extern "C"
     //    KEY_STATES getKeyState(const uint8_t numKey);
 
     /**
+     * \brief Inverse l'état shifted.
+     */
+    void shiftStateToggle(void );
+    
+    /**
      * \brief
      * @param byIndex
      * @return

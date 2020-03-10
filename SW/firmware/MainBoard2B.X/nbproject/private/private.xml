@@ -91,9 +91,11 @@
         <group>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/parameters.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/dataCommun.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/nvm/plib_nvm.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/leds.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/moteurs.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/config/default/peripheral/nvm/plib_nvm.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/contacts.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/firmware/src/mainboard2.c</file>
         </group>
     </open-files>
 </project-private>

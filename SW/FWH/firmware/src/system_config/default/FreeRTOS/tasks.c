@@ -266,7 +266,7 @@ to its original value when it is released. */
  * and stores task state information, including a pointer to the task's context
  * (the task's run time environment, including register values)
  */
-typedef struct __attribute__((packed)) tskTaskControlBlock
+typedef struct tskTaskControlBlock
 {
 	volatile StackType_t	*pxTopOfStack;	/*< Points to the location of the last item placed on the tasks stack.  THIS MUST BE THE FIRST MEMBER OF THE TCB STRUCT. */
 
@@ -318,7 +318,7 @@ typedef struct __attribute__((packed)) tskTaskControlBlock
 		newlib and must provide system-wide implementations of the necessary
 		stubs. Be warned that (at the time of writing) the current newlib design
 		implements a system-wide malloc() that must be provided with locks. */
-		struct __attribute__((packed))	_reent xNewLib_reent;
+		struct	_reent xNewLib_reent;
 	#endif
 
 	#if( configUSE_TASK_NOTIFICATIONS == 1 )

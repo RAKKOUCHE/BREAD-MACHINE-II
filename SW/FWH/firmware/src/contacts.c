@@ -50,7 +50,7 @@
 /**
  * \brief Delay de la tâche des touches.
  */
-#define CLAVIER_TASK_DELAY (50 * MILLISEC)
+#define CLAVIER_TASK_DELAY (20 * MILLISEC)
 
 /**
  * \brief
@@ -379,6 +379,11 @@ static void vTaskKeyboard(void *vParameter)
                     case KEY_CHECKED:
                         // <editor-fold desc="KEY_CHECKED">
                     {
+                        if(byIndex)
+                        {
+                            setMotorState((byIndex + 2) - ((uint8_t) (byIndex > 3) * 3), MOTORS_BREAK);
+                            clrSelection();
+                        }
                         setDoorSwitchState(byIndex, (lSWState == KEY_LO) ? KEY_USED : KEY_HI);
                         if(!byIndex)
                         {
@@ -396,7 +401,6 @@ static void vTaskKeyboard(void *vParameter)
                                 switchs.isDoorMoved = true;
                             }
                             setDoorSwitchState(byIndex, KEY_HI);
-                            //switchs.selection = 0;
                         }
                         break;
                     }// </editor-fold>
@@ -606,6 +610,26 @@ void setShiftState(const bool state)
 bool getShiftState(void)
 {
     return switchs.isKeyShifted;
+}
+
+/*********************************************************************
+ * Function:        void shiftStateToggle(void
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void shiftStateToggle(void)
+{
+    switchs.isKeyShifted = !switchs.isKeyShifted;
 }
 
 /*********************************************************************
@@ -854,6 +878,11 @@ void vKeyboardInit(void)
     {
         setKeyState(byIndex, (KEY_STATES) (PORTD >> (7 + byIndex) & 1));
     }
+    for(; byIndex < 7; byIndex++)
+    {
+        setKeyState(byIndex, (KEY_STATES) (PORTE >> byIndex) & 1);
+    }
+
     for(byIndex = 0; byIndex < 7; byIndex++)
     {
         setDoorSwitchState(byIndex, (KEY_STATES) (PORTC >> (portTable[byIndex]) & 1));

@@ -103,14 +103,14 @@ extern "C"
      * @param num
      * @return
      */
-    DIRECTION getLastDir(uint8_t num);
+    DIRECTION getLastDir(const uint8_t num);
 
     /**
      * \brief
      * @param num
      * @param direction
      */
-    void setLastDir(uint8_t num, DIRECTION direction);
+    void setLastDir(const uint8_t num, const DIRECTION direction);
 
     /**
      * \brief

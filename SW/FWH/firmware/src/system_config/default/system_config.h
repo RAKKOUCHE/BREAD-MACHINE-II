@@ -94,8 +94,8 @@ extern "C" {
 #define SYS_PORT_B_LAT          0x1E04
 #define SYS_PORT_B_ODC          0x0000
 
-#define SYS_PORT_C_TRIS         0xFFF9
-#define SYS_PORT_C_LAT          0x0000
+#define SYS_PORT_C_TRIS         0xFFFD
+#define SYS_PORT_C_LAT          0x0004
 #define SYS_PORT_C_ODC          0x0000
 
 #define SYS_PORT_D_TRIS         0xFF8C
@@ -187,9 +187,6 @@ extern "C" {
 /*** Functions for BTN_MTR_3 pin ***/
 #define BTN_MTR_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_E, PORTS_BIT_POS_6)
 
-/*** Functions for DOOR pin ***/
-#define DOORStateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_2)
-
 /*** Functions for TOP_1 pin ***/
 #define TOP_1StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_3)
 
@@ -202,9 +199,6 @@ extern "C" {
 /*** Functions for TOP_3 pin ***/
 #define TOP_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_12)
 
-/*** Functions for BOT_3 pin ***/
-#define BOT_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_15)
-
 /*** Functions for BTN_2 pin ***/
 #define BTN_2StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_8)
 
@@ -216,6 +210,9 @@ extern "C" {
 
 /*** Functions for BOT_2 pin ***/
 #define BOT_2StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_14)
+
+/*** Functions for BOT_3 pin ***/
+#define BOT_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_15)
 
 /*** Functions for TAKE_3_1 pin ***/
 #define TAKE_3_1StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_2)
@@ -399,6 +396,9 @@ extern "C" {
 #define COOLEROff() PLIB_PORTS_PinClear(PORTS_ID_0, PORT_CHANNEL_F, PORTS_BIT_POS_1)
 #define COOLERStateGet() PLIB_PORTS_PinGetLatched(PORTS_ID_0, PORT_CHANNEL_F, PORTS_BIT_POS_1)
 #define COOLERStateSet(Value) PLIB_PORTS_PinWrite(PORTS_ID_0, PORT_CHANNEL_F, PORTS_BIT_POS_1, Value)
+
+/*** Functions for DOOR pin ***/
+#define DOORStateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_2)
 
 /*** Functions for TAKE_1_1 pin ***/
 #define TAKE_1_1StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_10)
