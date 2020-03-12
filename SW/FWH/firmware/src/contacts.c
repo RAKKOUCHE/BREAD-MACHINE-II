@@ -40,7 +40,7 @@
 /**
  * \brief Priority de la tâche dy clavier.
  */
-#define CLAVIER_TASK_PRIORITY 3
+#define CLAVIER_TASK_PRIORITY 4
 
 /**
  * \brief Profondeur de la pile
@@ -50,7 +50,7 @@
 /**
  * \brief Delay de la tâche des touches.
  */
-#define CLAVIER_TASK_DELAY (20 * MILLISEC)
+#define CLAVIER_TASK_DELAY (10 * MILLISEC)
 
 /**
  * \brief
@@ -61,15 +61,6 @@
  * \brief
  */
 #define SHIFT_TIMER_DELAY (10 * SECONDE)
-
-/*
- * \brief
- */
-typedef enum
-{
-    CLOSE,
-    OPEN,
-} DOORSTATE;
 
 /**
  * \brief structure contenant les variables d'une  touche.
@@ -84,12 +75,14 @@ typedef struct
  */
 struct
 {
-    DOORSTATE doorState; /*!<Indique si la porte est ouverte.*/
+    bool isDoorOpen; /*!<Indique si la porte est ouverte.*/
+    bool isTaskKeyChecked; /*!<Indique si le tâche de vérification des  touches est effectuée.*/
     bool isDoorMoved; /*!<Indique si la porter vient d'être ouverte ou fermée.*/
     bool isKeyShifted; /*!<Indique si les touches alternatives sont activées.*/
     uint8_t selection; /*!<Numéro du choix en cours.*/
     KEY keys[7]; /*!<Etat des touches du claviers.*/
     KEY door_switches[7]; /*!<Etat des contacts de la porte.*/
+    KEY opto[6]; /*!<Etat des opto coupleurs*/
     TaskHandle_t hSwitchTask; /*!<Tâche de la gestion des touches.*/
     TimerHandle_t hShiftTO; /*!<*!Delais de maintient de la touche shift.*/
 } switchs;
@@ -100,7 +93,12 @@ struct
 /* ************************************************************************** */
 
 /* ************************************************************************** */
-uint8_t portTable[] = {2, 3, 4, 12, 13, 14, 15};
+uint8_t trapSwitchsTable[] = {2, 3, 4, 12, 13, 14, 15};
+//
+/**
+ * \brief
+ */
+uint8_t optosTable[] = {10, 11, 12, 13, 2, 3};
 
 /*********************************************************************
  * Function:
@@ -247,6 +245,26 @@ static void setDoorSwitchState(const uint8_t byIndex, const KEY_STATES state)
 }
 
 /*********************************************************************
+ * Function:        static void setOptoState(const uint8_t byIndex, const KEY_STATE state)     
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void setOptoState(const uint8_t byIndex, const KEY_STATES state)
+{
+    switchs.opto[byIndex].state = state;
+}
+
+/*********************************************************************
  * Function:
  *         KEYSTATES getKeyState(const uint8_t numKey)
  *
@@ -343,6 +361,8 @@ static void vTaskKeyboard(void *vParameter)
     uint8_t byIndex;
     KEY_STATES lkState;
     KEY_STATES lSWState;
+    KEY_STATES lOptoState;
+
     if(!DOOR_Get())
     {
         setDoorSwitchState(0, KEY_USED); //Pour éviter une opération de test quand le courant est coupé et la porte fermée.
@@ -351,6 +371,8 @@ static void vTaskKeyboard(void *vParameter)
     {
         if(getIsMDBChecked())
         {
+            setIsTaskKeyChecked(true);
+
             for(byIndex = 0; byIndex < 7; byIndex++)
             {
                 if(byIndex < 3)
@@ -361,13 +383,62 @@ static void vTaskKeyboard(void *vParameter)
                 {
                     lkState = (KEY_STATES) ((PORTE >> byIndex) & 1);
                 }
-                lSWState = (KEY_STATES) ((PORTC >> portTable[byIndex]) & 1);
+                lSWState = (KEY_STATES) ((PORTC >> trapSwitchsTable[byIndex]) & 1);
+
+
+                // <editor-fold defaultstate="collapsed" desc="OPTOCOUPLEURS">
+                if((byIndex < 6) && getIsDoorOpen())
+                {
+                    lOptoState = (KEY_STATES) ((PORTD >> optosTable[byIndex]) & 1);
+
+                    switch(getOptoState(byIndex))
+                    {
+                        case KEY_HI:
+                            // <editor-fold desc="KEY_HI"> 
+                        {
+                            setOptoState(byIndex, lOptoState);
+                            break;
+                        }// </editor-fold>
+                        case KEY_LO:
+                            // <editor-fold desc="KEY_LO"> 
+                        {
+                            setOptoState(byIndex, lOptoState == KEY_LO ? KEY_CHECKED : KEY_HI);
+                            break;
+                        }// </editor-fold>
+                        case KEY_CHECKED:
+                            // <editor-fold desc="KEY_CHECKED"> 
+                        {
+                            setMotorState(byIndex / 2, MOTORS_BREAK);
+                            setOptoState(byIndex, (lOptoState == KEY_LO) ? KEY_USED : KEY_HI);
+                            break;
+                        }// </editor-fold>               
+                        case KEY_USED:
+                            // <editor-fold desc="KEY_USED"> 
+                        {
+                            if(lOptoState == KEY_HI)
+                            {
+                                setOptoState(byIndex, KEY_HI);
+                            }
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }// </editor-fold>
+
+
                 switch(getDoorSwitchState(byIndex))
                 {
                     case KEY_HI:
                         // <editor-fold desc="KEY_HI">
                     {
                         setDoorSwitchState(byIndex, lSWState);
+                        if(!byIndex)
+                        {
+                            setIsDoorOpen(true);
+                        }
                         break;
                     }// </editor-fold>
                     case KEY_LO:
@@ -387,6 +458,7 @@ static void vTaskKeyboard(void *vParameter)
                         setDoorSwitchState(byIndex, (lSWState == KEY_LO) ? KEY_USED : KEY_HI);
                         if(!byIndex)
                         {
+                            setIsDoorOpen(false);
                             switchs.isDoorMoved = true;
                         }
                         break;
@@ -467,6 +539,86 @@ static void vTaskKeyboard(void *vParameter)
 /* ************************************************************************** */
 
 /*********************************************************************
+ * Function:        bool getIsDoorOpen()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+BOOL getIsDoorOpen()
+{
+    return switchs.isDoorOpen;
+}
+
+/*********************************************************************
+ * Function:        void setIsDoorOpen(bool status)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsDoorOpen(const BOOL status)
+{
+    switchs.isDoorOpen = status;
+}
+
+/*********************************************************************
+ * Function:        BOOL getIsTaskKeyChecked(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+BOOL getIsTaskKeyChecked(void)
+{
+    return switchs.isTaskKeyChecked;
+}
+
+/*********************************************************************
+ * Function:        void setIsTaskKeyChecked(BOOL status)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsTaskKeyChecked(BOOL status)
+{
+    switchs.isTaskKeyChecked = status;
+}
+
+/*********************************************************************
  * Function:
  *         KEY_STATES getDoorSwitchState (const uint8_t byIndex)
  *
@@ -512,6 +664,26 @@ static void vTaskKeyboard(void *vParameter)
 KEY_STATES getDoorSwitchState(const uint8_t byIndex)
 {
     return switchs.door_switches[byIndex].state;
+}
+
+/*********************************************************************
+ * Function:        KEY_STATES getOptoState(const uint8_t byIndex)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+KEY_STATES getOptoState(const uint8_t byIndex)
+{
+    return switchs.opto[byIndex].state;
 }
 
 /*********************************************************************
@@ -872,7 +1044,8 @@ void vKeyboardInit(void)
     uint8_t byIndex;
     switchs.selection = 0;
     switchs.isKeyShifted = false;
-    switchs.doorState = (DOORSTATE) DOOR_Get();
+    setIsDoorOpen(DOOR_Get());
+    switchs.isTaskKeyChecked = false;
     switchs.isDoorMoved = false;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
     {
@@ -885,7 +1058,7 @@ void vKeyboardInit(void)
 
     for(byIndex = 0; byIndex < 7; byIndex++)
     {
-        setDoorSwitchState(byIndex, (KEY_STATES) (PORTC >> (portTable[byIndex]) & 1));
+        setDoorSwitchState(byIndex, (KEY_STATES) (PORTC >> (trapSwitchsTable[byIndex]) & 1));
     }
 
     if(switchs.hSwitchTask == NULL)

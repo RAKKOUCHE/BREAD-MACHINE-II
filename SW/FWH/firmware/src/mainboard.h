@@ -104,6 +104,7 @@ extern "C"
         MAINBOARD_STATE_SERVICE_TASKS, /*!<Etat de l'application en fonctionnement.*/
         MAINBOARD_STATE_DISPLAY_SELECT, /*!<Affichage choix du produit.*/
         MAINBOARD_STATE_DISPLAY_AMOUNT, /*!<Affichage du montant disponible.*/
+        MAINBOARD_STATE_CHECK_DISPENSE,
         MAINBOARD_STATE_CHANGE, /*!<Lance la procédure de change.*/
     } MAINBOARD_STATES;
 
@@ -121,6 +122,7 @@ extern "C"
         Application strings and buffers are be defined outside this structure.
      */
 
+    
     /**
      * \brief Structure contenant les données utilisés dans la tâche principale.
      */
@@ -130,7 +132,9 @@ extern "C"
         MAINBOARD_STATES state; /*!<Etat de la tâche principale de l'application.*/
         int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
         uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
+        uint8_t byProductSelected; /*!<Numéro du produit choisi*/
         //bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
+
     } MAINBOARD_DATA;
 
     /**

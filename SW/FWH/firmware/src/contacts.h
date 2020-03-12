@@ -15,8 +15,8 @@
  */
 /* ************************************************************************** */
 
-#ifndef _CLAVIER_H    /* Guard against multiple inclusion */
-#define _CLAVIER_H
+#ifndef _CONTACTS_H    /* Guard against multiple inclusion */
+#define _CONTACTS_H
 
 
 /* ************************************************************************** */
@@ -47,6 +47,11 @@ extern "C"
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
+
+    /**
+     * \brief
+     */
+    //extern uint8_t doorSwitchTable[7];// = {2, 3, 4, 12, 13, 14, 15};
 
     // *****************************************************************************
     // *****************************************************************************
@@ -93,14 +98,45 @@ extern "C"
     /**
      * \brief Inverse l'état shifted.
      */
-    void shiftStateToggle(void );
-    
+    void shiftStateToggle(void);
+
+    /**
+     * \brief
+     * @return 
+     */
+    BOOL getIsDoorOpen();
+
+    /**
+     * \brief
+     * @param status
+     */
+    void setIsDoorOpen(const BOOL status);
+
+    /**
+     * \brief
+     * @return 
+     */
+    BOOL getIsTaskKeyChecked(void);
+
+    /**
+     * \brief
+     * @param status
+     */
+    void setIsTaskKeyChecked(BOOL status);
+
     /**
      * \brief
      * @param byIndex
      * @return
      */
     KEY_STATES getDoorSwitchState(const uint8_t byIndex);
+
+    /**
+     * \brief
+     * @param byIndex
+     * @return 
+     */
+    KEY_STATES getOptoState(const uint8_t byIndex);
     //
     //    /**
     //     * \brief Fxe l'état du clavier.
@@ -142,7 +178,7 @@ extern "C"
 }
 #endif
 
-#endif /* _CLAVIER_H */
+#endif /* _CONTACTS_H */
 
 /* *****************************************************************************
  End of File

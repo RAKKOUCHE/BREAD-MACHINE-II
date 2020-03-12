@@ -952,7 +952,6 @@ void vTaskCG(void)
                                                                       changeGiver.config.byScalingFactor));
 
                             //TODO afficher le montant à payer.
-                            //xTaskNotifyGive(mainBoardData.hDisplayToPay);
 
                             setAuditValue((uint32_t) (ADDRESSCGIN + (byChannel *
                                                                      sizeof(uint32_t))),

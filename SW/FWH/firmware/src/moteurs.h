@@ -100,6 +100,22 @@ extern "C"
 
     /**
      * \brief
+     */
+    void actvateBreakMotors(void);
+
+    /**
+     * \brief
+     * \return
+     */
+    BOOL getIsMotorChecked(void);
+
+    /**
+     * \param
+     */
+    void setIsMotorChecked(const BOOL status);
+
+    /**
+     * \brief
      * @param num
      * @return
      */

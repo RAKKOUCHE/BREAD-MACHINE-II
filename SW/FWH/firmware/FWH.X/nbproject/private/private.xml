@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
         <file>
             <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/moteurs.c</url>
             <bookmark id="2">
                 <name/>
-                <line>485</line>
+                <line>0</line>
+                <key/>
+            </bookmark>
+            <bookmark id="3">
+                <name/>
+                <line>187</line>
                 <key/>
             </bookmark>
         </file>
@@ -22,7 +27,6 @@
         <group>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/moteurs.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/contacts.c</file>
-            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/system_config/default/FreeRTOS/tasks.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mainboard.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/main.c</file>
         </group>

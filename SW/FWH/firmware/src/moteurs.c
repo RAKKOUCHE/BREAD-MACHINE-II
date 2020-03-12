@@ -88,6 +88,7 @@ struct
 {
     MOTOR motor[MOTEURS_NUMBER];
     TaskHandle_t hMotorHandle;
+    BOOL isMotorChecked;
 } motors;
 
 /*********************************************************************
@@ -183,11 +184,51 @@ static void powerCarrouselMotors(void)
  *         None
  *
  ********************************************************************/
-static void actvateBreakMotors(void)
+void actvateBreakMotors(void)
 {
     PWR_Clear();
     delayMs(1);
     BRK_Clear();
+}
+
+/*********************************************************************
+ * Function:        BOOL getIsMotorChecked()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+BOOL getIsMotorChecked()
+{
+    return motors.isMotorChecked;
+}
+
+/*********************************************************************
+ * Function:        void setIsMotorChecked(const BOOL status)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsMotorChecked(const BOOL status)
+{
+    motors.isMotorChecked = status;
 }
 
 /*********************************************************************
@@ -289,6 +330,7 @@ static void vTaskMoteur(void *vParameter)
     uint8_t byIndex;
     while(1)
     {
+        setIsMotorChecked(TRUE);
         for(byIndex = 0; byIndex < MOTEURS_NUMBER; byIndex++)
         {
             switch(motors.motor[byIndex].state)
@@ -406,7 +448,10 @@ static void vTaskMoteur(void *vParameter)
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
                     motors.motor[byIndex].isInUse = TRUE;
-                    motors.motor[byIndex].lastdir = FORWARD;
+                    if(byIndex > 2)
+                    {
+                        setLastDir(byIndex, FORWARD);
+                    }
                     switch(byIndex)
                     {
                         case 0:
@@ -421,37 +466,28 @@ static void vTaskMoteur(void *vParameter)
                         case 3:
                             // <editor-fold desc="Trappe 1">
                         {
-                            if(BOT_1_Get())
-                            {
-                                CMD_TRAP_P12_Clear();
-                                CMD_TRAP_N11_Set();
-                                CMD_TRAP_N12_Clear();
-                                CMD_TRAP_P11_Set();
-                            }
+                            CMD_TRAP_P12_Clear();
+                            CMD_TRAP_N11_Set();
+                            CMD_TRAP_N12_Clear();
+                            CMD_TRAP_P11_Set();
                             break;
                         }// </editor-fold>
                         case 4:
                             // <editor-fold desc="Trappe 2">
                         {
-                            if(BOT_2_Get())
-                            {
-                                CMD_TRAP_P22_Clear();
-                                CMD_TRAP_N21_Set();
-                                CMD_TRAP_N22_Clear();
-                                CMD_TRAP_P21_Set();
-                            }
+                            CMD_TRAP_P22_Clear();
+                            CMD_TRAP_N21_Set();
+                            CMD_TRAP_N22_Clear();
+                            CMD_TRAP_P21_Set();
                             break;
                         }// </editor-fold>
                         case 5:
                             // <editor-fold desc="Trappe 3">
                         {
-                            if(BOT_3_Get())
-                            {
-                                CMD_TRAP_P32_Clear();
-                                CMD_TRAP_N31_Set();
-                                CMD_TRAP_N32_Clear();
-                                CMD_TRAP_P31_Set();
-                            }
+                            CMD_TRAP_P32_Clear();
+                            CMD_TRAP_N31_Set();
+                            CMD_TRAP_N32_Clear();
+                            CMD_TRAP_P31_Set();
                             break;
                         }// </editor-fold>
                         default:
@@ -459,7 +495,6 @@ static void vTaskMoteur(void *vParameter)
                             break;
                         }
                     }
-
                     break;
                 }// </editor-fold>
                 case MOTORS_REVERSE:
@@ -467,7 +502,10 @@ static void vTaskMoteur(void *vParameter)
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
                     motors.motor[byIndex].isInUse = TRUE;
-                    motors.motor[byIndex].lastdir = REVERSE;
+                    if(byIndex > 2)
+                    {
+                        setLastDir(byIndex, REVERSE);
+                    }
                     switch(byIndex)
                     {
                         case 0:
@@ -481,37 +519,28 @@ static void vTaskMoteur(void *vParameter)
                         case 3:
                             // <editor-fold desc="Trappe 1">
                         {
-                            if(TOP_1_Get())
-                            {
-                                CMD_TRAP_P11_Clear();
-                                CMD_TRAP_N12_Set();
-                                CMD_TRAP_N11_Clear();
-                                CMD_TRAP_P12_Set();
-                            }
+                            CMD_TRAP_P11_Clear();
+                            CMD_TRAP_N12_Set();
+                            CMD_TRAP_N11_Clear();
+                            CMD_TRAP_P12_Set();
                             break;
                         }// </editor-fold>
                         case 4:
                             // <editor-fold desc="Trappe 2">
                         {
-                            if(TOP_2_Get())
-                            {
-                                CMD_TRAP_P21_Clear();
-                                CMD_TRAP_N22_Set();
-                                CMD_TRAP_N21_Clear();
-                                CMD_TRAP_P22_Set();
-                            }
+                            CMD_TRAP_P21_Clear();
+                            CMD_TRAP_N22_Set();
+                            CMD_TRAP_N21_Clear();
+                            CMD_TRAP_P22_Set();
                             break;
                         }// </editor-fold>
                         case 5:
                             // <editor-fold desc="Trappe 3">
                         {
-                            if(TOP_3_Get())
-                            {
-                                CMD_TRAP_P31_Clear();
-                                CMD_TRAP_N32_Set();
-                                CMD_TRAP_N31_Clear();
-                                CMD_TRAP_P32_Set();
-                            }
+                            CMD_TRAP_P31_Clear();
+                            CMD_TRAP_N32_Set();
+                            CMD_TRAP_N31_Clear();
+                            CMD_TRAP_P32_Set();
                             break;
                         }// </editor-fold>
                         default:
@@ -519,6 +548,7 @@ static void vTaskMoteur(void *vParameter)
                             break;
                         }
                     }
+
                     break;
                 }// </editor-fold>
                 case MOTORS_IDLE:
@@ -537,22 +567,7 @@ static void vTaskMoteur(void *vParameter)
     }
 }
 
-/*********************************************************************
- * Function:        DIRECTION getLastDir(uint8_t num)
- *
- * PreCondition:    None
- *
- * Input:           None
- *
- * Output:          None
- *
- * Side Effects:    None
- *
- * Overview:        None
- *
- * Note:            None
- ********************************************************************/
-DIRECTION getLastDir(const uint8_t num)
+DIRECTION getLastDir(uint8_t num)
 {
     return motors.motor[num].lastdir;
 }
@@ -600,7 +615,7 @@ DIRECTION getLastDir(const uint8_t num)
  *         None
  *
  ********************************************************************/
-void setLastDir(const uint8_t num, const DIRECTION direction)
+void setLastDir(uint8_t num, DIRECTION direction)
 {
     motors.motor[num].lastdir = direction;
 }

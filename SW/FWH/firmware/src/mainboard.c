@@ -68,19 +68,22 @@ const char STR_MANUFACTURER[] = "MT DISTRIBUTION ";
 const char STR_VERSION[] = " VERSION";
 const char STR_SELECT[] = "   Choisissez   ";
 const char STR_YOUR_PRODUCT[] = "un produit  ";
-const char STR_CREDIT[] = "Credit: ";
+const char STR_CREDIT[] = "Credit : ";
 const char STR_DISPENSE[] = "  Distribution";
 const char STR_IN_PROGRESS[] = "   en cours...";
-const char STR_TO_PAY[] = "A payer:";
+const char STR_TO_PAY[] = "A payer :";
 const char STR_TAKE[] = "     Prenez";
 const char STR_YOUR_CHOICE[] = "   votre choix";
 const char STR_RETURN_IN_PROGRESS[] = "Rendu en cours...";
 const char STR_MACHINE[] = "    MACHINE     ";
 const char STR_HS[] = "      VIDE      ";
 const char STR_CHOICE[] = "Choix : ";
-const char STR_PRICE[] = "Prix ";
+const char STR_PRICE[] = "Prix";
 const char STR_VERIFGSM[] = "Verification GSM";
 const char STR_PATIENCE[] = "  Un instant...";
+
+
+uint8_t doorSwitchTable[] = {2, 3, 4, 12, 13, 14, 15};
 
 // *****************************************************************************
 // *****************************************************************************
@@ -190,8 +193,16 @@ static void vTO_OverPay(const TimerHandle_t HandleTimer)
  ********************************************************************/
 static void vTO_DisplaySelection(const TimerHandle_t handleTimer)
 {
-    clrSelection();
-    MAINBOARDData.state = MAINBOARD_STATE_DISPLAY_SELECT;
+    MAINBOARDData.byProductSelected = 0;
+    if(getAmountDispo() > 0)
+    {
+        MAINBOARDData.state = MAINBOARD_STATE_DISPLAY_AMOUNT;
+    }
+    else
+    {
+        MAINBOARDData.lAmountRequested = 0;
+        MAINBOARDData.state = MAINBOARD_STATE_DISPLAY_SELECT;
+    }
 }
 
 /*********************************************************************
@@ -590,14 +601,11 @@ void MAINBOARD_Tasks(void)
         case MAINBOARD_STATE_INIT:
             // <editor-fold desc="MAINBOARD_STATE_INIT">
         {
-            setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);            
+            setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
             oldAmount = 0;
             setAmountDispo(0);
-            
-            setLastDir(3, BOT_1StateGet() ? REVERSE : FORWARD);
-            setLastDir(4, BOT_2StateGet() ? REVERSE : FORWARD);
-            setLastDir(5, BOT_3StateGet() ? REVERSE : FORWARD);
-                    
+
+
             vHD44780Init();
             vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
@@ -633,7 +641,13 @@ void MAINBOARD_Tasks(void)
         case MAINBOARD_STATE_SERVICE_TASKS:
             // <editor-fold desc="MAINBOARD_STATE_SERVICE_TASKS">
         {
-            LED_SYS_Toggle();
+            if(getIsTaskKeyChecked() && getIsMotorChecked())
+            {
+                setIsTaskKeyChecked(false);
+                setIsMotorChecked(false);
+                LED_SYS_Toggle();
+            }
+
             if(getIsRAZAudit())
             {
                 setIsRAZAudit(false);
@@ -667,6 +681,7 @@ void MAINBOARD_Tasks(void)
                 }
                 if(oldChoice && (oldChoice < 4))
                 {
+                    MAINBOARDData.byProductSelected = oldChoice;
                     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
                     {
                         setLedState(byIndex, LED_OFF);
@@ -682,6 +697,19 @@ void MAINBOARD_Tasks(void)
                     if(getShiftState())
                     {
                         setShiftState(true);
+
+                        if(!(PORTC & (1 << doorSwitchTable[oldChoice - 4])))
+                        {
+                            setLastDir(oldChoice - 2, REVERSE);
+                        }
+                        else
+                        {
+                            if(!(PORTC & (1 << doorSwitchTable[oldChoice - 1])))
+                            {
+                                setLastDir(oldChoice - 2, FORWARD);
+                            }
+                        }
+
                         setMotorState(oldChoice - 2,
                                       (getLastDir(oldChoice - 2) == FORWARD) ?
                                       MOTORS_REVERSE : MOTORS_FORWARD);
@@ -731,17 +759,23 @@ void MAINBOARD_Tasks(void)
             vLCD_CLEAR();
             vDisplayLCD("%s %.*f\7", STR_CREDIT, getMDBDecimalPos(),
                         (double) getAmountDispo() / getMDBCurrencyDivider());
-            if(getSelection())
+            if(MAINBOARDData.byProductSelected)
             {
                 xTimerStop(hTimerDisplaySelection, 1000);
                 vLCDGotoXY(1, 2);
                 if(getAmountDispo() < getProductPrice((getSelection() - 1)))
                 {
                     vDisplayLCD("%s %.*f\7", STR_TO_PAY, getMDBDecimalPos(),
-                                (double) (getProductPrice(getSelection() - 1) -
+                                (double) (getProductPrice(MAINBOARDData.byProductSelected - 1) -
                                           getAmountDispo()) / getMDBCurrencyDivider());
                 }
             }
+            break;
+        }// </editor-fold>
+        case MAINBOARD_STATE_CHECK_DISPENSE:
+            // <editor-fold desc="MAINBOARD_STATE_CHECK_DISPENSE"> 
+        {
+
             break;
         }// </editor-fold>
         case MAINBOARD_STATE_CHANGE:
