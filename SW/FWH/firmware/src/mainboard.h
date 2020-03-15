@@ -87,9 +87,9 @@ extern "C"
     // *****************************************************************************
 
 #ifdef __DEBUG
-#define VERSION "2.00_D"
+#define VERSION "2.10_D"
 #else
-#define VERSION "2.00  "
+#define VERSION "2.10  "
 #endif
 
     /**
@@ -122,7 +122,6 @@ extern "C"
         Application strings and buffers are be defined outside this structure.
      */
 
-    
     /**
      * \brief Structure contenant les données utilisés dans la tâche principale.
      */
@@ -130,9 +129,11 @@ extern "C"
     {
         /* The application's current state */
         MAINBOARD_STATES state; /*!<Etat de la tâche principale de l'application.*/
+        TaskHandle_t hDispenseTask;
         int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
         uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
         uint8_t byProductSelected; /*!<Numéro du produit choisi*/
+
         //bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
 
     } MAINBOARD_DATA;

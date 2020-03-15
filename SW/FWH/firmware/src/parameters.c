@@ -90,14 +90,19 @@ static union
     PARAMETERS data; /*!<Paramètres de la machine.*/
 } parameters, backToto;
 
+
 /**
  * \brief constante en flash contenant les paramètres sauvegardés.
  */
 const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gNVMFlashReserveArea[NVM_FLASH_PAGESIZE / sizeof(uint32_t)]
 = {
    1,
+#ifdef __DEBUG
+   90, 100, 110,
+#else
    100, 100, 100,
-   100, 100, 100,
+#endif
+   100,100,100,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
@@ -110,7 +115,6 @@ const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gN
    22, 18,
    0, 0,
 };
-
 
 /* ************************************************************************** */
 /* ************************************************************************** */

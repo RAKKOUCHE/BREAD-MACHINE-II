@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mainboard.c</url>
+            <bookmark id="4">
+                <name/>
+                <line>955</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/leds.c</url>
+            <bookmark id="5">
+                <name/>
+                <line>355</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mdb/MDB.c</url>
+            <bookmark id="1">
+                <name/>
+                <line>728</line>
+                <key/>
+            </bookmark>
+        </file>
         <file>
             <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/moteurs.c</url>
             <bookmark id="2">
@@ -14,21 +38,17 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mdb/MDB.c</url>
-            <bookmark id="1">
-                <name/>
-                <line>728</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/moteurs.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/parameters.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/contacts.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mainboard.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/system_config/default/FreeRTOS/tasks.c</file>
             <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/main.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mdb/MDB_BV.c</file>
+            <file>file:/D:/Projets/MTDistribution/BreadMachine%20II/SW/FWH/firmware/src/mdb/MDB_CG.c</file>
         </group>
     </open-files>
 </project-private>

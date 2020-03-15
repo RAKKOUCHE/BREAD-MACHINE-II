@@ -167,7 +167,7 @@ banner.
 
 /*********************************************************************
  * Function:        
- *         void setLedState(const uint8_t ledNum, const LED_STATE state )
+ *         static void setLedState(const uint8_t ledNum, const LED_STATE state )
  * 
  * Version:
  *         1.0
@@ -208,7 +208,7 @@ banner.
  *         None
  *         
  ********************************************************************/
-void setLedState(const uint8_t ledNum, const LED_STATE state)
+static void setLedState(const uint8_t ledNum, const LED_STATE state)
 {
     leds.isChase = FALSE;
     leds.led[ledNum].ledState = state;
@@ -216,7 +216,7 @@ void setLedState(const uint8_t ledNum, const LED_STATE state)
 
 /*********************************************************************
  * Function:        
- *         void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
+ *         static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
  * 
  * Version:
  *         1.0
@@ -257,7 +257,7 @@ void setLedState(const uint8_t ledNum, const LED_STATE state)
  *         None
  *         
  ********************************************************************/
-void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
+static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
 {
     leds.led[ledNum].enableState = en;
 }
@@ -331,7 +331,47 @@ void setLedChase(const BOOL isOn)
 
 // *****************************************************************************
 
-void vLEDsKeybInit(void)
+/*********************************************************************
+ * Function:        void setSelectedLed(uint8_t ledNum)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setSelectedLed(uint8_t ledNum)
+{
+    uint8_t byIndex;
+    for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+    {
+        setLedState(byIndex, LED_OFF);
+    }
+    setLedState(ledNum - 1, LED_ON);
+}
+
+/*********************************************************************
+ * Function:        void vLEDsKeybInit(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void vLEDsKeybInit(void)     
 {
     uint8_t byIndex;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)

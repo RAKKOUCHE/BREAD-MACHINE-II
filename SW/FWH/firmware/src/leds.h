@@ -93,19 +93,19 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
-    /**
-     * \brief Etabli l'état d'une led.
-     * \param[in] ledNum Numéro de la led concernée.
-     * \param[in] etat Etat de la led concernée.
-     */
-    void setLedState(const uint8_t ledNum, const LED_STATE etat);
+//    /**
+//     * \brief Etabli l'état d'une led.
+//     * \param[in] ledNum Numéro de la led concernée.
+//     * \param[in] etat Etat de la led concernée.
+//     */
+//    void setLedState(const uint8_t ledNum, const LED_STATE etat);
 
-    /**
-     * \brief Active ou desactive la led.
-     * \param[in] ledNum Numéro de la led concernée.
-     * \param[in] en Enable pour activer, Disable pour desactiver
-     */
-    void setLedEnable(const uint8_t ledNum, const LED_ENABLE en);
+//    /**
+//     * \brief Active ou desactive la led.
+//     * \param[in] ledNum Numéro de la led concernée.
+//     * \param[in] en Enable pour activer, Disable pour desactiver
+//     */
+//    void setLedEnable(const uint8_t ledNum, const LED_ENABLE en);
 
     /**
      * \brief Active ou desactive le mode défilement pour les leds du claviers.
@@ -113,6 +113,12 @@ extern "C"
      */
     void setLedChase(const BOOL isOn);
 
+    /**
+     * \brief
+     * @param ledNum
+     */
+    void setSelectedLed(uint8_t ledNum);
+    
     /**
      * \brief Initialisation du module des leds.
      */
