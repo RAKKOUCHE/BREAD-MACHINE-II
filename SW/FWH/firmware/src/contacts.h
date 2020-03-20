@@ -28,6 +28,9 @@
 #include "freertos.h"
 #include "task.h"
 #include "MDB/mdb.h"
+#include "product.h"
+//#include "peripheral/reset/templates/reset_SoftwareResetTrigger_Default.h"
+
 
 /* This section lists the other files that are included in this file.
  */
@@ -48,10 +51,6 @@ extern "C"
     /* ************************************************************************** */
     /* ************************************************************************** */
 
-    /**
-     * \brief
-     */
-    //extern uint8_t doorSwitchTable[7];// = {2, 3, 4, 12, 13, 14, 15};
 
     // *****************************************************************************
     // *****************************************************************************
@@ -59,6 +58,7 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
+    
     /**
      * brief Enumération des états de la touche.
      */
@@ -87,7 +87,7 @@ extern "C"
      * @return
      */
     bool getShiftState(void);
-    //
+   
     //    /**
     //     * \brief Demande l'état du clavier.
     //     * \param[in] Numéro de la touche.
@@ -100,6 +100,12 @@ extern "C"
      */
     void shiftStateToggle(void);
 
+    /**
+     * \brief
+     * @return 
+     */
+    TaskHandle_t getSwitchsHandle(void);
+    
     /**
      * \brief
      * @return 

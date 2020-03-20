@@ -101,37 +101,11 @@ static void vTaskChange(void)
             changeGiver.state = CG_EXPANSION_CMD;
             changeGiver.expandCmd = SUB_ALTERNATIVE_PAYOUT;
         }
+        else
+        {
+            changeGiver.isChangeFinished = true;
+        }
     }
-}
-
-/******************************************************************************/
-
-/*********************************************************************
- * Function:        static void vCGInit(void)
- *
- * Version:         1.0
- *
- * Date:            01/01/2017
- *
- * Author:          Rachid AKKOUCHE
- *
- * PreCondition:    None
- *
- * Input:           None
- *
- * Output:          None
- *
- * Side Effects:    None
- *
- * Overview:        None
- *
- * Note:            None
- ********************************************************************/
-void vCGInit(void)
-{
-    changeGiver.state = CG_INIT;
-    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", MDB_TASK_STACK, NULL,
-                MDB_TASK_PRIORITY, &changeGiver.hChangeTask);
 }
 
 /******************************************************************************/
@@ -941,10 +915,9 @@ void vTaskCG(void)
                         //COINS INSERTED
                         if((changeGiver.data[byIndex] & COIN_INSERTED) && !(changeGiver.data[byIndex] & COIN_REFUSED)/*Pièce refusée*/)
                         {
-                            //TODO Faire repartir le timer après une distribution.
-                            if(hTOCumul)
+                            if(hGetTimerCumul())
                             {
-                                xTimerReset(hTOCumul, 1000);
+                                xTimerReset(hGetTimerCumul(), 1 * SECONDE);
                             }
                             byChannel = changeGiver.data[byIndex] & 0X0F;
                             //Traitement des pièces insérées.
@@ -1135,9 +1108,10 @@ void vTaskCG(void)
                 case SUB_ALTERNATIVE_PAYOUT:
                     // <editor-fold defaultstate="collapsed" desc="SUB_ALTERNATIVE_PAYOUT">
                 {
-                    //                    SYS_WDT_TimerClear();
-                    xTimerStop(hTOCumul, 1000);
-
+                    if(hGetTimerCumul())
+                    {
+                        xTimerStop(hGetTimerCumul(), 1 * SECONDE);
+                    }
                     byIndex = 0;
                     do
                     {
@@ -1197,9 +1171,9 @@ void vTaskCG(void)
                             //                        audits.saudit.dwOverPay += (lAmountToDispense - changeGiver.lAmountDispensed) * changeGiver.config.byScalingFactor;
                             //                        EEpromWriteData(ADDRESS_OVERPAY, &audits.saudit.dwOverPay,
                             //                                        sizeof (audits.saudit.dwOverPay));audits.saudit.dwOverPay += (lAmountToDispense - changeGiver.lAmountDispensed) * changeGiver.config.byScalingFactor;
-                            if(hTimerOverPay)
+                            if(hGetTimerOverPay())
                             {
-                                xTimerStart(hTimerOverPay, 1000);
+                                xTimerStart(hGetTimerOverPay(), 1 * SECONDE);
                             }
                             //setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_AMOUNT);
                             isDispensed = false;
@@ -1217,7 +1191,10 @@ void vTaskCG(void)
                         if(isDispensed)
                         {
                             changeGiver.expandCmd = SUB_ALTERNATIVE_PAYOUT;
-                            xTimerStart(hTimerOverPay, 1000);
+                            if(hGetTimerOverPay())
+                            {
+                                xTimerStart(hGetTimerOverPay(), 1 * SECONDE);
+                            }
                         }
                         else
                         {
@@ -1262,5 +1239,35 @@ void vTaskCG(void)
         }
     }
 }
+
+/*********************************************************************
+ * Function:        static void vCGInit(void)
+ *
+ * Version:         1.0
+ *
+ * Date:            01/01/2017
+ *
+ * Author:          Rachid AKKOUCHE
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void vCGInit(void)
+{
+    changeGiver.state = CG_INIT;
+    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", MDB_TASK_STACK, NULL,
+                MDB_TASK_PRIORITY, &changeGiver.hChangeTask);
+}
+
+/******************************************************************************/
 
 /******************************************************************************/

@@ -49,7 +49,7 @@
 
 /**\brief
  */
-#define MOTOR_TASK_STACK 1024
+#define MOTOR_TASK_STACK 512
 
 /**
  * \brief
@@ -78,7 +78,6 @@ typedef struct
 {
     DIRECTION lastdir;
     MOTORS_SATE state;
-    BOOL isInUse;
 } MOTOR;
 
 /**
@@ -347,7 +346,6 @@ static void vTaskMoteur(void *vParameter)
                     // <editor-fold desc="MOTORS_OFF">
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
-                    motors.motor[byIndex].isInUse = FALSE;
                     switch(byIndex)
                     {
                         case 0:
@@ -447,7 +445,6 @@ static void vTaskMoteur(void *vParameter)
                     // <editor-fold desc="MOTORS_FORWARD">
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
-                    motors.motor[byIndex].isInUse = TRUE;
                     if(byIndex > 2)
                     {
                         setLastDir(byIndex, FORWARD);
@@ -501,7 +498,6 @@ static void vTaskMoteur(void *vParameter)
                     // <editor-fold desc="MOTORS_REVERSE">
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
-                    motors.motor[byIndex].isInUse = TRUE;
                     if(byIndex > 2)
                     {
                         setLastDir(byIndex, REVERSE);
@@ -619,103 +615,6 @@ void setLastDir(uint8_t num, DIRECTION direction)
 {
     motors.motor[num].lastdir = direction;
 }
-
-/*********************************************************************
- * Function:
- *         BOOL getIsMotorInUse(const uint8_t, num)
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-BOOL getIsMotorInUse(const uint8_t num)
-{
-    return motors.motor[num].isInUse;
-}
-//
-///*********************************************************************
-// * Function:
-// *         void setIsMotorInUse(const uint8_t num, const BOOL isInUse)
-// *
-// * Version:
-// *         1.0
-// *
-// * Author:
-// *         Rachid AKKOUCHE
-// *
-// * Date:
-// *         YY/MM/DD
-// *
-// * Summary:
-// *         RECAPULATIF
-// *
-// * Description:
-// *         DESCRIPTION
-// *
-// * PreCondition:
-// *         None
-// *
-// * Input:
-// *         None
-// *
-// * Output:
-// *         None
-// *
-// * Returns:
-// *         None
-// *
-// * Side Effects:
-// *         None
-// *
-// * Example:
-// *         <code>
-// *         FUNC_NAME(FUNC_PARAM)
-// *         <code>
-// *
-// * Remarks:
-// *         None
-// *
-// ********************************************************************/
-//void setIsMotorInUse(const uint8_t num, const BOOL isInUse)
-//{
-//    motors.motor[num].isInUse = isInUse;
-//}
-//
 
 /*********************************************************************
  * Function:
@@ -865,8 +764,6 @@ void vMotorsInit(void)
     for(byIndex = 0; byIndex < MOTEURS_NUMBER; byIndex++)
     {
         motors.motor[byIndex].state = MOTORS_INIT;
-        motors.motor[byIndex].isInUse = FALSE;
-
     }
     if(motors.hMotorHandle == NULL)
     {

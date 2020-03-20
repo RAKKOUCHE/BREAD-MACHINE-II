@@ -5,7 +5,7 @@
 /**
  * \brief Priorité de la tâche MDB.
  */
-#define MDB_TASK_PRIORITY 3
+#define MDB_TASK_PRIORITY 4
 
 /**
  * \brief Taille du tas de la tâche MDB.

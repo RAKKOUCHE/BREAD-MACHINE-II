@@ -111,10 +111,9 @@ int main(void)
     CMD_TRAP_N32_OutputEnable();
     CMD_TRAP_N32_Set(); //D?sactive la deuxieme tension negative du moteur de la trappe 3.
 
-
     /* Initialize all MPLAB Harmony modules, including application(s). */
     SYS_Initialize(NULL);
-    
+
     while(true)
     {
         /* Maintain state machines of all polled MPLAB Harmony modules. */

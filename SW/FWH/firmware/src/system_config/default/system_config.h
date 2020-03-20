@@ -199,6 +199,9 @@ extern "C" {
 /*** Functions for TOP_3 pin ***/
 #define TOP_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_12)
 
+/*** Functions for BOT_3 pin ***/
+#define BOT_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_15)
+
 /*** Functions for BTN_2 pin ***/
 #define BTN_2StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_8)
 
@@ -210,9 +213,6 @@ extern "C" {
 
 /*** Functions for BOT_2 pin ***/
 #define BOT_2StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_14)
-
-/*** Functions for BOT_3 pin ***/
-#define BOT_3StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_C, PORTS_BIT_POS_15)
 
 /*** Functions for TAKE_3_1 pin ***/
 #define TAKE_3_1StateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_2)

@@ -2331,7 +2331,7 @@
       <Template dnOrder="386">
         <Name dnOrder="0">FreeRTOSConfig.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">045A1FAAE736EF1FD9D598EE7D228CB4</Checksum>
+        <Checksum dnOrder="2">3DDC3387F7B6636FD974C7B67AC736E7</Checksum>
         <ProjectFileChecksum dnOrder="3">077AB0D7579EC0B1495BA7F8A4F9497B</ProjectFileChecksum>
       </Template>
       <Template dnOrder="387">

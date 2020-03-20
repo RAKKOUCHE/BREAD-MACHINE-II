@@ -5,6 +5,7 @@ struct __attribute__((packed))
     BOOL isStackerFull;
     BOOL isEnable;
     BOOL isInitialized;
+    BOOL isPresent;
     uint16_t wBeforeRetry;
     BILL_TYPE byBillType;
     int16_t i16BillInStacker;
@@ -13,7 +14,8 @@ struct __attribute__((packed))
     BV_CONFIG config;
     BV_IDENTIFICATION id;
     uint8_t data[36];
-} billValidator;
+}
+billValidator;
 
 /*********************************************************************
  * Function:        static BOOL isGetBVtackerStatus()
@@ -38,14 +40,17 @@ struct __attribute__((packed))
  ********************************************************************/
 static BOOL isGetBVtackerStatus()
 {
-    if(byMDBSendCommand(BVADDRESS, CMD_STACKER, 0X00, NULL, &billValidator.i16BillInStacker) == sizeof(billValidator.i16BillInStacker) + 1)
+    if(billValidator.isPresent)
     {
-        vVMCAcknowledge(ACK);
-        return true;
-    }
-    else
-    {
-        vVMCAcknowledge(NAK);
+        if(byMDBSendCommand(BVADDRESS, CMD_STACKER, 0X00, NULL, &billValidator.i16BillInStacker) == sizeof(billValidator.i16BillInStacker) + 1)
+        {
+            vVMCAcknowledge(ACK);
+            return true;
+        }
+        else
+        {
+            vVMCAcknowledge(NAK);
+        }
     }
     return false;
 }
@@ -61,8 +66,10 @@ static BOOL isBVEnableFeature()
 {
     uint8_t byAcknowledge;
     uint8_t byParameters[5] = {SUB_BILL_FEATURE_ENABLE, 0X00, 0X00, 0X00, 0X0F};
-    return((byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byParameters),
-                             byParameters, &byAcknowledge) == 1) && (byAcknowledge == ACK));
+    return((billValidator.isPresent &&
+            byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byParameters),
+                             byParameters, &byAcknowledge) == 1) &&
+           (byAcknowledge == ACK));
 }
 
 /******************************************************************************/
@@ -91,15 +98,18 @@ static BOOL isBVEnableFeature()
 static BOOL isGetBVId(BV_IDENTIFICATION *Idenfication, BOOL boWOptions)
 {
     uint8_t byOption = boWOptions ? LEVEL2_ID_W_OPTIONS : LEVEL1_ID_WO_OPTIONS;
-    if(byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byOption), &byOption,
-                        Idenfication) == (sizeof(BV_IDENTIFICATION)- (4 * (uint8_t)!boWOptions)) + 1)
+    if(billValidator.isPresent)
     {
-        vVMCAcknowledge(ACK);
-        return(true);
-    }
-    else
-    {
-        vVMCAcknowledge(NAK);
+        if(byMDBSendCommand(BVADDRESS, BV_EXPANSION_CMD, sizeof(byOption), &byOption,
+                            Idenfication) == (sizeof(BV_IDENTIFICATION)- (4 * (uint8_t)!boWOptions)) + 1)
+        {
+            vVMCAcknowledge(ACK);
+            return(true);
+        }
+        else
+        {
+            vVMCAcknowledge(NAK);
+        }
     }
     return false;
 }
@@ -132,8 +142,10 @@ static BOOL isSetMDBillType()
     uint8_t byAcknowledge;
     uint8_t byBuffer[4] = {0};
     memmove(byBuffer, billValidator.byBillType.byBillEnable, sizeof(billValidator.byBillType.byBillEnable));
-    return((byMDBSendCommand(BVADDRESS, CMD_BILL_TYPE, sizeof(byBuffer),
-                             byBuffer, &byAcknowledge) == 1) && (byAcknowledge == ACK));
+    return((billValidator.isPresent &&
+            byMDBSendCommand(BVADDRESS, CMD_BILL_TYPE, sizeof(byBuffer),
+                             byBuffer, &byAcknowledge) == 1) &&
+           (byAcknowledge == ACK));
 }
 
 /******************************************************************************/
@@ -337,7 +349,7 @@ BOOL isSetBillEnable(const BOOL isEnable, BILL_TYPE *billType)
     BOOL isResult = false;
 
     WORD wEnable;
-    if(billValidator.isInitialized)
+    if(billValidator.isPresent)
     {
         wEnable = billType->wBillEnable;
         if(!isEnable)
@@ -529,6 +541,7 @@ void vTaskBV(void)
         case BV_INIT:
             // <editor-fold defaultstate="collapsed" desc="BV_INIT">
         {
+            billValidator.isPresent = false;
             billValidator.wBeforeRetry = 0; //pas de délai avant de lancer la communication
             billValidator.byBillType.wBillEnable = getEnableState().enable_BV;
             billValidator.byBillType.wBillEnable = billValidator.byBillType.wBillEnable << 8 | billValidator.byBillType.wBillEnable >> 8;
@@ -610,9 +623,9 @@ void vTaskBV(void)
                             {
                                 case STACKED:
                                 {
-                                    if(hTOCumul)
+                                    if(hGetTimerCumul())
                                     {
-                                        xTimerReset(hTOCumul, 1000);
+                                        xTimerReset(hGetTimerCumul(), 1 * SECONDE);
                                     }
                                     setAmountDispo(getAmountDispo() + (long) (billValidator.config.byBillValue[byChannel] *
                                                                               billValidator.config.wScalingFactor));
@@ -675,6 +688,7 @@ void vTaskBV(void)
                                 case BV_JUST_RESET:
                                 {
                                     billValidator.state = BV_SETUP;
+                                    billValidator.isPresent = true;
                                     break;
                                 }
                                 case BV_BILL_REMOVED:

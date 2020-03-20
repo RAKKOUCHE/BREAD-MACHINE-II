@@ -66,7 +66,7 @@
 /**
  * \brief
  */
-#define DISPENSE_PRIORITY 1
+#define DISPENSE_PRIORITY 3
 
 /**
  * \brief
@@ -74,10 +74,10 @@
 #define DISPENSE_TASK_STACK 512
 
 
-const char STR_MANUFACTURER[] = "MT DISTRIBUTION ";
+const char STR_MANUFACTURER[] = "MT DISTRIBUTION";
 const char STR_VERSION[] = " VERSION";
-const char STR_SELECT[] = "   Choisissez   ";
-const char STR_YOUR_PRODUCT[] = "un produit  ";
+const char STR_SELECT[] = "   Choisissez";
+const char STR_YOUR_PRODUCT[] = "   un produit";
 const char STR_CREDIT[] = "Credit : ";
 const char STR_DISPENSE[] = "  Distribution";
 const char STR_IN_PROGRESS[] = "   en cours...";
@@ -85,8 +85,8 @@ const char STR_TO_PAY[] = "A payer :";
 const char STR_TAKE[] = "     Prenez";
 const char STR_YOUR_CHOICE[] = "   votre choix";
 const char STR_RETURN_IN_PROGRESS[] = "Rendu en cours...";
-const char STR_MACHINE[] = "    MACHINE     ";
-const char STR_HS[] = "      VIDE      ";
+const char STR_MACHINE[] = "    MACHINE";
+const char STR_HS[] = "      VIDE";
 const char STR_CHOICE[] = "Choix : ";
 const char STR_PRICE[] = "Prix";
 const char STR_VERIFGSM[] = "Verification GSM";
@@ -116,7 +116,22 @@ uint8_t doorSwitchTable[] = {2, 3, 4, 12, 13, 14, 15};
     Application strings and buffers are be defined outside this structure.
  */
 
-static MAINBOARD_DATA MAINBOARDData;
+/**
+ * \brief Structure contenant les données utilisés dans la tâche principale.
+ */
+struct
+{
+    /* The application's current state */
+    bool isProductDispensed; /*!<Fin de la distribution du produit.*/
+    MAINBOARD_STATES state; /*!<Etat de la tâche principale de l'application.*/
+    uint8_t byProductSelected; /*!<Numéro du produit choisi*/
+    int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
+    uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
+    TaskHandle_t hDispenseTask; /*!<Handle de la tache de distribtion.*/
+    TimerHandle_t hTimerOverPay; /*!<Handle du tmer du trop perçu.*/
+    TimerHandle_t hTOCumul; /*!< Handle timer de cumul.*/
+}
+MAINBOARDData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -165,7 +180,7 @@ static uint8_t getProductSelect(void)
 }
 
 /*********************************************************************
- * Function:        void vTO_OverPay(const TimerHandle_t HandleTimer)
+ * Function:        static void vTO_OverPay(const TimerHandle_t HandleTimer)
  *
  * Version:         1.0
  *
@@ -193,7 +208,7 @@ static void vTO_OverPay(const TimerHandle_t HandleTimer)
     setAuditValue(ADDRESSOVERPAY, getAmountDispo() + getAuditValue(ADDRESSOVERPAY));
     setAmountDispo(0);
     setAmountRequested(0);
-    //setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_CHOICE);
+    setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_SELECT);
 }
 
 /******************************************************************************/
@@ -345,18 +360,17 @@ static void vTO_Cumul(const TimerHandle_t handleTimer)
  ********************************************************************/
 static MAINBOARD_STATES getMainBoardTaskState(void)
 {
-
     return MAINBOARDData.state;
 }
 
 /*********************************************************************
  * Function:        static void DispenseTask(void)
- * 
+ *
  * Version:         1.0
- * 
+ *
  * Date:            01/01/2017
- * 
- * Author:          Rachid AKKOUCHE    
+ *
+ * Author:          Rachid AKKOUCHE
  *
  * PreCondition:    La tâche doit avoir été créée par xTaskCreate
  *
@@ -373,19 +387,20 @@ static MAINBOARD_STATES getMainBoardTaskState(void)
  *                  la prise du produit doit être effectuée.
  *                  Lorsque la baguette n'est plus détectée, la trappe redescend.
  *                  Autorise le retour de la monnaie si nécessaire.
- * 
+ *
  * Note:            None
  ********************************************************************/
+KEY_STATES TOTO;
+
 static void vDispenseTask(void)
 {
-    char buffer[19];
-
     COIN_TYPE coinType;
     BILL_TYPE billType;
     while(1)
     {
         ulTaskNotifyTake(true, portMAX_DELAY);
         //Invalidation des moyens de paiement.
+        setIsDispensedProductFinished(false);
         coinType = getCoinType();
         billType = getBillType();
         isSetCoinEnable(false, &coinType);
@@ -394,26 +409,55 @@ static void vDispenseTask(void)
         printf("%s", STR_DISPENSE);
         vLCDGotoXY(1, 2);
         printf("%s", STR_IN_PROGRESS);
-        setMotorState(getProductSelect() + 2, MOTORS_REVERSE);
-        xTimerStop(hTOCumul, 1 * SECONDE);
+        if(getDoorSwitchState((getProductSelect() / 2) + 1) != KEY_USED)
+        {
+            setMotorState(getProductSelect() + 2, MOTORS_REVERSE);
+            while(getMotorState(getProductSelect() + 2) != MOTORS_IDLE);
+        }
+        if(hGetTimerCumul())
+        {
+            xTimerStop(hGetTimerCumul(), 1 * SECONDE);
+        }
+        delayMs(50); //Pour permettre l'affichage
+        //     while((TOTO = getDoorSwitchState((getProductSelect() / 2) + 1)) != KEY_USED);
+        while(getDoorSwitchState(getProductSelect()) != KEY_USED);
+        setMotorState(getProductSelect() + 2, MOTORS_BREAK);
+        while(getMotorState(getProductSelect() + 2) != MOTORS_IDLE);
         vLCD_CLEAR();
         printf("%s", STR_TAKE);
         vLCDGotoXY(1, 2);
         printf("%s", STR_YOUR_CHOICE);
-        while(getDoorSwitchState((getProductSelect() / 2) + 1) != KEY_USED);
-        setMotorState(getProductSelect() + 2, MOTORS_BREAK);
-        while((getOptoState((getProductSelect() - 1)* 2) != KEY_HI) || (getOptoState(((getProductSelect() - 1)* 2) + 1) != KEY_HI));
+        delayMs(50); //Pour permettre l'affichage
+        while((getOptoState((getProductSelect() - 1) * 2) != KEY_HI) || (getOptoState(((getProductSelect() - 1)* 2) + 1) != KEY_HI));
         setAmountDispo(getAmountDispo() - getAmountRequested());
-        setMotorState(getProductSelect() + 2, MOTORS_FORWARD);
-        while(getDoorSwitchState((getProductSelect() / 2) + 4) != KEY_USED);
 
-        switch(getProductSelect())
+        setMainBoardTaskState(getAmountDispo() ? MAINBOARD_STATE_CHANGE : MAINBOARD_STATE_ENABLE_DEVICES);
+        setMainBoardTaskState(MAINBOARD_STATE_CHANGE);
+        while(getMainBoardTaskState() != MAINBOARD_STATE_SERVICE_TASKS)
         {
-            default:
-            {
-                break;
-            }
+            delayMs(200);
         }
+
+        xTaskNotifyGive((TaskHandle_t)getHandleProductDispo());
+
+        //
+        //
+        //
+        //        setMotorState(getProductSelect() + 2, MOTORS_FORWARD);
+        //        while(getDoorSwitchState((getProductSelect() / 2) + 4) != KEY_USED);
+        //        setProductSelect(0);
+        //
+        //        setMainBoardTaskState(getAmountDispo() ?
+        //                              MAINBOARD_STATE_CHANGE :
+        //                              MAINBOARD_STATE_DISPLAY_SELECT);
+        //
+        //        switch(getProductSelect())
+        //        {
+        //            default:
+        //            {
+        //                break;
+        //            }
+        //        }
 
         //        switch(
         //        {
@@ -425,7 +469,7 @@ static void vDispenseTask(void)
         //                {
         //                    while(!clavier.isTaked[0] && SYS_PORTS_PinRead(TOP_1)); //Verifie si le pain a été pris ou si la trappe est arrivée en haut.
         //                    DelayMs(100); //100 ms pour l'anti-rebond.
-        //                }while(!clavier.isTaked[0] && SYS_PORTS_PinRead(TOP_1)); //S'il s'agit d'un parasite on repete l'opération de vérification         
+        //                }while(!clavier.isTaked[0] && SYS_PORTS_PinRead(TOP_1)); //S'il s'agit d'un parasite on repete l'opération de vérification
         //                vMotorBreak(TRAP_1); //Sinon on arrete le moteur.
         //                if(!SYS_PORTS_PinRead(TOP_1))//Si la trappe est complétement ouverte
         //                {
@@ -464,7 +508,7 @@ static void vDispenseTask(void)
         //                {
         //                    while(!clavier.isTaked[1] && SYS_PORTS_PinRead(TOP_2)); //Verifie si le pain a été pris ou si la trappe est arrivée en haut.
         //                    DelayMs(100); //100 ms pour l'anti-rebond.
-        //                }while(!clavier.isTaked[1] && SYS_PORTS_PinRead(TOP_2)); //S'il s'agit d'un parasite on repete l'opération de vérification         
+        //                }while(!clavier.isTaked[1] && SYS_PORTS_PinRead(TOP_2)); //S'il s'agit d'un parasite on repete l'opération de vérification
         //                vMotorBreak(TRAP_2); //Sinon on arrete le moteur.
         //                if(!SYS_PORTS_PinRead(TOP_2))//Si la trappe est complétement ouverte
         //                {
@@ -504,7 +548,7 @@ static void vDispenseTask(void)
         //                {
         //                    while(!clavier.isTaked[2] && SYS_PORTS_PinRead(TOP_3)); //Verifie si le pain a été pris ou si la trappe est arrivée en haut.
         //                    DelayMs(100); //100 ms pour l'anti-rebond.
-        //                }while(!clavier.isTaked[2] && SYS_PORTS_PinRead(TOP_3)); //S'il s'agit d'un parasite on repete l'opération de vérification         
+        //                }while(!clavier.isTaked[2] && SYS_PORTS_PinRead(TOP_3)); //S'il s'agit d'un parasite on repete l'opération de vérification
         //                vMotorBreak(TRAP_3); //Sinon on arrete le moteur.
         //                if(!SYS_PORTS_PinRead(TOP_3))//Si la trappe est complétement ouverte
         //                {
@@ -556,7 +600,7 @@ static void vDispenseTask(void)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static  uint8_t getProductSelected(void)
+ * Function:        bool getIsDispenseProductFinished(void)
  *
  * PreCondition:    None
  *
@@ -570,6 +614,125 @@ static void vDispenseTask(void)
  *
  * Note:            None
  ********************************************************************/
+bool getIsDispenseProductFinished(void)
+{
+    return MAINBOARDData.isProductDispensed;
+}
+
+/*********************************************************************
+ * Function:        void setIsDispensedProductFinished(bool value)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsDispensedProductFinished(bool value)
+{
+    MAINBOARDData.isProductDispensed = value;
+}
+
+/*********************************************************************
+ * Function:        TimerHandle_t hGetTimerOverPay(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+TimerHandle_t hGetTimerCumul(void)
+{
+    return MAINBOARDData.hTOCumul;
+}
+
+/*********************************************************************
+ * Function:        void vCreateTimerOverPay()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void vCreateTimerCumul(void)
+{
+    if(!hGetTimerCumul())
+    {
+        MAINBOARDData.hTOCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
+                                              getTOCumul() * SECONDE :
+                                              portMAX_DELAY,
+                                              pdFALSE, NULL,
+                                              vTO_Cumul);
+    }
+}
+
+/*********************************************************************
+ * Function:        TimerHandle_t hGetTimerOverPay(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+TimerHandle_t hGetTimerOverPay(void)
+{
+    return MAINBOARDData.hTimerOverPay;
+}
+
+/*********************************************************************
+ * Function:        void vCreateTimerOverPay()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void vCreateTimerOverPay(void)
+{
+    if(!hGetTimerOverPay())
+    {
+        MAINBOARDData.hTimerOverPay = xTimerCreate("TO OVERPAY",
+                                                   getDelayOverpay() ?
+                                                   getDelayOverpay() * SECONDE :
+                                                   portMAX_DELAY,
+                                                   pdFALSE, NULL,
+                                                   vTO_OverPay);
+    }
+}
 
 /*********************************************************************
  * Function:
@@ -616,7 +779,6 @@ static void vDispenseTask(void)
  ********************************************************************/
 void setMainBoardTaskState(MAINBOARD_STATES state)
 {
-
     MAINBOARDData.state = state;
 }
 
@@ -665,7 +827,6 @@ void setMainBoardTaskState(MAINBOARD_STATES state)
  ********************************************************************/
 int32_t getAmountDispo(void)
 {
-
     return MAINBOARDData.lAmountDispo;
 }
 
@@ -829,37 +990,6 @@ void setAmountDispo(uint32_t amount)
 // *****************************************************************************
 // *****************************************************************************
 
-/*******************************************************************************
-Function:
-void MAINBOARD_Initialize ( void )
-
-Remarks:
-See prototype in MAINBOARD.h.
- */
-
-void MAINBOARD_Initialize(void)
-{
-
-    /* Place the App state machine in its initial state. */
-    setMainBoardTaskState(MAINBOARD_STATE_INIT);
-    vParametersRead();
-    vLCDInit();
-    vEEpromInit();
-    vAuditsInit();
-    vDataInit();
-    vMDBInit();
-    vLEDsKeybInit();
-    vKeyboardInit();
-    vDS18B20Init();
-    vMotorsInit();
-    //TODO à vérifier
-    vADCInit();
-
-    /* TODO: Initialize your application's state machine and other
-     * parameters.
-     */
-}
-
 /******************************************************************************
 Function:
 void MAINBOARD_Tasks ( void )
@@ -868,11 +998,13 @@ Remarks:
 See prototype in MAINBOARD.h.
  */
 
-void MAINBOARD_Tasks(void)
+void vMAINBOARD_Tasks(void)
 {
     uint8_t byIndex;
     static uint32_t oldAmount = 0;
     static uint8_t oldChoice = 0;
+    COIN_TYPE coinType;
+    BILL_TYPE billType;
 
     /* Check the application's current state. */
     switch(getMainBoardTaskState())
@@ -882,10 +1014,9 @@ void MAINBOARD_Tasks(void)
             // <editor-fold desc="MAINBOARD_STATE_INIT">
         {
             setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
+            setIsDispensedProductFinished(true);
             oldAmount = 0;
             setAmountDispo(0);
-
-
             vHD44780Init();
             vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
@@ -895,24 +1026,11 @@ void MAINBOARD_Tasks(void)
             delayMs(15 * SECONDE);
 #endif
             vTaskResume(getHandleMDB());
-            xTaskCreate((TaskFunction_t) vDispenseTask, "TSK DISPENSE",
+            xTaskCreate((TaskFunction_t)vDispenseTask, "TSK DISPENSE",
                         DISPENSE_TASK_STACK, NULL, DISPENSE_PRIORITY,
                         &MAINBOARDData.hDispenseTask);
-
-            if(hTimerOverPay == NULL)
-            {
-                hTimerOverPay = xTimerCreate("TO OVERPAY", getDelayOverpay() ?
-                                             getDelayOverpay() * SECONDE :
-                                             portMAX_DELAY,
-                                             false, NULL, vTO_OverPay);
-            }
-            if(hTOCumul == NULL)
-            {
-                hTOCumul = xTimerCreate("TO CUMUL", getTOCumul() ?
-                                        getTOCumul() * SECONDE :
-                                        portMAX_DELAY,
-                                        false, NULL, vTO_Cumul);
-            }
+            vCreateTimerOverPay();
+            vCreateTimerCumul();
             if(hTimerDisplaySelection == NULL)
             {
                 hTimerDisplaySelection = xTimerCreate(CHOICE_TIMER_NAME,
@@ -936,18 +1054,23 @@ void MAINBOARD_Tasks(void)
             {
                 setIsRAZAudit(false);
             }
-            if(getIsMDBChecked() && !getAmountDispo() && (getTemp() > 0.0))
+
+            if(getIsMDBChecked() && !getAmountDispo() && getIsDoorOpen() &&
+               (getTemp() > 0.0))
             {
                 vLCDGotoXY(12, 2);
                 vDisplayLCD("%.1f²", getTemp());
             }
             if(oldAmount != getAmountDispo())
             {
-                setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_AMOUNT);
                 if((oldAmount = getAmountDispo()) == 0)
                 {
-                    xTimerStop(hTimerOverPay, 1000);
-                    xTimerStop(hTOCumul, 1000);
+                    xTimerStop(hGetTimerOverPay(), 1 * SECONDE);
+                    xTimerStop(hGetTimerCumul(), 1 * SECONDE);
+                }
+                else
+                {
+                    setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_AMOUNT);
                 }
             }
             if((getSelection() != oldChoice))
@@ -957,10 +1080,7 @@ void MAINBOARD_Tasks(void)
                 {
                     for(byIndex = 0; byIndex < 6; byIndex++)
                     {
-                        if(getIsMotorInUse(byIndex))
-                        {
-                            setMotorState(byIndex, MOTORS_BREAK);
-                        }
+                        setMotorState(byIndex, MOTORS_BREAK);
                     }
                 }
                 if(oldChoice && (oldChoice < 4))
@@ -1011,7 +1131,7 @@ void MAINBOARD_Tasks(void)
                         vDisplayLCD("%s%u", STR_CHOICE, oldChoice);
                         vLCDGotoXY(1, 2);
                         vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
-                                    (double) getProductPrice(oldChoice - 1) / getMDBCurrencyDivider());
+                                    (double)getProductPrice(oldChoice - 1) / getMDBCurrencyDivider());
                         xTimerStart(hTimerDisplaySelection, 1000);
                     }
                 }
@@ -1024,9 +1144,13 @@ void MAINBOARD_Tasks(void)
             oldChoice = 0;
             setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
             vLCD_CLEAR();
-            vDisplayLCD("%s", STR_SELECT);
-            vLCDGotoXY(1, 2);
-            vDisplayLCD("%s", STR_YOUR_PRODUCT);
+            if(!DOOR_Get())
+            {
+                vDisplayLCD("%s", STR_SELECT);
+                vLCDGotoXY(1, 2);
+                vDisplayLCD("%s", STR_YOUR_PRODUCT);
+                delayMs(100);
+            }
             setLedChase(true);
             break;
         }// </editor-fold>
@@ -1037,9 +1161,12 @@ void MAINBOARD_Tasks(void)
             //                    MAINBOARD_STATE_SERVICE_TASKS :
             setMainBoardTaskState(MAINBOARD_STATE_CHECK_DISPENSE);
             //                    MAINBOARD_STATE_DISPLAY_SELECT;
-            vLCD_CLEAR();
-            vDisplayLCD("%s %.*f\7", STR_CREDIT, getMDBDecimalPos(),
-                        (double) getAmountDispo() / getMDBCurrencyDivider());
+            if(getIsDispenseProductFinished())
+            {
+                vLCD_CLEAR();
+                vDisplayLCD("%s %.*f\7", STR_CREDIT, getMDBDecimalPos(),
+                            (double)getAmountDispo() / getMDBCurrencyDivider());
+            }
             if(getProductSelect())
             {
                 xTimerStop(hTimerDisplaySelection, 1000);
@@ -1047,14 +1174,14 @@ void MAINBOARD_Tasks(void)
                 if(getAmountDispo() < getProductPrice(getProductSelect() - 1))
                 {
                     vDisplayLCD("%s %.*f\7", STR_TO_PAY, getMDBDecimalPos(),
-                                (double) (getProductPrice(getProductSelect() - 1) -
-                                          getAmountDispo()) / getMDBCurrencyDivider());
+                                (double)(getProductPrice(getProductSelect() - 1) -
+                                         getAmountDispo()) / getMDBCurrencyDivider());
                 }
             }
             break;
         }// </editor-fold>
         case MAINBOARD_STATE_CHECK_DISPENSE:
-            // <editor-fold desc="MAINBOARD_STATE_CHECK_DISPENSE"> 
+            // <editor-fold desc="MAINBOARD_STATE_CHECK_DISPENSE">
         {
             if(getAmountRequested() && (getAmountDispo() >= getAmountRequested()))
             {
@@ -1072,18 +1199,36 @@ void MAINBOARD_Tasks(void)
             xTaskNotifyGive(getChangeTaskHandle());
             while(!getIsChangeFinished());
             delayMs(1000); //Permet de visualiser la somme rendu.
+            setMainBoardTaskState(MAINBOARD_STATE_ENABLE_DEVICES);
+            break;
+        }// </editor-fold>
+        case MAINBOARD_STATE_ENABLE_DEVICES:
+            // <editor-fold desc="MAINBOARD_STATE_ENABLE_DEVICES">
+        {
+            isSetCoinEnable(true, &coinType);
+            isSetBillEnable(true, &billType);
+            setChangeGiverTaskState(CG_COIN_TYPE);
+            setBV_State(BV_BILL_TYPE);
+            if(getAmountDispo() && hGetTimerOverPay())
+            {
+                xTimerStart(hGetTimerOverPay(), 1 * SECONDE);
+            }
+            if(hGetTimerCumul())
+            {
+                xTimerStop(hGetTimerCumul(), 1 * SECONDE);
+            }
+            setLedChase(true);
             setMainBoardTaskState(getAmountDispo() ?
                                   MAINBOARD_STATE_DISPLAY_AMOUNT :
                                   MAINBOARD_STATE_DISPLAY_SELECT);
-
-            if(!BOT_1_Get() && !BOT_2_Get() && !BOT_3_Get())
-            {
-                setChangeGiverTaskState(CG_COIN_TYPE);
-                setBV_State(BV_BILL_TYPE);
-            }
             break;
         }// </editor-fold>
+        case MAINBOARD_STATE_IDLE:
+            // <editor-fold desc="MAINBOARD_STATE_IDLE">
+        {
 
+            break;
+        }// </editor-fold>
             /* TODO: implement your application state machine.*/
             /* The default state should never be executed. */
         default:
@@ -1092,6 +1237,38 @@ void MAINBOARD_Tasks(void)
             break;
         }
     }
+}
+
+/*******************************************************************************
+Function:
+void MAINBOARD_Initialize ( void )
+
+Remarks:
+See prototype in MAINBOARD.h.
+ */
+
+void MAINBOARD_Initialize(void)
+{
+
+    /* Place the App state machine in its initial state. */
+    setMainBoardTaskState(MAINBOARD_STATE_INIT);
+    vParametersRead();
+    vLCDInit();
+    vEEpromInit();
+    vAuditsInit();
+    vDataInit();
+    vMDBInit();
+    vLEDsKeybInit();
+    vKeyboardInit();
+    vDS18B20Init();
+    vMotorsInit();
+    //TODO à vérifier
+    vADCInit();
+    vProductInit();
+
+    /* TODO: Initialize your application's state machine and other
+     * parameters.
+     */
 }
 
 /**

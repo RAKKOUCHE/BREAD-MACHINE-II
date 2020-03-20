@@ -308,7 +308,7 @@ void vDataInit(void)
 {
     if(pcCom.handlePcCom == NULL)
     {
-        xTaskCreate(vTaskPcComm, PCCOM_TASK_NAME, PCCOM_TASK_STACK, NULL,
+        xTaskCreate((TaskFunction_t)vTaskPcComm, PCCOM_TASK_NAME, PCCOM_TASK_STACK, NULL,
                     PCCOM_TASK_PRIORITY, &pcCom.handlePcCom);
     }
 }

@@ -85,7 +85,6 @@ extern "C"
         MOTORS_IDLE,
     } MOTORS_SATE;
 
-
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
@@ -95,7 +94,6 @@ extern "C"
     /*  A brief description of a section can be given directly below the section
         banner.
      */
-
     // *****************************************************************************
 
     /**
@@ -135,13 +133,6 @@ extern "C"
      * @return
      */
     BOOL getIsMotorInUse(const uint8_t num);
-
-    //    /**
-    //     * \brief
-    //     * @param num
-    //     * @param isInUse
-    //     */
-    //    void setIsMotorInUse(const uint8_t num, const BOOL isInUse);
 
     /**
      * \brief

@@ -104,8 +104,10 @@ extern "C"
         MAINBOARD_STATE_SERVICE_TASKS, /*!<Etat de l'application en fonctionnement.*/
         MAINBOARD_STATE_DISPLAY_SELECT, /*!<Affichage choix du produit.*/
         MAINBOARD_STATE_DISPLAY_AMOUNT, /*!<Affichage du montant disponible.*/
-        MAINBOARD_STATE_CHECK_DISPENSE,
+        MAINBOARD_STATE_CHECK_DISPENSE, /*!<Affichage durant la distribution.*/
         MAINBOARD_STATE_CHANGE, /*!<Lance la procédure de change.*/
+        MAINBOARD_STATE_ENABLE_DEVICES, /*!<Active les moyen de paiement.*/
+        MAINBOARD_STATE_IDLE, /*!<Une opération longue est en cours.*/
     } MAINBOARD_STATES;
 
 
@@ -123,30 +125,8 @@ extern "C"
      */
 
     /**
-     * \brief Structure contenant les données utilisés dans la tâche principale.
-     */
-    typedef struct
-    {
-        /* The application's current state */
-        MAINBOARD_STATES state; /*!<Etat de la tâche principale de l'application.*/
-        TaskHandle_t hDispenseTask;
-        int32_t lAmountDispo; /*!<Montant disponible pour un achat.*/
-        uint32_t lAmountRequested; /*!<Montant demandé pour un produit sélectionné.*/
-        uint8_t byProductSelected; /*!<Numéro du produit choisi*/
-
-        //bool isMDBChecked; /*!<Flag indiquant que les périphériques MDB sont initalisé.*/
-
-    } MAINBOARD_DATA;
-
-    /**
-     * \brief Handle timer de cumul.
-     */
-    TimerHandle_t hTOCumul;
-
-    /**
      * \brief Handle du to déclenchant la procédure de trop perçu.
      */
-    TimerHandle_t hTimerOverPay;
 
     /**
      * \brief Handle du to déclenhant l'annulation de l'affichage du choix.
@@ -158,12 +138,40 @@ extern "C"
     // Section: Application Routines
     // *****************************************************************************
     // *****************************************************************************
-    //
-    //    /**
-    //     * \brief Requête de l'état de la Tâche de l'application
-    //     * @return Etat de la tâche.
-    //     */
-    //    MAINBOARD_STATES getMainBoardTaskState(void);
+
+    /**
+     * \brief
+     * @return 
+     */
+    bool getIsDispenseProductFinished(void);
+
+    /**
+     * \brief
+     * @param value
+     */
+    void setIsDispensedProductFinished(bool value);
+    
+    /**
+     * \brief
+     * @return 
+     */
+    TimerHandle_t hGetTimerCumul(void);
+
+    /**
+     * \brief
+     */
+    void vCreateTimerCumul(void);
+
+    /**
+     * \brief
+     * @return 
+     */
+    TimerHandle_t hGetTimerOverPay(void);
+
+    /**
+     * \brief
+     */
+    void vCreateTimerOverPay(void);
 
     /**
      * \brief Fixe l'état de la tâche de l'application
@@ -268,7 +276,7 @@ extern "C"
       Remarks:
         This routine must be called from SYS_Tasks() routine.
      */
-    void MAINBOARD_Tasks(void);
+    void vMAINBOARD_Tasks(void);
 
     /**
      * @}

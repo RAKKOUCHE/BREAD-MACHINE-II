@@ -33,6 +33,36 @@
 /* ************************************************************************** */
 
 /**
+ * \brief
+ */
+#define CHK_TASK_NAME "TSK CHK DISPENSE"
+
+/**
+ * \brief
+ */
+#define CHK_TASK_PRIORITY 3
+
+/**
+ * \brief
+ */
+#define CHK_TASK_STACK 512
+
+/**
+ * \brief
+ */
+#define DOOR_CLOSE_TIME_NAME "TMR CLOSE DOOR"
+
+/**
+ * \brief
+ */
+#define DOOR_TRAP_DELAY (10 * SECONDE)
+
+/**
+ * \brief
+ */
+#define DETECT_PRODUCT_DELAY (15 * SECONDE)
+
+/**
  * \brief Nom en clair de la gestion des touches du clavier.
  */
 #define CLAVIER_TASK_NAME "TSK KBD"
@@ -45,12 +75,12 @@
 /**
  * \brief Profondeur de la pile
  */
-#define CLAVIER_TASK_STACK 1024
+#define CLAVIER_TASK_STACK 512
 
 /**
  * \brief Delay de la tâche des touches.
  */
-#define CLAVIER_TASK_DELAY (10 * MILLISEC)
+#define CLAVIER_TASK_DELAY (30 * MILLISEC)
 
 /**
  * \brief
@@ -77,14 +107,16 @@ struct
 {
     bool isDoorOpen; /*!<Indique si la porte est ouverte.*/
     bool isTaskKeyChecked; /*!<Indique si le tâche de vérification des  touches est effectuée.*/
-    bool isDoorMoved; /*!<Indique si la porter vient d'être ouverte ou fermée.*/
     bool isKeyShifted; /*!<Indique si les touches alternatives sont activées.*/
+    bool isDoorTOReached; /*!<Indique si un time out pour la porte est atteint.*/
     uint8_t selection; /*!<Numéro du choix en cours.*/
     KEY keys[7]; /*!<Etat des touches du claviers.*/
     KEY door_switches[7]; /*!<Etat des contacts de la porte.*/
     KEY opto[6]; /*!<Etat des opto coupleurs*/
     TaskHandle_t hSwitchTask; /*!<Tâche de la gestion des touches.*/
+    TaskHandle_t hCheckProductDispo; /*!<Tâche de la gestion de la fermeture de la porte.*/
     TimerHandle_t hShiftTO; /*!<*!Delais de maintient de la touche shift.*/
+    TimerHandle_t hTimerPresenceProduct;
 } switchs;
 
 /* ************************************************************************** */
@@ -102,6 +134,189 @@ uint8_t trapSwitchsTable[] = {2, 3, 4, 12, 13, 14, 15};
  * \brief
  */
 uint8_t optosTable[] = {10, 11, 12, 13, 2, 3};
+
+/*********************************************************************
+ * Function:        static void vTOProductPresent(TimerHandle_t xTimer)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void vTOProductPresent(TimerHandle_t xTimer)
+{
+    switchs.isDoorTOReached = true;
+}
+
+/*********************************************************************
+ * Function:        void DoorClosed(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void vTaskCheckProductDispo(void)
+{
+    uint8_t byIndex;
+
+    while(true)
+    {
+        ulTaskNotifyTake(true, portMAX_DELAY);
+        for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
+        {
+            if(getIsProductSelectable(byIndex))
+            {
+                switchs.isDoorTOReached = false;
+                if(getDoorSwitchState(byIndex + 4) != KEY_USED)
+                {
+                    vLCD_CLEAR();
+                    vLCD_CLEAR();
+                    printf("%s%u", "FERMETURE TRAP ", byIndex + 1);
+                    delayMs(100);
+                    xTimerChangePeriod(switchs.hTimerPresenceProduct,
+                                       DOOR_TRAP_DELAY, 1 * SECONDE);
+                    setMotorState(byIndex + 3, MOTORS_FORWARD);
+                    do
+                    {
+                        while((getDoorSwitchState(byIndex + 4) != KEY_USED) &&
+                              !switchs.isDoorTOReached);
+                        delayMs(10);
+                    }while((getDoorSwitchState(byIndex + 4) != KEY_USED) &&
+                           !switchs.isDoorTOReached);
+                }
+                xTimerStop(switchs.hTimerPresenceProduct, 1 * SECONDE);
+                setMotorState(byIndex + 3, MOTORS_BREAK);
+                while(getMotorState(byIndex + 3) != MOTORS_IDLE);
+
+                if((getOptoState(byIndex * 2) == KEY_HI) &&
+                   (getOptoState((byIndex * 2) + 1) == KEY_HI))
+                {
+                    xTimerChangePeriod(switchs.hTimerPresenceProduct,
+                                       DETECT_PRODUCT_DELAY, 1 * SECONDE);
+                    setMotorState(byIndex, MOTORS_FORWARD);
+                    while((getOptoState(byIndex * 2) == KEY_HI) &&
+                          (getOptoState((byIndex * 2) + 1) == KEY_HI) &&
+                          !switchs.isDoorTOReached);
+                }
+                setMotorState(byIndex, MOTORS_BREAK);
+                while(getMotorState(byIndex) != MOTORS_IDLE);
+                xTimerStop(switchs.hTimerPresenceProduct, 1 * SECONDE);
+                setIsProductSelectable(byIndex, !switchs.isDoorTOReached);
+            }
+        }
+        setAmountRequested(0);
+        setMainBoardTaskState(getAmountDispo() ? MAINBOARD_STATE_DISPLAY_AMOUNT :
+                              MAINBOARD_STATE_DISPLAY_SELECT);
+    }
+
+    //    EMOTOR pxIndex;
+    //
+    //    BYTE byIndex;
+    //    char buffer[19] = {0};
+    //
+    //    for(byIndex = 0; byIndex < 3; byIndex++)
+    //    {
+    //        clavier.isTaked[byIndex] = (BYTE)SYS_PORTS_PinRead(OPTOPORT, PORTS_BIT_POS_13 + byIndex);
+    //    }
+    //
+    //    for(pxIndex = CONVOYEUR_1; pxIndex < NUMMOTORS; pxIndex++)
+    //    {
+    //        moteurs.moteur[pxIndex].state = MTR_CHECK;
+    //    };
+    //
+    //    xSemaphoreTake(moteurs.semaphoreHatchChecked, 60 * SECONDE);
+    //    DelayMs(100); //Pour laisser le temps à l'affichage.
+    //    LCD_Clear();
+    //    printf("%s", POSITIONNEMENT);
+    //    LCDGotoXY(1, 2);
+    //    printf("   %s ", CONVOYEUR);
+    //
+    //    if(!SYS_PORTS_PinRead(BOTTOM_1))
+    //    {
+    //        printf("%s", "1");
+    //        mainBoardData.isNotAutorized = false;
+    //        xTimerStart(mainBoardData.hTimerCheckAutorized, 1000);
+    //        vMotorStart(CONVOYEUR_1, FWD);
+    //        while(clavier.isTaked[0] && !mainBoardData.isNotAutorized);
+    //        vMotorBreak(CONVOYEUR_1);
+    //        mainBoardData.isChoiceAuthorized[0] = mainBoardData.isChoiceAuthorized[1] = !mainBoardData.isNotAutorized;
+    //        if(mainBoardData.isNotAutorized)
+    //        {
+    //            sprintf(buffer, ConvoyerEmpty, 1);
+    //            vSendSMS(buffer);
+    //            DelayMs(1000);
+    //        }
+    //        xTimerStop(mainBoardData.hTimerCheckAutorized, 1000);
+    //    }
+    //    else
+    //    {
+    //        mainBoardData.isChoiceAuthorized[0] = mainBoardData.isChoiceAuthorized[1] = false;
+    //    }
+    //
+    //    if(!SYS_PORTS_PinRead(BOTTOM_2))
+    //    {
+    //        LCDGotoXY(14, 2);
+    //        printf("%s", "2");
+    //        mainBoardData.isNotAutorized = false;
+    //        xTimerStart(mainBoardData.hTimerCheckAutorized, 1000);
+    //        vMotorStart(CONVOYEUR_2, FWD);
+    //        while(clavier.isTaked[1] && !mainBoardData.isNotAutorized);
+    //        vMotorBreak(CONVOYEUR_2);
+    //        mainBoardData.isChoiceAuthorized[2] = mainBoardData.isChoiceAuthorized[3] = !mainBoardData.isNotAutorized;
+    //        if(mainBoardData.isNotAutorized)
+    //        {
+    //            sprintf(buffer, ConvoyerEmpty, 2);
+    //            vSendSMS(buffer);
+    //            DelayMs(1000);
+    //        }
+    //        xTimerStop(mainBoardData.hTimerCheckAutorized, 1000);
+    //    }
+    //    else
+    //    {
+    //        mainBoardData.isChoiceAuthorized[2] = mainBoardData.isChoiceAuthorized[3] = false;
+    //    }
+    //
+    //    if(!SYS_PORTS_PinRead(BOTTOM_3))
+    //    {
+    //        LCDGotoXY(14, 2);
+    //        printf("%s", "3");
+    //        mainBoardData.isNotAutorized = false;
+    //        xTimerStart(mainBoardData.hTimerCheckAutorized, 1000);
+    //        vMotorStart(CONVOYEUR_3, FWD);
+    //        while(clavier.isTaked[2] && !mainBoardData.isNotAutorized);
+    //        vMotorBreak(CONVOYEUR_3);
+    //        mainBoardData.isChoiceAuthorized[4] = mainBoardData.isChoiceAuthorized[5] = !mainBoardData.isNotAutorized;
+    //        if(mainBoardData.isNotAutorized)
+    //        {
+    //            sprintf(buffer, ConvoyerEmpty, 3);
+    //            vSendSMS(buffer);
+    //            DelayMs(1000);
+    //        }
+    //        xTimerStop(mainBoardData.hTimerCheckAutorized, 1000);
+    //    }
+    //    else
+    //    {
+    //        mainBoardData.isChoiceAuthorized[4] = mainBoardData.isChoiceAuthorized[5] = false;
+    //    }
+    //    clavier.isDOORClosed = true;
+}
+
+/******************************************************************************/
 
 /*********************************************************************
  * Function:
@@ -248,7 +463,7 @@ static void setDoorSwitchState(const uint8_t byIndex, const KEY_STATES state)
 }
 
 /*********************************************************************
- * Function:        static void setOptoState(const uint8_t byIndex, const KEY_STATE state)     
+ * Function:        static void setOptoState(const uint8_t byIndex, const KEY_STATE state)
  *
  * PreCondition:    None
  *
@@ -315,6 +530,13 @@ static KEY_STATES getKeyState(const uint8_t numKey)
     return switchs.keys[numKey].state;
 }
 
+/* ************************************************************************** */
+/* ************************************************************************** */
+// Section: Interface Functions                                               */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+
 /*********************************************************************
  * Function:
  *         static void vTaskKeyboard(void *vParameter)
@@ -361,7 +583,7 @@ static KEY_STATES getKeyState(const uint8_t numKey)
 static void vTaskKeyboard(void *vParameter)
 {
     TickType_t xLastWakeTime = xTaskGetTickCount();
-    uint8_t byIndex;
+    uint8_t byIndex, byIndex2;
     KEY_STATES lkState;
     KEY_STATES lSWState;
     KEY_STATES lOptoState;
@@ -380,43 +602,44 @@ static void vTaskKeyboard(void *vParameter)
             {
                 if(byIndex < 3)
                 {
-                    lkState = (KEY_STATES) ((PORTD >> (7 + byIndex) & 1));
+                    //Clavier
+                    lkState = (KEY_STATES)((PORTD >> (7 + byIndex) & 1));
                 }
                 else
                 {
-                    lkState = (KEY_STATES) ((PORTE >> byIndex) & 1);
-                }
-                lSWState = (KEY_STATES) ((PORTC >> trapSwitchsTable[byIndex]) & 1);
 
+                    lkState = (KEY_STATES)((PORTE >> byIndex) & 1);
+                }
+                lSWState = (KEY_STATES)((PORTC >> trapSwitchsTable[byIndex]) & 1);
 
                 // <editor-fold defaultstate="collapsed" desc="OPTOCOUPLEURS">
-                if((byIndex < 6) && getIsDoorOpen())
+                if(byIndex < 6)
                 {
-                    lOptoState = (KEY_STATES) ((PORTD >> optosTable[byIndex]) & 1);
+                    lOptoState = (KEY_STATES)((PORTD >> optosTable[byIndex]) & 1);
 
                     switch(getOptoState(byIndex))
                     {
                         case KEY_HI:
-                            // <editor-fold desc="KEY_HI"> 
+                            // <editor-fold desc="KEY_HI">
                         {
                             setOptoState(byIndex, lOptoState);
                             break;
                         }// </editor-fold>
                         case KEY_LO:
-                            // <editor-fold desc="KEY_LO"> 
+                            // <editor-fold desc="KEY_LO">
                         {
                             setOptoState(byIndex, lOptoState == KEY_LO ? KEY_CHECKED : KEY_HI);
                             break;
                         }// </editor-fold>
                         case KEY_CHECKED:
-                            // <editor-fold desc="KEY_CHECKED"> 
+                            // <editor-fold desc="KEY_CHECKED">
                         {
                             setMotorState(byIndex / 2, MOTORS_BREAK);
                             setOptoState(byIndex, (lOptoState == KEY_LO) ? KEY_USED : KEY_HI);
                             break;
-                        }// </editor-fold>               
+                        }// </editor-fold>
                         case KEY_USED:
-                            // <editor-fold desc="KEY_USED"> 
+                            // <editor-fold desc="KEY_USED">
                         {
                             if(lOptoState == KEY_HI)
                             {
@@ -431,7 +654,7 @@ static void vTaskKeyboard(void *vParameter)
                     }
                 }// </editor-fold>
 
-
+                // <editor-fold defaultstate="collapsed" desc="FIN DE COURSE DES TRAPPES ET CONTACT DE PORTE">
                 switch(getDoorSwitchState(byIndex))
                 {
                     case KEY_HI:
@@ -455,14 +678,23 @@ static void vTaskKeyboard(void *vParameter)
                     {
                         if(byIndex)
                         {
-                            setMotorState((byIndex + 2) - ((uint8_t) (byIndex > 3) * 3), MOTORS_BREAK);
-                            clrSelection();
+                            setMotorState((byIndex + 2) - ((uint8_t)(byIndex > 3) * 3), MOTORS_BREAK);
+                            switchs.selection = 0;
                         }
                         setDoorSwitchState(byIndex, (lSWState == KEY_LO) ? KEY_USED : KEY_HI);
                         if(!byIndex)
                         {
+                            setMainBoardTaskState((MAINBOARD_STATE_IDLE));
+                            vLCD_CLEAR();
+                            printf("%s", "FERMETURE PORTE");
+                            for(byIndex2 = 0; byIndex2 < PRODUCT_NUMBER; byIndex2++)
+                            {
+                                setIsProductSelectable(byIndex2, true);
+                            }
+
                             setIsDoorOpen(false);
-                            switchs.isDoorMoved = true;
+                            delayMs(50);
+                            xTaskNotifyGive(switchs.hCheckProductDispo);
                         }
                         break;
                     }// </editor-fold>
@@ -471,11 +703,14 @@ static void vTaskKeyboard(void *vParameter)
                     {
                         if(lSWState == KEY_HI)
                         {
+                            setDoorSwitchState(byIndex, KEY_HI);
                             if(!byIndex)
                             {
-                                switchs.isDoorMoved = true;
+                                vLCD_CLEAR();
+                                delayMs(50);
+                                printf(" PORTE OUVERTE");
+                                //delayMs(50);
                             }
-                            setDoorSwitchState(byIndex, KEY_HI);
                         }
                         break;
                     }// </editor-fold>
@@ -483,63 +718,81 @@ static void vTaskKeyboard(void *vParameter)
                     {
                         break;
                     }
-                }
+                }// </editor-fold>
 
-                switch(getKeyState(byIndex))
+                // <editor-fold defaultstate="collapsed" desc="CLAVIER ET COMMANDES MOTEUR ONBOARD">
+                if(((byIndex < 3) && getIsProductSelectable(byIndex)) || getIsDoorOpen())
                 {
-                    case KEY_HI:
-                        // <editor-fold desc="KEY_HI">
+                    switch(getKeyState(byIndex))
                     {
-                        setKeyState(byIndex, lkState);
-                        break;
-                    }// </editor-fold>
-                    case KEY_LO:
-                        // <editor-fold desc="KEY_LO">
-                    {
-                        setKeyState(byIndex, lkState == KEY_LO ? KEY_CHECKED : KEY_HI);
-                        break;
-                    }// </editor-fold>
-                    case KEY_CHECKED:
-                        // <editor-fold desc="KEY_CHECKED">
-                    {
-                        if(lkState == KEY_LO)
+                        case KEY_HI:
+                            // <editor-fold desc="KEY_HI">
                         {
-                            switchs.selection = byIndex + 1;
-                            setKeyState(byIndex, KEY_USED);
-                        }
-                        else
+                            setKeyState(byIndex, lkState);
+                            break;
+                        }// </editor-fold>
+                        case KEY_LO:
+                            // <editor-fold desc="KEY_LO">
                         {
-                            setKeyState(byIndex, KEY_HI);
-                        }
-                        break;
-                    }// </editor-fold>
-                    case KEY_USED:
-                        // <editor-fold desc="KEY_USED">
-                    {
-                        if(lkState == KEY_HI)
+                            setKeyState(byIndex, lkState == KEY_LO ? KEY_CHECKED : KEY_HI);
+                            break;
+                        }// </editor-fold>
+                        case KEY_CHECKED:
+                            // <editor-fold desc="KEY_CHECKED">
                         {
-                            setKeyState(byIndex, KEY_HI);
-                            switchs.selection = 0;
+                            if(lkState == KEY_LO)
+                            {
+                                switchs.selection = byIndex + 1;
+                                setKeyState(byIndex, KEY_USED);
+                            }
+                            else
+                            {
+                                setKeyState(byIndex, KEY_HI);
+                            }
+                            break;
+                        }// </editor-fold>
+                        case KEY_USED:
+                            // <editor-fold desc="KEY_USED">
+                        {
+                            if(lkState == KEY_HI)
+                            {
+                                setKeyState(byIndex, KEY_HI);
+                                switchs.selection = 0;
+                            }
+                            break;
+                        }// </editor-fold>
+                        default:
+                        {
+
+                            break;
                         }
-                        break;
-                    }// </editor-fold>
-                    default:
-                    {
-                        break;
                     }
-                }
+                }// </editor-fold>
             }
         }
         vTaskDelayUntil(&xLastWakeTime, CLAVIER_TASK_DELAY);
     }
 }
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-// Section: Interface Functions                                               */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
+/*********************************************************************
+ * Function:        TaskHandle_t getHandleProductDispo(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+TaskHandle_t getHandleProductDispo(void)
+{
+    return switchs.hCheckProductDispo;
+}
 
 /*********************************************************************
  * Function:        bool getIsDoorOpen()
@@ -857,150 +1110,6 @@ uint8_t getSelection()
 
 /*********************************************************************
  * Function:
- *         void clrSelection()
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-void clrSelection()
-{
-    switchs.selection = 0;
-}
-
-/*********************************************************************
- * Function:
- *         void clrIsDoorMoved(void)
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-void clrIsDoorMoved(void)
-{
-    switchs.isDoorMoved = false;
-}
-
-/*********************************************************************
- * Function:
- *         bool getIsDoorMoved(void)
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-bool getIsDoorMoved(void)
-{
-    return switchs.isDoorMoved;
-}
-
-/*********************************************************************
- * Function:
  *         void vKeyboardInit()
  *
  * Version:
@@ -1049,31 +1158,41 @@ void vKeyboardInit(void)
     switchs.isKeyShifted = false;
     setIsDoorOpen(DOOR_Get());
     switchs.isTaskKeyChecked = false;
-    switchs.isDoorMoved = false;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
     {
-        setKeyState(byIndex, (KEY_STATES) (PORTD >> (7 + byIndex) & 1));
+        setKeyState(byIndex, (KEY_STATES)(PORTD >> (7 + byIndex) & 1));
+        setIsProductSelectable(byIndex, true);
     }
     for(; byIndex < 7; byIndex++)
     {
-        setKeyState(byIndex, (KEY_STATES) (PORTE >> byIndex) & 1);
+        setKeyState(byIndex, (KEY_STATES)(PORTE >> byIndex) & 1);
     }
-
     for(byIndex = 0; byIndex < 7; byIndex++)
     {
-        setDoorSwitchState(byIndex, (KEY_STATES) (PORTC >> (trapSwitchsTable[byIndex]) & 1));
+        setDoorSwitchState(byIndex, (KEY_STATES)(PORTC >> (trapSwitchsTable[byIndex]) & 1));
     }
-
     if(switchs.hSwitchTask == NULL)
     {
-        xTaskCreate(vTaskKeyboard, CLAVIER_TASK_NAME, CLAVIER_TASK_STACK, NULL, CLAVIER_TASK_PRIORITY, &switchs.hSwitchTask);
+        xTaskCreate((TaskFunction_t)vTaskKeyboard, CLAVIER_TASK_NAME, CLAVIER_TASK_STACK, NULL, CLAVIER_TASK_PRIORITY, &switchs.hSwitchTask);
+    }
+    if(switchs.hCheckProductDispo == NULL)
+    {
+        xTaskCreate((TaskFunction_t)vTaskCheckProductDispo, CHK_TASK_NAME,
+                    CHK_TASK_STACK, NULL, CHK_TASK_PRIORITY,
+                    &switchs.hCheckProductDispo);
     }
     if(switchs.hShiftTO == NULL)
     {
         switchs.hShiftTO = xTimerCreate(SHIFT_TIMER_NAME, 10 * SECONDE, pdFALSE, NULL, vShift_TO);
     }
+    if(switchs.hTimerPresenceProduct == NULL)
+    {
+        switchs.hTimerPresenceProduct = xTimerCreate(DOOR_CLOSE_TIME_NAME,
+                                                     DOOR_TRAP_DELAY, pdFALSE,
+                                                     NULL, vTOProductPresent);
+    }
 }
 
 /******************************************************************************
- End of File
+End of File
  */

@@ -49,7 +49,7 @@
 #define configCPU_CLOCK_HZ                      ( 80000000UL )
 #define configPERIPHERAL_CLOCK_HZ               ( 40000000UL )
 #define configTICK_RATE_HZ                      ( ( TickType_t ) 1000 )
-#define configMAX_PRIORITIES                    ( 5UL )
+#define configMAX_PRIORITIES                    ( 6UL )
 #define configMINIMAL_STACK_SIZE                ( 128 )
 #define configISR_STACK_SIZE                    ( 400 )
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
@@ -86,7 +86,7 @@
 
 /* Software timer related definitions. */
 #define configUSE_TIMERS                        1
-#define configTIMER_TASK_PRIORITY               4
+#define configTIMER_TASK_PRIORITY               5
 #define configTIMER_QUEUE_LENGTH                10
 #define configTIMER_TASK_STACK_DEPTH            256
 #define configUSE_DAEMON_TASK_STARTUP_HOOK      0
@@ -100,7 +100,7 @@
 /* The priority at which the tick interrupt runs.  This should probably be kept at 1. */
 #define configKERNEL_INTERRUPT_PRIORITY         1
 
-/* The maximum interrupt priority from which FreeRTOS.org API functions can be called.
+/* The maximum interrupt priority from which FreeRTOS.org API functions can be called.  
 Only API functions that end in ...FromISR() can be used within interrupts. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY    3
 

@@ -12,6 +12,7 @@
       <itemPath>../../../doc/PDF/pic32mxuart.pdf</itemPath>
       <itemPath>../../../doc/PDF/ST7066U.pdf</itemPath>
       <itemPath>../../../doc/PDF/PIC32MX470F512L.pdf</itemPath>
+      <itemPath>../../../doc/PDF/FreeRTOS_Reference_Manual_V10.0.0.pdf</itemPath>
     </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -1137,6 +1138,7 @@
         <itemPath>../src/dataCommun.h</itemPath>
         <itemPath>../src/mainboard.h</itemPath>
         <itemPath>../src/eeprom.h</itemPath>
+        <itemPath>../src/product.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -1249,6 +1251,7 @@
         <itemPath>../src/dataCommun.c</itemPath>
         <itemPath>../src/mainboard.c</itemPath>
         <itemPath>../src/eeprom.c</itemPath>
+        <itemPath>../src/product.c</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"

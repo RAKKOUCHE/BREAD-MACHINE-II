@@ -104,7 +104,11 @@ static void vTaskLed(void *vParameter)
                 {
                     byIndex = 0;
                 }
-                LATDSET = (1 << leds.listEnable[byIndex]);
+                if(getIsProductSelectable(byIndex))
+                {
+                    LATDSET = (1 << leds.listEnable[byIndex]);
+                }
+
             }
             else
             {
@@ -371,7 +375,7 @@ void setSelectedLed(uint8_t ledNum)
  *
  * Note:            None
  ********************************************************************/
-void vLEDsKeybInit(void)     
+void vLEDsKeybInit(void)
 {
     uint8_t byIndex;
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
@@ -381,7 +385,8 @@ void vLEDsKeybInit(void)
     }
     if(leds.taskLed == NULL)
     {
-        xTaskCreate(vTaskLed, LED_TASK_NAME, LED_TASK_STACK, NULL, LED_TASK_PRIORITY, &leds.taskLed);
+        xTaskCreate((TaskFunction_t) vTaskLed, LED_TASK_NAME, LED_TASK_STACK,
+                    NULL, LED_TASK_PRIORITY, &leds.taskLed);
     }
 }
 

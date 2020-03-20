@@ -145,7 +145,7 @@ static void _MAINBOARD_Tasks(void)
 {
     while(1)
     {
-        MAINBOARD_Tasks();
+        vMAINBOARD_Tasks();
         vTaskDelay(250 / portTICK_PERIOD_MS);
     }
 }

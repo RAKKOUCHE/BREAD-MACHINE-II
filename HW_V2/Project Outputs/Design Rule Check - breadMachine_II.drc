@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : D:\Projets\MTDistribution\BreadMachine II\HW_V2\breadMachine_II.PcbDoc
-Date     : 15/03/2020
-Time     : 21:22:41
+Date     : 16/03/2020
+Time     : 19:59:34
 
 Processing Rule : Clearance Constraint (Gap=12mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
 Rule Violations :0
@@ -75,4 +75,4 @@ Rule Violations :0
 
 Violations Detected : 0
 Waived Violations : 0
-Time Elapsed        : 00:00:03
+Time Elapsed        : 00:00:04

@@ -180,7 +180,7 @@ struct
  *         None
  *         
  ********************************************************************/
-static bool vReset(void)
+static bool vOneWireReset(void)
 {
     uint8_t byIndex;
     DQ_OutputEnable();
@@ -480,11 +480,11 @@ static void sendCommand(COMMANDES commande)
  *         None
  *         
  ********************************************************************/
-static bool ReadROM(void)
+static bool isOneWireReadROM(void)
 {
     bool isResult = false;
     uint8_t byIndex;
-    if(vReset())
+    if(vOneWireReset())
     {
         sendCommand(READ_ROM);
 
@@ -544,7 +544,7 @@ static bool ds18b20ReadScratchPad()
 {
     uint8_t byIndex;
     bool isResult = false;
-    if(vReset())
+    if(vOneWireReset())
     {
         sendCommand(SKIP_ROM);
         sendCommand(READ_SCRATCHPAD);
@@ -602,7 +602,7 @@ static bool ds18b20ReadScratchPad()
  ********************************************************************/
 static void converT(void)
 {
-    if(vReset())
+    if(vOneWireReset())
     {
         sendCommand(SKIP_ROM);
         sendCommand(CONVERT_T);
@@ -612,7 +612,7 @@ static void converT(void)
 
 /*********************************************************************
  * Function:        
- *         double getds18b20Temp(void)
+ *         static double getds18b20Temp(void)
  * 
  * Version:
  *         1.0
@@ -653,7 +653,7 @@ static void converT(void)
  *         None
  *         
  ********************************************************************/
-double getds18b20Temp()
+static double getds18b20Temp()
 {
     uint8_t byIndex;
     double data;
@@ -852,7 +852,7 @@ void vDS18B20Init(void)
     {
         HEATER_Clear();
         COLD_Clear();
-        xTaskCreate(vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
+        xTaskCreate((TaskFunction_t)vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
                     NULL, DS18B20_TASK_PRIORITY, &ds18b20.hDS18B20);
     }
 }

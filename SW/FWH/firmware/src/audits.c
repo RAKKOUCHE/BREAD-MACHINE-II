@@ -616,7 +616,7 @@ void vAuditsInit(void)
         setIsRAZAudit(false);
         if(audits.hAuditHandle == NULL)
         {
-            xTaskCreate(vTaskAudit, AUDITS_TASK_NAME, AUDITS_TASK_STACK, NULL,
+            xTaskCreate((TaskFunction_t)vTaskAudit, AUDITS_TASK_NAME, AUDITS_TASK_STACK, NULL,
                         AUDITS_TASK_PRIORITY, &audits.hAuditHandle);
         }
     }
