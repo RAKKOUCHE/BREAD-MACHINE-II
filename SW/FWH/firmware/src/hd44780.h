@@ -23,9 +23,10 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdbool.h>
-#include <GenericTypeDefs.h>
+//#include <GenericTypeDefs.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -124,7 +125,7 @@ extern "C"
     typedef enum
     {
         C_move = 0, /*!<Le curseur se déplace.*/
-        D_shift = 1, /*!<Les caractères se dplacent.*/
+        D_shift = 1, /*!<Les caractères se déplacent.*/
     } CursorDisplayShift;
 
     /**

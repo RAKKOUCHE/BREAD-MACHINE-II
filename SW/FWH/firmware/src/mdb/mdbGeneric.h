@@ -12,18 +12,29 @@
 extern "C"
 {
 #endif
-
 #include <stdint.h>
 
+
+    /**
+     * \addtogroup MDBGENERIC
+     * \ingroup MDB
+     * \brief Structure commune à tous les périphériques.
+     * @{
+     */
     /*Structures***************************************************************/
 
-    typedef struct __attribute__((packed))
+    /**
+     * \brief
+     */
+    typedef struct
     {
         uint8_t byLevel; /*!< Niveau MDB du périphérique.*/
         uint8_t byCountryCode[2]; /*!< Currency code. Cf l'appendix 1 de la documentation MDB. */
     }
     MDBGENERICDEVICECONFIG;
-
+/**
+ * @}
+ */
 #ifdef	__cplusplus
 }
 #endif

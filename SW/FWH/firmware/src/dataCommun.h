@@ -1,13 +1,17 @@
 /* ************************************************************************** */
-/** Descriptive File Name
+/**
+ * \author Rachid AKKOUCHE
  *
+ *  Company RASoftware
  *
- * Company
- *      RASoftware
- * \file datacommun.h
+ * \date 2019 11 01
  *
- * \brief Fichier entête superviseur des oonnées
- */
+ * \file dataCommun.h
+ *
+ * \brief Fichier  des données communes.
+ *
+ ***************************************************************************/
+ 
 /* ************************************************************************** */
 
 #ifndef _COMMUN_H_    /* Guard against multiple inclusion */

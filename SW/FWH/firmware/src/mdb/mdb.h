@@ -15,10 +15,7 @@ extern "C"
 #endif
 
     /*Includes*****************************************************************/
-#include <GenericTypeDefs.h>
-#include <stdio.h>
-#include <stdbool.h>
-//#include "globaldef.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
@@ -29,33 +26,39 @@ extern "C"
 #include "mainboard.h"
 #include "hd44780.h"
 
+    /**
+     * \defgroup MDB MDB
+     * Gestion du protocole MDB
+     * @{
+     */
     /*Defines*******************************************************/
 
     /**
-     * \def MDB_POLLING_MS
      * \brief temps de polling en ms du lecteur cashless.
      */
     //#define MDB_POLLING_MS ((125 + 200) / 6) * MILLISEC //Environ 54
 #define MDB_POLLING_MS (150)
 
     /**
-     * \def MDBRETRY
      * \brief Nombre de loop avant de vérifier si un périphérique est disponible
      */
 #define MDBRETRY 60
 
     /**
-     * \def MDB_TO
      * \brief delay mamixmum de réponse du CL
      */
 #define MDB_TO (15 * MILLISEC)
 
-    //Réponses
+    /**
+     * \brief Réponses mdb.
+     */    
 #define ACK 0x00 /*!< Réponse OK. */
 #define RET 0xAA, /*!< Retransmettre les données. */
 #define NAK 0XFF /*!< Réponse incorrecte. */
 
-    //Réponses POLL
+    /**
+     * \brief Réponses POLL
+     */
 #define RSP_NAK                     0xFF
 #define RSP_RET                     0xAA
 #define RSP_JUST_RESET              0x00 //Pour les changers et les lecteurs de billets
@@ -86,15 +89,15 @@ extern "C"
 #define RSP_FTL_REQ_TO_SEND         0x1F
 #define RSP_DIAGNOSTIC_RESPONSE     0xFF
 
-    // Commandes MDB.
+    /**
+     * \brief Commandes MDB.
+     */
 #define CMD_RESET                   0x00 /*!< Reset le périphérique. */
 #define CMD_SETUP                   0x01 /*!< Lecture des paramètres du périphérique. */
 #define CMD_STATUS                  0x01 /*!< Lecture des paramètres du périphérique. */
 #define CMD_POLL                    0x03 /*!< Obtient les informations du périphérique. */
 #define CMD_SECURITY                0x02
 #define CMD_VEND                    0x03 /*!< Demande d'approbation d'une vente. */
-#define CMD_CHANGER_POLL            0x03 /*!< Demande d'approbation d'une vente. */
-#define CMD_BILL_POLL               0x03
 #define CMD_READER                  0x04 /*!< Active desactive le lecteur. */
 #define CMD_BILL_TYPE               0x04
 #define CMD_REVALUE                 0x05 /*!< Réevaluation de la clé. */
@@ -103,7 +106,9 @@ extern "C"
 #define CMD_STACKER                 0x06
 #define CMD_NO_PENDING              0xFF
 
-    // MDB sous commandes.
+    /**
+     * \brief MDB sous commandes.
+     */
 #define SUB_CONFIG_DATA             0x00
 #define SUB_MAX_MIN_PRICE 0x01
 #define SUB_VEND_REQUEST 0x00
@@ -140,7 +145,6 @@ extern "C"
     /*Prototypes***************************************************************/
 
     /**
-     * @fn vMDBINIT
      * @brief Initialisation de la chaine MDB.
      */
     void vMDBInit(void);
@@ -175,7 +179,7 @@ extern "C"
      * \brief requête du flag indiquant que la chaine MDB est prête.
      * @return true si la chaîne MDB est prête.
      */
-    BOOL getIsMDBChecked(void);
+    bool getIsMDBChecked(void);
     /**Checked
      * \brief Requête du diviseur MDB.
      * @return Le diviseur MDB
@@ -189,14 +193,14 @@ extern "C"
      * @param byLen Taille de la striucture qui contient la ocnfiguration.
      * @return true si la réponse du périphérique est correcte.
      */
-    BOOL isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen);
+    bool isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen);
 
     /**
      * \brief Efectue la commande reset sur le périphérique
      * @param byDeviceAddress Adresse du périphérique
      * @return true si la réponse du périphérique est correcte
      */
-    BOOL isMDBReset(const uint8_t byDeviceAddress);
+    bool isMDBReset(const uint8_t byDeviceAddress);
 
     /**
      * @fn decimalDivider
@@ -253,8 +257,12 @@ extern "C"
      * @param[out] byLenAnswer Longeur de la réponse.
      * @return true si l'opération s'est déroulé correctement.
      */
-    BOOL isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer);
+    bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer);
 
+    /**
+     * @}
+     */
+    
 #ifdef	__cplusplus
 }
 #endif

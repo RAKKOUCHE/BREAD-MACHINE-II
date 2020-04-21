@@ -41,9 +41,6 @@
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
-
-
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
 extern "C"
@@ -61,7 +58,7 @@ extern "C"
     /* ************************************************************************** */
     /* ************************************************************************** */
 
-#define ADDRESSBASEAUDIT 0
+#define ADDRESSBASEAUDIT 0 
 #define ADDRESSCGIN ADDRESSBASEAUDIT /*0*/
 #define ADDRESSCGOUT (ADDRESSCGIN + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*32*/
 #define ADDRESSBVIN (ADDRESSCGOUT + (NUMBERCHANNELSCG * sizeof(uint32_t))) /*64*/
@@ -118,7 +115,7 @@ extern "C"
     void setAuditState(AUDITS_STATES state);
 
     /**
-     * \brief Renvoi le flag indiquant si les audits ont étés remise à zéro.
+     * \brief renvoie le flag indiquant si les audits ont étés remise à zéro.
      * @return true quand les audits viennent d'être remis à zéro.
      */
     bool getIsRAZAudit(void);

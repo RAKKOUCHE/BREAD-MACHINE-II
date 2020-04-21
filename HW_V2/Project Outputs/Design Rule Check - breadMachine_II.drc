@@ -1,18 +1,18 @@
 Protel Design System Design Rule Check
 PCB File : D:\Projets\MTDistribution\BreadMachine II\HW_V2\breadMachine_II.PcbDoc
-Date     : 16/03/2020
-Time     : 19:59:34
+Date     : 31/03/2020
+Time     : 20:00:37
 
-Processing Rule : Clearance Constraint (Gap=12mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
+Processing Rule : Clearance Constraint (Gap=20mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
 Rule Violations :0
 
 Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=10mil) (InNamedPolygon('BOT_GND')),(All)
+Processing Rule : Clearance Constraint (Gap=20mil) (InNamedPolygon('BOT_GND')),(All)
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=12mil) (InNamedPolygon('TOP_GND')),(All)
+Processing Rule : Clearance Constraint (Gap=20mil) (InNamedPolygon('TOP_GND')),(All)
 Rule Violations :0
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)

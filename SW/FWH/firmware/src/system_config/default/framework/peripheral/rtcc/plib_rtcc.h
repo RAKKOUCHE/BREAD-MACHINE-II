@@ -3,19 +3,19 @@
 
   Company:
     Microchip Technology Inc.
-	
+
   File Name:
     plib_rtcc.h
-  
+
   Summary:
     RTCC Peripheral Library interface header for RTCC common definitions.
 
   Description:
     This header file contains the function prototypes and definitions of
     the data types and constants that make up the interface to the RTCC
-    Peripheral Library for all families of Microchip microcontrollers. The 
+    Peripheral Library for all families of Microchip microcontrollers. The
     definitions in this file are common to the RTCC peripheral.
-**************************************************************************/
+ **************************************************************************/
 //DOM-IGNORE-BEGIN
 /******************************************************************************
 Copyright 2013-2015 released Microchip Technology Inc.  All rights reserved.
@@ -38,7 +38,7 @@ INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
 CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
 SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-*******************************************************************************/
+ *******************************************************************************/
 //DOM-IGNORE-END
 
 #ifndef _PLIB_RTCC_H
@@ -47,2978 +47,2979 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-    extern "C" {
+extern "C"
+{
 
 #endif
-// DOM-IGNORE-END
+    // DOM-IGNORE-END
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files (continued at end of file)
-// *****************************************************************************
-// *****************************************************************************
-/*  This section lists the other files that are included in this file.  However,
-    please see the end of the file for additional implementation header files
-    that are also included
-*/
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Included Files (continued at end of file)
+    // *****************************************************************************
+    // *****************************************************************************
+    /*  This section lists the other files that are included in this file.  However,
+        please see the end of the file for additional implementation header files
+        that are also included
+     */
 
 #include "processor/rtcc_processor.h"
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Constants & Data Types
-// *****************************************************************************
-// *****************************************************************************
-//DOM-IGNORE-BEGIN
-// ****************************************************************************
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Constants & Data Types
+    // *****************************************************************************
+    // *****************************************************************************
+    //DOM-IGNORE-BEGIN
+    // ****************************************************************************
 
 
-//DOM-IGNORE-END
-// *****************************************************************************
-// *****************************************************************************
-// Section: RTCC Peripheral Library Interface Functions
-// *****************************************************************************
-// *****************************************************************************
+    //DOM-IGNORE-END
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: RTCC Peripheral Library Interface Functions
+    // *****************************************************************************
+    // *****************************************************************************
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_Enable ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_Enable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Enables the specific RTCC module on the device.
+      Summary:
+        Enables the specific RTCC module on the device.
 
-  Description:
-    This function enables the specific RTCC module on the device.
+      Description:
+        This function enables the specific RTCC module on the device.
 
-  Precondition:
-    The RTCC module should be unlocked for writing using the function
-    PLIB_RTCC_WriteEnable before this function is called.
+      Precondition:
+        The RTCC module should be unlocked for writing using the function
+        PLIB_RTCC_WriteEnable before this function is called.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_Enable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_Enable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    By calling this function, the RTCC pins are controlled by the RTCC
-    module. The RTCC module will continue to function when the device is held 
-    in reset.
+      Remarks:
+        By calling this function, the RTCC pins are controlled by the RTCC
+        module. The RTCC module will continue to function when the device is held
+        in reset.
 
-    This function implements an operation of the EnableControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsEnableControl in your application to automatically 
-    determine whether this feature is available.
+        This function implements an operation of the EnableControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsEnableControl in your application to automatically
+        determine whether this feature is available.
 
-*/
+     */
 
-void PLIB_RTCC_Enable ( RTCC_MODULE_ID index );
+    void PLIB_RTCC_Enable(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_Disable ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_Disable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Disables the specific RTCC module on the device.
+      Summary:
+        Disables the specific RTCC module on the device.
 
-  Description:
-    This function disables the specific RTCC module on the device.
+      Description:
+        This function disables the specific RTCC module on the device.
 
-  Precondition:
-    The RTCC module should be unlocked for writing using the function
-    PLIB_RTCC_WriteEnable before this function is called.
+      Precondition:
+        The RTCC module should be unlocked for writing using the function
+        PLIB_RTCC_WriteEnable before this function is called.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_Disable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_Disable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the EnableControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsEnableControl in your application to automatically 
-    determine whether this feature is available.
-*/
+      Remarks:
+        This function implements an operation of the EnableControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsEnableControl in your application to automatically
+        determine whether this feature is available.
+     */
 
-void PLIB_RTCC_Disable ( RTCC_MODULE_ID index );
+    void PLIB_RTCC_Disable(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_WriteEnable ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_WriteEnable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Enables writing to the specific RTCC module's value registers.
+      Summary:
+        Enables writing to the specific RTCC module's value registers.
 
-  Description:
-    This function enables writing to the specific RTCC module's value
-    registers.
-
-  Precondition:
-    The SYSLOCK unlock sequence must be executed prior to calling this
-    function by calling the PLIB_CORE_SysUnlock function.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    PLIB_RTCC_WriteEnable(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the WriteEnable feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsWriteEnable in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_WriteEnable ( RTCC_MODULE_ID index );
+      Description:
+        This function enables writing to the specific RTCC module's value
+        registers.
+
+      Precondition:
+        The SYSLOCK unlock sequence must be executed prior to calling this
+        function by calling the PLIB_CORE_SysUnlock function.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        PLIB_RTCC_WriteEnable(RTCC_ID_0);
+        </code>
+
+      Remarks:
+        This function implements an operation of the WriteEnable feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsWriteEnable in your application to automatically
+        determine whether this feature is available.
+     */
+
+    void PLIB_RTCC_WriteEnable(RTCC_MODULE_ID index);
 
-
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_WriteDisable ( RTCC_MODULE_ID index )
-
-  Summary:
-    Disables writing to the specific RTCC module's value registers.
-
-  Description:
-    This function disables writing to the specific RTCC module's value
-    registers.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    PLIB_RTCC_WriteDisable(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the WriteEnable feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsWriteEnable in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_WriteDisable ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    bool PLIB_RTCC_RTCSyncStatusGet ( RTCC_MODULE_ID index )
-
-  Summary:
-    The function returns the synchronization status bit.
-
-  Description:
-    The function returns the synchronization status bit, which is used to
-    determine whether it is safe to read the date/time values, or if the
-	values will change within 32 RTCC clocks.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    - true  - Date and time will change within 32 RTCC clocks
-    - false - Date and time are safe to read, and will not change soon
-
-  Example:
-    <code>
-    if (PLIB_RTCC_RTCSyncStatusGet(RTCC_ID_0))
-	{
-	...
-	}
-    </code>
-
-  Remarks:
-    This bit is read-only.
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsSynchronization in your application to automatically 
-    determine whether this feature is available.
-*/
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_WriteDisable ( RTCC_MODULE_ID index )
+
+      Summary:
+        Disables writing to the specific RTCC module's value registers.
+
+      Description:
+        This function disables writing to the specific RTCC module's value
+        registers.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        PLIB_RTCC_WriteDisable(RTCC_ID_0);
+        </code>
+
+      Remarks:
+        This function implements an operation of the WriteEnable feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsWriteEnable in your application to automatically
+        determine whether this feature is available.
+     */
+
+    void PLIB_RTCC_WriteDisable(RTCC_MODULE_ID index);
+
+    //******************************************************************************
+    /* Function:
+        bool PLIB_RTCC_RTCSyncStatusGet ( RTCC_MODULE_ID index )
+
+      Summary:
+        The function returns the synchronization status bit.
+
+      Description:
+        The function returns the synchronization status bit, which is used to
+        determine whether it is safe to read the date/time values, or if the
+        values will change within 32 RTCC clocks.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        - true  - Date and time will change within 32 RTCC clocks
+        - false - Date and time are safe to read, and will not change soon
+
+      Example:
+        <code>
+        if (PLIB_RTCC_RTCSyncStatusGet(RTCC_ID_0))
+        {
+        ...
+        }
+        </code>
+
+      Remarks:
+        This bit is read-only.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsSynchronization in your application to automatically
+        determine whether this feature is available.
+     */
 
-bool PLIB_RTCC_RTCSyncStatusGet ( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_RTCSyncStatusGet(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    bool PLIB_RTCC_HalfSecondStatusGet ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        bool PLIB_RTCC_HalfSecondStatusGet ( RTCC_MODULE_ID index )
 
-  Summary:
-    The function returns the half second status bit.
-
-  Description:
-    The function returns the half second status bit, which is used in the
-    calibration procedure. When the seconds byte is zero, the calibration value
-    must be updated when the half second bit becomes '1'.
+      Summary:
+        The function returns the half second status bit.
+
+      Description:
+        The function returns the half second status bit, which is used in the
+        calibration procedure. When the seconds byte is zero, the calibration value
+        must be updated when the half second bit becomes '1'.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    - true  - Second half period of a second
-    - false - First half period of a second
+      Returns:
+        - true  - Second half period of a second
+        - false - First half period of a second
 
-  Example:
-    <code>
-    // Wait for the half second status bit to be '1'.
-    while(PLIB_RTCC_HalfSecondStatusGet(RTCC_ID_0));
-    </code>
+      Example:
+        <code>
+        // Wait for the half second status bit to be '1'.
+        while(PLIB_RTCC_HalfSecondStatusGet(RTCC_ID_0));
+        </code>
 
-  Remarks:
-    This bit is read-only. It is cleared to '0' on a write to the seconds
-    value.
-    This function implements an operation of the HalfSecond feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsHalfSecond in your application to automatically 
-    determine whether this feature is available.
-*/
+      Remarks:
+        This bit is read-only. It is cleared to '0' on a write to the seconds
+        value.
+        This function implements an operation of the HalfSecond feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsHalfSecond in your application to automatically
+        determine whether this feature is available.
+     */
 
-bool PLIB_RTCC_HalfSecondStatusGet ( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_HalfSecondStatusGet(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_ClockOutputEnable ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_ClockOutputEnable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Enables the specific RTCC module's output pin.
+      Summary:
+        Enables the specific RTCC module's output pin.
 
-  Description:
-    This function enables the specific RTCC module's output and generates a
-    square wave using either the alarm or the 1 Hz clock output on the RTCC
-    pin.
+      Description:
+        This function enables the specific RTCC module's output and generates a
+        square wave using either the alarm or the 1 Hz clock output on the RTCC
+        pin.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_ClockOutputEnable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_ClockOutputEnable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the OutputControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsOutputControl in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        This function implements an operation of the OutputControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsOutputControl in your application to automatically
+        determine whether this feature is available.
 
-*/
+     */
 
-void PLIB_RTCC_ClockOutputEnable ( RTCC_MODULE_ID index );
+    void PLIB_RTCC_ClockOutputEnable(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_ClockOutputDisable ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_ClockOutputDisable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Disables the specific RTCC module's output pin.
+      Summary:
+        Disables the specific RTCC module's output pin.
 
-  Description:
-    This function disables the specific RTCC module's output pin.
+      Description:
+        This function disables the specific RTCC module's output pin.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_ClockOutputDisable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_ClockOutputDisable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the OutputControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsOutputControl in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        This function implements an operation of the OutputControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsOutputControl in your application to automatically
+        determine whether this feature is available.
 
-*/
+     */
 
-void PLIB_RTCC_ClockOutputDisable ( RTCC_MODULE_ID index );
+    void PLIB_RTCC_ClockOutputDisable(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_ClockSourceSelect ( RTCC_MODULE_ID index, RTCC_CLOCK_SOURCE_SELECT source )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_ClockSourceSelect ( RTCC_MODULE_ID index, RTCC_CLOCK_SOURCE_SELECT source )
 
-  Summary:
-    Selects the clock source for the RTCC module.
+      Summary:
+        Selects the clock source for the RTCC module.
 
-  Description:
-    This function determines which clock source the RTCC module will use
-    depending on the features of the device.
+      Description:
+        This function determines which clock source the RTCC module will use
+        depending on the features of the device.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    source          - Which clock source will be used
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        source          - Which clock source will be used
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_ClockSourceSelect(RTCC_ID_0, RTCC_CLOCK_SOURCE_SELECT_NONE);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_ClockSourceSelect(RTCC_ID_0, RTCC_CLOCK_SOURCE_SELECT_NONE);
+        </code>
 
-  Remarks:
-    This function implements an operation of the ClockSelect feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsClockSelect in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        This function implements an operation of the ClockSelect feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsClockSelect in your application to automatically
+        determine whether this feature is available.
 
-*/
+     */
 
-void PLIB_RTCC_ClockSourceSelect ( RTCC_MODULE_ID index, RTCC_CLOCK_SOURCE_SELECT source );
+    void PLIB_RTCC_ClockSourceSelect(RTCC_MODULE_ID index, RTCC_CLOCK_SOURCE_SELECT source);
 
-//******************************************************************************
-/* Function:
-    bool PLIB_RTCC_ClockRunningStatus ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        bool PLIB_RTCC_ClockRunningStatus ( RTCC_MODULE_ID index )
 
-  Summary:
-    Provides the status of the RTCC clock.
+      Summary:
+        Provides the status of the RTCC clock.
 
-  Description:
-    This function provides the status of the RTCC clock.
+      Description:
+        This function provides the status of the RTCC clock.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    The status of the RTCC clock.
+      Returns:
+        The status of the RTCC clock.
 
-  Example:
-    <code>
-    bool status;
-    status = PLIB_RTCC_ClockRunningStatus(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        bool status;
+        status = PLIB_RTCC_ClockRunningStatus(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the ClockRunning feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsClockRunning in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        This function implements an operation of the ClockRunning feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsClockRunning in your application to automatically
+        determine whether this feature is available.
 
-*/
+     */
 
-bool PLIB_RTCC_ClockRunningStatus ( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ClockRunningStatus(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    uint16_t PLIB_RTCC_DriftCalibrateGet ( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        uint16_t PLIB_RTCC_DriftCalibrateGet ( RTCC_MODULE_ID index )
 
-  Summary:
-    Reads the specific RTCC module's drift calibration bits.
+      Summary:
+        Reads the specific RTCC module's drift calibration bits.
 
-  Description:
-    This function reads the specific RTCC module's drift calibration bits.
+      Description:
+        This function reads the specific RTCC module's drift calibration bits.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    uint16_t        - The current drift calibration value
+      Returns:
+        uint16_t        - The current drift calibration value
 
-  Example:
-    <code>
-    uint16_t calibrationbits;
-    calibrationbits = PLIB_RTCC_DriftCalibrateGet(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        uint16_t calibrationbits;
+        calibrationbits = PLIB_RTCC_DriftCalibrateGet(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the Calibration feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsCalibration in your application to automatically 
-    determine whether this feature is available.
-*/
+      Remarks:
+        This function implements an operation of the Calibration feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsCalibration in your application to automatically
+        determine whether this feature is available.
+     */
 
-uint16_t PLIB_RTCC_DriftCalibrateGet ( RTCC_MODULE_ID index );
+    uint16_t PLIB_RTCC_DriftCalibrateGet(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_DriftCalibrateSet ( RTCC_MODULE_ID index, uint16_t calibrationbits )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_DriftCalibrateSet ( RTCC_MODULE_ID index, uint16_t calibrationbits )
 
-  Summary:
-    Sets the specific RTCC module's drift calibration bits.
+      Summary:
+        Sets the specific RTCC module's drift calibration bits.
 
-  Description:
-    This function sets the specific RTCC module's drift calibration bits. The 
-    error between the system clock and the external clock has to be computed and 
-    calibration input must be provided to this function.
+      Description:
+        This function sets the specific RTCC module's drift calibration bits. The
+        error between the system clock and the external clock has to be computed and
+        calibration input must be provided to this function.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-    calibrationbits            - Drift calibration bits
+        calibrationbits            - Drift calibration bits
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    uint16_t calibrationbits = 3; //Positive 3 adjustment derived from the formula
-                                  // Error = (Ideal Freq(32758) - Measured)*60;
-    PLIB_RTCC_DriftCalibrateSet(RTCC_ID_0, calibrationbits);
-    </code>
+      Example:
+        <code>
+        uint16_t calibrationbits = 3; //Positive 3 adjustment derived from the formula
+                                      // Error = (Ideal Freq(32758) - Measured)*60;
+        PLIB_RTCC_DriftCalibrateSet(RTCC_ID_0, calibrationbits);
+        </code>
 
-  Remarks:
-    This function implements an operation of the Calibration feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsCalibration in your application to automatically 
-    determine whether this feature is available.
-*/
+      Remarks:
+        This function implements an operation of the Calibration feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsCalibration in your application to automatically
+        determine whether this feature is available.
+     */
 
-void PLIB_RTCC_DriftCalibrateSet ( RTCC_MODULE_ID index, uint16_t calibrationbits);
+    void PLIB_RTCC_DriftCalibrateSet(RTCC_MODULE_ID index, uint16_t calibrationbits);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_StopInIdleEnable( RTCC_MODULE_ID index)
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_StopInIdleEnable( RTCC_MODULE_ID index)
 
-  Summary:
-    Disables access to the RTCC module by the Peripheral Bus Clock (PBCLK) when
-    the CPU enters Idle mode.
+      Summary:
+        Disables access to the RTCC module by the Peripheral Bus Clock (PBCLK) when
+        the CPU enters Idle mode.
 
-  Description:
-    This function disables access to the RTCC module by the PBCLK when the CPU is
-    in Idle mode.
+      Description:
+        This function disables access to the RTCC module by the PBCLK when the CPU is
+        in Idle mode.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_StopInIdleEnable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_StopInIdleEnable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    This function implements an operation of the StopInIdle feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsStopInIdle in your application to automatically 
-    determine whether this feature is available.
-*/
+      Remarks:
+        This function implements an operation of the StopInIdle feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsStopInIdle in your application to automatically
+        determine whether this feature is available.
+     */
 
-void PLIB_RTCC_StopInIdleEnable ( RTCC_MODULE_ID index);
+    void PLIB_RTCC_StopInIdleEnable(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_StopInIdleDisable( RTCC_MODULE_ID index)
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_StopInIdleDisable( RTCC_MODULE_ID index)
 
-  Summary:
-    Continues normal RTCC operation when the device enters Idle mode.
+      Summary:
+        Continues normal RTCC operation when the device enters Idle mode.
 
-  Description:
-    This function continues normal RTCC operation when the device enters Idle mode.
+      Description:
+        This function continues normal RTCC operation when the device enters Idle mode.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_StopInIdleDisable(RTCC_ID_0);
-    </code>
+      Example:
+        <code>
+        PLIB_RTCC_StopInIdleDisable(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    None.
+      Remarks:
+        None.
 
-    This function implements an operation of the StopInIdle feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsStopInIdle in your application to automatically 
-    determine whether this feature is available.
-*/
+        This function implements an operation of the StopInIdle feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsStopInIdle in your application to automatically
+        determine whether this feature is available.
+     */
 
-void PLIB_RTCC_StopInIdleDisable ( RTCC_MODULE_ID index);
+    void PLIB_RTCC_StopInIdleDisable(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_OutputSelect ( RTCC_MODULE_ID index, RTCC_OUTPUT_SELECT data )
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_OutputSelect ( RTCC_MODULE_ID index, RTCC_OUTPUT_SELECT data )
 
-  Summary:
-    Selects which signal will be presented on the RTCC pin
+      Summary:
+        Selects which signal will be presented on the RTCC pin
 
-  Description:
-    This function selects which signal will be presented on the RTCC pin.
+      Description:
+        This function selects which signal will be presented on the RTCC pin.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    data            - Enumerated value of which signal to present
-	
-  Returns:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        data            - Enumerated value of which signal to present
 
-  Example:
-    <code>
-    PLIB_RTCC_OutputSelect(RTCC_ID_0, RTCC_OUTPUT_SECONDS_CLOCK);
-    </code>
+      Returns:
+        None.
 
-  Remarks:
-    The RTCC module's output pin should be enabled using the function
-    PLIB_RTCC_OutputEnable.
+      Example:
+        <code>
+        PLIB_RTCC_OutputSelect(RTCC_ID_0, RTCC_OUTPUT_SECONDS_CLOCK);
+        </code>
 
-    This function implements an operation of the OutputSelect feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsOutputSelect in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        The RTCC module's output pin should be enabled using the function
+        PLIB_RTCC_OutputEnable.
 
-*/
+        This function implements an operation of the OutputSelect feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsOutputSelect in your application to automatically
+        determine whether this feature is available.
 
-void PLIB_RTCC_OutputSelect ( RTCC_MODULE_ID index, RTCC_OUTPUT_SELECT data);
+     */
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmEnable ( RTCC_MODULE_ID index )
+    void PLIB_RTCC_OutputSelect(RTCC_MODULE_ID index, RTCC_OUTPUT_SELECT data);
 
-  Summary:
-    Enables the specific RTCC module's alarm.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmEnable ( RTCC_MODULE_ID index )
 
-  Description:
-    This function enables the specific RTCC module's alarm.
-    RTCC Alarm bit shouldn't be modified when RTCC on bit is enabled and 
-    PLIB_RTCC_AlarmSyncStatusGet (ALRMSYNC bit) returns true.
-    Meaning the check RTCC ON (RTCCON<15>) bit and the ALRMSYNC bit should be 
-	equal to '1'.    
+      Summary:
+        Enables the specific RTCC module's alarm.
 
-  Precondition:
-    None.
+      Description:
+        This function enables the specific RTCC module's alarm.
+        RTCC Alarm bit shouldn't be modified when RTCC on bit is enabled and
+        PLIB_RTCC_AlarmSyncStatusGet (ALRMSYNC bit) returns true.
+        Meaning the check RTCC ON (RTCCON<15>) bit and the ALRMSYNC bit should be
+        equal to '1'.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Precondition:
+        None.
 
-  Returns:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Example:
-    <code>
-    // check RTCC enable bit and PLIB_RTCC_AlarmSyncStatusGet return value and
-    // then modify the Alarm bit.
-    PLIB_RTCC_AlarmEnable(RTCC_ID_0);
-    </code>
+      Returns:
+        None.
 
-  Remarks:
-    The alarm enable bit is cleared automatically after an alarm event
-    whenever the alarm is not set up to repeat, and chime is disabled.
+      Example:
+        <code>
+        // check RTCC enable bit and PLIB_RTCC_AlarmSyncStatusGet return value and
+        // then modify the Alarm bit.
+        PLIB_RTCC_AlarmEnable(RTCC_ID_0);
+        </code>
 
-    This function implements an operation of the AlarmControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmControl in your application to automatically 
-    determine whether this feature is available.
+      Remarks:
+        The alarm enable bit is cleared automatically after an alarm event
+        whenever the alarm is not set up to repeat, and chime is disabled.
 
-*/
+        This function implements an operation of the AlarmControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmControl in your application to automatically
+        determine whether this feature is available.
 
-void PLIB_RTCC_AlarmEnable ( RTCC_MODULE_ID index );
+     */
 
+    void PLIB_RTCC_AlarmEnable(RTCC_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmDisable ( RTCC_MODULE_ID index )
 
-  Summary:
-    Disables the specific RTCC module's alarm.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmDisable ( RTCC_MODULE_ID index )
 
-  Description:
-    This function disables the specific RTCC module's alarm.
-    RTCC Alarm bit shouldn't be modified when RTCC on bit is enabled and 
-    PLIB_RTCC_AlarmSyncStatusGet (ALRMSYNC bit) returns true.
-    Meaning the check RTCC ON (RTCCON<15>) bit and the ALRMSYNC bit should be 
-	equal to '1'.
-	
-  Precondition:
-    None.
+      Summary:
+        Disables the specific RTCC module's alarm.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function disables the specific RTCC module's alarm.
+        RTCC Alarm bit shouldn't be modified when RTCC on bit is enabled and
+        PLIB_RTCC_AlarmSyncStatusGet (ALRMSYNC bit) returns true.
+        Meaning the check RTCC ON (RTCCON<15>) bit and the ALRMSYNC bit should be
+        equal to '1'.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    // check RTCC enable bit and PLIB_RTCC_AlarmSyncStatusGet return value and
-    // then modify the Alarm bit.
-    PLIB_RTCC_AlarmDisable(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmControl in your application to automatically 
-    determine whether this feature is available.
+      Returns:
+        None.
 
-*/
+      Example:
+        <code>
+        // check RTCC enable bit and PLIB_RTCC_AlarmSyncStatusGet return value and
+        // then modify the Alarm bit.
+        PLIB_RTCC_AlarmDisable(RTCC_ID_0);
+        </code>
 
-void PLIB_RTCC_AlarmDisable ( RTCC_MODULE_ID index );
+      Remarks:
+        This function implements an operation of the AlarmControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmControl in your application to automatically
+        determine whether this feature is available.
 
+     */
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmChimeEnable ( RTCC_MODULE_ID index )
+    void PLIB_RTCC_AlarmDisable(RTCC_MODULE_ID index);
 
-  Summary:
-    Enables the specific RTCC module's chime.
 
-  Description:
-    This function enables the specific RTCC module's chime. The alarm repeat 
-    count bits are allowed to rollover.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmChimeEnable ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Enables the specific RTCC module's chime.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function enables the specific RTCC module's chime. The alarm repeat
+        count bits are allowed to rollover.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_AlarmChimeEnable(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-     This function implements an operation of the AlarmChimeControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmChimeControl in your application to automatically 
-    determine whether this feature is available.
+      Returns:
+        None.
 
-*/
+      Example:
+        <code>
+        PLIB_RTCC_AlarmChimeEnable(RTCC_ID_0);
+        </code>
 
-void PLIB_RTCC_AlarmChimeEnable ( RTCC_MODULE_ID index );
+      Remarks:
+         This function implements an operation of the AlarmChimeControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmChimeControl in your application to automatically
+        determine whether this feature is available.
 
+     */
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmChimeDisable ( RTCC_MODULE_ID index )
+    void PLIB_RTCC_AlarmChimeEnable(RTCC_MODULE_ID index);
 
-  Summary:
-    Disables the specific RTCC module's chime.
 
-  Description:
-    This function disables the specific RTCC module's chime. The alarm repeat 
-    count value bits stop once they reach zero.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmChimeDisable ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Disables the specific RTCC module's chime.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function disables the specific RTCC module's chime. The alarm repeat
+        count value bits stop once they reach zero.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    PLIB_RTCC_AlarmChimeDisable(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmChimeControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmChimeControl in your application to automatically 
-    determine whether this feature is available.
+      Returns:
+        None.
 
-*/
+      Example:
+        <code>
+        PLIB_RTCC_AlarmChimeDisable(RTCC_ID_0);
+        </code>
 
-void PLIB_RTCC_AlarmChimeDisable ( RTCC_MODULE_ID index );
+      Remarks:
+        This function implements an operation of the AlarmChimeControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmChimeControl in your application to automatically
+        determine whether this feature is available.
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmPulseInitialSet ( RTCC_MODULE_ID index )
+     */
 
-  Summary:
-    Enables the determination of the initial alarm pulse.
+    void PLIB_RTCC_AlarmChimeDisable(RTCC_MODULE_ID index);
 
-  Description:
-    This function enables the determination of initial alarm pulse.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmPulseInitialSet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    The ALRMEN bit should be '0' indicating the PLIB_RTCC_AlarmDisable was called.
-    This function must not be called when the RTCC is ON and the Alarm Sync is 1.
+      Summary:
+        Enables the determination of the initial alarm pulse.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function enables the determination of initial alarm pulse.
 
-  Returns:
-    None.
+      Precondition:
+        The ALRMEN bit should be '0' indicating the PLIB_RTCC_AlarmDisable was called.
+        This function must not be called when the RTCC is ON and the Alarm Sync is 1.
 
-  Example:
-    <code>
-    bool data = 0;
-    PLIB_RTCC_AlarmPulseInitialSet(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmPulseInitial feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmPulseInitial in your application to automatically 
-    determine whether this feature is available.
+      Returns:
+        None.
 
-*/
+      Example:
+        <code>
+        bool data = 0;
+        PLIB_RTCC_AlarmPulseInitialSet(RTCC_ID_0, data);
+        </code>
 
-void PLIB_RTCC_AlarmPulseInitialSet ( RTCC_MODULE_ID index, bool data );
+      Remarks:
+        This function implements an operation of the AlarmPulseInitial feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmPulseInitial in your application to automatically
+        determine whether this feature is available.
 
-//******************************************************************************
-/* Function:
-    bool PLIB_RTCC_AlarmPulseInitialGet ( RTCC_MODULE_ID index )
+     */
 
-  Summary:
-    Returns the state of the initial alarm pulse.
+    void PLIB_RTCC_AlarmPulseInitialSet(RTCC_MODULE_ID index, bool data);
 
-  Description:
-    This function returns the state of the initial alarm pulse.
+    //******************************************************************************
+    /* Function:
+        bool PLIB_RTCC_AlarmPulseInitialGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    The ALRMEN bit should be '1' indicating the PLIB_RTCC_AlarmEnable function was
-    called.
+      Summary:
+        Returns the state of the initial alarm pulse.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function returns the state of the initial alarm pulse.
 
-  Returns:
-    * 1 - Logical High
-    * 0 - Logical Low
+      Precondition:
+        The ALRMEN bit should be '1' indicating the PLIB_RTCC_AlarmEnable function was
+        called.
 
-  Example:
-    <code>
-    bool PulseValue;
-    PulseValue = PLIB_RTCC_AlarmPulseInitialGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmPulseInitial feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmPulseInitial in your application to automatically 
-    determine whether this feature is available.
+      Returns:
+     * 1 - Logical High
+     * 0 - Logical Low
 
-*/
+      Example:
+        <code>
+        bool PulseValue;
+        PulseValue = PLIB_RTCC_AlarmPulseInitialGet(RTCC_ID_0);
+        </code>
 
-bool PLIB_RTCC_AlarmPulseInitialGet ( RTCC_MODULE_ID index );
+      Remarks:
+        This function implements an operation of the AlarmPulseInitial feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmPulseInitial in your application to automatically
+        determine whether this feature is available.
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmMaskModeSelect ( RTCC_MODULE_ID index, RTCC_ALARM_MASK_CONFIGURATION data )
+     */
 
-  Summary:
-    Sets the specific RTCC module's alarm mask Configuration bits.
+    bool PLIB_RTCC_AlarmPulseInitialGet(RTCC_MODULE_ID index);
 
-  Description:
-    This function sets the specific RTCC module's alarm mask Configuration bits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmMaskModeSelect ( RTCC_MODULE_ID index, RTCC_ALARM_MASK_CONFIGURATION data )
 
-  Remarks:
-    The actual definition of this enumeration is device-specific.
+      Summary:
+        Sets the specific RTCC module's alarm mask Configuration bits.
 
-    Precondition:
-    None.
+      Description:
+        This function sets the specific RTCC module's alarm mask Configuration bits.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    data            - Alarm mask Configuration bits
+      Remarks:
+        The actual definition of this enumeration is device-specific.
 
-  Returns:
-    None.
+        Precondition:
+        None.
 
-  Example:
-    <code>
-    uint8_t data = 0;
-    PLIB_RTCC_AlarmMaskModeSelect(RTCC_ID_0, RTCC_ALARM_EVERY_HALF_SECOND);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        data            - Alarm mask Configuration bits
 
-  Remarks:
-    This function implements an operation of the AlarmMaskControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmMaskControl in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        None.
 
-void PLIB_RTCC_AlarmMaskModeSelect ( RTCC_MODULE_ID index, RTCC_ALARM_MASK_CONFIGURATION data );
+      Example:
+        <code>
+        uint8_t data = 0;
+        PLIB_RTCC_AlarmMaskModeSelect(RTCC_ID_0, RTCC_ALARM_EVERY_HALF_SECOND);
+        </code>
 
+      Remarks:
+        This function implements an operation of the AlarmMaskControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmMaskControl in your application to automatically
+        determine whether this feature is available.
+     */
 
-//******************************************************************************
-/* Function:
-    bool PLIB_RTCC_AlarmSyncStatusGet ( RTCC_MODULE_ID index )
+    void PLIB_RTCC_AlarmMaskModeSelect(RTCC_MODULE_ID index, RTCC_ALARM_MASK_CONFIGURATION data);
 
-  Summary:
-    The function returns the synchronization status bit.
 
-  Description:
-    The function returns the synchronization status bit, which is used to
-    determine whether it is safe to read the date/time values, or if the
-	values will change within 32 RTCC clocks.
+    //******************************************************************************
+    /* Function:
+        bool PLIB_RTCC_AlarmSyncStatusGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        The function returns the synchronization status bit.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the synchronization status bit, which is used to
+        determine whether it is safe to read the date/time values, or if the
+        values will change within 32 RTCC clocks.
 
-  Returns:
-    - true  - Alarm repeat count may change as a result of a half-second 
-			  rollover during a read.
-    - false - Alarm repeat count is safe to read, and will not change
-			  in less than 32 RTC clocks.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    if (PLIB_RTCC_AlarmSyncStatusGet(RTCC_ID_0))
-	{
-	...
-	}
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This bit is read-only.
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmSynchronization in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        - true  - Alarm repeat count may change as a result of a half-second
+                  rollover during a read.
+        - false - Alarm repeat count is safe to read, and will not change
+                  in less than 32 RTC clocks.
 
-bool PLIB_RTCC_AlarmSyncStatusGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        if (PLIB_RTCC_AlarmSyncStatusGet(RTCC_ID_0))
+        {
+        ...
+        }
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmValueRegisterPointer ( RTCC_MODULE_ID index, uint8_t data )
+      Remarks:
+        This bit is read-only.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmSynchronization in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Sets the specific RTCC module's Alarm register pointer.
+    bool PLIB_RTCC_AlarmSyncStatusGet(RTCC_MODULE_ID index);
 
-  Description:
-    This function sets the specific RTCC module's Alarm register pointer.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmValueRegisterPointer ( RTCC_MODULE_ID index, uint8_t data )
 
-  Precondition:
-    None.
+      Summary:
+        Sets the specific RTCC module's Alarm register pointer.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    data            - Alarm register pointer
+      Description:
+        This function sets the specific RTCC module's Alarm register pointer.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint8_t data = 2;
-    PLIB_RTCC_AlarmValueRegisterPointer(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        data            - Alarm register pointer
 
-  Remarks:
-    None.
-*/
+      Returns:
+        None.
 
-void PLIB_RTCC_AlarmValueRegisterPointer ( RTCC_MODULE_ID index, uint8_t data );
+      Example:
+        <code>
+        uint8_t data = 2;
+        PLIB_RTCC_AlarmValueRegisterPointer(RTCC_ID_0, data);
+        </code>
 
+      Remarks:
+        None.
+     */
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmRepeatCountSet ( RTCC_MODULE_ID index, uint8_t data )
+    void PLIB_RTCC_AlarmValueRegisterPointer(RTCC_MODULE_ID index, uint8_t data);
 
-  Summary:
-    Sets the specific RTCC module's alarm repeat counter.
 
-  Description:
-    This function sets the specific RTCC module's alarm repeat counter.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmRepeatCountSet ( RTCC_MODULE_ID index, uint8_t data )
 
-  Precondition:
-    None.
+      Summary:
+        Sets the specific RTCC module's alarm repeat counter.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    data            - Alarm repeat counter bits
+      Description:
+        This function sets the specific RTCC module's alarm repeat counter.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint8_t data = 0xFF;
-    PLIB_RTCC_AlarmRepeatCountSet(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        data            - Alarm repeat counter bits
 
-  Remarks:
-    The counter decrements on any alarm event. The counter is prevented from
-    rolling over unless chime is enabled.
+      Returns:
+        None.
 
-    This function implements an operation of the AlarmRepeatControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmRepeatControl in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint8_t data = 0xFF;
+        PLIB_RTCC_AlarmRepeatCountSet(RTCC_ID_0, data);
+        </code>
 
-void PLIB_RTCC_AlarmRepeatCountSet ( RTCC_MODULE_ID index, uint8_t data );
+      Remarks:
+        The counter decrements on any alarm event. The counter is prevented from
+        rolling over unless chime is enabled.
 
-//******************************************************************************
-/* Function:
-    uint8_t PLIB_RTCC_AlarmRepeatCountGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the AlarmRepeatControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmRepeatControl in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Reads the specific RTCC module's alarm repeat counter.
+    void PLIB_RTCC_AlarmRepeatCountSet(RTCC_MODULE_ID index, uint8_t data);
 
-  Description:
-    This function reads the specific RTCC module's alarm repeat counter.
+    //******************************************************************************
+    /* Function:
+        uint8_t PLIB_RTCC_AlarmRepeatCountGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Reads the specific RTCC module's alarm repeat counter.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        This function reads the specific RTCC module's alarm repeat counter.
 
-  Returns:
-    uint8_t         - The current value of the alarm repeat counter
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint8_t currentCount;
-    currentCount = PLIB_RTCC_AlarmRepeatCountGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    The counter decrements on any alarm event. The counter is prevented from
-    rolling over unless chime is enabled.
+      Returns:
+        uint8_t         - The current value of the alarm repeat counter
 
-    This function implements an operation of the AlarmRepeatControl feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmRepeatControl in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint8_t currentCount;
+        currentCount = PLIB_RTCC_AlarmRepeatCountGet(RTCC_ID_0);
+        </code>
 
-uint8_t PLIB_RTCC_AlarmRepeatCountGet ( RTCC_MODULE_ID index );
+      Remarks:
+        The counter decrements on any alarm event. The counter is prevented from
+        rolling over unless chime is enabled.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCTimeGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the AlarmRepeatControl feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmRepeatControl in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the specific RTCC module's Time register.
+    uint8_t PLIB_RTCC_AlarmRepeatCountGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function returns the contents of the specific RTCC module's Time
-    register. Please refer to the specific device data sheet for the exact 
-    sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCTimeGet ( RTCC_MODULE_ID index )
 
-  Precondition:
+      Summary:
+        Returns the contents of the specific RTCC module's Time register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the specific RTCC module's Time
+        register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Returns:
-    Time register contents.
+      Precondition:
 
-  Example:
-    <code>
-    uint32_t time;
-    time = PLIB_RTCC_RTCTimeGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Time register contents.
 
-uint32_t PLIB_RTCC_RTCTimeGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t time;
+        time = PLIB_RTCC_RTCTimeGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCTimeSet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Time register.
+    uint32_t PLIB_RTCC_RTCTimeGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Time register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCTimeSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Time register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Time register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function writes to the specific RTCC module's Time register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Time register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t data = 0x04153300;     // Time = 4 hours, 15 minutes, and 33 seconds
-    PLIB_RTCC_RTCTimeSet(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t data = 0x04153300;     // Time = 4 hours, 15 minutes, and 33 seconds
+        PLIB_RTCC_RTCTimeSet(RTCC_ID_0, data);
+        </code>
 
-void PLIB_RTCC_RTCTimeSet ( RTCC_MODULE_ID index, uint32_t data );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCHourGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the Hours bits in the specific RTCC module's Time 
-    register.
+    void PLIB_RTCC_RTCTimeSet(RTCC_MODULE_ID index, uint32_t data);
 
-  Description:
-    The function returns the contents of the Hours bits in the specific RTCC 
-    module's Time register. Please refer to the specific device data sheet for
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCHourGet ( RTCC_MODULE_ID index )
 
-  Precondition:
+      Summary:
+        Returns the contents of the Hours bits in the specific RTCC module's Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Hours bits in the specific RTCC
+        module's Time register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    BCD value of the Hours bits in the Time register.
+      Precondition:
 
-  Example:
-    <code>
-    uint32_t Hour;
-    Hour = PLIB_RTCC_RTCHourGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        BCD value of the Hours bits in the Time register.
 
-uint32_t PLIB_RTCC_RTCHourGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Hour;
+        Hour = PLIB_RTCC_RTCHourGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCHourSet ( RTCC_MODULE_ID index, uint32_t hour )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes the contents of the Hours bits in the specific RTCC module's Time
-    register.
+    uint32_t PLIB_RTCC_RTCHourGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes the contents of the Hours bits in the specific RTCC
-    module's Time register. Please refer to the specific device data sheet for
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCHourSet ( RTCC_MODULE_ID index, uint32_t hour )
 
-  Precondition:
-    None.
+      Summary:
+        Writes the contents of the Hours bits in the specific RTCC module's Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    hour            - BCD value to be written to the Hours bits in the Time register
+      Description:
+        The function writes the contents of the Hours bits in the specific RTCC
+        module's Time register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Hour = 0x04;
-    PLIB_RTCC_RTCHourSet(RTCC_ID_0, Hour);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        hour            - BCD value to be written to the Hours bits in the Time register
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        None.
 
-void PLIB_RTCC_RTCHourSet ( RTCC_MODULE_ID index, uint32_t hour );
+      Example:
+        <code>
+        uint32_t Hour = 0x04;
+        PLIB_RTCC_RTCHourSet(RTCC_ID_0, Hour);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCMinuteGet ( RTCC_MODULE_ID index )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the Minutes bits in the specific RTCC module's Time 
-    register.
+    void PLIB_RTCC_RTCHourSet(RTCC_MODULE_ID index, uint32_t hour);
 
-  Description:
-    The function returns the contents of the Minutes bits in the specific RTCC 
-    module's Time register. Please refer to the specific device data sheet for 
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCMinuteGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the Minutes bits in the specific RTCC module's Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Minutes bits in the specific RTCC
+        module's Time register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    BCD value of the Minutes bits in the Time register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Minute;
-    Minute = PLIB_RTCC_RTCMinuteGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        BCD value of the Minutes bits in the Time register.
 
-uint32_t PLIB_RTCC_RTCMinuteGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Minute;
+        Minute = PLIB_RTCC_RTCMinuteGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCMinuteSet ( RTCC_MODULE_ID index, uint32_t minute )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes the contents of Minutes bits in the specific RTCC module's Time
-    register.
+    uint32_t PLIB_RTCC_RTCMinuteGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes the contents of these bits in the specific RTCC module's
-    Time register. Please refer to the specific device data sheet for the exact
-    sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCMinuteSet ( RTCC_MODULE_ID index, uint32_t minute )
 
-  Precondition:
-    None.
+      Summary:
+        Writes the contents of Minutes bits in the specific RTCC module's Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    minute          - BCD value to be written to the Minutes bits in the Time 
-                      register
+      Description:
+        The function writes the contents of these bits in the specific RTCC module's
+        Time register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Minute = 0x15;
-    PLIB_RTCC_RTCMinuteSet(RTCC_ID_0, Minute);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        minute          - BCD value to be written to the Minutes bits in the Time
+                          register
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        None.
 
-void PLIB_RTCC_RTCMinuteSet ( RTCC_MODULE_ID index, uint32_t minute );
+      Example:
+        <code>
+        uint32_t Minute = 0x15;
+        PLIB_RTCC_RTCMinuteSet(RTCC_ID_0, Minute);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCSecondGet ( RTCC_MODULE_ID index )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    The function returns the contents of the Seconds bits in the specific RTCC
-    device's Time register.
+    void PLIB_RTCC_RTCMinuteSet(RTCC_MODULE_ID index, uint32_t minute);
 
-  Description:
-    The function returns the contents of the Seconds bits in the specific RTCC 
-    module's Time register. Please refer to the specific device data sheet for 
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCSecondGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        The function returns the contents of the Seconds bits in the specific RTCC
+        device's Time register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Seconds bits in the specific RTCC
+        module's Time register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    BCD value of the Seconds bits in the Time register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Second;
-    Second = PLIB_RTCC_RTCSecondGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        BCD value of the Seconds bits in the Time register.
 
-uint32_t PLIB_RTCC_RTCSecondGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Second;
+        Second = PLIB_RTCC_RTCSecondGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCSecondSet ( RTCC_MODULE_ID index, uint32_t second )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes the contents of Seconds bits in the specific RTCC module's Time 
-    register.
+    uint32_t PLIB_RTCC_RTCSecondGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes the contents of the Seconds bits in the specific RTCC 
-    module's Time register. Please refer to the specific device data sheet for 
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCSecondSet ( RTCC_MODULE_ID index, uint32_t second )
 
-  Precondition:
-    None.
+      Summary:
+        Writes the contents of Seconds bits in the specific RTCC module's Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    second          - BCD value to be written to the Seconds bits in the Time 
-                      register
+      Description:
+        The function writes the contents of the Seconds bits in the specific RTCC
+        module's Time register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Second = 0x33;
-    PLIB_RTCC_RTCSecondSet(RTCC_ID_0, Second);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        second          - BCD value to be written to the Seconds bits in the Time
+                          register
 
-  Remarks:
-    This function implements an operation of the RTCTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        None.
 
-void PLIB_RTCC_RTCSecondSet ( RTCC_MODULE_ID index, uint32_t second );
+      Example:
+        <code>
+        uint32_t Second = 0x33;
+        PLIB_RTCC_RTCSecondSet(RTCC_ID_0, Second);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCDateGet ( RTCC_MODULE_ID index )
+      Remarks:
+        This function implements an operation of the RTCTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the specific RTCC module's Date register.
+    void PLIB_RTCC_RTCSecondSet(RTCC_MODULE_ID index, uint32_t second);
 
-  Description:
-    The function returns the contents of the specific RTCC module's Date
-    register. Please refer to the specific device data sheet for the exact 
-	sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCDateGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the specific RTCC module's Date
+        register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Returns:
-    Date register contents.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Date;
-    Date = PLIB_RTCC_RTCDateGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Date register contents.
 
-uint32_t PLIB_RTCC_RTCDateGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Date;
+        Date = PLIB_RTCC_RTCDateGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCDateSet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Date register.
+    uint32_t PLIB_RTCC_RTCDateGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCDateSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function writes to the specific RTCC module's Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t data = 0x06102705;     //Date = 27 Oct 2006 Friday
-    PLIB_RTCC_RTCDateSet(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t data = 0x06102705;     //Date = 27 Oct 2006 Friday
+        PLIB_RTCC_RTCDateSet(RTCC_ID_0, data);
+        </code>
 
-void PLIB_RTCC_RTCDateSet ( RTCC_MODULE_ID index, uint32_t data );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCYearGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the Year bits in the specific RTCC module's Date 
-    register.
+    void PLIB_RTCC_RTCDateSet(RTCC_MODULE_ID index, uint32_t data);
 
-  Description:
-    The function returns the contents of the specific RTCC module's Date register. 
-    Please refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCYearGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the Year bits in the specific RTCC module's Date
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the specific RTCC module's Date register.
+        Please refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    Year bits in the Date register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Year;
-    Year = PLIB_RTCC_RTCYearGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Year bits in the Date register.
 
-uint32_t PLIB_RTCC_RTCYearGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Year;
+        Year = PLIB_RTCC_RTCYearGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCYearSet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Date register.
+    uint32_t PLIB_RTCC_RTCYearGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCYearSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    year            - The BCD value of the year to set in the Date register
+      Description:
+        The function writes to the specific RTCC module's Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t Year = 0x06;       //Year = 2006
-    PLIB_RTCC_RTCYearSet(RTCC_ID_0, Year);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        year            - The BCD value of the year to set in the Date register
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t Year = 0x06;       //Year = 2006
+        PLIB_RTCC_RTCYearSet(RTCC_ID_0, Year);
+        </code>
 
-void PLIB_RTCC_RTCYearSet ( RTCC_MODULE_ID index, uint32_t year );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCMonthGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the Months bits in the specific RTCC module's Date 
-    register.
+    void PLIB_RTCC_RTCYearSet(RTCC_MODULE_ID index, uint32_t year);
 
-  Description:
-    The function returns the contents of the Months bits in the specific RTCC 
-    module's Date register. Please refer to the specific device data sheet for 
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCMonthGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the Months bits in the specific RTCC module's Date
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Months bits in the specific RTCC
+        module's Date register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    Months bits in the Date register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Month;
-    Month = PLIB_RTCC_RTCMonthGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Months bits in the Date register.
 
-uint32_t PLIB_RTCC_RTCMonthGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Month;
+        Month = PLIB_RTCC_RTCMonthGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCMonthSet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Date register.
+    uint32_t PLIB_RTCC_RTCMonthGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCMonthSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    month           - The BCD value of the month to set in the Date register
+      Description:
+        The function writes to the specific RTCC module's Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t Month = 0x10;      //Month = October
-    PLIB_RTCC_RTCMonthSet(RTCC_ID_0, Month);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        month           - The BCD value of the month to set in the Date register
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t Month = 0x10;      //Month = October
+        PLIB_RTCC_RTCMonthSet(RTCC_ID_0, Month);
+        </code>
 
-void PLIB_RTCC_RTCMonthSet ( RTCC_MODULE_ID index, uint32_t month );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCDayGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the Days bits in the specific RTCC module's Date register.
+    void PLIB_RTCC_RTCMonthSet(RTCC_MODULE_ID index, uint32_t month);
 
-  Description:
-    The function returns the contents of the Days bits in the specific RTCC module's 
-    Date register. Please refer to the specific device data sheet for the exact
-    sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCDayGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the Days bits in the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Days bits in the specific RTCC module's
+        Date register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Returns:
-    Days bits in the Date register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Day;
-    Day = PLIB_RTCC_RTCDayGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Days bits in the Date register.
 
-uint32_t PLIB_RTCC_RTCDayGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Day;
+        Day = PLIB_RTCC_RTCDayGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCDaySet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Date register.
+    uint32_t PLIB_RTCC_RTCDayGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCDaySet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Date register.
 
-  Parameters:
-    index          - Identifier for the device instance to be configured
-    day            - The BCD value of the day to set in the Date register
+      Description:
+        The function writes to the specific RTCC module's Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t Day = 0x27;        //Day = 27th of the month
-    PLIB_RTCC_RTCDaySet(RTCC_ID_0, Day);
-    </code>
+      Parameters:
+        index          - Identifier for the device instance to be configured
+        day            - The BCD value of the day to set in the Date register
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t Day = 0x27;        //Day = 27th of the month
+        PLIB_RTCC_RTCDaySet(RTCC_ID_0, Day);
+        </code>
 
-void PLIB_RTCC_RTCDaySet ( RTCC_MODULE_ID index, uint32_t day );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_RTCWeekDayGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the WeekDay bits in the specific RTCC module's Date 
-    register.
+    void PLIB_RTCC_RTCDaySet(RTCC_MODULE_ID index, uint32_t day);
 
-  Description:
-    The function returns the contents of the WeekDay bits in the specific RTCC 
-    module's Date register. Please refer to the specific device data sheet for 
-    the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_RTCWeekDayGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the WeekDay bits in the specific RTCC module's Date
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the WeekDay bits in the specific RTCC
+        module's Date register. Please refer to the specific device data sheet for
+        the exact sequence of digits.
 
-  Returns:
-    WeekDay field in the Date register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t WeekDay;
-    WeekDay = PLIB_RTCC_RTCWeekDayGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        WeekDay field in the Date register.
 
-uint32_t PLIB_RTCC_RTCWeekDayGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t WeekDay;
+        WeekDay = PLIB_RTCC_RTCWeekDayGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_RTCWeekDaySet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Date register.
+    uint32_t PLIB_RTCC_RTCWeekDayGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_RTCWeekDaySet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Date register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    weekday         - The BCD value of the weekday to set in the Date register
+      Description:
+        The function writes to the specific RTCC module's Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t WeekDay = 0x05;        //WeekDay = Friday
-    PLIB_RTCC_RTCWeekDaySet(RTCC_ID_0, WeekDay);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        weekday         - The BCD value of the weekday to set in the Date register
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the RTCDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsRTCDate in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t WeekDay = 0x05;        //WeekDay = Friday
+        PLIB_RTCC_RTCWeekDaySet(RTCC_ID_0, WeekDay);
+        </code>
 
-void PLIB_RTCC_RTCWeekDaySet ( RTCC_MODULE_ID index, uint32_t weekday );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmTimeGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the RTCDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsRTCDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of the specific RTCC module's Alarm Time register.
+    void PLIB_RTCC_RTCWeekDaySet(RTCC_MODULE_ID index, uint32_t weekday);
 
-  Description:
-    The function returns the contents of the specific RTCC module's Alarm Time
-    register. Please refer to the specific device data sheet for the exact 
-    sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmTimeGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of the specific RTCC module's Alarm Time register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the specific RTCC module's Alarm Time
+        register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Returns:
-    Value register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t time;
-    time = PLIB_RTCC_AlarmTimeGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        Value register.
 
-uint32_t PLIB_RTCC_AlarmTimeGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t time;
+        time = PLIB_RTCC_AlarmTimeGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmTimeSet ( RTCC_MODULE_ID index, uint32_t data )
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Writes to the specific RTCC module's Alarm Time register.
+    uint32_t PLIB_RTCC_AlarmTimeGet(RTCC_MODULE_ID index);
 
-  Description:
-    The function writes to the specific RTCC module's Alarm Time register. Please 
-    refer to the specific device data sheet for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmTimeSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Precondition:
-    Prior to writing to the Alarm Time register, an RTCC write must be
-    enabled using the exact sequences required by the device.
+      Summary:
+        Writes to the specific RTCC module's Alarm Time register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function writes to the specific RTCC module's Alarm Time register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Returns:
-    None.
+      Precondition:
+        Prior to writing to the Alarm Time register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Example:
-    <code>
-    uint32_t data = 0x04153300;     // Time = 4 hours, 15 minutes, and 33 seconds
-    PLIB_RTCC_AlarmTimeSet(RTCC_ID_0, data);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
+      Returns:
+        None.
 
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Example:
+        <code>
+        uint32_t data = 0x04153300;     // Time = 4 hours, 15 minutes, and 33 seconds
+        PLIB_RTCC_AlarmTimeSet(RTCC_ID_0, data);
+        </code>
 
-void PLIB_RTCC_AlarmTimeSet ( RTCC_MODULE_ID index, uint32_t data );
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmHourGet ( RTCC_MODULE_ID index )
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    Returns the contents of Hours bits in the specific RTCC module's Alarm Time 
-    register.
+    void PLIB_RTCC_AlarmTimeSet(RTCC_MODULE_ID index, uint32_t data);
 
-  Description:
-    The function returns the contents of the Hours bits in the specific RTCC 
-    module's Alarm Time register. Please refer to the specific device data sheet 
-    for the exact sequence of digits.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmHourGet ( RTCC_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns the contents of Hours bits in the specific RTCC module's Alarm Time
+        register.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Description:
+        The function returns the contents of the Hours bits in the specific RTCC
+        module's Alarm Time register. Please refer to the specific device data sheet
+        for the exact sequence of digits.
 
-  Returns:
-    BCD value of the Hours bits in the Alarm Time register.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t Hour;
-    Hour = PLIB_RTCC_AlarmHourGet(RTCC_ID_0);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Returns:
+        BCD value of the Hours bits in the Alarm Time register.
 
-uint32_t PLIB_RTCC_AlarmHourGet ( RTCC_MODULE_ID index );
+      Example:
+        <code>
+        uint32_t Hour;
+        Hour = PLIB_RTCC_AlarmHourGet(RTCC_ID_0);
+        </code>
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmHourSet ( RTCC_MODULE_ID index, uint32_t hour )
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Summary:
-    The function returns the contents of Hours bits in the specific RTCC module's
-    Alarm Time register.
+    uint32_t PLIB_RTCC_AlarmHourGet(RTCC_MODULE_ID index);
 
-  Description:
-    Returns the contents of the Hours bits in the specific RTCC module's
-    Alarm Time register. Please refer to the specific device data sheet for the 
-    exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    hour            - BCD value to be written to the Hours bits in the Alarm Time 
-                      register
-
-  Returns:
-    None
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmHourSet ( RTCC_MODULE_ID index, uint32_t hour )
 
-  Example:
-    <code>
-    uint32_t Hour = 0x04;
-    PLIB_RTCC_AlarmHourSet(RTCC_ID_0, Hour);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
+      Summary:
+        The function returns the contents of Hours bits in the specific RTCC module's
+        Alarm Time register.
 
-void PLIB_RTCC_AlarmHourSet ( RTCC_MODULE_ID index, uint32_t hour );
+      Description:
+        Returns the contents of the Hours bits in the specific RTCC module's
+        Alarm Time register. Please refer to the specific device data sheet for the
+        exact sequence of digits.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmMinuteGet ( RTCC_MODULE_ID index )
+      Precondition:
+        None.
 
-  Summary:
-    Returns the contents of Minutes bits in the specific RTCC module's
-    Alarm Time register.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        hour            - BCD value to be written to the Hours bits in the Alarm Time
+                          register
 
-  Description:
-    The function returns the contents of the field in the specific RTCC module's
-    Alarm Time register. Please refer to the specific device data sheet for the 
-    exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    BCD value of the Minutes bits in the Alarm Time register.
-
-  Example:
-    <code>
-    uint32_t Minute;
-    Minute = PLIB_RTCC_AlarmMinuteGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmMinuteGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmMinuteSet ( RTCC_MODULE_ID index, uint32_t minute )
-
-  Summary:
-    Returns the contents of the Minutes bits in the specific RTCC module's Alarm 
-    Time register.
-
-  Description:
-    The function returns the contents of the Minutes bits in the specific RTCC 
-    module's Alarm Time register. Please refer to the specific device data sheet 
-    for the exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    minute          - BCD value to be written to the Minutes bits in the 
-                      Alarm Time register
-
-  Returns:
-    None
-
-  Example:
-    <code>
-    uint32_t Minute = 0x15;
-    PLIB_RTCC_AlarmMinuteSet(RTCC_ID_0, Minute);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmMinuteSet ( RTCC_MODULE_ID index, uint32_t minute );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmSecondGet ( RTCC_MODULE_ID index )
-
-  Summary:
-    Returns the contents of the Seconds bits in the specific RTCC module's Alarm 
-    Time register.
-
-  Description:
-    The function returns the contents of the Seconds bits in the specific RTCC 
-    module's Alarm Time register. Please refer to the specific device data sheet 
-    for the exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    BCD value of the Seconds bits in the Alarm Time register.
-
-  Example:
-    <code>
-    uint32_t Second;
-    Second = PLIB_RTCC_AlarmSecondGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmSecondGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmSecondSet ( RTCC_MODULE_ID index, uint32_t second )
-
-  Summary:
-    Returns the contents of Seconds bits in the specific RTCC module's Alarm Time 
-    register.
-
-  Description:
-    The function returns the contents of the field in the specific RTCC module's
-    Alarm Time register. Please refer to the specific device data sheet for the exact
-    sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    second          - BCD value to be written to the Seconds bits in the Alarm 
-                      Time register
-
-  Returns:
-    None
-
-  Example:
-    <code>
-    uint32_t Second = 0x33;
-    PLIB_RTCC_AlarmSecondSet(RTCC_ID_0, Second);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmTime feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmTime in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmSecondSet ( RTCC_MODULE_ID index, uint32_t second );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmDateGet ( AlarmC_MODULE_ID index )
-
-  Summary:
-    Returns the contents of the specific RTCC module's Alarm Date register.
-
-  Description:
-    The function returns the contents of the specific RTCC module's Alarm Date
-    register. Please refer to the specific device data sheet for the exact 
-    sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    Value register.
-
-  Example:
-    <code>
-    uint32_t Date;
-    Date = PLIB_RTCC_AlarmDateGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmDateGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmDateSet ( RTCC_MODULE_ID index, uint32_t data )
-
-  Summary:
-    Writes to the specific RTCC module's Alarm Date register.
-
-  Description:
-    The function writes to the specific RTCC module's Alarm Date register. Please
-    refer to the specific device data sheet for the exact sequence of digits.
-
-  Precondition:
-    Prior to writing to the Alarm Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    data            - The value to set the Alarm Date register to, in BCD format
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    uint32_t data = 0x06102705;     //Date = 27 Oct 2006 Friday
-    PLIB_RTCC_AlarmDateSet(RTCC_ID_0, data);
-    </code>
-
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmDateSet ( RTCC_MODULE_ID index, uint32_t data );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmMonthGet ( RTCC_MODULE_ID index )
-
-  Summary:
-    Returns the contents of the Month bits in the specific RTCC module's Alarm 
-    Date register.
-
-  Description:
-    The function returns the contents of the Months bits in the specific RTCC 
-    module's Alarm Date register. Please refer to the specific device data sheet 
-    for the exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    Months bits in the Date register.
-
-  Example:
-    <code>
-    uint32_t Month;
-    Month = PLIB_RTCC_AlarmMonthGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmMonthGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmMonthSet ( RTCC_MODULE_ID index, uint32_t data )
-
-  Summary:
-    Writes to the specific RTCC module's Alarm Date register.
-
-  Description:
-    The function writes to the specific RTCC module's Alarm Date register. Please 
-    refer to the specific device data sheet for the exact sequence of digits.
-
-  Precondition:
-    Prior to writing to the Alarm Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    month           - The BCD value of the month to set in the Alarm Date register
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    uint32_t Month = 0x10;      //Month = October
-    PLIB_RTCC_AlarmMonthSet(RTCC_ID_0, Month);
-    </code>
-
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmMonthSet ( RTCC_MODULE_ID index, uint32_t month );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmDayGet ( RTCC_MODULE_ID index )
-
-  Summary:
-    Returns the contents of the Day bits in the specific RTCC module's Alarm 
-    Date register.
-
-  Description:
-    The function returns the contents of Day bits in the specific RTCC module's 
-    Alarm Date register. Please refer to the specific device data sheet for the 
-    exact sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    Days bits in the Alarm Date register.
-
-  Example:
-    <code>
-    uint32_t Day;
-    Day = PLIB_RTCC_AlarmDayGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmDayGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmDaySet ( RTCC_MODULE_ID index, uint32_t data )
-
-  Summary:
-    Writes to the specific RTCC module's Alarm Date value register.
-
-  Description:
-    The function writes to the specific RTCC module's Alarm Date register.
-    Please refer to the specific device data sheet for the exact sequence of
-    digits.
-
-  Precondition:
-    Prior to writing to the Alarm Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    day             - The BCD value of the day to set in the Alarm Date register
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    uint32_t Day = 0x27;        //Day = 27th of the month
-    PLIB_RTCC_AlarmDaySet(RTCC_ID_0, Day);
-    </code>
-
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmDaySet ( RTCC_MODULE_ID index, uint32_t day );
-
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_RTCC_AlarmWeekDayGet ( RTCC_MODULE_ID index )
-
-  Summary:
-    Returns the contents of the WeekDay bits in the specific RTCC module's Alarm 
-    Date register.
-
-  Description:
-    The function returns the contents of Weekday bits in the specific RTCC module's
-    Alarm Date register. Please refer to the specific device data sheet for the exact
-    sequence of digits.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    WeekDay bits in the Alarm Date register.
-
-  Example:
-    <code>
-    uint32_t WeekDay;
-    WeekDay = PLIB_RTCC_AlarmWeekDayGet(RTCC_ID_0);
-    </code>
-
-  Remarks:
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-uint32_t PLIB_RTCC_AlarmWeekDayGet ( RTCC_MODULE_ID index );
-
-//******************************************************************************
-/* Function:
-    void PLIB_RTCC_AlarmWeekDaySet ( RTCC_MODULE_ID index, uint32_t data )
-
-  Summary:
-    Writes to the specific RTCC module's Alarm Date register.
-
-  Description:
-    The function writes to the specific RTCC module's Alarm Date register.
-    Please refer to the specific device data sheet for the exact sequence of
-    digits.
-
-  Precondition:
-    Prior to writing to the Alarm Date register, an RTCC write must be
-    enabled using the exact sequences required by the device.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    weekday         - The BCD value of the weekday to set in the field of the 
-                      Alarm Date register
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    uint32_t WeekDay = 0x05;        //WeekDay = Friday
-    PLIB_RTCC_AlarmWeekDaySet(RTCC_ID_0, WeekDay);
-    </code>
-
-  Remarks:
-    A write to this register is only allowed when access is allowed by
-    using the PLIB_RTCC_WriteEnable function.
-
-    This function implements an operation of the AlarmDate feature.  
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_RTCC_ExistsAlarmDate in your application to automatically 
-    determine whether this feature is available.
-*/
-
-void PLIB_RTCC_AlarmWeekDaySet ( RTCC_MODULE_ID index, uint32_t weekday );
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: RTCC Peripheral Library Exists Functions
-// *****************************************************************************
-// *****************************************************************************
-/* The following functions indicate the existence of the features on the device.
-*/
-
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsEnableControl( RTCC_MODULE_ID index )
-
-  Summary:
-    Identifies whether the EnableControl feature exists on the RTCC module.
-
-  Description:
-    This function identifies whether the EnableControl feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_Enable
-    - PLIB_RTCC_Disable
+      Returns:
+        None
 
-  Preconditions:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance
-
-  Returns:
-    - true   - The EnableControl feature is supported on the device
-    - false  - The EnableControl feature is not supported on the device
+      Example:
+        <code>
+        uint32_t Hour = 0x04;
+        PLIB_RTCC_AlarmHourSet(RTCC_ID_0, Hour);
+        </code>
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-bool PLIB_RTCC_ExistsEnableControl( RTCC_MODULE_ID index );
+    void PLIB_RTCC_AlarmHourSet(RTCC_MODULE_ID index, uint32_t hour);
 
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmMinuteGet ( RTCC_MODULE_ID index )
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsWriteEnable( RTCC_MODULE_ID index )
+      Summary:
+        Returns the contents of Minutes bits in the specific RTCC module's
+        Alarm Time register.
 
-  Summary:
-    Identifies whether the WriteEnable feature exists on the RTCC module.
+      Description:
+        The function returns the contents of the field in the specific RTCC module's
+        Alarm Time register. Please refer to the specific device data sheet for the
+        exact sequence of digits.
 
-  Description:
-    This function identifies whether the WriteEnable feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_WriteEnable
-    - PLIB_RTCC_WriteDisable
+      Precondition:
+        None.
 
-  Preconditions:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance
+      Returns:
+        BCD value of the Minutes bits in the Alarm Time register.
 
-  Returns:
-    - true   - The WriteEnable feature is supported on the device
-    - false  - The WriteEnable feature is not supported on the device
+      Example:
+        <code>
+        uint32_t Minute;
+        Minute = PLIB_RTCC_AlarmMinuteGet(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-bool PLIB_RTCC_ExistsWriteEnable( RTCC_MODULE_ID index );
+    uint32_t PLIB_RTCC_AlarmMinuteGet(RTCC_MODULE_ID index);
 
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmMinuteSet ( RTCC_MODULE_ID index, uint32_t minute )
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsStopInIdleControl( RTCC_MODULE_ID index )
+      Summary:
+        Returns the contents of the Minutes bits in the specific RTCC module's Alarm
+        Time register.
 
-  Summary:
-    Identifies whether the StopInIdle feature exists on the RTCC module.
+      Description:
+        The function returns the contents of the Minutes bits in the specific RTCC
+        module's Alarm Time register. Please refer to the specific device data sheet
+        for the exact sequence of digits.
 
-  Description:
-    This function identifies whether the StopInIdle feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_StopInIdleEnable
-    - PLIB_RTCC_StopInIdleDisable
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        minute          - BCD value to be written to the Minutes bits in the
+                          Alarm Time register
 
-  Preconditions:
-    None.
+      Returns:
+        None
 
-  Parameters:
-    index           - Identifier for the device instance
+      Example:
+        <code>
+        uint32_t Minute = 0x15;
+        PLIB_RTCC_AlarmMinuteSet(RTCC_ID_0, Minute);
+        </code>
 
-  Returns:
-    - true   - The StopInIdle feature is supported on the device
-    - false  - The StopInIdle feature is not supported on the device
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Remarks:
-    None.
-*/
+    void PLIB_RTCC_AlarmMinuteSet(RTCC_MODULE_ID index, uint32_t minute);
 
-bool PLIB_RTCC_ExistsStopInIdleControl( RTCC_MODULE_ID index );
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmSecondGet ( RTCC_MODULE_ID index )
 
+      Summary:
+        Returns the contents of the Seconds bits in the specific RTCC module's Alarm
+        Time register.
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsOutputSelect( RTCC_MODULE_ID index )
+      Description:
+        The function returns the contents of the Seconds bits in the specific RTCC
+        module's Alarm Time register. Please refer to the specific device data sheet
+        for the exact sequence of digits.
+
+      Precondition:
+        None.
 
-  Summary:
-    Identifies whether the OutputSelect feature exists on the RTCC module.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        BCD value of the Seconds bits in the Alarm Time register.
 
-  Description:
-    This function identifies whether the OutputSelect feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_SecondsClockOutputSelect
-    - PLIB_RTCC_AlarmPulseOutputSelect
+      Example:
+        <code>
+        uint32_t Second;
+        Second = PLIB_RTCC_AlarmSecondGet(RTCC_ID_0);
+        </code>
 
-  Preconditions:
-    None.
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Parameters:
-    index           - Identifier for the device instance
+    uint32_t PLIB_RTCC_AlarmSecondGet(RTCC_MODULE_ID index);
 
-  Returns:
-    - true   - The OutputSelect feature is supported on the device
-    - false  - The OutputSelect feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmSecondSet ( RTCC_MODULE_ID index, uint32_t second )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Returns the contents of Seconds bits in the specific RTCC module's Alarm Time
+        register.
 
-bool PLIB_RTCC_ExistsOutputSelect( RTCC_MODULE_ID index );
+      Description:
+        The function returns the contents of the field in the specific RTCC module's
+        Alarm Time register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        second          - BCD value to be written to the Seconds bits in the Alarm
+                          Time register
+
+      Returns:
+        None
 
+      Example:
+        <code>
+        uint32_t Second = 0x33;
+        PLIB_RTCC_AlarmSecondSet(RTCC_ID_0, Second);
+        </code>
+
+      Remarks:
+        This function implements an operation of the AlarmTime feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmTime in your application to automatically
+        determine whether this feature is available.
+     */
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsClockSelect( RTCC_MODULE_ID index )
+    void PLIB_RTCC_AlarmSecondSet(RTCC_MODULE_ID index, uint32_t second);
 
-  Summary:
-    Identifies whether the ClockSelect feature exists on the RTCC module.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmDateGet ( AlarmC_MODULE_ID index )
 
-  Description:
-    This function identifies whether the ClockSelect feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_SourceClockSelect
+      Summary:
+        Returns the contents of the specific RTCC module's Alarm Date register.
 
-  Preconditions:
-    None.
+      Description:
+        The function returns the contents of the specific RTCC module's Alarm Date
+        register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    - true   - The ClockSelect feature is supported on the device
-    - false  - The ClockSelect feature is not supported on the device
+      Returns:
+        Value register.
+
+      Example:
+        <code>
+        uint32_t Date;
+        Date = PLIB_RTCC_AlarmDateGet(RTCC_ID_0);
+        </code>
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-bool PLIB_RTCC_ExistsClockSelect( RTCC_MODULE_ID index );
+    uint32_t PLIB_RTCC_AlarmDateGet(RTCC_MODULE_ID index);
 
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmDateSet ( RTCC_MODULE_ID index, uint32_t data )
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsClockRunning( RTCC_MODULE_ID index )
+      Summary:
+        Writes to the specific RTCC module's Alarm Date register.
 
-  Summary:
-    Identifies whether the ClockRunning feature exists on the RTCC module.
+      Description:
+        The function writes to the specific RTCC module's Alarm Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Description:
-    This function identifies whether the ClockRunning feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_ClockRunningStatus
+      Precondition:
+        Prior to writing to the Alarm Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Preconditions:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        data            - The value to set the Alarm Date register to, in BCD format
+
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Example:
+        <code>
+        uint32_t data = 0x06102705;     //Date = 27 Oct 2006 Friday
+        PLIB_RTCC_AlarmDateSet(RTCC_ID_0, data);
+        </code>
+
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
+
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Returns:
-    - true   - The ClockRunning feature is supported on the device
-    - false  - The ClockRunning feature is not supported on the device
+    void PLIB_RTCC_AlarmDateSet(RTCC_MODULE_ID index, uint32_t data);
 
-  Remarks:
-    None.
-*/
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmMonthGet ( RTCC_MODULE_ID index )
 
-bool PLIB_RTCC_ExistsClockRunning( RTCC_MODULE_ID index );
+      Summary:
+        Returns the contents of the Month bits in the specific RTCC module's Alarm
+        Date register.
+
+      Description:
+        The function returns the contents of the Months bits in the specific RTCC
+        module's Alarm Date register. Please refer to the specific device data sheet
+        for the exact sequence of digits.
 
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        Months bits in the Date register.
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsCalibration( RTCC_MODULE_ID index )
+      Example:
+        <code>
+        uint32_t Month;
+        Month = PLIB_RTCC_AlarmMonthGet(RTCC_ID_0);
+        </code>
 
-  Summary:
-    Identifies whether the Calibration feature exists on the RTCC module.
+      Remarks:
 
-  Description:
-    This function identifies whether the Calibration feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_DriftCalibrate
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Preconditions:
-    None.
+    uint32_t PLIB_RTCC_AlarmMonthGet(RTCC_MODULE_ID index);
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmMonthSet ( RTCC_MODULE_ID index, uint32_t data )
 
-  Parameters:
-    index           - Identifier for the device instance
+      Summary:
+        Writes to the specific RTCC module's Alarm Date register.
 
-  Returns:
-    - true   - The Calibration feature is supported on the device
-    - false  - The Calibration feature is not supported on the device
+      Description:
+        The function writes to the specific RTCC module's Alarm Date register. Please
+        refer to the specific device data sheet for the exact sequence of digits.
 
-  Remarks:
-    None.
-*/
+      Precondition:
+        Prior to writing to the Alarm Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-bool PLIB_RTCC_ExistsCalibration( RTCC_MODULE_ID index );
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        month           - The BCD value of the month to set in the Alarm Date register
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        uint32_t Month = 0x10;      //Month = October
+        PLIB_RTCC_AlarmMonthSet(RTCC_ID_0, Month);
+        </code>
+
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
+
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
 
+    void PLIB_RTCC_AlarmMonthSet(RTCC_MODULE_ID index, uint32_t month);
+
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmDayGet ( RTCC_MODULE_ID index )
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsSynchronization( RTCC_MODULE_ID index )
+      Summary:
+        Returns the contents of the Day bits in the specific RTCC module's Alarm
+        Date register.
+
+      Description:
+        The function returns the contents of Day bits in the specific RTCC module's
+        Alarm Date register. Please refer to the specific device data sheet for the
+        exact sequence of digits.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        Days bits in the Alarm Date register.
+
+      Example:
+        <code>
+        uint32_t Day;
+        Day = PLIB_RTCC_AlarmDayGet(RTCC_ID_0);
+        </code>
+
+      Remarks:
+
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
+
+    uint32_t PLIB_RTCC_AlarmDayGet(RTCC_MODULE_ID index);
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmDaySet ( RTCC_MODULE_ID index, uint32_t data )
+
+      Summary:
+        Writes to the specific RTCC module's Alarm Date value register.
+
+      Description:
+        The function writes to the specific RTCC module's Alarm Date register.
+        Please refer to the specific device data sheet for the exact sequence of
+        digits.
+
+      Precondition:
+        Prior to writing to the Alarm Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        day             - The BCD value of the day to set in the Alarm Date register
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        uint32_t Day = 0x27;        //Day = 27th of the month
+        PLIB_RTCC_AlarmDaySet(RTCC_ID_0, Day);
+        </code>
+
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
+
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
+
+    void PLIB_RTCC_AlarmDaySet(RTCC_MODULE_ID index, uint32_t day);
+
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_RTCC_AlarmWeekDayGet ( RTCC_MODULE_ID index )
+
+      Summary:
+        Returns the contents of the WeekDay bits in the specific RTCC module's Alarm
+        Date register.
+
+      Description:
+        The function returns the contents of Weekday bits in the specific RTCC module's
+        Alarm Date register. Please refer to the specific device data sheet for the exact
+        sequence of digits.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance to be configured
+
+      Returns:
+        WeekDay bits in the Alarm Date register.
+
+      Example:
+        <code>
+        uint32_t WeekDay;
+        WeekDay = PLIB_RTCC_AlarmWeekDayGet(RTCC_ID_0);
+        </code>
+
+      Remarks:
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
+
+    uint32_t PLIB_RTCC_AlarmWeekDayGet(RTCC_MODULE_ID index);
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_RTCC_AlarmWeekDaySet ( RTCC_MODULE_ID index, uint32_t data )
+
+      Summary:
+        Writes to the specific RTCC module's Alarm Date register.
+
+      Description:
+        The function writes to the specific RTCC module's Alarm Date register.
+        Please refer to the specific device data sheet for the exact sequence of
+        digits.
+
+      Precondition:
+        Prior to writing to the Alarm Date register, an RTCC write must be
+        enabled using the exact sequences required by the device.
 
-  Summary:
-    Identifies whether the Synchronization feature exists on the RTCC module.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        weekday         - The BCD value of the weekday to set in the field of the
+                          Alarm Date register
 
-  Description:
-    This function identifies whether the Synchronization feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_RTCSyncStatusGet
+      Returns:
+        None.
 
-  Preconditions:
-    None.
+      Example:
+        <code>
+        uint32_t WeekDay = 0x05;        //WeekDay = Friday
+        PLIB_RTCC_AlarmWeekDaySet(RTCC_ID_0, WeekDay);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance
+      Remarks:
+        A write to this register is only allowed when access is allowed by
+        using the PLIB_RTCC_WriteEnable function.
 
-  Returns:
-    - true   - The Synchronization feature is supported on the device
-    - false  - The Synchronization feature is not supported on the device
+        This function implements an operation of the AlarmDate feature.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_RTCC_ExistsAlarmDate in your application to automatically
+        determine whether this feature is available.
+     */
 
-  Remarks:
-    None.
-*/
+    void PLIB_RTCC_AlarmWeekDaySet(RTCC_MODULE_ID index, uint32_t weekday);
 
-bool PLIB_RTCC_ExistsSynchronization( RTCC_MODULE_ID index );
 
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: RTCC Peripheral Library Exists Functions
+    // *****************************************************************************
+    // *****************************************************************************
+    /* The following functions indicate the existence of the features on the device.
+     */
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsHalfSecond( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsEnableControl( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the HalfSecond feature exists on the RTCC module.
+      Summary:
+        Identifies whether the EnableControl feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the HalfSecond feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_HalfSecondStatusBit
+      Description:
+        This function identifies whether the EnableControl feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_Enable
+        - PLIB_RTCC_Disable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The HalfSecond feature is supported on the device
-    - false  - The HalfSecond feature is not supported on the device
+      Returns:
+        - true   - The EnableControl feature is supported on the device
+        - false  - The EnableControl feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsHalfSecond( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsEnableControl(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsOutputControl( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsWriteEnable( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the OutputControl feature exists on the RTCC module.
+      Summary:
+        Identifies whether the WriteEnable feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the OutputControl feature is available on the
-    RTCC module. When this interface returns true, this function is supported
-    on the device:
-    - PLIB_RTCC_ClockOutputEnable
+      Description:
+        This function identifies whether the WriteEnable feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_WriteEnable
+        - PLIB_RTCC_WriteDisable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The OutputControl feature is supported on the device
-    - false  - The OutputControl feature is not supported on the device
+      Returns:
+        - true   - The WriteEnable feature is supported on the device
+        - false  - The WriteEnable feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsOutputControl( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsWriteEnable(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmControl( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsStopInIdleControl( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmControl feature exists on the RTCC module.
+      Summary:
+        Identifies whether the StopInIdle feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmControl feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmEnable
-    - PLIB_RTCC_AlarmDisable
+      Description:
+        This function identifies whether the StopInIdle feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_StopInIdleEnable
+        - PLIB_RTCC_StopInIdleDisable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmControl feature is supported on the device
-    - false  - The AlarmControl feature is not supported on the device
+      Returns:
+        - true   - The StopInIdle feature is supported on the device
+        - false  - The StopInIdle feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmControl( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsStopInIdleControl(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmChimeControl( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsOutputSelect( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmChimeControl feature exists on the RTCC module.
+      Summary:
+        Identifies whether the OutputSelect feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmChimeControl feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmChimeEnable
-    - PLIB_RTCC_AlarmChimeDisable
+      Description:
+        This function identifies whether the OutputSelect feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_SecondsClockOutputSelect
+        - PLIB_RTCC_AlarmPulseOutputSelect
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmChimeControl feature is supported on the device
-    - false  - The AlarmChimeControl feature is not supported on the device
+      Returns:
+        - true   - The OutputSelect feature is supported on the device
+        - false  - The OutputSelect feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmChimeControl( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsOutputSelect(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmPulseInitial( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsClockSelect( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmPulseInitial feature exists on the RTCC module.
+      Summary:
+        Identifies whether the ClockSelect feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmPulseInitialValue feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmPulseInitialSet
-    - PLIB_RTCC_AlarmPulseInitialGet
+      Description:
+        This function identifies whether the ClockSelect feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_SourceClockSelect
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmPulseInitial feature is supported on the device
-    - false  - The AlarmPulseInitial feature is not supported on the device
+      Returns:
+        - true   - The ClockSelect feature is supported on the device
+        - false  - The ClockSelect feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmPulseInitial( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsClockSelect(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmSynchronization( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsClockRunning( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmSynchronization feature exists on the RTCC module.
+      Summary:
+        Identifies whether the ClockRunning feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmSynchronization feature is available on the
-    RTCC module. When this interface returns true, this function is supported 
-    on the device:
-    - PLIB_RTCC_AlarmSyncGet
+      Description:
+        This function identifies whether the ClockRunning feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_ClockRunningStatus
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmSynchronization feature is supported on the device
-    - false  - The AlarmSynchronization feature is not supported on the device
+      Returns:
+        - true   - The ClockRunning feature is supported on the device
+        - false  - The ClockRunning feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmSynchronization( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsClockRunning(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmMaskControl( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsCalibration( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmMaskControl feature exists on the RTCC module.
+      Summary:
+        Identifies whether the Calibration feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmMaskControl feature is available on the
-    RTCC module. When this interface returns true, this function is supported 
-    on the device:
-    - PLIB_RTCC_AlarmMaskModeSelect
+      Description:
+        This function identifies whether the Calibration feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_DriftCalibrate
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmMaskControl feature is supported on the device
-    - false  - The AlarmMaskControl feature is not supported on the device
+      Returns:
+        - true   - The Calibration feature is supported on the device
+        - false  - The Calibration feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmMaskControl( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsCalibration(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmRepeatControl( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsSynchronization( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmRepeatControl feature exists on the RTCC module.
+      Summary:
+        Identifies whether the Synchronization feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmRepeatControl feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmRepeatCountSet
-    - PLIB_RTCC_AlarmRepeatCountRead
+      Description:
+        This function identifies whether the Synchronization feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_RTCSyncStatusGet
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmRepeatControl feature is supported on the device
-    - false  - The AlarmRepeatControl feature is not supported on the device
+      Returns:
+        - true   - The Synchronization feature is supported on the device
+        - false  - The Synchronization feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmRepeatControl( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsSynchronization(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsRTCTime( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsHalfSecond( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the RTCTimeValue feature exists on the RTCC module.
+      Summary:
+        Identifies whether the HalfSecond feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the RTCTimeValue feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_RTCTimeGet
-    - PLIB_RTCC_RTCTimeSet
+      Description:
+        This function identifies whether the HalfSecond feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_HalfSecondStatusBit
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The RTCTime feature is supported on the device
-    - false  - The RTCTime feature is not supported on the device
+      Returns:
+        - true   - The HalfSecond feature is supported on the device
+        - false  - The HalfSecond feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsRTCTime( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsHalfSecond(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsRTCDate( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsOutputControl( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the RTCDateValue feature exists on the RTCC module.
+      Summary:
+        Identifies whether the OutputControl feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the RTCDateValue feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_RTCDateGet
-    - PLIB_RTCC_RTCDateSet
+      Description:
+        This function identifies whether the OutputControl feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_ClockOutputEnable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The RTCDate feature is supported on the device
-    - false  - The RTCDate feature is not supported on the device
+      Returns:
+        - true   - The OutputControl feature is supported on the device
+        - false  - The OutputControl feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsRTCDate( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsOutputControl(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmTime( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmControl( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmTime feature exists on the RTCC module.
+      Summary:
+        Identifies whether the AlarmControl feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmTime feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmTimeGet
-    - PLIB_RTCC_AlarmTimeSet
+      Description:
+        This function identifies whether the AlarmControl feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmEnable
+        - PLIB_RTCC_AlarmDisable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmTime feature is supported on the device
-    - false  - The AlarmTime feature is not supported on the device
+      Returns:
+        - true   - The AlarmControl feature is supported on the device
+        - false  - The AlarmControl feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmTime( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsAlarmControl(RTCC_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    PLIB_RTCC_ExistsAlarmDate( RTCC_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmChimeControl( RTCC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the AlarmDate feature exists on the RTCC module.
+      Summary:
+        Identifies whether the AlarmChimeControl feature exists on the RTCC module.
 
-  Description:
-    This function identifies whether the AlarmDate feature is available on the
-    RTCC module. When this interface returns true, these functions are supported 
-    on the device:
-    - PLIB_RTCC_AlarmDateGet
-    - PLIB_RTCC_AlarmDateSet
+      Description:
+        This function identifies whether the AlarmChimeControl feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmChimeEnable
+        - PLIB_RTCC_AlarmChimeDisable
 
-  Preconditions:
-    None.
+      Preconditions:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance
 
-  Returns:
-    - true   - The AlarmDate feature is supported on the device
-    - false  - The AlarmDate feature is not supported on the device
+      Returns:
+        - true   - The AlarmChimeControl feature is supported on the device
+        - false  - The AlarmChimeControl feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-bool PLIB_RTCC_ExistsAlarmDate( RTCC_MODULE_ID index );
+    bool PLIB_RTCC_ExistsAlarmChimeControl(RTCC_MODULE_ID index);
 
 
-//DOM-IGNORE-BEGIN
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmPulseInitial( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmPulseInitial feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmPulseInitialValue feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmPulseInitialSet
+        - PLIB_RTCC_AlarmPulseInitialGet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmPulseInitial feature is supported on the device
+        - false  - The AlarmPulseInitial feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmPulseInitial(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmSynchronization( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmSynchronization feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmSynchronization feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_AlarmSyncGet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmSynchronization feature is supported on the device
+        - false  - The AlarmSynchronization feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmSynchronization(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmMaskControl( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmMaskControl feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmMaskControl feature is available on the
+        RTCC module. When this interface returns true, this function is supported
+        on the device:
+        - PLIB_RTCC_AlarmMaskModeSelect
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmMaskControl feature is supported on the device
+        - false  - The AlarmMaskControl feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmMaskControl(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmRepeatControl( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmRepeatControl feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmRepeatControl feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmRepeatCountSet
+        - PLIB_RTCC_AlarmRepeatCountRead
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmRepeatControl feature is supported on the device
+        - false  - The AlarmRepeatControl feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmRepeatControl(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsRTCTime( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the RTCTimeValue feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the RTCTimeValue feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_RTCTimeGet
+        - PLIB_RTCC_RTCTimeSet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The RTCTime feature is supported on the device
+        - false  - The RTCTime feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsRTCTime(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsRTCDate( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the RTCDateValue feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the RTCDateValue feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_RTCDateGet
+        - PLIB_RTCC_RTCDateSet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The RTCDate feature is supported on the device
+        - false  - The RTCDate feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsRTCDate(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmTime( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmTime feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmTime feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmTimeGet
+        - PLIB_RTCC_AlarmTimeSet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmTime feature is supported on the device
+        - false  - The AlarmTime feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmTime(RTCC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_RTCC_ExistsAlarmDate( RTCC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the AlarmDate feature exists on the RTCC module.
+
+      Description:
+        This function identifies whether the AlarmDate feature is available on the
+        RTCC module. When this interface returns true, these functions are supported
+        on the device:
+        - PLIB_RTCC_AlarmDateGet
+        - PLIB_RTCC_AlarmDateSet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The AlarmDate feature is supported on the device
+        - false  - The AlarmDate feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_RTCC_ExistsAlarmDate(RTCC_MODULE_ID index);
+
+
+    //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
@@ -3027,4 +3028,4 @@ bool PLIB_RTCC_ExistsAlarmDate( RTCC_MODULE_ID index );
 #endif  // #ifndef _PLIB_RTCC_H
 /*******************************************************************************
  End of File
-*/
+ */

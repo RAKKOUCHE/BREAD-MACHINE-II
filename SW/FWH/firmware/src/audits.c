@@ -1,3 +1,9 @@
+
+/**
+ * \addtogroup audits
+ * @{
+ */
+
 /** *************************************************************************
  * \author Rachid AKKOUCHE
  *
@@ -12,13 +18,9 @@
  * \details Gestion des audits
  *
  ***************************************************************************/
+
 /* ************************************************************************** */
 #include "audits.h"
-
-/**
- * \addtogroup audits
- * @{
- */
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -29,9 +31,6 @@
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
-
-
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: Constants                                                         */
@@ -39,7 +38,7 @@
 /* ************************************************************************** */
 
 /**
- * \brief Valeur indiquant que l'eeprom a été initialis'.
+ * \brief Valeur indiquant que l'eeprom a été initialisée.
  */
 //#define AUDITS_USED_FLAG 0XFFFFFFFF
 #define AUDITS_USED_FLAG 0XA5A5A5A5
@@ -189,8 +188,7 @@ static struct
  ********************************************************************/
 static void vTaskAudit(void *vParameters)
 {
-
-    unsigned int byIndex;
+    uint32_t byIndex;
     TickType_t xLastWakeTime = xTaskGetTickCount();
 
     union
@@ -310,7 +308,7 @@ static void vTaskAudit(void *vParameters)
                 break;
             }
         }
-        vTaskDelayUntil(&xLastWakeTime, AUDITS_DELAY);
+        vTaskDelay(AUDITS_DELAY);
     }
 }
 

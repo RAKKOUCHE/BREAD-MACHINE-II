@@ -19,7 +19,7 @@
  *******************************************************************************/
 
 /**
- * \file MAINBOARD.h
+ * \file mainboard.h
  *
  * \brief Ce fichier en-tête fournit les prototypes et les deéfinitions pour
  * l'application.
@@ -41,11 +41,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -133,6 +128,7 @@ extern "C"
      */
     TimerHandle_t hTimerDisplaySelection;
 
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Application Routines
@@ -141,30 +137,18 @@ extern "C"
 
     /**
      * \brief
-     * @return 
-     */
-    bool getIsDispenseProductFinished(void);
-
-    /**
-     * \brief
-     * @param value
-     */
-    void setIsDispensedProductFinished(bool value);
-    
-    /**
-     * \brief
-     * @return 
+     * @return
      */
     TimerHandle_t hGetTimerCumul(void);
+//
+//    /**
+//     * \brief
+//     */
+//    void vCreateTimerCumul(void);
 
     /**
      * \brief
-     */
-    void vCreateTimerCumul(void);
-
-    /**
-     * \brief
-     * @return 
+     * @return
      */
     TimerHandle_t hGetTimerOverPay(void);
 

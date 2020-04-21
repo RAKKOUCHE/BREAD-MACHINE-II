@@ -8,15 +8,15 @@
     plib_dmt.h
 
   Summary:
-    Deadman Timer (DMT) Peripheral Library interface header for Deadman Timer 
+    Deadman Timer (DMT) Peripheral Library interface header for Deadman Timer
     common definitions.
 
   Description:
     This header file contains the function prototypes and definitions of
     the data types and constants that make up the interface to the Deadman
-    Timer Peripheral Library for all families of Microchip microcontrollers. 
+    Timer Peripheral Library for all families of Microchip microcontrollers.
     The definitions in this file are common to the Deadman Timer peripheral.
-**************************************************************************/
+ **************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -40,7 +40,7 @@ INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
 CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
 SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-*******************************************************************************/
+ *******************************************************************************/
 //DOM-IGNORE-END
 
 #ifndef _PLIB_DMT_H
@@ -50,789 +50,790 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-    extern "C" {
+extern "C"
+{
 
 #endif
-// DOM-IGNORE-END 
+    // DOM-IGNORE-END
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files (continued at end of file)
-// *****************************************************************************
-// *****************************************************************************
-/*  This section lists the other files that are included in this file.  However,
-    please see the end of the file for additional implementation header files
-    that are also included
-*/
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Included Files (continued at end of file)
+    // *****************************************************************************
+    // *****************************************************************************
+    /*  This section lists the other files that are included in this file.  However,
+        please see the end of the file for additional implementation header files
+        that are also included
+     */
 
 #include "peripheral/dmt/processor/dmt_processor.h"
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: DMT Peripheral Library Interface Routines - General Configuration
-// *****************************************************************************
-// *****************************************************************************
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: DMT Peripheral Library Interface Routines - General Configuration
+    // *****************************************************************************
+    // *****************************************************************************
 
-//******************************************************************************
-/* Function:
-    void PLIB_DMT_Enable ( DMT_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_DMT_Enable ( DMT_MODULE_ID index )
 
-  Summary:
-    Enables the DMT module.
+      Summary:
+        Enables the DMT module.
 
-  Description:
-    This function enables the DMT module. If it is already enabled through the
-    Configuration bits, it will keep it enabled. 
+      Description:
+        This function enables the DMT module. If it is already enabled through the
+        Configuration bits, it will keep it enabled.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    </code>
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        </code>
 
-  Remarks:
-    Calling this function is not necessary if it is enabled through its
-    Configuration bits.
+      Remarks:
+        Calling this function is not necessary if it is enabled through its
+        Configuration bits.
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsEnableControl in your application to determine whether
-    this feature is available.
-*/
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsEnableControl in your application to determine whether
+        this feature is available.
+     */
 
-void PLIB_DMT_Enable ( DMT_MODULE_ID index );
-
-
-//******************************************************************************
-/* Function:
-    void PLIB_DMT_Disable ( DMT_MODULE_ID index )
-
-  Summary:
-    Disables the DMT module.
-
-  Description:
-    This function disables the DMT module if it is enabled in software. 
-  
-  Precondition:
-    The DMT module must have been enabled through software.
-
-  Parameters:
-    index      - Identifies the desired DMT module
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    PLIB_DMT_Disable ( DMT_ID_0 );
-    </code>
-
-  Remarks:
-    This function will not disable the DMT module if it is enabled through its
-    Configuration bits.
-
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsEnableControl in your application to determine whether
-    this feature is available.
-*/
-
-void PLIB_DMT_Disable ( DMT_MODULE_ID index );
+    void PLIB_DMT_Enable(DMT_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    void PLIB_DMT_ClearStep1 ( DMT_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        void PLIB_DMT_Disable ( DMT_MODULE_ID index )
 
-  Summary:
-    Resets the DMT module.
+      Summary:
+        Disables the DMT module.
 
-  Description:
-    This function performs the STEP1 Clearing of the DMT module. The DMT module 
-	should be cleared in two steps, within the interval determined by the Count 
-	Window before the DMT forces an NMI or device reset.
+      Description:
+        This function disables the DMT module if it is enabled in software.
 
-  Precondition:
-    None.
+      Precondition:
+        The DMT module must have been enabled through software.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
+      Example:
+        <code>
+        PLIB_DMT_Disable ( DMT_ID_0 );
+        </code>
 
-    //Application loop
-    while(1)
-    {
-        PLIB_DMT_ClearStep1 ( DMT_ID_0 );
+      Remarks:
+        This function will not disable the DMT module if it is enabled through its
+        Configuration bits.
+
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsEnableControl in your application to determine whether
+        this feature is available.
+     */
+
+    void PLIB_DMT_Disable(DMT_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_DMT_ClearStep1 ( DMT_MODULE_ID index )
+
+      Summary:
+        Resets the DMT module.
+
+      Description:
+        This function performs the STEP1 Clearing of the DMT module. The DMT module
+        should be cleared in two steps, within the interval determined by the Count
+        Window before the DMT forces an NMI or device reset.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index      - Identifies the desired DMT module
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
+
+        //Application loop
+        while(1)
+        {
+            PLIB_DMT_ClearStep1 ( DMT_ID_0 );
+            //user code
+            PLIB_DMT_ClearStep2 ( DMT_ID_0 );
+            //user code
+        }
+        </code>
+
+      Remarks:
+        Resetting the device before the count reaches the window will cause
+        a reset in Windowed mode.
+
+        The example code does not include the settings that should be done through
+        the Configuration bits.
+
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsTimerClear in your application to determine whether
+        this feature is available.
+     */
+
+    void PLIB_DMT_ClearStep1(DMT_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        void PLIB_DMT_ClearStep2 ( DMT_MODULE_ID index )
+
+      Summary:
+        Resets the DMT module.
+
+      Description:
+        This function performs the STEP2 Clearing of the DMT module. The DMT module
+        should be cleared in two steps, within the interval determined by the Count
+        Window before the DMT forces an NMI or device reset.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index      - Identifies the desired DMT module
+
+      Returns:
+        None.
+
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
+
+        //Application loop
+        while(1)
+        {
+            PLIB_DMT_ClearStep1 ( DMT_ID_0 );
+            //user code
+            PLIB_DMT_ClearStep2 ( DMT_ID_0 );
+            //user code
+        }
+        </code>
+
+      Remarks:
+        Resetting the device before the count reaches the window will cause
+        a reset in Windowed mode.
+
+        The example code doesn't include the settings that should be done through
+        the Configuration bits.
+
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsTimerClear in your application to determine whether
+        this feature is available.
+     */
+
+    void PLIB_DMT_ClearStep2(DMT_MODULE_ID index);
+
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: DMT Peripheral Library Interface Routines - General Status
+    // *****************************************************************************
+    // *****************************************************************************
+
+    //******************************************************************************
+    /* Function:
+        bool PLIB_DMT_BAD1Get ( DMT_MODULE_ID index )
+
+      Summary:
+        Returns BAD1 flag from the DMT Status Register.
+
+      Description:
+        This function returns the DMT BAD1 Flag. This flag is set when there
+        is an incorrect write to STEP1, such as the wrong value, writing too
+        early, or writing too late.
+
+      Precondition:
+        None.
+
+      Parameters:
+        index      - Identifies the desired DMT module
+
+      Returns:
+        The flag value, true or false.
+
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
         //user code
-		PLIB_DMT_ClearStep2 ( DMT_ID_0 );
-		//user code
-    }
-    </code>
+        PLIB_DMT_ClearStep1();
+        if( PLIB_DMT_BAD1Get ( DMT_ID_0 ))
+        {
+           //user code
+        }
+        </code>
+      Remarks:
+        The flag returned will indicated if a STEP1 write was not successful.
 
-  Remarks:
-    Resetting the device before the count reaches the window will cause
-    a reset in Windowed mode.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsStatus in your application to determine whether
+        this feature is available.
 
-    The example code does not include the settings that should be done through
-    the Configuration bits.
+     */
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsTimerClear in your application to determine whether
-    this feature is available.
-*/
-
-void PLIB_DMT_ClearStep1 ( DMT_MODULE_ID index );
+    bool PLIB_DMT_BAD1Get(DMT_MODULE_ID index);
 
 
-//******************************************************************************
-/* Function:
-    void PLIB_DMT_ClearStep2 ( DMT_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        bool PLIB_DMT_BAD2Get ( DMT_MODULE_ID index )
 
-  Summary:
-    Resets the DMT module.
+      Summary:
+        Returns BAD2 flag from the DMT Status Register.
 
-  Description:
-    This function performs the STEP2 Clearing of the DMT module. The DMT module 
-	should be cleared in two steps, within the interval determined by the Count 
-	Window before the DMT forces an NMI or device reset.
+      Description:
+        This function returns the DMT BAD2 Flag. This flag is set when there
+        is an incorrect write to STEP2, such as the wrong value, writing too
+        early, or writing too late.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Returns:
-    None.
+      Returns:
+        The flag value, true or false.
 
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-
-    //Application loop
-    while(1)
-    {
-        PLIB_DMT_ClearStep1 ( DMT_ID_0 );
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
         //user code
-		PLIB_DMT_ClearStep2 ( DMT_ID_0 );
-		//user code
-    }
-    </code>
-
-  Remarks:
-    Resetting the device before the count reaches the window will cause
-    a reset in Windowed mode.
-
-    The example code doesn't include the settings that should be done through
-    the Configuration bits.
-
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsTimerClear in your application to determine whether
-    this feature is available.
-*/
-
-void PLIB_DMT_ClearStep2 ( DMT_MODULE_ID index );
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: DMT Peripheral Library Interface Routines - General Status
-// *****************************************************************************
-// *****************************************************************************
-
-//******************************************************************************
-/* Function:
-    bool PLIB_DMT_BAD1Get ( DMT_MODULE_ID index )
-
-  Summary:
-    Returns BAD1 flag from the DMT Status Register.
-
-  Description:
-    This function returns the DMT BAD1 Flag. This flag is set when there
-    is an incorrect write to STEP1, such as the wrong value, writing too
-    early, or writing too late.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index      - Identifies the desired DMT module
-
-  Returns:
-    The flag value, true or false.
-
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    //user code
-    PLIB_DMT_ClearStep1();
-    if( PLIB_DMT_BAD1Get ( DMT_ID_0 ))
-    {
-       //user code
-    }
-    </code>
-  Remarks:
-    The flag returned will indicated if a STEP1 write was not successful.
-
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsStatus in your application to determine whether
-    this feature is available.
-
-*/
-
-bool PLIB_DMT_BAD1Get ( DMT_MODULE_ID index );
-
-
-//******************************************************************************
-/* Function:
-    bool PLIB_DMT_BAD2Get ( DMT_MODULE_ID index )
-
-  Summary:
-    Returns BAD2 flag from the DMT Status Register.
-
-  Description:
-    This function returns the DMT BAD2 Flag. This flag is set when there
-    is an incorrect write to STEP2, such as the wrong value, writing too
-    early, or writing too late.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index      - Identifies the desired DMT module
-
-  Returns:
-    The flag value, true or false.
-
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    //user code
-    PLIB_DMT_ClearStep1();
-    //user code
-    PLIB_DMT_ClearStep2();
-    if( PLIB_DMT_BAD2Get ( DMT_ID_0 ))
-    {
-       //user code
-    }
-    </code>
-  Remarks:
-    The flag returned will indicated if a STEP2 write was not successful.
-
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsStatus in your application to determine whether
-    this feature is available.
-
-*/
-
-bool PLIB_DMT_BAD2Get ( DMT_MODULE_ID index );
-
-
-//******************************************************************************
-/* Function:
-    bool PLIB_DMT_WindowIsOpen( DMT_MODULE_ID index )
-
-  Summary:
-    Returns Window is Open flag from the DMT Status Register.
-
-  Description:
-    This function returns the flag indicating the DMT Window is open. 
-    
-  Precondition:
-    None.
-
-  Parameters:
-    index      - Identifies the desired DMT module
-
-  Returns:
-    The flag value, true or false.
-
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    //user code
-    PLIB_DMT_ClearStep1();
-    //user code
-    if( PLIB_DMT_WindowIsOpen( DMT_ID_0 ))
-    {
-       PLIB_DMT_ClearStep2();
-    }
-    
-    </code>
-  Remarks:
-    The flag returned will indicated if the DMT window is open.
+        PLIB_DMT_ClearStep1();
+        //user code
+        PLIB_DMT_ClearStep2();
+        if( PLIB_DMT_BAD2Get ( DMT_ID_0 ))
+        {
+           //user code
+        }
+        </code>
+      Remarks:
+        The flag returned will indicated if a STEP2 write was not successful.
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsStatus in your application to determine whether
-    this feature is available.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsStatus in your application to determine whether
+        this feature is available.
 
-*/
+     */
 
-bool PLIB_DMT_WindowIsOpen ( DMT_MODULE_ID index );
+    bool PLIB_DMT_BAD2Get(DMT_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    bool PLIB_DMT_EventOccurred( DMT_MODULE_ID index )
 
-  Summary:
-    Returns Event flag from the DMT Status Register.
+    //******************************************************************************
+    /* Function:
+        bool PLIB_DMT_WindowIsOpen( DMT_MODULE_ID index )
 
-  Description:
-    This function returns the flag indicating a DMT event has happened,
-    such as a Window Open, or a Bad Flag is set. 
-    
-  Precondition:
-    None.
+      Summary:
+        Returns Window is Open flag from the DMT Status Register.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Description:
+        This function returns the flag indicating the DMT Window is open.
 
-  Returns:
-    The flag value, true or false.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    //user code
-    PLIB_DMT_ClearStep1();
-    //user code
-    if( PLIB_DMT_EventOccurred( DMT_ID_0 ))
-    {
-       //user code
-    }
-    
-    </code>
-  Remarks:
-    The flag returned will indicate if a DMT event has happened.
+      Parameters:
+        index      - Identifies the desired DMT module
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsStatus in your application to determine whether
-    this feature is available.
+      Returns:
+        The flag value, true or false.
 
-*/
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        //user code
+        PLIB_DMT_ClearStep1();
+        //user code
+        if( PLIB_DMT_WindowIsOpen( DMT_ID_0 ))
+        {
+           PLIB_DMT_ClearStep2();
+        }
 
-bool PLIB_DMT_EventOccurred ( DMT_MODULE_ID index );
+        </code>
+      Remarks:
+        The flag returned will indicated if the DMT window is open.
 
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsStatus in your application to determine whether
+        this feature is available.
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_DMT_CounterGet ( DMT_MODULE_ID index )
+     */
 
-  Summary:
-    Returns the DMT counter value.
+    bool PLIB_DMT_WindowIsOpen(DMT_MODULE_ID index);
 
-  Description:
-    This function returns the DMT counter value. The value is the number of
-    instructions counted since the count was last cleared.
+    //******************************************************************************
+    /* Function:
+        bool PLIB_DMT_EventOccurred( DMT_MODULE_ID index )
 
-  Precondition:
-    None.
+      Summary:
+        Returns Event flag from the DMT Status Register.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Description:
+        This function returns the flag indicating a DMT event has happened,
+        such as a Window Open, or a Bad Flag is set.
 
-  Returns:
-    The counter value.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    uint32_t value;
+      Parameters:
+        index      - Identifies the desired DMT module
 
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    value = PLIB_DMT_CounterGet ( DMT_ID_0 );
-    </code>
+      Returns:
+        The flag value, true or false.
 
-  Remarks:
-    The value returned will be right-aligned.
+      Example:
+        <code>
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        //user code
+        PLIB_DMT_ClearStep1();
+        //user code
+        if( PLIB_DMT_EventOccurred( DMT_ID_0 ))
+        {
+           //user code
+        }
 
-    Refer the data sheet of the specific device to get the division factor
-    corresponding to the value.
+        </code>
+      Remarks:
+        The flag returned will indicate if a DMT event has happened.
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsCounterValue in your application to determine whether
-    this feature is available.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsStatus in your application to determine whether
+        this feature is available.
 
-*/
+     */
 
-uint32_t PLIB_DMT_CounterGet ( DMT_MODULE_ID index );
+    bool PLIB_DMT_EventOccurred(DMT_MODULE_ID index);
 
 
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_DMT_CounterGet ( DMT_MODULE_ID index )
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_DMT_PostscalerValueGet ( DMT_MODULE_ID index )
+      Summary:
+        Returns the DMT counter value.
 
-  Summary:
-    Returns the DMT postscaler value.
+      Description:
+        This function returns the DMT counter value. The value is the number of
+        instructions counted since the count was last cleared.
 
-  Description:
-    This function returns the DMT postscaler value. The value will correspond to 
-    a total number of instructions for DMT timeout, a value determined by 
-	configuration bits.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Returns:
+        The counter value.
 
-  Returns:
-    The postscaler value.
+      Example:
+        <code>
+        uint32_t value;
 
-  Example:
-    <code>
-    uint32_t value;
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        value = PLIB_DMT_CounterGet ( DMT_ID_0 );
+        </code>
 
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    value = PLIB_DMT_PostscalerValueGet ( DMT_ID_0 );
-    </code>
+      Remarks:
+        The value returned will be right-aligned.
 
-  Remarks:
-    The value returned will be right-aligned.
+        Refer the data sheet of the specific device to get the division factor
+        corresponding to the value.
 
-    Refer to the specific device data sheet to get the association of the 
-	configuration bits corresponding to this postscaler value.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsCounterValue in your application to determine whether
+        this feature is available.
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsPostscalerValue in your application to determine whether
-    this feature is available.
+     */
 
-*/
+    uint32_t PLIB_DMT_CounterGet(DMT_MODULE_ID index);
 
-uint32_t PLIB_DMT_PostscalerValueGet ( DMT_MODULE_ID index );
 
-//******************************************************************************
-/* Function:
-    uint32_t PLIB_DMT_PostscalerIntervalGet ( DMT_MODULE_ID index )
 
-  Summary:
-    Returns the DMT postscaler interval value.
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_DMT_PostscalerValueGet ( DMT_MODULE_ID index )
 
-  Description:
-    This function returns the DMT postscaler interval. The value will correspond 
-    to a total number of instructions for DMT window, a value determined by 
-	configuration bits.
+      Summary:
+        Returns the DMT postscaler value.
 
-  Precondition:
-    None.
+      Description:
+        This function returns the DMT postscaler value. The value will correspond to
+        a total number of instructions for DMT timeout, a value determined by
+        configuration bits.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Precondition:
+        None.
 
-  Returns:
-    The postscaler interval.
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Example:
-    <code>
-    uint32_t value;
+      Returns:
+        The postscaler value.
 
-    PLIB_DMT_Enable ( DMT_ID_0 );
-    value = PLIB_DMT_PostscalerIntervalGet ( DMT_ID_0 );
-    </code>
+      Example:
+        <code>
+        uint32_t value;
 
-  Remarks:
-    The value returned will be right-aligned.
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        value = PLIB_DMT_PostscalerValueGet ( DMT_ID_0 );
+        </code>
 
-    Refer the data sheet of the specific device to get the association of 
-	the configuration bits corresponding to this postscaler value.
+      Remarks:
+        The value returned will be right-aligned.
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsPostscalerValue in your application to determine whether
-    this feature is available.
+        Refer to the specific device data sheet to get the association of the
+        configuration bits corresponding to this postscaler value.
 
-*/
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsPostscalerValue in your application to determine whether
+        this feature is available.
 
-uint32_t PLIB_DMT_PostscalerIntervalGet ( DMT_MODULE_ID index );
+     */
 
+    uint32_t PLIB_DMT_PostscalerValueGet(DMT_MODULE_ID index);
 
-//******************************************************************************
-/* Function:
-    bool PLIB_DMT_IsEnabled ( DMT_MODULE_ID index )
+    //******************************************************************************
+    /* Function:
+        uint32_t PLIB_DMT_PostscalerIntervalGet ( DMT_MODULE_ID index )
 
-  Summary:
-    Returns the Deadman Timer on/off(enable/disable) status.
+      Summary:
+        Returns the DMT postscaler interval value.
 
-  Description:
-    Returns the 'true', if the Deadman Timer is already ON. Otherwise returns
-    'false'.
+      Description:
+        This function returns the DMT postscaler interval. The value will correspond
+        to a total number of instructions for DMT window, a value determined by
+        configuration bits.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index      - Identifies the desired DMT module
+      Parameters:
+        index      - Identifies the desired DMT module
 
-  Returns:
-    true 	- If the Deadman Timer is on
-    false 	- If the Deadman Timer is off
+      Returns:
+        The postscaler interval.
 
-  Example:
-    <code>
-    if (PLIB_DMT_IsEnabled ( DMT_ID_0 ) )
-    {
-        //Do some action
-    }
-    </code>
+      Example:
+        <code>
+        uint32_t value;
 
-  Remarks:
-    This function returns 'true' if the device is enabled  either though the
-    Configuration bits or in the software.
+        PLIB_DMT_Enable ( DMT_ID_0 );
+        value = PLIB_DMT_PostscalerIntervalGet ( DMT_ID_0 );
+        </code>
 
-    This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_DMT_ExistsEnableControl in your application to determine whether
-    this feature is available.
-*/
+      Remarks:
+        The value returned will be right-aligned.
 
-bool PLIB_DMT_IsEnabled( DMT_MODULE_ID index );
+        Refer the data sheet of the specific device to get the association of
+        the configuration bits corresponding to this postscaler value.
 
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsPostscalerValue in your application to determine whether
+        this feature is available.
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: DMT Peripheral Library Exists API Routines
-// *****************************************************************************
-// *****************************************************************************
-/* The functions below indicate the existence of the features on the device.
-*/
+     */
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsEnableControl( DMT_MODULE_ID index )
+    uint32_t PLIB_DMT_PostscalerIntervalGet(DMT_MODULE_ID index);
 
-  Summary:
-    Identifies whether the EnableControl feature exists on the DMT module.
 
-  Description:
-    This function identifies whether the EnableControl feature is available on the
-    DMT module. When this function returns true, these functions are supported 
-    on the device:
-    - PLIB_DMT_Enable
-    - PLIB_DMT_Disable
-    - PLIB_DMT_IsEnabled
+    //******************************************************************************
+    /* Function:
+        bool PLIB_DMT_IsEnabled ( DMT_MODULE_ID index )
 
-  Preconditions:
-    None.
+      Summary:
+        Returns the Deadman Timer on/off(enable/disable) status.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Description:
+        Returns the 'true', if the Deadman Timer is already ON. Otherwise returns
+        'false'.
 
-  Returns:
-    Existence of the EnableControl feature:
-    - true   - When EnableControl feature is supported on the device
-    - false  - When EnableControl feature is not supported on the device
+      Precondition:
+        None.
 
-  Remarks:
-    None.
-*/
+      Parameters:
+        index      - Identifies the desired DMT module
 
-bool PLIB_DMT_ExistsEnableControl( DMT_MODULE_ID index );
+      Returns:
+        true 	- If the Deadman Timer is on
+        false 	- If the Deadman Timer is off
 
+      Example:
+        <code>
+        if (PLIB_DMT_IsEnabled ( DMT_ID_0 ) )
+        {
+            //Do some action
+        }
+        </code>
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsStatus( DMT_MODULE_ID index )
+      Remarks:
+        This function returns 'true' if the device is enabled  either though the
+        Configuration bits or in the software.
 
-  Summary:
-    Identifies whether the Status feature exists on the DMT module.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_DMT_ExistsEnableControl in your application to determine whether
+        this feature is available.
+     */
 
-  Description:
-    This function identifies whether the Status feature is available on the
-    DMT module. When this function returns true, these functions are supported 
-    on the device:
-    - PLIB_DMT_WindowIsOpen
-    - PLIB_DMT_EventOccurred
-    - PLIB_DMT_BAD1Get
-    - PLIB_DMT_BAD2Get
+    bool PLIB_DMT_IsEnabled(DMT_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: DMT Peripheral Library Exists API Routines
+    // *****************************************************************************
+    // *****************************************************************************
+    /* The functions below indicate the existence of the features on the device.
+     */
 
-  Returns:
-    Existence of the Status feature:
-    - true   - When Status feature is supported on the device
-    - false  - When Status feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsEnableControl( DMT_MODULE_ID index )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Identifies whether the EnableControl feature exists on the DMT module.
 
-bool PLIB_DMT_ExistsStatus( DMT_MODULE_ID index );
+      Description:
+        This function identifies whether the EnableControl feature is available on the
+        DMT module. When this function returns true, these functions are supported
+        on the device:
+        - PLIB_DMT_Enable
+        - PLIB_DMT_Disable
+        - PLIB_DMT_IsEnabled
 
+      Preconditions:
+        None.
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsStep1( DMT_MODULE_ID index )
+      Parameters:
+        index           - Identifier for the device instance
 
-  Summary:
-    Identifies whether the STEP1 Clear feature exists on the DMT module.
+      Returns:
+        Existence of the EnableControl feature:
+        - true   - When EnableControl feature is supported on the device
+        - false  - When EnableControl feature is not supported on the device
 
-  Description:
-    This function identifies whether the Step 1 Clear feature is available on the 
-    DMT module. When this function returns true, this function is supported on 
-    the device:
-    - PLIB_DMT_ClearStep1
+      Remarks:
+        None.
+     */
 
-  Preconditions:
-    None.
+    bool PLIB_DMT_ExistsEnableControl(DMT_MODULE_ID index);
 
-  Parameters:
-    index           - Identifier for the device instance
 
-  Returns:
-    - true   - The STEP1 Clear feature is supported on the device
-    - false  - The STEP1 Clear feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsStatus( DMT_MODULE_ID index )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Identifies whether the Status feature exists on the DMT module.
 
-bool PLIB_DMT_ExistsStep1( DMT_MODULE_ID index );
+      Description:
+        This function identifies whether the Status feature is available on the
+        DMT module. When this function returns true, these functions are supported
+        on the device:
+        - PLIB_DMT_WindowIsOpen
+        - PLIB_DMT_EventOccurred
+        - PLIB_DMT_BAD1Get
+        - PLIB_DMT_BAD2Get
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsStep2( DMT_MODULE_ID index )
+      Preconditions:
+        None.
 
-  Summary:
-    Identifies whether the STEP2 Clear feature exists on the DMT module.
+      Parameters:
+        index           - Identifier for the device instance
 
-  Description:
-    This function identifies whether the STEP2 Clear feature is available on the 
-    DMT module. When this function returns true, this function is supported on 
-    the device:
-    - PLIB_DMT_ClearStep2
+      Returns:
+        Existence of the Status feature:
+        - true   - When Status feature is supported on the device
+        - false  - When Status feature is not supported on the device
 
-  Preconditions:
-    None.
+      Remarks:
+        None.
+     */
 
-  Parameters:
-    index           - Identifier for the device instance
+    bool PLIB_DMT_ExistsStatus(DMT_MODULE_ID index);
 
-  Returns:
-    - true   - The STEP2 Clear feature is supported on the device
-    - false  - The STEP2 Clear feature is not supported on the device
 
-  Remarks:
-    None.
-*/
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsStep1( DMT_MODULE_ID index )
 
-bool PLIB_DMT_ExistsStep2( DMT_MODULE_ID index );
+      Summary:
+        Identifies whether the STEP1 Clear feature exists on the DMT module.
 
+      Description:
+        This function identifies whether the Step 1 Clear feature is available on the
+        DMT module. When this function returns true, this function is supported on
+        the device:
+        - PLIB_DMT_ClearStep1
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsCounter( DMT_MODULE_ID index )
+      Preconditions:
+        None.
 
-  Summary:
-    Identifies whether the Counter feature exists on the DMT module.
+      Parameters:
+        index           - Identifier for the device instance
 
-  Description:
-    This function identifies whether the Counter feature is available 
-    on the DMT module. When this function returns true, this function is 
-    supported on the device:
-    - PLIB_DMT_CounterGet
+      Returns:
+        - true   - The STEP1 Clear feature is supported on the device
+        - false  - The STEP1 Clear feature is not supported on the device
 
-  Preconditions:
-    None.
+      Remarks:
+        None.
+     */
 
-  Parameters:
-    index           - Identifier for the device instance
+    bool PLIB_DMT_ExistsStep1(DMT_MODULE_ID index);
 
-  Returns:
-    - true   - The Counter feature is supported on the device
-    - false  - The Counter feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsStep2( DMT_MODULE_ID index )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Identifies whether the STEP2 Clear feature exists on the DMT module.
 
-bool PLIB_DMT_ExistsCounter( DMT_MODULE_ID index );
+      Description:
+        This function identifies whether the STEP2 Clear feature is available on the
+        DMT module. When this function returns true, this function is supported on
+        the device:
+        - PLIB_DMT_ClearStep2
 
+      Preconditions:
+        None.
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsPostscalerValue( DMT_MODULE_ID index )
+      Parameters:
+        index           - Identifier for the device instance
 
-  Summary:
-    Identifies whether the Postscaler Value feature exists on the DMT module.
+      Returns:
+        - true   - The STEP2 Clear feature is supported on the device
+        - false  - The STEP2 Clear feature is not supported on the device
 
-  Description:
-    This function identifies whether the PostscalerValue feature is available 
-    on the DMT module. When this function returns true, this function is 
-    supported on the device:
-    - PLIB_DMT_PostscalerValueGet
+      Remarks:
+        None.
+     */
 
-  Preconditions:
-    None.
+    bool PLIB_DMT_ExistsStep2(DMT_MODULE_ID index);
 
-  Parameters:
-    index           - Identifier for the device instance
 
-  Returns:
-    - true   - The Postscaler Value feature is supported on the device
-    - false  - The Postscaler Value feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsCounter( DMT_MODULE_ID index )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Identifies whether the Counter feature exists on the DMT module.
 
-bool PLIB_DMT_ExistsPostscalerValue( DMT_MODULE_ID index );
+      Description:
+        This function identifies whether the Counter feature is available
+        on the DMT module. When this function returns true, this function is
+        supported on the device:
+        - PLIB_DMT_CounterGet
 
+      Preconditions:
+        None.
 
-//******************************************************************************
-/* Function:
-    PLIB_DMT_ExistsInterval( DMT_MODULE_ID index )
+      Parameters:
+        index           - Identifier for the device instance
 
-  Summary:
-    Identifies whether the Postscaler Interval feature exists on the DMT module.
+      Returns:
+        - true   - The Counter feature is supported on the device
+        - false  - The Counter feature is not supported on the device
 
-  Description:
-    This function identifies whether the Postscaler Interval feature is available 
-    on the DMT module. When this function returns true, this function is 
-    supported on the device:
-    - PLIB_DMT_PostscalerIntervalGet
+      Remarks:
+        None.
+     */
 
-  Preconditions:
-    None.
+    bool PLIB_DMT_ExistsCounter(DMT_MODULE_ID index);
 
-  Parameters:
-    index           - Identifier for the device instance
 
-  Returns:
-    - true   - The Postscaler Interval feature is supported on the device
-    - false  - The Postscaler Interval feature is not supported on the device
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsPostscalerValue( DMT_MODULE_ID index )
 
-  Remarks:
-    None.
-*/
+      Summary:
+        Identifies whether the Postscaler Value feature exists on the DMT module.
 
-bool PLIB_DMT_ExistsPostscalerInterval( DMT_MODULE_ID index );
+      Description:
+        This function identifies whether the PostscalerValue feature is available
+        on the DMT module. When this function returns true, this function is
+        supported on the device:
+        - PLIB_DMT_PostscalerValueGet
 
-//DOM-IGNORE-BEGIN
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The Postscaler Value feature is supported on the device
+        - false  - The Postscaler Value feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_DMT_ExistsPostscalerValue(DMT_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function:
+        PLIB_DMT_ExistsInterval( DMT_MODULE_ID index )
+
+      Summary:
+        Identifies whether the Postscaler Interval feature exists on the DMT module.
+
+      Description:
+        This function identifies whether the Postscaler Interval feature is available
+        on the DMT module. When this function returns true, this function is
+        supported on the device:
+        - PLIB_DMT_PostscalerIntervalGet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The Postscaler Interval feature is supported on the device
+        - false  - The Postscaler Interval feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_DMT_ExistsPostscalerInterval(DMT_MODULE_ID index);
+
+    //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
@@ -841,4 +842,4 @@ bool PLIB_DMT_ExistsPostscalerInterval( DMT_MODULE_ID index );
 #endif  //_PLIB_DMT_H
 /*******************************************************************************
  End of File
-*/
+ */

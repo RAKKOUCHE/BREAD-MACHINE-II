@@ -1,3 +1,8 @@
+
+/**
+ * \addtogroup dataRecord
+ * @{
+ */
 /* ************************************************************************** */
 /** Descriptive File Name
  *
@@ -18,11 +23,6 @@
 #include "dataCommun.h"
 #include "peripheral/usart/plib_usart.h"
 #include "peripheral/usart/processor/usart_p32mx575f512l.h"
-
-/**
- * \addtogroup dataRecord
- * @{
- */
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -207,7 +207,7 @@ void vTaskPcComm(void *vParameters)
             {
                 if(PLIB_USART_ReceiverDataIsAvailable(USART_ID_2))
                 {
-                    switch((uint8_t) PLIB_USART_ReceiverByteReceive(USART_ID_2))
+                    switch((uint8_t)PLIB_USART_ReceiverByteReceive(USART_ID_2))
                     {
                         case PCCOM_AUDITS_REQUEST:
                             // <editor-fold desc="PCCOM_AUDITS_REQUEST">

@@ -42,7 +42,12 @@ extern "C"
 {
 #endif
 
-
+    /**
+     * \defgroup ds18b20 DS18B20
+     * Gestion de la sonde de température.
+     * @{
+     */
+    
     /* ************************************************************************** */
     /* ************************************************************************** */
     /* Section: Constants                                                         */
@@ -71,6 +76,9 @@ extern "C"
      */
     void vDS18B20Init(void);
 
+    /**
+     * @}
+     */
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }

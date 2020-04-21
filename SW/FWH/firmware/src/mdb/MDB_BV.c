@@ -1,11 +1,17 @@
+
+/**
+ * \addtogroup MDB_BV
+ * @{
+ */
+
 #include "mdb_bv.h"
 
 struct __attribute__((packed))
 {
-    BOOL isStackerFull;
-    BOOL isEnable;
-    BOOL isInitialized;
-    BOOL isPresent;
+    bool isStackerFull;
+    bool isEnable;
+    bool isInitialized;
+    bool isPresent;
     uint16_t wBeforeRetry;
     BILL_TYPE byBillType;
     int16_t i16BillInStacker;
@@ -18,7 +24,7 @@ struct __attribute__((packed))
 billValidator;
 
 /*********************************************************************
- * Function:        static BOOL isGetBVtackerStatus()
+ * Function:        static bool isGetBVtackerStatus()
  *
  * Version:         1.0
  *
@@ -38,7 +44,7 @@ billValidator;
  *
  * Note:            None
  ********************************************************************/
-static BOOL isGetBVtackerStatus()
+static bool isGetBVtackerStatus()
 {
     if(billValidator.isPresent)
     {
@@ -62,7 +68,7 @@ static BOOL isGetBVtackerStatus()
  * \brief Valide les options du niveau 3 du rendeur.
  * \return true si l'opération s'est effectuée correctement.
  */
-static BOOL isBVEnableFeature()
+static bool isBVEnableFeature()
 {
     uint8_t byAcknowledge;
     uint8_t byParameters[5] = {SUB_BILL_FEATURE_ENABLE, 0X00, 0X00, 0X00, 0X0F};
@@ -95,7 +101,7 @@ static BOOL isBVEnableFeature()
  *
  * Note:            None
  ********************************************************************/
-static BOOL isGetBVId(BV_IDENTIFICATION *Idenfication, BOOL boWOptions)
+static bool isGetBVId(BV_IDENTIFICATION *Idenfication, bool boWOptions)
 {
     uint8_t byOption = boWOptions ? LEVEL2_ID_W_OPTIONS : LEVEL1_ID_WO_OPTIONS;
     if(billValidator.isPresent)
@@ -117,7 +123,7 @@ static BOOL isGetBVId(BV_IDENTIFICATION *Idenfication, BOOL boWOptions)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isSetMDBillType()
+ * Function:        static bool isSetMDBillType()
  *
  * Version:         1.0
  *
@@ -137,7 +143,7 @@ static BOOL isGetBVId(BV_IDENTIFICATION *Idenfication, BOOL boWOptions)
  *
  * Note:            None
  ********************************************************************/
-static BOOL isSetMDBillType()
+static bool isSetMDBillType()
 {
     uint8_t byAcknowledge;
     uint8_t byBuffer[4] = {0};
@@ -181,7 +187,7 @@ static void vResetBV(void)
 
 /*********************************************************************
  * Function:
- *         BOOL getIsBVInitialized(void)
+ *         bool getIsBVInitialized(void)
  *
  * Version:
  *         1.0
@@ -222,7 +228,7 @@ static void vResetBV(void)
  *         None
  *
  ********************************************************************/
-BOOL getIsBVInitialized(void)
+bool getIsBVInitialized(void)
 {
     return billValidator.isInitialized;
 }
@@ -324,7 +330,7 @@ BILL_TYPE getBillType(void)
 }
 
 /*********************************************************************
- * Function:        BOOL isSetBillEnable(const BOOL isEnable, BILL_TYPE *billType)
+ * Function:        bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType)
  *
  * Version:         1.0
  *
@@ -344,9 +350,9 @@ BILL_TYPE getBillType(void)
  *
  * Note:            None
  ********************************************************************/
-BOOL isSetBillEnable(const BOOL isEnable, BILL_TYPE *billType)
+bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType)
 {
-    BOOL isResult = false;
+    bool isResult = false;
 
     WORD wEnable;
     if(billValidator.isPresent)
@@ -627,13 +633,13 @@ void vTaskBV(void)
                                     {
                                         xTimerReset(hGetTimerCumul(), 1 * SECONDE);
                                     }
-                                    setAmountDispo(getAmountDispo() + (long) (billValidator.config.byBillValue[byChannel] *
-                                                                              billValidator.config.wScalingFactor));
-                                    setAuditValue((uint32_t) (ADDRESSBVIN + (byChannel *
-                                                                             sizeof(uint32_t))),
-                                                  getAuditValue((uint32_t) (ADDRESSBVIN +
-                                                                            (byChannel *
-                                                                             sizeof(uint32_t)))) + 1);
+                                    setAmountDispo(getAmountDispo() + (long)(billValidator.config.byBillValue[byChannel] *
+                                                                             billValidator.config.wScalingFactor));
+                                    setAuditValue((uint32_t)(ADDRESSBVIN + (byChannel *
+                                                                            sizeof(uint32_t))),
+                                                  getAuditValue((uint32_t)(ADDRESSBVIN +
+                                                                           (byChannel *
+                                                                            sizeof(uint32_t)))) + 1);
                                     break;
                                 }
                                 case RETURNED:
@@ -725,7 +731,7 @@ void vTaskBV(void)
 
                         }
                         ++byIndex;
-                    } while(byIndex < (byLenAnswer - 1));
+                    }while(byIndex < (byLenAnswer - 1));
                 }
             }
             else
@@ -894,3 +900,7 @@ void vBVInit(void)
 {
     billValidator.state = BV_INIT;
 }
+
+/**
+ * @}
+ */

@@ -1,5 +1,10 @@
 #include "eeprom.h"
 
+/**
+ * /addtogroup eeprom
+ * @{
+ */
+
 /*********************************************************************
  * Function:        static I2C_BUS_STATE vEEpromWriteBuffer(uint8_t *byData,
  *                                                          int length)
@@ -214,7 +219,7 @@ I2C_BUS_STATE EEpromWriteByte(WORD wAddress, uint8_t byData)
 
             while(!PLIB_I2C_TransmitterByteHasCompleted(I2C_ID_3));
 
-        } while(!PLIB_I2C_TransmitterByteWasAcknowledged(I2C_ID_3));
+        }while(!PLIB_I2C_TransmitterByteWasAcknowledged(I2C_ID_3));
     }
     return result;
 }
@@ -354,4 +359,7 @@ I2C_BUS_STATE EEPromReadData(WORD wAddress, void *data, int length)
     }
     return result;
 }
+/**
+ * @}
+ */
 /******************************************************************************/

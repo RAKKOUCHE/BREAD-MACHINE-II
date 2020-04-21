@@ -22,6 +22,13 @@ extern "C"
 #include "system_config.h"
 
     /*Defines******************************************************************/
+    
+    /**
+     * \defgroup eeprom EEPROM
+     * Gestion de l'eeprom I2C
+     * @{
+     */
+    
 #define EEPROM_DEVICE_ADDRESS 0XA0
 
     /*Enumérations*************************************************************/
@@ -39,7 +46,6 @@ extern "C"
 
     /*Prototypes***************************************************************/
     /**
-     * @fn vEEpromWriteData
      * @brief Enregistre un tableau dans l'eeprom.
      * @param wADDRESS Adresse de début de l'enregistrement dans le tableau.
      * @param data Pointeur sur le tableau à enregistrer.
@@ -50,7 +56,6 @@ extern "C"
     /**************************************************************************/
 
     /**
-     * @fn vEEvEEpromWriteByte
      * @brief Enregistre une donnée dans l'eeprom.
      * @param wAddress Adresse à laquelle sera enregistrée la donnée.
      * @param byData Donnée à enregistrér.
@@ -61,7 +66,6 @@ extern "C"
     /**************************************************************************/
 
     /**
-     * @fn vEEPromReadData;
      * @brief Lit un tableau de données dans l'eeprom.
      * @param wAddress Adresse de début dans l'eeprom du tableau
      * @param data Pointeur sur le tableau dans lequel seront enregistrées les données lues.
@@ -76,6 +80,10 @@ extern "C"
      */
     void vEEpromInit(void);
 
+    /**
+     * @}
+     */
+    
 #ifdef	__cplusplus
 }
 #endif

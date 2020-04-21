@@ -17,10 +17,16 @@ extern "C"
     /*Defines******************************************************************/
 
 #include <stdbool.h>
-#include <stdio.h>
+    //#include <stdio.h>
 #include "mdbGeneric.h"
 #include "mdb.h"
 
+    /**
+     * \addtogroup MDB_BV
+     * \ingroup MDB
+     * \brief  Gestion du lecteur de billet.
+     * @{
+     */
 
     /**
      * \brief Nombre de canaux du lecteur de billets
@@ -37,7 +43,7 @@ extern "C"
 
     /*Enums********************************************************************/
 
-    typedef enum __attribute__((packed))
+    typedef enum
     {
         STACKED = 0B00000000,
             ESCROW = 0B00010000,
@@ -46,7 +52,7 @@ extern "C"
     }
     BILL_INTRODUCED;
 
-    typedef enum __attribute__((packed))
+    typedef enum
     {
         BV_RESET = 0X00,
             BV_SETUP = 0X01,
@@ -60,7 +66,7 @@ extern "C"
     }
     BV_STATUS;
 
-    typedef enum __attribute__((packed))
+    typedef enum
     {
         LEVEL1_ID_WO_OPTIONS = 0x00,
             LEVEL2_ENABLE_FEATURE = 0X01,
@@ -68,7 +74,7 @@ extern "C"
     }
     BV_SUB_CMD;
 
-    typedef enum __attribute__((packed))
+    typedef enum
     {
         BV_MOTOR_DEFAULT = 0B00000001,
             BV_SENSOR_DEFAULT = 0B00000010,
@@ -89,25 +95,24 @@ extern "C"
     /*Structures***************************************************************/
 
     /**
-     * \typedef BillType
      * \brief Strucute contenant la validation des pièces.
      */
-    typedef struct __attribute__((packed))
+    typedef struct 
     {
 
-        union __attribute__((packed))
+        union
         {
             uint8_t byBillEnable[2];
             uint16_t wBillEnable;
         };
         uint8_t byEscrowEnable[2];
-    } BILL_TYPE;
+    }
+    BILL_TYPE;
 
     /**
-     * \typedef ChangeGiverConfig
      * \brief structure contenant la configuration des rendeurs
      */
-    typedef struct __attribute__((packed))
+    typedef struct
     {
         MDBGENERICDEVICECONFIG deviceConfig;
         uint16_t wScalingFactor; /*!< Facteur de multiplication appliqué à tous les montants du périphérique.*/
@@ -116,20 +121,21 @@ extern "C"
         uint8_t bySecurityLevel[2];
         uint8_t byEscrow;
         uint8_t byBillValue[NUMBERCHANNELSBV];
-    } BV_CONFIG;
+    }
+    BV_CONFIG;
 
     /**
-     * \typedef BV_IDENTIFICATION
      * \brief Structure contenant l'identification et les options du lecteur.
      */
-    typedef struct __attribute__((packed))
+    typedef struct
     {
         uint8_t ManufacturerCode[3];
         uint8_t SerialNumber[12];
         uint8_t Model[12];
         uint8_t SWVersion[2];
         uint8_t Optionnal[4];
-    } BV_IDENTIFICATION;
+    }
+    BV_IDENTIFICATION;
 
     /*Variables****************************************************************/
 
@@ -171,7 +177,7 @@ extern "C"
      * \brief
      * @return
      */
-    BOOL getIsBVInitialized(void);
+    bool getIsBVInitialized(void);
 
     /**
      * \brief
@@ -187,13 +193,16 @@ extern "C"
      * billets
      * @return True si l'opération s'est déroulé correctement.
      */
-    BOOL isSetBillEnable(const BOOL isEnable, BILL_TYPE *billType);
+    bool isSetBillEnable(const bool isEnable, BILL_TYPE *billType);
 
     /**
      * \brief Initialisation de la tâche du lecteur du billets.
      */
     void vBVInit(void);
 
+    /**
+     * @}
+     */
     /**************************************************************************/
 #ifdef	__cplusplus
 }

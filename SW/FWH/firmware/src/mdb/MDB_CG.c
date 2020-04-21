@@ -1,3 +1,8 @@
+/**
+ * \addtogroup MDB_CG
+ * @{
+ */
+
 #include "mdb_cg.h"
 
 /*Constante*******************************************************************/
@@ -12,9 +17,16 @@
  */
 #define MDB_TASK_STACK 512
 
+/**
+ * \brief
+ */
 const uint8_t changeBase[] = {250, 200, 100, 50, 20, 10, 0, 0};
 
 /*****************************************************************************/
+
+/**
+ * \brief
+ */
 struct
 {
     uint8_t byDUMMY[10];
@@ -31,10 +43,10 @@ struct
     COIN_TYPE coins_enable;
     CG_IDENTIFICATION id;
     TaskHandle_t hChangeTask;
-    BOOL isChangerEnable;
-    BOOL isInitialized;
-    BOOL isChangeFinished;
-    BOOL isJustReseted;
+    bool isChangerEnable;
+    bool isInitialized;
+    bool isChangeFinished;
+    bool isJustReseted;
 } changeGiver;
 
 /*********************************************************************
@@ -111,7 +123,7 @@ static void vTaskChange(void)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isGetMDBTubeStatus()
+ * Function:        static bool isGetMDBTubeStatus()
  *
  * Version:         1.0
  *
@@ -131,7 +143,7 @@ static void vTaskChange(void)
  *
  * Note:            None
  ********************************************************************/
-static BOOL isGetMDBTubeStatus()
+static bool isGetMDBTubeStatus()
 {
     uint8_t byIndex;
 
@@ -147,8 +159,8 @@ static BOOL isGetMDBTubeStatus()
             if((changeGiver.config.byCoinValue[byIndex] < 0xFF) && changeGiver.tubes.byLevel[byIndex])
             {
                 changeGiver.lAmountInTubes += changeGiver.config.byCoinValue[byIndex] *
-                        changeGiver.config.byScalingFactor *
-                        changeGiver.tubes.byLevel[byIndex];
+                    changeGiver.config.byScalingFactor *
+                    changeGiver.tubes.byLevel[byIndex];
             }
         }
         return true;
@@ -163,7 +175,7 @@ static BOOL isGetMDBTubeStatus()
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isSetMDBCoinType(COIN_TYPE_ENABLE *coinType)
+ * Function:        static bool isSetMDBCoinType(COIN_TYPE_ENABLE *coinType)
  *
  * Version:         1.0
  *
@@ -183,7 +195,7 @@ static BOOL isGetMDBTubeStatus()
  *
  * Note:            None
  ********************************************************************/
-static BOOL isSetMDBCoinType(COIN_TYPE *coinType)
+static bool isSetMDBCoinType(COIN_TYPE *coinType)
 {
     uint8_t byAcknowledge;
     return((byMDBSendCommand(CGADDRESS, CG_COIN_TYPE, sizeof(coinType), coinType,
@@ -194,7 +206,7 @@ static BOOL isSetMDBCoinType(COIN_TYPE *coinType)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isGetCGId(CG_IDENTIFICATION *Idenfication)
+ * Function:        static bool isGetCGId(CG_IDENTIFICATION *Idenfication)
  *
  * Version:         1.0
  *
@@ -214,7 +226,7 @@ static BOOL isSetMDBCoinType(COIN_TYPE *coinType)
  *
  * Note:            None
  ********************************************************************/
-static BOOL isGetCGId(CG_IDENTIFICATION *Idenfication)
+static bool isGetCGId(CG_IDENTIFICATION *Idenfication)
 {
     uint8_t byParameter = SUB_CHANGER_IDENTIFICATION;
     if(byMDBSendCommand(CGADDRESS, CG_EXPANSION_CMD, 0x01, &byParameter,
@@ -231,7 +243,7 @@ static BOOL isGetCGId(CG_IDENTIFICATION *Idenfication)
 }
 
 /*********************************************************************
- * Function:        BOOL isCGEnableFeature()
+ * Function:        bool isCGEnableFeature()
  *
  * Version:         1.0
  *
@@ -251,7 +263,7 @@ static BOOL isGetCGId(CG_IDENTIFICATION *Idenfication)
  *
  * Note:            None
  ********************************************************************/
-static BOOL isCGEnableFeature()
+static bool isCGEnableFeature()
 {
     uint8_t byAcknowledge;
     uint8_t byParameters[5] = {SUB_CHANGER_FEATURE_ENABLE, 0X00, 0X00, 0X00, 0B00000111};
@@ -262,7 +274,7 @@ static BOOL isCGEnableFeature()
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isPayoutStatus(uint8_t *byChannels)
+ * Function:        static bool isPayoutStatus(uint8_t *byChannels)
  *
  * Version:         1.0
  *
@@ -282,7 +294,7 @@ static BOOL isCGEnableFeature()
  *
  * Note:            None
  ********************************************************************/
-static BOOL isPayoutStatus(uint8_t *byChannels)
+static bool isPayoutStatus(uint8_t *byChannels)
 {
     uint8_t byParameter = SUB_ALT_PAYOUT_STATUS;
 
@@ -292,7 +304,7 @@ static BOOL isPayoutStatus(uint8_t *byChannels)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        static BOOL isAlternatePayout(const uint8_t byAmount)
+ * Function:        static bool isAlternatePayout(const uint8_t byAmount)
  *
  * Version:         1.0
  *
@@ -312,7 +324,7 @@ static BOOL isPayoutStatus(uint8_t *byChannels)
  *
  * Note:            None
  ********************************************************************/
-static BOOL isAlternatePayout(const uint8_t byAmount)
+static bool isAlternatePayout(const uint8_t byAmount)
 {
     uint8_t byAcknowledge;
     uint8_t byParameters[2] = {SUB_ALTERNATIVE_PAYOUT, byAmount};
@@ -324,7 +336,7 @@ static BOOL isAlternatePayout(const uint8_t byAmount)
 
 /*********************************************************************
  * Function:
- *         static BOOL isGetDiagnostic(CG_DIAG *diag)
+ *         static bool isGetDiagnostic(CG_DIAG *diag)
  *
  * Author:
  *         Rachid AKKOUCHE
@@ -363,7 +375,7 @@ static BOOL isAlternatePayout(const uint8_t byAmount)
  *
  ********************************************************************/
 
-static BOOL isGetDiagnostic(CG_DIAG *diag)
+static bool isGetDiagnostic(CG_DIAG *diag)
 {
     uint8_t byParameter = SUB_DIAGNOSTIC_STATUS;
     return(byMDBSendCommand(CGADDRESS, CG_EXPANSION_CMD, sizeof(byParameter), &byParameter, &changeGiver.diagnostic) == 2);
@@ -420,7 +432,7 @@ TaskHandle_t getChangeTaskHandle(void)
 
 /*********************************************************************
  * Function:
- *         BOOL getGCInitialized(void)
+ *         bool getGCInitialized(void)
  *
  * Version:
  *         1.0
@@ -461,14 +473,14 @@ TaskHandle_t getChangeTaskHandle(void)
  *         None
  *
  ********************************************************************/
-BOOL getGCInitialized(void)
+bool getGCInitialized(void)
 {
     return changeGiver.isInitialized;
 }
 
 /*********************************************************************
  * Function:
- *         BOOL getIsChangeFinished(void)
+ *         bool getIsChangeFinished(void)
  *
  * Version:
  *         1.0
@@ -509,7 +521,7 @@ BOOL getGCInitialized(void)
  *         None
  *
  ********************************************************************/
-BOOL getIsChangeFinished(void)
+bool getIsChangeFinished(void)
 {
     return changeGiver.isChangeFinished;
 }
@@ -564,7 +576,7 @@ void setChangeGiverTaskState(CG_STATUS state)
 
 /*********************************************************************
  * Function:
- *         void setIsCangeFinished(const BOOL isFinished)
+ *         void setIsCangeFinished(const bool isFinished)
  *
  * Version:
  *         1.0
@@ -605,7 +617,7 @@ void setChangeGiverTaskState(CG_STATUS state)
  *         None
  *
  ********************************************************************/
-void setIsChangeFinished(const BOOL isFinished)
+void setIsChangeFinished(const bool isFinished)
 {
     changeGiver.isChangeFinished = isFinished;
 }
@@ -755,7 +767,7 @@ COIN_TYPE getCoinType(void)
 }
 
 /*********************************************************************
- * BOOL isSetCoinEnable(const BOOL isEnable, const COIN_TYPE_ENABLE *coinType)
+ * bool isSetCoinEnable(const bool isEnable, const COIN_TYPE_ENABLE *coinType)
  *
  * Version:         1.0
  *
@@ -775,11 +787,11 @@ COIN_TYPE getCoinType(void)
  *
  * Note:            None
  ********************************************************************/
-BOOL isSetCoinEnable(const BOOL isEnable, const COIN_TYPE *coinType)
+bool isSetCoinEnable(const bool isEnable, const COIN_TYPE *coinType)
 {
     //uint8_t byIndex;
     COIN_TYPE wEnable;
-    BOOL isResult = false;
+    bool isResult = false;
 
     wEnable.wCoinEnable = isEnable ? coinType->wCoinEnable >> 8 | coinType->wCoinEnable << 8 : 0;
     isResult = isSetMDBCoinType(&wEnable);
@@ -815,7 +827,7 @@ void vTaskCG(void)
     uint8_t byIndex;
     uint8_t byChannel;
     BILL_TYPE billType;
-    BOOL isDispensed;
+    bool isDispensed;
     static long lAmountToDispense;
 
     switch(changeGiver.state)
@@ -921,16 +933,16 @@ void vTaskCG(void)
                             }
                             byChannel = changeGiver.data[byIndex] & 0X0F;
                             //Traitement des pièces insérées.
-                            setAmountDispo(getAmountDispo() + (long) (changeGiver.config.byCoinValue[byChannel] *
-                                                                      changeGiver.config.byScalingFactor));
+                            setAmountDispo(getAmountDispo() + (long)(changeGiver.config.byCoinValue[byChannel] *
+                                                                     changeGiver.config.byScalingFactor));
 
                             //TODO afficher le montant à payer.
 
-                            setAuditValue((uint32_t) (ADDRESSCGIN + (byChannel *
-                                                                     sizeof(uint32_t))),
-                                          getAuditValue((uint32_t) (ADDRESSCGIN +
-                                                                    (byChannel *
-                                                                     sizeof(uint32_t)))) + 1);
+                            setAuditValue((uint32_t)(ADDRESSCGIN + (byChannel *
+                                                                    sizeof(uint32_t))),
+                                          getAuditValue((uint32_t)(ADDRESSCGIN +
+                                                                   (byChannel *
+                                                                    sizeof(uint32_t)))) + 1);
                             ++byIndex;
                             //setMainBoardTaskState(MAINBOARD_STATE_DISPLAY_AMOUNT);
                         }
@@ -1029,7 +1041,7 @@ void vTaskCG(void)
                         vResetCG();
                     }
                     ++byIndex;
-                } while(byIndex < (byLenAnswer - 1));
+                }while(byIndex < (byLenAnswer - 1));
             }
             else
             {
@@ -1116,8 +1128,8 @@ void vTaskCG(void)
                     do
                     {
                         lAmountToDispense = (getAmountDispo() / changeGiver.config.byScalingFactor) > changeBase[byIndex] ?
-                                changeBase[byIndex] : (getAmountDispo() / changeGiver.config.byScalingFactor);
-                    } while(lAmountToDispense && !isAlternatePayout(lAmountToDispense) && changeBase[byIndex++]);
+                            changeBase[byIndex] : (getAmountDispo() / changeGiver.config.byScalingFactor);
+                    }while(lAmountToDispense && !isAlternatePayout(lAmountToDispense) && changeBase[byIndex++]);
                     if(!lAmountToDispense || !changeBase[byIndex])
                     {
                         changeGiver.isChangeFinished = true;
@@ -1153,11 +1165,11 @@ void vTaskCG(void)
                                  */
                                 changeGiver.lAmountDispensed += (changeGiver.byCoinsBuffer[byIndex] * changeGiver.config.byCoinValue[byIndex] *
                                                                  changeGiver.config.byScalingFactor);
-                                setAuditValue((uint32_t) (ADDRESSCGOUT + (byIndex *
-                                                                          sizeof(uint32_t))),
-                                              getAuditValue((uint32_t) (ADDRESSCGOUT +
-                                                                        (byIndex *
-                                                                         sizeof(uint32_t)))) + 1);
+                                setAuditValue((uint32_t)(ADDRESSCGOUT + (byIndex *
+                                                                         sizeof(uint32_t))),
+                                              getAuditValue((uint32_t)(ADDRESSCGOUT +
+                                                                       (byIndex *
+                                                                        sizeof(uint32_t)))) + 1);
 
                                 setAmountDispo(getAmountDispo() -
                                                (changeGiver.byCoinsBuffer[byIndex] * changeGiver.config.byCoinValue[byIndex]
@@ -1186,7 +1198,7 @@ void vTaskCG(void)
                         vLCD_CLEAR();
 
                         vDisplayLCD("Rendu : %.*f\7", getMDBDecimalPos(),
-                                    (double) (changeGiver.lAmountDispensed) /
+                                    (double)(changeGiver.lAmountDispensed) /
                                     getMDBCurrencyDivider());
                         if(isDispensed)
                         {
@@ -1264,10 +1276,12 @@ void vTaskCG(void)
 void vCGInit(void)
 {
     changeGiver.state = CG_INIT;
-    xTaskCreate((TaskFunction_t) vTaskChange, "TSK CHANGE", MDB_TASK_STACK, NULL,
+    xTaskCreate((TaskFunction_t)vTaskChange, "TSK CHANGE", MDB_TASK_STACK, NULL,
                 MDB_TASK_PRIORITY, &changeGiver.hChangeTask);
 }
-
+/**
+ * @}
+ */
 /******************************************************************************/
 
 /******************************************************************************/

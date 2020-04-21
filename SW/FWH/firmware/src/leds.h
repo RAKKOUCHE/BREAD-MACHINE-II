@@ -36,8 +36,6 @@
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
-
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
 extern "C"
@@ -45,6 +43,12 @@ extern "C"
 #endif
 
 
+    /**
+     * \defgroup leds LEDS
+     * Gestion des leds du système.
+     * @{
+     */
+    
     /* ************************************************************************** */
     /* ************************************************************************** */
     /* Section: Constants                                                         */
@@ -93,38 +97,43 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
-//    /**
-//     * \brief Etabli l'état d'une led.
-//     * \param[in] ledNum Numéro de la led concernée.
-//     * \param[in] etat Etat de la led concernée.
-//     */
-//    void setLedState(const uint8_t ledNum, const LED_STATE etat);
+    //    /**
+    //     * \brief Etabli l'état d'une led.
+    //     * \param[in] ledNum Numéro de la led concernée.
+    //     * \param[in] etat Etat de la led concernée.
+    //     */
+    //    void setLedState(const uint8_t ledNum, const LED_STATE etat);
 
-//    /**
-//     * \brief Active ou desactive la led.
-//     * \param[in] ledNum Numéro de la led concernée.
-//     * \param[in] en Enable pour activer, Disable pour desactiver
-//     */
-//    void setLedEnable(const uint8_t ledNum, const LED_ENABLE en);
+    //    /**
+    //     * \brief Active ou desactive la led.
+    //     * \param[in] ledNum Numéro de la led concernée.
+    //     * \param[in] en Enable pour activer, Disable pour desactiver
+    //     */
+    //    void setLedEnable(const uint8_t ledNum, const LED_ENABLE en);
 
     /**
      * \brief Active ou desactive le mode défilement pour les leds du claviers.
      * @param[in] isOn True si le défilemet doit être activé.
      */
-    void setLedChase(const BOOL isOn);
+    void setLedChase(const bool isOn);
 
     /**
      * \brief
      * @param ledNum
      */
     void setSelectedLed(uint8_t ledNum);
-    
+
     /**
      * \brief Initialisation du module des leds.
      */
     void vLEDsKeybInit(void);
 
     /* Provide C++ Compatibility */
+
+    /**
+     * @}
+     */
+    
 #ifdef __cplusplus
 }
 #endif

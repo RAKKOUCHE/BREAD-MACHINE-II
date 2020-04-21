@@ -57,7 +57,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=SQLCBXGS
+DocumentUniqueId=TJDPTGMG
 
 [Document2]
 DocumentPath=MCU.SchDoc
@@ -827,7 +827,7 @@ OutputDefault20=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=KONICA MINOLTA magicolor 1680MF
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 
 [OutputGroup3]
@@ -1966,8 +1966,20 @@ UpdateToLatestRevision=1
 PartTypes=0
 
 [NetInfos]
-Net1=NetName=BOT3|NetColor=$00FF6E6E
-Net2=NetName=DOOR SWITCHES.CURT_BOT3|NetColor=$00FF6E6E
+Net1=NetName=AFFICHEUR.DB4|NetColor=$006E6EFF
+Net2=NetName=AFFICHEUR.DB5|NetColor=$00FF6EFF
+Net3=NetName=AFFICHEUR.DB6|NetColor=clYellow
+Net4=NetName=AFFICHEUR.DB7|NetColor=$0000BE00
+Net5=NetName=AFFICHEUR.ENABLE|NetColor=$00FFFF6E
+Net6=NetName=AFFICHEUR.R\W|NetColor=$006EFF6E
+Net7=NetName=AFFICHEUR.RS|NetColor=$00FF6E6E
+Net8=NetName=DB4|NetColor=$006E6EFF
+Net9=NetName=DB5|NetColor=$00FF6EFF
+Net10=NetName=DB6|NetColor=clYellow
+Net11=NetName=DB7|NetColor=$0000BE00
+Net12=NetName=ENABLE|NetColor=$00FFFF6E
+Net13=NetName=R\W|NetColor=$006EFF6E
+Net14=NetName=RS|NetColor=$00FF6E6E
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0

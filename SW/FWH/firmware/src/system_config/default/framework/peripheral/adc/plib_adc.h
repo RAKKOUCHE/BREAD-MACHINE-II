@@ -15,7 +15,7 @@
     the data types and constants that make up the interface to the ADC
     PLIB for all families of Microchip microcontrollers. The definitions in
     this file are common to the ADC peripheral.
-*******************************************************************************/
+ *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -39,7 +39,7 @@ INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
 CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
 SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-*******************************************************************************/
+ *******************************************************************************/
 // DOM-IGNORE-END
 
 #ifndef _PLIB_ADC_H
@@ -51,2157 +51,2158 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-    extern "C" {
+extern "C"
+{
 
 #endif
-// DOM-IGNORE-END
+    // DOM-IGNORE-END
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Data Types
-// *****************************************************************************
-// *****************************************************************************
-
-
-// ****************************************************************************
-/*  ADC Conversion Clock Selection Data Type
-
-  Summary:
-    Data type defines the different ADC Conversion clock
-
-  Description:
-    This data type defines the different ADC Conversion clock
-
-  Remarks:
-    None.
-*/
-
-typedef  uint32_t ADC_CONVERSION_CLOCK;
-
-// ****************************************************************************
-/*  ADC Acquisition Time Selection Data Type
-
-  Summary:
-    Data type defining the different ADC acquisition times by which the ADC
-    can be configured.
-
-  Description:
-    This data type defines the different ADC acquisition times by which the ADC
-    can be configured.
-
-  Remarks:
-    None.
-*/
-
-typedef  uint32_t  ADC_ACQUISITION_TIME;
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Data Types
+    // *****************************************************************************
+    // *****************************************************************************
 
 
-// ****************************************************************************
-/*  ADC Sample size
+    // ****************************************************************************
+    /*  ADC Conversion Clock Selection Data Type
 
-  Summary:
-    Data type defining the size of the ADC sample register.
+      Summary:
+        Data type defines the different ADC Conversion clock
 
-  Description:
-    This data type defines  the size of the ADC sample register.
+      Description:
+        This data type defines the different ADC Conversion clock
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        None.
+     */
 
-typedef  uint32_t	 ADC_SAMPLE;
+    typedef uint32_t ADC_CONVERSION_CLOCK;
+
+    // ****************************************************************************
+    /*  ADC Acquisition Time Selection Data Type
+
+      Summary:
+        Data type defining the different ADC acquisition times by which the ADC
+        can be configured.
+
+      Description:
+        This data type defines the different ADC acquisition times by which the ADC
+        can be configured.
+
+      Remarks:
+        None.
+     */
+
+    typedef uint32_t ADC_ACQUISITION_TIME;
+
+
+    // ****************************************************************************
+    /*  ADC Sample size
+
+      Summary:
+        Data type defining the size of the ADC sample register.
+
+      Description:
+        This data type defines  the size of the ADC sample register.
+
+      Remarks:
+        None.
+     */
+
+    typedef uint32_t ADC_SAMPLE;
 
 
 
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files (continued at end of file)
-// *****************************************************************************
-// *****************************************************************************
-/*  This section lists the other files that are included in this file.  However,
-    please see the bottom of the file for additional implementation header files
-    that are also included
-*/
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: Included Files (continued at end of file)
+    // *****************************************************************************
+    // *****************************************************************************
+    /*  This section lists the other files that are included in this file.  However,
+        please see the bottom of the file for additional implementation header files
+        that are also included
+     */
 
 #include "peripheral/adc/processor/adc_processor.h"
 
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: ADC Peripheral Library Interface Routines
-// *****************************************************************************
-// *****************************************************************************
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: ADC Peripheral Library Interface Routines
+    // *****************************************************************************
+    // *****************************************************************************
 
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_Enable( ADC_MODULE_ID index )
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_Enable( ADC_MODULE_ID index )
 
-  Summary:
-    ADC module is enabled (turned ON).
+      Summary:
+        ADC module is enabled (turned ON).
 
-  Description:
-    This function enables (turns ON) the selected ADC module.
+      Description:
+        This function enables (turns ON) the selected ADC module.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_Enable(MY_ADC_INSTANCE);
-    </code>
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_Enable(MY_ADC_INSTANCE);
+        </code>
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsEnableControl in your application to
-	determine whether this feature is available.
-*/
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsEnableControl in your application to
+        determine whether this feature is available.
+     */
 
-void PLIB_ADC_Enable( ADC_MODULE_ID index );
-
-
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_Disable( ADC_MODULE_ID index )
-
-  Summary:
-    ADC module is disabled (turned OFF).
-
-  Description:
-    This function disables (turns OFF) the selected ADC module.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_Disable(MY_ADC_INSTANCE);
-    </code>
-
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsEnableControl in your application to determine
-    whether this feature is available.
-*/
-
-void PLIB_ADC_Disable( ADC_MODULE_ID index );
+    void PLIB_ADC_Enable(ADC_MODULE_ID index);
 
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_StopInIdleEnable( ADC_MODULE_ID index )
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_Disable( ADC_MODULE_ID index )
 
-  Summary:
-    Discontinue ADC module operation when device enters Idle mode.
+      Summary:
+        ADC module is disabled (turned OFF).
 
-  Description:
-    This function discontinues ADC module operation when the device enters Idle
-    mode.
+      Description:
+        This function disables (turns OFF) the selected ADC module.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_StopInIdleEnable(MY_ADC_INSTANCE);
-    </code>
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_Disable(MY_ADC_INSTANCE);
+        </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsStopInIdleControl in your application to determine
-    whether this feature is available.
-*/
-
-void PLIB_ADC_StopInIdleEnable( ADC_MODULE_ID index );
-
-
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_StopInIdleDisable( ADC_MODULE_ID index )
-
-  Summary:
-    Continue ADC module operation when the device is in Idle mode.
-
-  Description:
-    This function enables the ADC module to continue operation when the device
-    is in Idle mode.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_StopInIdleDisable(MY_ADC_INSTANCE);
-    </code>
-
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsStopInIdleControl in your application to determine
-    whether this feature is available.
-*/
-
-void PLIB_ADC_StopInIdleDisable( ADC_MODULE_ID index );
-
-
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_CalibrationEnable( ADC_MODULE_ID index )
-
-  Summary:
-    Calibration is performed on the next ADC conversion.
-
-  Description:
-    This function enables calibration to be performed on the next ADC conversion.
-
-    When the Calibration bit is enabled, inputs are disconnected and tied to
-    AVss. This sets the inputs of the ADC to zero. Then, the user can perform a
-    conversion. Use of the Calibration mode is not affected if the ADC line
-    has been configured as analog or digital, nor by channel input selection.
-    Any analog input switches are disconnected from the ADC module in this mode.
-    The conversion result is stored by the user software and is used to compensate
-    subsequent conversions. This can be done by adding the two?s complement of
-    the result obtained during calibration to all normal ADC conversions.
-
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_CalibrationEnable(MY_ADC_INSTANCE);
-    </code>
-
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsCalibrationControl in your application to determine
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsEnableControl in your application to determine
         whether this feature is available.
-*/
+     */
 
-void PLIB_ADC_CalibrationEnable( ADC_MODULE_ID index );
+    void PLIB_ADC_Disable(ADC_MODULE_ID index);
 
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_CalibrationDisable( ADC_MODULE_ID index )
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_StopInIdleEnable( ADC_MODULE_ID index )
 
-  Summary:
-    Normal ADC module operation (no calibration is performed).
+      Summary:
+        Discontinue ADC module operation when device enters Idle mode.
 
-  Description:
-    This function enables normal ADC module operation without any calibration.
+      Description:
+        This function discontinues ADC module operation when the device enters Idle
+        mode.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_CalibrationDisable(MY_ADC_INSTANCE);
-    </code>
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_StopInIdleEnable(MY_ADC_INSTANCE);
+        </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsCalibrationControl in your application to determine
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsStopInIdleControl in your application to determine
         whether this feature is available.
-*/
+     */
 
-void PLIB_ADC_CalibrationDisable( ADC_MODULE_ID index );
+    void PLIB_ADC_StopInIdleEnable(ADC_MODULE_ID index);
 
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_InputScanMaskAdd( ADC_MODULE_ID index,
-                                    ADC_INPUTS_SCAN scanInputs )
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_StopInIdleDisable( ADC_MODULE_ID index )
 
-  Summary:
-    Select ADC analog channel for input scan.
+      Summary:
+        Continue ADC module operation when the device is in Idle mode.
 
-  Description:
-    This function selects the ADC analog channel for input scanning.
+      Description:
+        This function enables the ADC module to continue operation when the device
+        is in Idle mode.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    scanInputs      - One of the possible values from ADC_INPUTS_SCAN. Inputs are added
-                      for scanning.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    // Single channel addition
-    PLIB_ADC_InputScanMaskAdd(MY_ADC_INSTANCE, ADC_INPUT_SCAN_AN2);
-    // Multiple channels addition
-    PLIB_ADC_InputScanMaskAdd(ADC_ID_1, ADC_INPUT_SCAN_AN2 | ADC_INPUT_SCAN_AN2);
-    </code>
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_StopInIdleDisable(MY_ADC_INSTANCE);
+        </code>
 
-  Remarks:
-    Multiple channels can be added simultaneously by ORing.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsStopInIdleControl in your application to determine
+        whether this feature is available.
+     */
 
-	This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_ADC_ExistsMuxInputScanSelect in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_StopInIdleDisable(ADC_MODULE_ID index);
 
-void PLIB_ADC_InputScanMaskAdd( ADC_MODULE_ID index,
-                                ADC_INPUTS_SCAN scanInputs );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_CalibrationEnable( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_InputScanMaskRemove( ADC_MODULE_ID index,
-                                       ADC_INPUTS_SCAN scanInputs )
+      Summary:
+        Calibration is performed on the next ADC conversion.
 
-  Summary:
-    Omits ADC analog channel for input scan.
+      Description:
+        This function enables calibration to be performed on the next ADC conversion.
 
-  Description:
-    This function allows the ADC analog channel to be omitted from input
-    scanning.
+        When the Calibration bit is enabled, inputs are disconnected and tied to
+        AVss. This sets the inputs of the ADC to zero. Then, the user can perform a
+        conversion. Use of the Calibration mode is not affected if the ADC line
+        has been configured as analog or digital, nor by channel input selection.
+        Any analog input switches are disconnected from the ADC module in this mode.
+        The conversion result is stored by the user software and is used to compensate
+        subsequent conversions. This can be done by adding the two?s complement of
+        the result obtained during calibration to all normal ADC conversions.
 
-  Precondition:
-    None.
+      Precondition:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    scanInputs      - One of the possible values from ADC_INPUTS_SCAN. Inputs are removed
-                      from scanning.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    None.
+      Returns:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    // Single channel removing
-    PLIB_ADC_InputScanMaskRemove(MY_ADC_INSTANCE, ADC_INPUT_SCAN_AN2);
-    // Multiple channels removing
-    PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN2 | ADC_INPUT_SCAN_AN3);
-    </code>
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_CalibrationEnable(MY_ADC_INSTANCE);
+        </code>
 
-  Remarks:
-    Multiple channels can be removed simultaneously by ORing.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsCalibrationControl in your application to determine
+            whether this feature is available.
+     */
 
-	This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_ADC_ExistsMuxInputScanSelect in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_CalibrationEnable(ADC_MODULE_ID index);
 
-void PLIB_ADC_InputScanMaskRemove( ADC_MODULE_ID index,
-                                   ADC_INPUTS_SCAN scanInputs );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_CalibrationDisable( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_InputScanMaskAddExtended( ADC_MODULE_ID index,
-                                    ADC_INPUTS_SCAN_EXTENDED scanInputs )
+      Summary:
+        Normal ADC module operation (no calibration is performed).
 
-  Summary:
-    Select extended ADC analog channel for input scan.
+      Description:
+        This function enables normal ADC module operation without any calibration.
 
-  Description:
-    This function selects the extended ADC analog channel for input scanning.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    scanInputs      - One of the possible values from ADC_INPUTS_SCAN_EXTENDED.
-                      Inputs are added for scanning.
+      Returns:
+        None.
+
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_CalibrationDisable(MY_ADC_INSTANCE);
+        </code>
+
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsCalibrationControl in your application to determine
+            whether this feature is available.
+     */
 
-  Returns:
-    None.
-
-  Example:
-    <code>
+    void PLIB_ADC_CalibrationDisable(ADC_MODULE_ID index);
+
 
-    // Single channel addition
-    PLIB_ADC_InputScanMaskAddExtended(ADC_ID_1, ADC_INPUT_SCAN_AN36);
-    // Multiple channels addition
-    PLIB_ADC_InputScanMaskAddExtended(ADC_ID_1, ADC_INPUT_SCAN_AN36 | ADC_INPUT_SCAN_AN39);
-    
-    </code>
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_InputScanMaskAdd( ADC_MODULE_ID index,
+                                        ADC_INPUTS_SCAN scanInputs )
 
-  Remarks:
-    Multiple channels can be added simultaneously by ORing.
+      Summary:
+        Select ADC analog channel for input scan.
 
-	This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_ADC_ExistsMuxInputScanSelectExtended in your application to determine
-    whether this feature is available.
-*/
+      Description:
+        This function selects the ADC analog channel for input scanning.
 
-void PLIB_ADC_InputScanMaskAddExtended( ADC_MODULE_ID index,
-                                ADC_INPUTS_SCAN_EXTENDED scanInputs );
+      Precondition:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        scanInputs      - One of the possible values from ADC_INPUTS_SCAN. Inputs are added
+                          for scanning.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_InputScanMaskRemove( ADC_MODULE_ID index,
-                                       ADC_INPUTS_SCAN_EXTENDED scanInputs )
+      Returns:
+        None.
 
-  Summary:
-    Omits extended ADC analog channel for input scan.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        // Single channel addition
+        PLIB_ADC_InputScanMaskAdd(MY_ADC_INSTANCE, ADC_INPUT_SCAN_AN2);
+        // Multiple channels addition
+        PLIB_ADC_InputScanMaskAdd(ADC_ID_1, ADC_INPUT_SCAN_AN2 | ADC_INPUT_SCAN_AN2);
+        </code>
 
-  Description:
-    This function allows the extended ADC analog channel to be omitted from input
-    scanning.
+      Remarks:
+        Multiple channels can be added simultaneously by ORing.
 
-  Precondition:
-    None.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_ADC_ExistsMuxInputScanSelect in your application to determine
+        whether this feature is available.
+     */
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    scanInputs      - One of the possible values from ADC_INPUTS_SCAN_EXTENDED.
-                      Inputs are removed from scanning.
+    void PLIB_ADC_InputScanMaskAdd(ADC_MODULE_ID index,
+                                   ADC_INPUTS_SCAN scanInputs);
 
-  Returns:
-    None.
-
-  Example:
-    <code>
 
-    // Single channel removing
-    PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN36);
-    // Multiple channels removing
-    PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN36 | ADC_INPUT_SCAN_AN39);
-    
-    </code>
-
-  Remarks:
-    Multiple channels can be removed simultaneously by ORing.
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_InputScanMaskRemove( ADC_MODULE_ID index,
+                                           ADC_INPUTS_SCAN scanInputs )
 
-	This feature may not be available on all devices. Please refer to the
-    specific device data sheet to determine availability or use
-    PLIB_ADC_ExistsMuxInputScanSelectExtended in your application to determine
-    whether this feature is available.
-*/
+      Summary:
+        Omits ADC analog channel for input scan.
 
-void PLIB_ADC_InputScanMaskRemoveExtended( ADC_MODULE_ID index,
-                                   ADC_INPUTS_SCAN_EXTENDED scanInputs );
-                                   
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_VoltageReferenceSelect( ADC_MODULE_ID index,
-                                          ADC_VOLTAGE_REFERENCE configValue )
+      Description:
+        This function allows the ADC analog channel to be omitted from input
+        scanning.
 
-  Summary:
-    Voltage reference configuration.
-
-  Description:
-    This function configures the ADC module voltage reference.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
-
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    configValue     - One of the possible values from ADC_VOLTAGE_REFERENCE
-
-  Returns:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        scanInputs      - One of the possible values from ADC_INPUTS_SCAN. Inputs are removed
+                          from scanning.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_VoltageReferenceSelect(MY_ADC_INSTANCE, ADC_REFERENCE_VREFPLUS_TO_AVSS);
-    </code>
+      Returns:
+        None.
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsVoltageReference in your application to determine
-    whether this feature is available.
-*/
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        // Single channel removing
+        PLIB_ADC_InputScanMaskRemove(MY_ADC_INSTANCE, ADC_INPUT_SCAN_AN2);
+        // Multiple channels removing
+        PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN2 | ADC_INPUT_SCAN_AN3);
+        </code>
 
-void PLIB_ADC_VoltageReferenceSelect( ADC_MODULE_ID index,
-                                      ADC_VOLTAGE_REFERENCE configValue );
+      Remarks:
+        Multiple channels can be removed simultaneously by ORing.
 
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_ADC_ExistsMuxInputScanSelect in your application to determine
+        whether this feature is available.
+     */
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_MuxChannel0InputNegativeSelect( ADC_MODULE_ID index,
-                                                  ADC_MUX muxType,
-                                                  ADC_INPUTS_NEGATIVE input )
+    void PLIB_ADC_InputScanMaskRemove(ADC_MODULE_ID index,
+                                      ADC_INPUTS_SCAN scanInputs);
 
-  Summary:
-    Channel 0 negative input select for multiplexer setting.
 
-  Description:
-    This function selects the negative input for channel 0 of MUX A or MUX B.
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_InputScanMaskAddExtended( ADC_MODULE_ID index,
+                                        ADC_INPUTS_SCAN_EXTENDED scanInputs )
 
-  Precondition:
-    None.
+      Summary:
+        Select extended ADC analog channel for input scan.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    muxType         - One of the possible values from ADC_MUX
-    input           - One of the possible values from ADC_INPUTS_NEGATIVE
+      Description:
+        This function selects the extended ADC analog channel for input scanning.
 
-  Returns:
-    None.
+      Precondition:
+        None.
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_MuxChannel0InputNegativeSelect(MY_ADC_INSTANCE, ADC_MUX_A, ADC_INPUT_NEGATIVE_VREF_MINUS);
-    </code>
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        scanInputs      - One of the possible values from ADC_INPUTS_SCAN_EXTENDED.
+                          Inputs are added for scanning.
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsMuxChannel0NegativeInput in your application to determine
-    whether this feature is available.
-*/
+      Returns:
+        None.
 
-void PLIB_ADC_MuxChannel0InputNegativeSelect( ADC_MODULE_ID index,
-                                              ADC_MUX muxType,
-                                              ADC_INPUTS_NEGATIVE input );
+      Example:
+        <code>
 
+        // Single channel addition
+        PLIB_ADC_InputScanMaskAddExtended(ADC_ID_1, ADC_INPUT_SCAN_AN36);
+        // Multiple channels addition
+        PLIB_ADC_InputScanMaskAddExtended(ADC_ID_1, ADC_INPUT_SCAN_AN36 | ADC_INPUT_SCAN_AN39);
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_MuxChannel0InputPositiveSelect( ADC_MODULE_ID index,
-                                                  ADC_MUX muxType,
-                                                  ADC_INPUTS_POSITIVE input )
+        </code>
 
-  Summary:
-    Channel 0 positive input select for multiplexer setting.
+      Remarks:
+        Multiple channels can be added simultaneously by ORing.
 
-  Description:
-    This function selects the positive input for channel 0 of MUX A or MUX B.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_ADC_ExistsMuxInputScanSelectExtended in your application to determine
+        whether this feature is available.
+     */
 
-  Precondition:
-    None.
+    void PLIB_ADC_InputScanMaskAddExtended(ADC_MODULE_ID index,
+                                           ADC_INPUTS_SCAN_EXTENDED scanInputs);
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    muxType         - One of the possible values from ADC_MUX
-    input           - One of the possible values from ADC_INPUTS_POSITIVE
 
-  Returns:
-    None.
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_InputScanMaskRemove( ADC_MODULE_ID index,
+                                           ADC_INPUTS_SCAN_EXTENDED scanInputs )
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_MuxChannel0InputPositiveSelect(MY_ADC_INSTANCE, ADC_MUX_A, ADC_INPUT_POSITIVE_AN2);
-    </code>
+      Summary:
+        Omits extended ADC analog channel for input scan.
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsMuxChannel0PositiveInput in your application to determine
-    whether this feature is available.
-*/
+      Description:
+        This function allows the extended ADC analog channel to be omitted from input
+        scanning.
 
-void PLIB_ADC_MuxChannel0InputPositiveSelect( ADC_MODULE_ID index,
-                                              ADC_MUX muxType,
-                                              ADC_INPUTS_POSITIVE input );
+      Precondition:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        scanInputs      - One of the possible values from ADC_INPUTS_SCAN_EXTENDED.
+                          Inputs are removed from scanning.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_MuxAInputScanEnable( ADC_MODULE_ID index )
+      Returns:
+        None.
 
-  Summary:
-    Scan input selections for CH0+ of MUX A.
+      Example:
+        <code>
 
-  Description:
-    This function enables scan input for CH0+ of MUX A.
+        // Single channel removing
+        PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN36);
+        // Multiple channels removing
+        PLIB_ADC_InputScanMaskRemove(ADC_ID_1, ADC_INPUT_SCAN_AN36 | ADC_INPUT_SCAN_AN39);
 
-  Precondition:
-    None.
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Remarks:
+        Multiple channels can be removed simultaneously by ORing.
 
-  Returns:
-    None.
+        This feature may not be available on all devices. Please refer to the
+        specific device data sheet to determine availability or use
+        PLIB_ADC_ExistsMuxInputScanSelectExtended in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_MuxAInputScanEnable(MY_ADC_INSTANCE);
-    </code>
+    void PLIB_ADC_InputScanMaskRemoveExtended(ADC_MODULE_ID index,
+                                              ADC_INPUTS_SCAN_EXTENDED scanInputs);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsMuxInputScanControl in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_VoltageReferenceSelect( ADC_MODULE_ID index,
+                                              ADC_VOLTAGE_REFERENCE configValue )
 
-void PLIB_ADC_MuxAInputScanEnable( ADC_MODULE_ID index );
+      Summary:
+        Voltage reference configuration.
 
+      Description:
+        This function configures the ADC module voltage reference.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_MuxAInputScanDisable( ADC_MODULE_ID index )
+      Precondition:
+        None.
 
-  Summary:
-    Do not scan input selections for CH0+ of MUX A.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        configValue     - One of the possible values from ADC_VOLTAGE_REFERENCE
 
-  Description:
-    This function disables scan input for CH0+ of MUX A.
+      Returns:
+        None.
 
-  Precondition:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_VoltageReferenceSelect(MY_ADC_INSTANCE, ADC_REFERENCE_VREFPLUS_TO_AVSS);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsVoltageReference in your application to determine
+        whether this feature is available.
+     */
 
-  Returns:
-    None.
+    void PLIB_ADC_VoltageReferenceSelect(ADC_MODULE_ID index,
+                                         ADC_VOLTAGE_REFERENCE configValue);
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_MuxAInputScanDisable(MY_ADC_INSTANCE);
-    </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsMuxInputScanControl in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_MuxChannel0InputNegativeSelect( ADC_MODULE_ID index,
+                                                      ADC_MUX muxType,
+                                                      ADC_INPUTS_NEGATIVE input )
 
-void PLIB_ADC_MuxAInputScanDisable( ADC_MODULE_ID index );
+      Summary:
+        Channel 0 negative input select for multiplexer setting.
 
+      Description:
+        This function selects the negative input for channel 0 of MUX A or MUX B.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SamplingModeSelect( ADC_MODULE_ID index, ADC_SAMPLING_MODE mode )
+      Precondition:
+        None.
 
-  Summary:
-    Enable the selected sampling mode.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        muxType         - One of the possible values from ADC_MUX
+        input           - One of the possible values from ADC_INPUTS_NEGATIVE
 
-  Description:
-    This function selects the sampling mode.
+      Returns:
+        None.
 
-  Precondition:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_MuxChannel0InputNegativeSelect(MY_ADC_INSTANCE, ADC_MUX_A, ADC_INPUT_NEGATIVE_VREF_MINUS);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    mode            - One of the possible values from ADC_SAMPLING_MODE
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsMuxChannel0NegativeInput in your application to determine
+        whether this feature is available.
+     */
 
-  Returns:
-    None.
+    void PLIB_ADC_MuxChannel0InputNegativeSelect(ADC_MODULE_ID index,
+                                                 ADC_MUX muxType,
+                                                 ADC_INPUTS_NEGATIVE input);
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SamplingModeSelect(MY_ADC_INSTANCE, ADC_SAMPLING_MODE_ALTERNATE_INPUT);
-    </code>
 
-  Remarks:
-    Sampling mode could be alternate input or Simultaneous or Sequential mode.
-    Alternate input can be combined with Simultaneous or Sequential modes.
- 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingModeControl in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_MuxChannel0InputPositiveSelect( ADC_MODULE_ID index,
+                                                      ADC_MUX muxType,
+                                                      ADC_INPUTS_POSITIVE input )
 
-void PLIB_ADC_SamplingModeSelect( ADC_MODULE_ID index, ADC_SAMPLING_MODE mode );
+      Summary:
+        Channel 0 positive input select for multiplexer setting.
 
+      Description:
+        This function selects the positive input for channel 0 of MUX A or MUX B.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SamplesPerInterruptSelect( ADC_MODULE_ID index,
-                                             ADC_SAMPLES_PER_INTERRUPT value )
+      Precondition:
+        None.
 
-  Summary:
-    Interrupts at the completion of conversion for each nth sample.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        muxType         - One of the possible values from ADC_MUX
+        input           - One of the possible values from ADC_INPUTS_POSITIVE
 
-  Description:
-    This function interrupts at the completion of conversion for each nth
-    sample/convert sequence.
+      Returns:
+        None.
 
-  Precondition:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_MuxChannel0InputPositiveSelect(MY_ADC_INSTANCE, ADC_MUX_A, ADC_INPUT_POSITIVE_AN2);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    value           - Possible values from ADC_SAMPLES_PER_INTERRUPT
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsMuxChannel0PositiveInput in your application to determine
+        whether this feature is available.
+     */
 
-  Returns:
-    None.
+    void PLIB_ADC_MuxChannel0InputPositiveSelect(ADC_MODULE_ID index,
+                                                 ADC_MUX muxType,
+                                                 ADC_INPUTS_POSITIVE input);
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SamplesPerInterruptSelect(MY_ADC_INSTANCE, ADC_16SAMPLES_PER_INTERRUPT);
-    </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplesPerInterruptSelect in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_MuxAInputScanEnable( ADC_MODULE_ID index )
 
-void PLIB_ADC_SamplesPerInterruptSelect( ADC_MODULE_ID index,
-                                         ADC_SAMPLES_PER_INTERRUPT value );
+      Summary:
+        Scan input selections for CH0+ of MUX A.
 
+      Description:
+        This function enables scan input for CH0+ of MUX A.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SampleAutoStartEnable( ADC_MODULE_ID index )
+      Precondition:
+        None.
 
-  Summary:
-    Sampling auto-start is enabled.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Description:
-    This function enables auto-sampling. Sampling begins immediately after the
-    last conversion is completed.
+      Returns:
+        None.
 
-  Precondition:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_MuxAInputScanEnable(MY_ADC_INSTANCE);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsMuxInputScanControl in your application to determine
+        whether this feature is available.
+     */
 
-  Returns:
-    None.
+    void PLIB_ADC_MuxAInputScanEnable(ADC_MODULE_ID index);
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SampleAutoStartEnable(MY_ADC_INSTANCE);
-    </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingAutoStart in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_MuxAInputScanDisable( ADC_MODULE_ID index )
 
-void PLIB_ADC_SampleAutoStartEnable( ADC_MODULE_ID index );
+      Summary:
+        Do not scan input selections for CH0+ of MUX A.
 
+      Description:
+        This function disables scan input for CH0+ of MUX A.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SampleAutoStartDisable( ADC_MODULE_ID index )
+      Precondition:
+        None.
 
-  Summary:
-    Sampling auto-start is disabled.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Description:
-    This function disables auto-sampling and enables manual sampling.
+      Returns:
+        None.
 
-  Precondition:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_MuxAInputScanDisable(MY_ADC_INSTANCE);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsMuxInputScanControl in your application to determine
+        whether this feature is available.
+     */
 
-  Returns:
-    None.
+    void PLIB_ADC_MuxAInputScanDisable(ADC_MODULE_ID index);
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SampleAutoStartDisable(MY_ADC_INSTANCE);
-    </code>
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingAutoStart in your application to determine
-    whether this feature is available.
-*/
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SamplingModeSelect( ADC_MODULE_ID index, ADC_SAMPLING_MODE mode )
 
-void PLIB_ADC_SampleAutoStartDisable( ADC_MODULE_ID index );
+      Summary:
+        Enable the selected sampling mode.
 
+      Description:
+        This function selects the sampling mode.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SamplingStart( ADC_MODULE_ID index )
+      Precondition:
+        None.
 
-  Summary:
-    Sampling is enabled.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        mode            - One of the possible values from ADC_SAMPLING_MODE
 
-  Description:
-    This function starts the ADC Sample and Hold circuit to sample the
-    input channel.
+      Returns:
+        None.
 
-  Precondition:
-    Automatic sampling must be disabled.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SamplingModeSelect(MY_ADC_INSTANCE, ADC_SAMPLING_MODE_ALTERNATE_INPUT);
+        </code>
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Remarks:
+        Sampling mode could be alternate input or Simultaneous or Sequential mode.
+        Alternate input can be combined with Simultaneous or Sequential modes.
 
-  Returns:
-    None.
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingModeControl in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SamplingStart(MY_ADC_INSTANCE);
-    </code>
+    void PLIB_ADC_SamplingModeSelect(ADC_MODULE_ID index, ADC_SAMPLING_MODE mode);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingControl in your application to determine
-    whether this feature is available.
-*/
 
-void PLIB_ADC_SamplingStart( ADC_MODULE_ID index );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SamplesPerInterruptSelect( ADC_MODULE_ID index,
+                                                 ADC_SAMPLES_PER_INTERRUPT value )
 
+      Summary:
+        Interrupts at the completion of conversion for each nth sample.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SamplingStop( ADC_MODULE_ID index )
+      Description:
+        This function interrupts at the completion of conversion for each nth
+        sample/convert sequence.
 
-  Summary:
-    Holding is enabled.
+      Precondition:
+        None.
 
-  Description:
-    This function stops the ADC Sample and Hold circuit from sampling and holds 
-	the sampled data.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        value           - Possible values from ADC_SAMPLES_PER_INTERRUPT
 
-  Precondition:
-    Automatic sampling must be disabled.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SamplesPerInterruptSelect(MY_ADC_INSTANCE, ADC_16SAMPLES_PER_INTERRUPT);
+        </code>
 
-  Returns:
-    None.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplesPerInterruptSelect in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SamplingStop(MY_ADC_INSTANCE);
-    </code>
+    void PLIB_ADC_SamplesPerInterruptSelect(ADC_MODULE_ID index,
+                                            ADC_SAMPLES_PER_INTERRUPT value);
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingControl in your application to determine
-    whether this feature is available.
-*/
 
-void PLIB_ADC_SamplingStop( ADC_MODULE_ID index );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SampleAutoStartEnable( ADC_MODULE_ID index )
 
+      Summary:
+        Sampling auto-start is enabled.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_SampleAcquisitionTimeSet( ADC_MODULE_ID index,
-                                           ADC_ACQUISITION_TIME acqTime )
+      Description:
+        This function enables auto-sampling. Sampling begins immediately after the
+        last conversion is completed.
 
-  Summary:
-    Sets the ADC acquisition/auto-sample time in TADs.
+      Precondition:
+        None.
 
-  Description:
-    This function sets the ADC acquisition/auto-sample time in TADs.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Precondition:
-    None.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    acqTime         - Unsigned value of type ADC_ACQUISITION_TIME
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SampleAutoStartEnable(MY_ADC_INSTANCE);
+        </code>
 
-  Returns:
-    None.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingAutoStart in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_SampleAcquisitionTimeSet(MY_ADC_INSTANCE, 2);
-    </code>
+    void PLIB_ADC_SampleAutoStartEnable(ADC_MODULE_ID index);
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingAcquisitionTime in your application to determine
-    whether this feature is available.
-*/
 
-void PLIB_ADC_SampleAcquisitionTimeSet( ADC_MODULE_ID index,
-                                       ADC_ACQUISITION_TIME acqTime );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SampleAutoStartDisable( ADC_MODULE_ID index )
 
+      Summary:
+        Sampling auto-start is disabled.
 
-// *****************************************************************************
-/* Function:
-    bool PLIB_ADC_SamplingIsActive( ADC_MODULE_ID index )
+      Description:
+        This function disables auto-sampling and enables manual sampling.
 
-  Summary:
-    Provides the ADC sampling status.
+      Precondition:
+        None.
 
-  Description:
-    This function returns the ADC sampling status on whether the ADC is sampling
-    or holding.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Precondition:
-    None.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SampleAutoStartDisable(MY_ADC_INSTANCE);
+        </code>
 
-  Returns:
-    Boolean:
-	- true  - ADC Sample and Hold circuit is sampling
-    - false - ADC Sample and Hold circuit is holding
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingAutoStart in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    bool my_status = PLIB_ADC_SamplingIsActive(MY_ADC_INSTANCE);
-    </code>
+    void PLIB_ADC_SampleAutoStartDisable(ADC_MODULE_ID index);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsSamplingStatus in your application to determine
-    whether this feature is available.
-*/
 
-bool PLIB_ADC_SamplingIsActive( ADC_MODULE_ID index );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SamplingStart( ADC_MODULE_ID index )
 
+      Summary:
+        Sampling is enabled.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionStart( ADC_MODULE_ID index )
+      Description:
+        This function starts the ADC Sample and Hold circuit to sample the
+        input channel.
 
-  Summary:
-    Starts ADC module manual conversion process.
+      Precondition:
+        Automatic sampling must be disabled.
 
-  Description:
-    This function starts the ADC module manual conversion process.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Precondition:
-    Automatic sampling must be disabled.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SamplingStart(MY_ADC_INSTANCE);
+        </code>
 
-  Returns:
-    None.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingControl in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ConversionStart(MY_ADC_INSTANCE);
-    </code>
+    void PLIB_ADC_SamplingStart(ADC_MODULE_ID index);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionControl in your application to determine
-    whether this feature is available.
-*/
 
-void PLIB_ADC_ConversionStart( ADC_MODULE_ID index );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SamplingStop( ADC_MODULE_ID index )
 
+      Summary:
+        Holding is enabled.
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionClockSet( ADC_MODULE_ID index,
-									   uint32_t baseFrequency,
-                                      ADC_CONVERSION_CLOCK value )
+      Description:
+        This function stops the ADC Sample and Hold circuit from sampling and holds
+        the sampled data.
 
-  Summary:
-    Sets the ADC module conversion clock.
+      Precondition:
+        Automatic sampling must be disabled.
 
-  Description:
-    This function sets the ADC module conversion clock prescaler.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Precondition:
-    None.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-	baseFrequency	- Input clock frequency in Hertz (Hz). This is the input
-					  clock to ADC module.
-    value           - Unsigned value of type ADC_CONVERSION_CLOCK. This is
-					  the required conversion clock of ADC module in Hz.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SamplingStop(MY_ADC_INSTANCE);
+        </code>
 
-  Returns:
-    None.
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingControl in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-	// Following functions passed the input clock to ADC as 80MHz and 
-	// required conversion clock as 20MHz.
-    PLIB_ADC_ConversionClockSet(MY_ADC_INSTANCE, 80000000, 20000000);
-    </code>
+    void PLIB_ADC_SamplingStop(ADC_MODULE_ID index);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionClock in your application to determine
-    whether this feature is available.
-*/
 
-void PLIB_ADC_ConversionClockSet( ADC_MODULE_ID index,
-								  uint32_t baseFrequency,
-                                  ADC_CONVERSION_CLOCK value );
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_SampleAcquisitionTimeSet( ADC_MODULE_ID index,
+                                               ADC_ACQUISITION_TIME acqTime )
 
+      Summary:
+        Sets the ADC acquisition/auto-sample time in TADs.
 
-// *****************************************************************************
-/* Function:
-    ADC_CONVERSION_CLOCK PLIB_ADC_ConversionClockGet( ADC_MODULE_ID index,
-                                          uint32_t baseFrequencyHz )
+      Description:
+        This function sets the ADC acquisition/auto-sample time in TADs.
 
-  Summary:
-    Obtains the conversion clock.
+      Precondition:
+        None.
 
-  Description:
-    This function obtains the conversion clock that is being used by the ADC module.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        acqTime         - Unsigned value of type ADC_ACQUISITION_TIME
 
-  Precondition:
-    None.
+      Returns:
+        None.
 
-  Parameters:
-    index                   - Identifier for the device instance to be configured
-    baseFrequencyHz         - Input clock frequency to the ADC module in Hz
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_SampleAcquisitionTimeSet(MY_ADC_INSTANCE, 2);
+        </code>
 
-  Returns:
-    ADC_CONVERSION_CLOCK    - ADC Conversion clock value (in Hz) of type 
-							  ADC_CONVERSION_CLOCK
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingAcquisitionTime in your application to determine
+        whether this feature is available.
+     */
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    // baseFrequency is the peripheral input frequency
-    ADC_CONVERSION_CLOCK conversionClock; // To store the conversion clock value
-    conversionClock = PLIB_ADC_ConversionClockGet(MY_ADC_INSTANCE, 8000000);
-    </code>
+    void PLIB_ADC_SampleAcquisitionTimeSet(ADC_MODULE_ID index,
+                                           ADC_ACQUISITION_TIME acqTime);
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionClock in your application to determine
-    whether this feature is available.
-*/
 
-ADC_CONVERSION_CLOCK PLIB_ADC_ConversionClockGet( ADC_MODULE_ID index, uint32_t baseFrequency );
+    // *****************************************************************************
+    /* Function:
+        bool PLIB_ADC_SamplingIsActive( ADC_MODULE_ID index )
 
-								  
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionClockSourceSelect( ADC_MODULE_ID index,
-                                               ADC_CLOCK_SOURCE source )
+      Summary:
+        Provides the ADC sampling status.
 
-  Summary:
-    Selects the ADC module conversion clock source.
+      Description:
+        This function returns the ADC sampling status on whether the ADC is sampling
+        or holding.
 
-  Description:
-    This function selects the ADC module conversion clock source.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    source          - One of the possible values from ADC_CLOCK_SOURCE
+      Returns:
+        Boolean:
+        - true  - ADC Sample and Hold circuit is sampling
+        - false - ADC Sample and Hold circuit is holding
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        bool my_status = PLIB_ADC_SamplingIsActive(MY_ADC_INSTANCE);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ConversionClockSourceSelect(MY_ADC_INSTANCE, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsSamplingStatus in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionClockSource in your application to determine
-    whether this feature is available.
-*/
+    bool PLIB_ADC_SamplingIsActive(ADC_MODULE_ID index);
 
-void PLIB_ADC_ConversionClockSourceSelect( ADC_MODULE_ID index, ADC_CLOCK_SOURCE source );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionStart( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionTriggerSourceSelect( ADC_MODULE_ID index,
-                                                 ADC_CONVERSION_TRIGGER_SOURCE source )
+      Summary:
+        Starts ADC module manual conversion process.
 
-  Summary:
-    Selects the conversion trigger source.
+      Description:
+        This function starts the ADC module manual conversion process.
 
-  Description:
-    This function selects the ADC module conversion trigger source.
+      Precondition:
+        Automatic sampling must be disabled.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    source          - One of the possible values from ADC_CONVERSION_TRIGGER_SOURCE
+      Returns:
+        None.
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ConversionStart(MY_ADC_INSTANCE);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ConversionTriggerSourceSelect(MY_ADC_INSTANCE, ADC_CONVERSION_TRIGGER_INTERNAL_COUNT);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionControl in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionTriggerSource in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionStart(ADC_MODULE_ID index);
 
-void PLIB_ADC_ConversionTriggerSourceSelect( ADC_MODULE_ID index,
-                                             ADC_CONVERSION_TRIGGER_SOURCE source );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionClockSet( ADC_MODULE_ID index,
+                                           uint32_t baseFrequency,
+                                          ADC_CONVERSION_CLOCK value )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionStopSequenceEnable( ADC_MODULE_ID index )
+      Summary:
+        Sets the ADC module conversion clock.
 
-  Summary:
-    Stop conversion sequence (when the first ADC module interrupt is
-    generated).
+      Description:
+        This function sets the ADC module conversion clock prescaler.
 
-  Description:
-    This function stops conversions when the first ADC module interrupt is
-    generated. Hardware clears the Automatic Sampling bit when the ADC interrupt
-    is generated.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        baseFrequency	- Input clock frequency in Hertz (Hz). This is the input
+                          clock to ADC module.
+        value           - Unsigned value of type ADC_CONVERSION_CLOCK. This is
+                          the required conversion clock of ADC module in Hz.
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Returns:
+        None.
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        // Following functions passed the input clock to ADC as 80MHz and
+        // required conversion clock as 20MHz.
+        PLIB_ADC_ConversionClockSet(MY_ADC_INSTANCE, 80000000, 20000000);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ConversionStopSequenceEnable(MY_ADC_INSTANCE);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionClock in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionStopSequenceControl in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionClockSet(ADC_MODULE_ID index,
+                                     uint32_t baseFrequency,
+                                     ADC_CONVERSION_CLOCK value);
 
-void PLIB_ADC_ConversionStopSequenceEnable( ADC_MODULE_ID index );
 
+    // *****************************************************************************
+    /* Function:
+        ADC_CONVERSION_CLOCK PLIB_ADC_ConversionClockGet( ADC_MODULE_ID index,
+                                              uint32_t baseFrequencyHz )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ConversionStopSequenceDisable( ADC_MODULE_ID index )
+      Summary:
+        Obtains the conversion clock.
 
-  Summary:
-    Normal conversion sequence.
+      Description:
+        This function obtains the conversion clock that is being used by the ADC module.
 
-  Description:
-    This function enables normal operation, wherein the buffer contents will be
-    overwritten by the next conversion sequence.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index                   - Identifier for the device instance to be configured
+        baseFrequencyHz         - Input clock frequency to the ADC module in Hz
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Returns:
+        ADC_CONVERSION_CLOCK    - ADC Conversion clock value (in Hz) of type
+                                  ADC_CONVERSION_CLOCK
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        // baseFrequency is the peripheral input frequency
+        ADC_CONVERSION_CLOCK conversionClock; // To store the conversion clock value
+        conversionClock = PLIB_ADC_ConversionClockGet(MY_ADC_INSTANCE, 8000000);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ConversionStopSequenceDisable(MY_ADC_INSTANCE);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionClock in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionStopSequenceControl in your application to determine
-    whether this feature is available.
-*/
+    ADC_CONVERSION_CLOCK PLIB_ADC_ConversionClockGet(ADC_MODULE_ID index, uint32_t baseFrequency);
 
-void PLIB_ADC_ConversionStopSequenceDisable( ADC_MODULE_ID index );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionClockSourceSelect( ADC_MODULE_ID index,
+                                                   ADC_CLOCK_SOURCE source )
 
-// *****************************************************************************
-/* Function:
-    bool PLIB_ADC_ConversionHasCompleted( ADC_MODULE_ID index )
+      Summary:
+        Selects the ADC module conversion clock source.
 
-  Summary:
-    Provides the conversion completion status of the ADC.
+      Description:
+        This function selects the ADC module conversion clock source.
 
-  Description:
-    This function provides the completion status of analog-to-digital conversion.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        source          - One of the possible values from ADC_CLOCK_SOURCE
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Returns:
+        None.
 
-  Returns:
-    Boolean:
-	- true  - ADC conversion is done/completed
-    - false - ADC conversion is in progress or has not started
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ConversionClockSourceSelect(MY_ADC_INSTANCE, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    bool my_status = PLIB_ADC_ConversionHasCompleted(MY_ADC_INSTANCE);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionClockSource in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:  
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsConversionStatus in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionClockSourceSelect(ADC_MODULE_ID index, ADC_CLOCK_SOURCE source);
 
-bool PLIB_ADC_ConversionHasCompleted( ADC_MODULE_ID index );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionTriggerSourceSelect( ADC_MODULE_ID index,
+                                                     ADC_CONVERSION_TRIGGER_SOURCE source )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ResultFormatSelect( ADC_MODULE_ID index,
-                                      ADC_RESULT_FORMAT resultFormat )
+      Summary:
+        Selects the conversion trigger source.
 
-  Summary:
-    Selects the result format.
+      Description:
+        This function selects the ADC module conversion trigger source.
 
-  Description:
-    This function selects the result format.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        source          - One of the possible values from ADC_CONVERSION_TRIGGER_SOURCE
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    resultFormat    - One of the possible values from ADC_RESULT_FORMAT
+      Returns:
+        None.
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ConversionTriggerSourceSelect(MY_ADC_INSTANCE, ADC_CONVERSION_TRIGGER_INTERNAL_COUNT);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ResultFormatSelect(MY_ADC_INSTANCE, ADC_RESULT_FORMAT_INTEGER_16BIT);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionTriggerSource in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsResultFormat in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionTriggerSourceSelect(ADC_MODULE_ID index,
+                                                ADC_CONVERSION_TRIGGER_SOURCE source);
 
-void PLIB_ADC_ResultFormatSelect( ADC_MODULE_ID index,
-                                  ADC_RESULT_FORMAT resultFormat );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionStopSequenceEnable( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    void PLIB_ADC_ResultBufferModeSelect( ADC_MODULE_ID index,
-                                          ADC_BUFFER_MODE mode )
+      Summary:
+        Stop conversion sequence (when the first ADC module interrupt is
+        generated).
 
-  Summary:
-    Selects the result buffer mode.
+      Description:
+        This function stops conversions when the first ADC module interrupt is
+        generated. Hardware clears the Automatic Sampling bit when the ADC interrupt
+        is generated.
 
-  Description:
-    This function selects the result buffer mode.
+      Precondition:
+        None.
 
-  Precondition:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    mode            - One of the possible values from ADC_BUFFER_MODE
+      Returns:
+        None.
 
-  Returns:
-    None.
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ConversionStopSequenceEnable(MY_ADC_INSTANCE);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    PLIB_ADC_ResultBufferModeSelect(MY_ADC_INSTANCE,
-                                    ADC_BUFFER_MODE_TWO_8WORD_BUFFERS);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionStopSequenceControl in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsResultBufferMode in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionStopSequenceEnable(ADC_MODULE_ID index);
 
-void PLIB_ADC_ResultBufferModeSelect( ADC_MODULE_ID index,
-                                      ADC_BUFFER_MODE mode );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ConversionStopSequenceDisable( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    ADC_RESULT_BUF_STATUS PLIB_ADC_ResultBufferStatusGet( ADC_MODULE_ID index )
+      Summary:
+        Normal conversion sequence.
 
-  Summary:
-    Provides the buffer fill status.
+      Description:
+        This function enables normal operation, wherein the buffer contents will be
+        overwritten by the next conversion sequence.
 
-  Description:
-    This function obtains the buffer fill status.
+      Precondition:
+        None.
 
-  Precondition:
-    ADC multi-buffer support is available and configured.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
+      Returns:
+        None.
 
-  Returns:
-    Boolean:
-	- true  = ADC is currently filling buffer 08-0F, user should access data in 00-07
-    - false = ADC is currently filling buffer 00-07, user should access data in 08-0F
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ConversionStopSequenceDisable(MY_ADC_INSTANCE);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-	ADC_RESULT_BUF_STATUS my_status;
-	
-    my_status = PLIB_ADC_ResultBufferStatusGet(MY_ADC_INSTANCE);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionStopSequenceControl in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks: 
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsResultBufferFillStatus in your application to determine
-    whether this feature is available.
-*/
+    void PLIB_ADC_ConversionStopSequenceDisable(ADC_MODULE_ID index);
 
-ADC_RESULT_BUF_STATUS PLIB_ADC_ResultBufferStatusGet( ADC_MODULE_ID index );
 
+    // *****************************************************************************
+    /* Function:
+        bool PLIB_ADC_ConversionHasCompleted( ADC_MODULE_ID index )
 
-// *****************************************************************************
-/* Function:
-    ADC_SAMPLE PLIB_ADC_ResultGetByIndex( ADC_MODULE_ID index,
-                                          uint8_t bufferIndex )
+      Summary:
+        Provides the conversion completion status of the ADC.
 
-  Summary:
-    Provides the ADC conversion result based on the buffer index.
+      Description:
+        This function provides the completion status of analog-to-digital conversion.
 
-  Description:
-    This function provides the ADC module conversion result based on the buffer
-    index.
+      Precondition:
+        None.
 
-  Precondition:
-    ADC multi-buffer support available and configured.
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Parameters:
-    index           - Identifier for the device instance to be configured
-    bufferIndex     - Value ranging from 0 to 15
+      Returns:
+        Boolean:
+        - true  - ADC conversion is done/completed
+        - false - ADC conversion is in progress or has not started
 
-  Returns:
-    int16_t        - ADC Conversion result at the respective bufferIndex
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        bool my_status = PLIB_ADC_ConversionHasCompleted(MY_ADC_INSTANCE);
+        </code>
 
-  Example:
-    <code>
-    // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
-    // application developer.
-    ADC_SAMPLE my_res = PLIB_ADC_ResultGetByIndex(MY_ADC_INSTANCE, 15);
-    </code>
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsConversionStatus in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:
-	This feature may not be available on all devices. Please refer to the specific device data sheet
-	to determine availability or use PLIB_ADC_ExistsResultGetByIndex in your application to determine
-    whether this feature is available.
-*/
+    bool PLIB_ADC_ConversionHasCompleted(ADC_MODULE_ID index);
 
-ADC_SAMPLE PLIB_ADC_ResultGetByIndex( ADC_MODULE_ID index,
-                                      uint8_t bufferIndex );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ResultFormatSelect( ADC_MODULE_ID index,
+                                          ADC_RESULT_FORMAT resultFormat )
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: ADC Peripheral Library Exists API Routines
-// *****************************************************************************
-// *****************************************************************************
-/* The functions below indicate the existence of the features on the device. 
-*/
+      Summary:
+        Selects the result format.
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsEnableControl( ADC_MODULE_ID index )
+      Description:
+        This function selects the result format.
 
-  Summary:
-    Identifies whether the EnableControl feature exists on the ADC module 
+      Precondition:
+        None.
 
-  Description:
-    This function identifies whether the EnableControl feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_Enable
-    - PLIB_ADC_Disable
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        resultFormat    - One of the possible values from ADC_RESULT_FORMAT
 
-  Preconditions:
-    None.
+      Returns:
+        None.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ResultFormatSelect(MY_ADC_INSTANCE, ADC_RESULT_FORMAT_INTEGER_16BIT);
+        </code>
 
-  Returns:
-    - true   - The EnableControl feature is supported on the device
-    - false  - The EnableControl feature is not supported on the device
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsResultFormat in your application to determine
+        whether this feature is available.
+     */
 
-  Remarks:
-    None.
-*/
+    void PLIB_ADC_ResultFormatSelect(ADC_MODULE_ID index,
+                                     ADC_RESULT_FORMAT resultFormat);
 
-bool PLIB_ADC_ExistsEnableControl( ADC_MODULE_ID index );
 
+    // *****************************************************************************
+    /* Function:
+        void PLIB_ADC_ResultBufferModeSelect( ADC_MODULE_ID index,
+                                              ADC_BUFFER_MODE mode )
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsStopInIdleControl( ADC_MODULE_ID index )
+      Summary:
+        Selects the result buffer mode.
 
-  Summary:
-    Identifies whether the StopInIdle feature exists on the ADC module 
+      Description:
+        This function selects the result buffer mode.
 
-  Description:
-    This function identifies whether the StopInIdle feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_StopInIdleEnable
-    - PLIB_ADC_StopInIdleDisable
+      Precondition:
+        None.
 
-  Preconditions:
-    None.
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        mode            - One of the possible values from ADC_BUFFER_MODE
 
-  Parameters:
-    index           - Identifier for the device instance
+      Returns:
+        None.
 
-  Returns:
-    - true   - The StopInIdle feature is supported on the device
-    - false  - The StopInIdle feature is not supported on the device
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        PLIB_ADC_ResultBufferModeSelect(MY_ADC_INSTANCE,
+                                        ADC_BUFFER_MODE_TWO_8WORD_BUFFERS);
+        </code>
 
-  Remarks:
-    None.
-*/
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsResultBufferMode in your application to determine
+        whether this feature is available.
+     */
 
-bool PLIB_ADC_ExistsStopInIdleControl( ADC_MODULE_ID index );
+    void PLIB_ADC_ResultBufferModeSelect(ADC_MODULE_ID index,
+                                         ADC_BUFFER_MODE mode);
 
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsCalibrationControl( ADC_MODULE_ID index )
+    // *****************************************************************************
+    /* Function:
+        ADC_RESULT_BUF_STATUS PLIB_ADC_ResultBufferStatusGet( ADC_MODULE_ID index )
 
-  Summary:
-    Identifies whether the CalibrationControl feature exists on the ADC module 
+      Summary:
+        Provides the buffer fill status.
 
-  Description:
-    This function identifies whether the CalibrationControl feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_CalibrationEnable
-    - PLIB_ADC_CalibrationDisable
+      Description:
+        This function obtains the buffer fill status.
 
-  Preconditions:
-    None.
+      Precondition:
+        ADC multi-buffer support is available and configured.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Parameters:
+        index           - Identifier for the device instance to be configured
 
-  Returns:
-    - true   - The CalibrationControl feature is supported on the device
-    - false  - The CalibrationControl feature is not supported on the device
+      Returns:
+        Boolean:
+        - true  = ADC is currently filling buffer 08-0F, user should access data in 00-07
+        - false = ADC is currently filling buffer 00-07, user should access data in 08-0F
 
-  Remarks:
-    None.
-*/
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        ADC_RESULT_BUF_STATUS my_status;
 
-bool PLIB_ADC_ExistsCalibrationControl( ADC_MODULE_ID index );
+        my_status = PLIB_ADC_ResultBufferStatusGet(MY_ADC_INSTANCE);
+        </code>
 
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsResultBufferFillStatus in your application to determine
+        whether this feature is available.
+     */
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsMuxInputScanSelect( ADC_MODULE_ID index )
+    ADC_RESULT_BUF_STATUS PLIB_ADC_ResultBufferStatusGet(ADC_MODULE_ID index);
 
-  Summary:
-    Identifies whether the MuxInputScanSelect feature exists on the ADC module 
 
-  Description:
-    This function identifies whether the MuxInputScanSelect feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_InputScanMaskAdd
-    - PLIB_ADC_InputScanMaskRemove
+    // *****************************************************************************
+    /* Function:
+        ADC_SAMPLE PLIB_ADC_ResultGetByIndex( ADC_MODULE_ID index,
+                                              uint8_t bufferIndex )
 
-  Preconditions:
-    None.
+      Summary:
+        Provides the ADC conversion result based on the buffer index.
 
-  Parameters:
-    index           - Identifier for the device instance
+      Description:
+        This function provides the ADC module conversion result based on the buffer
+        index.
 
-  Returns:
-    - true   - The MuxInputScanSelect feature is supported on the device
-    - false  - The MuxInputScanSelect feature is not supported on the device
+      Precondition:
+        ADC multi-buffer support available and configured.
 
-  Remarks:
-    None.
-*/
+      Parameters:
+        index           - Identifier for the device instance to be configured
+        bufferIndex     - Value ranging from 0 to 15
 
-bool PLIB_ADC_ExistsMuxInputScanSelect( ADC_MODULE_ID index );
+      Returns:
+        int16_t        - ADC Conversion result at the respective bufferIndex
 
+      Example:
+        <code>
+        // Where MY_ADC_INSTANCE, is the ADC instance selected for use by the
+        // application developer.
+        ADC_SAMPLE my_res = PLIB_ADC_ResultGetByIndex(MY_ADC_INSTANCE, 15);
+        </code>
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsMuxInputScanSelectExtended( ADC_MODULE_ID index )
+      Remarks:
+        This feature may not be available on all devices. Please refer to the specific device data sheet
+        to determine availability or use PLIB_ADC_ExistsResultGetByIndex in your application to determine
+        whether this feature is available.
+     */
 
-  Summary:
-    Identifies whether the MuxInputScanSelectExtended feature exists on the ADC module 
+    ADC_SAMPLE PLIB_ADC_ResultGetByIndex(ADC_MODULE_ID index,
+                                         uint8_t bufferIndex);
 
-  Description:
-    This function identifies whether the MuxInputScanSelectExtended feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_InputScanMaskAddExtended
-    - PLIB_ADC_InputScanMaskRemoveExtended
 
-  Preconditions:
-    None.
+    // *****************************************************************************
+    // *****************************************************************************
+    // Section: ADC Peripheral Library Exists API Routines
+    // *****************************************************************************
+    // *****************************************************************************
+    /* The functions below indicate the existence of the features on the device.
+     */
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsEnableControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The MuxInputScanSelectExtended feature is supported on the device
-    - false  - The MuxInputScanSelectExtended feature is not supported on the device
+      Summary:
+        Identifies whether the EnableControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the EnableControl feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_Enable
+        - PLIB_ADC_Disable
 
-bool PLIB_ADC_ExistsMuxInputScanSelectExtended( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsVoltageReference( ADC_MODULE_ID index )
+      Returns:
+        - true   - The EnableControl feature is supported on the device
+        - false  - The EnableControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the VoltageReference feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the VoltageReference feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_VoltageReferenceSelect
+    bool PLIB_ADC_ExistsEnableControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsStopInIdleControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The VoltageReference feature is supported on the device
-    - false  - The VoltageReference feature is not supported on the device
+      Summary:
+        Identifies whether the StopInIdle feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the StopInIdle feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_StopInIdleEnable
+        - PLIB_ADC_StopInIdleDisable
 
-bool PLIB_ADC_ExistsVoltageReference( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsMuxChannel0PositiveInput( ADC_MODULE_ID index )
+      Returns:
+        - true   - The StopInIdle feature is supported on the device
+        - false  - The StopInIdle feature is not supported on the device
 
-  Summary:
-    Identifies whether the MuxChannel0PositiveInput feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the MuxChannel0PositiveInput feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_MuxChannel0InputPositiveSelect
+    bool PLIB_ADC_ExistsStopInIdleControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsCalibrationControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The MuxChannel0PositiveInput feature is supported on the device
-    - false  - The MuxChannel0PositiveInput feature is not supported on the device
+      Summary:
+        Identifies whether the CalibrationControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the CalibrationControl feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_CalibrationEnable
+        - PLIB_ADC_CalibrationDisable
 
-bool PLIB_ADC_ExistsMuxChannel0PositiveInput( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsMuxChannel0NegativeInput( ADC_MODULE_ID index )
+      Returns:
+        - true   - The CalibrationControl feature is supported on the device
+        - false  - The CalibrationControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the MuxChannel0NegativeInput feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the MuxChannel0NegativeInput feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_MuxChannel0InputNegativeSelect
+    bool PLIB_ADC_ExistsCalibrationControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsMuxInputScanSelect( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The MuxChannel0NegativeInput feature is supported on the device
-    - false  - The MuxChannel0NegativeInput feature is not supported on the device
+      Summary:
+        Identifies whether the MuxInputScanSelect feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the MuxInputScanSelect feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_InputScanMaskAdd
+        - PLIB_ADC_InputScanMaskRemove
 
-bool PLIB_ADC_ExistsMuxChannel0NegativeInput( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsMuxInputScanControl( ADC_MODULE_ID index )
+      Returns:
+        - true   - The MuxInputScanSelect feature is supported on the device
+        - false  - The MuxInputScanSelect feature is not supported on the device
 
-  Summary:
-    Identifies whether the MuxInputScanControl feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the MuxInputScanControl feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_MuxAInputScanEnable
-    - PLIB_ADC_MuxAInputScanDisable
+    bool PLIB_ADC_ExistsMuxInputScanSelect(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsMuxInputScanSelectExtended( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The MuxInputScanControl feature is supported on the device
-    - false  - The MuxInputScanControl feature is not supported on the device
+      Summary:
+        Identifies whether the MuxInputScanSelectExtended feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the MuxInputScanSelectExtended feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_InputScanMaskAddExtended
+        - PLIB_ADC_InputScanMaskRemoveExtended
 
-bool PLIB_ADC_ExistsMuxInputScanControl( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplingModeControl( ADC_MODULE_ID index )
+      Returns:
+        - true   - The MuxInputScanSelectExtended feature is supported on the device
+        - false  - The MuxInputScanSelectExtended feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplingModeControl feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplingModeControl feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_SamplingModeSelect
+    bool PLIB_ADC_ExistsMuxInputScanSelectExtended(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsVoltageReference( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplingModeControl feature is supported on the device
-    - false  - The SamplingModeControl feature is not supported on the device
+      Summary:
+        Identifies whether the VoltageReference feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the VoltageReference feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_VoltageReferenceSelect
 
-bool PLIB_ADC_ExistsSamplingModeControl( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplesPerInterruptSelect( ADC_MODULE_ID index )
+      Returns:
+        - true   - The VoltageReference feature is supported on the device
+        - false  - The VoltageReference feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplesPerInterruptSelect feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplesPerInterruptSelect feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_SamplesPerInterruptSelect
+    bool PLIB_ADC_ExistsVoltageReference(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsMuxChannel0PositiveInput( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplesPerInterruptSelect feature is supported on the device
-    - false  - The SamplesPerInterruptSelect feature is not supported on the device
+      Summary:
+        Identifies whether the MuxChannel0PositiveInput feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the MuxChannel0PositiveInput feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_MuxChannel0InputPositiveSelect
 
-bool PLIB_ADC_ExistsSamplesPerInterruptSelect( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplingAutoStart( ADC_MODULE_ID index )
+      Returns:
+        - true   - The MuxChannel0PositiveInput feature is supported on the device
+        - false  - The MuxChannel0PositiveInput feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplingAutoStart feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplingAutoStart feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_SampleAutoStartEnable
-    - PLIB_ADC_SampleAutoStartDisable
+    bool PLIB_ADC_ExistsMuxChannel0PositiveInput(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsMuxChannel0NegativeInput( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplingAutoStart feature is supported on the device
-    - false  - The SamplingAutoStart feature is not supported on the device
+      Summary:
+        Identifies whether the MuxChannel0NegativeInput feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the MuxChannel0NegativeInput feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_MuxChannel0InputNegativeSelect
 
-bool PLIB_ADC_ExistsSamplingAutoStart( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplingControl( ADC_MODULE_ID index )
+      Returns:
+        - true   - The MuxChannel0NegativeInput feature is supported on the device
+        - false  - The MuxChannel0NegativeInput feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplingControl feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplingControl feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_SamplingStart
-    - PLIB_ADC_SamplingStop
+    bool PLIB_ADC_ExistsMuxChannel0NegativeInput(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsMuxInputScanControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplingControl feature is supported on the device
-    - false  - The SamplingControl feature is not supported on the device
+      Summary:
+        Identifies whether the MuxInputScanControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the MuxInputScanControl feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_MuxAInputScanEnable
+        - PLIB_ADC_MuxAInputScanDisable
 
-bool PLIB_ADC_ExistsSamplingControl( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplingAcquisitionTime( ADC_MODULE_ID index )
+      Returns:
+        - true   - The MuxInputScanControl feature is supported on the device
+        - false  - The MuxInputScanControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplingAcquisitionTime feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplingAcquisitionTime feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_SampleAcquisitionTimeSet
+    bool PLIB_ADC_ExistsMuxInputScanControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplingModeControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplingAcquisitionTime feature is supported on the device
-    - false  - The SamplingAcquisitionTime feature is not supported on the device
+      Summary:
+        Identifies whether the SamplingModeControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplingModeControl feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_SamplingModeSelect
 
-bool PLIB_ADC_ExistsSamplingAcquisitionTime( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsSamplingStatus( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplingModeControl feature is supported on the device
+        - false  - The SamplingModeControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the SamplingStatus feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the SamplingStatus feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_SamplingIsActive
+    bool PLIB_ADC_ExistsSamplingModeControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplesPerInterruptSelect( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The SamplingStatus feature is supported on the device
-    - false  - The SamplingStatus feature is not supported on the device
+      Summary:
+        Identifies whether the SamplesPerInterruptSelect feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplesPerInterruptSelect feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_SamplesPerInterruptSelect
 
-bool PLIB_ADC_ExistsSamplingStatus( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionControl( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplesPerInterruptSelect feature is supported on the device
+        - false  - The SamplesPerInterruptSelect feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionControl feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionControl feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ConversionStart
+    bool PLIB_ADC_ExistsSamplesPerInterruptSelect(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplingAutoStart( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionControl feature is supported on the device
-    - false  - The ConversionControl feature is not supported on the device
+      Summary:
+        Identifies whether the SamplingAutoStart feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplingAutoStart feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_SampleAutoStartEnable
+        - PLIB_ADC_SampleAutoStartDisable
 
-bool PLIB_ADC_ExistsConversionControl( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionClock( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplingAutoStart feature is supported on the device
+        - false  - The SamplingAutoStart feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionClock feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionClock feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_ConversionClockSet
-    - PLIB_ADC_ConversionClockGet
+    bool PLIB_ADC_ExistsSamplingAutoStart(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplingControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionClock feature is supported on the device
-    - false  - The ConversionClock feature is not supported on the device
+      Summary:
+        Identifies whether the SamplingControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplingControl feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_SamplingStart
+        - PLIB_ADC_SamplingStop
 
-bool PLIB_ADC_ExistsConversionClock( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionClockSource( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplingControl feature is supported on the device
+        - false  - The SamplingControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionClockSource feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionClockSource feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ConversionClockSourceSelect
+    bool PLIB_ADC_ExistsSamplingControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplingAcquisitionTime( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionClockSource feature is supported on the device
-    - false  - The ConversionClockSource feature is not supported on the device
+      Summary:
+        Identifies whether the SamplingAcquisitionTime feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplingAcquisitionTime feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_SampleAcquisitionTimeSet
 
-bool PLIB_ADC_ExistsConversionClockSource( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionTriggerSource( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplingAcquisitionTime feature is supported on the device
+        - false  - The SamplingAcquisitionTime feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionTriggerSource feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionTriggerSource feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ConversionTriggerSourceSelect
+    bool PLIB_ADC_ExistsSamplingAcquisitionTime(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsSamplingStatus( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionTriggerSource feature is supported on the device
-    - false  - The ConversionTriggerSource feature is not supported on the device
+      Summary:
+        Identifies whether the SamplingStatus feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the SamplingStatus feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_SamplingIsActive
 
-bool PLIB_ADC_ExistsConversionTriggerSource( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionStopSequenceControl( ADC_MODULE_ID index )
+      Returns:
+        - true   - The SamplingStatus feature is supported on the device
+        - false  - The SamplingStatus feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionStopSequenceControl feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionStopSequenceControl feature is available on the ADC module.
-    When this function returns true, these functions are supported on the device: 
-    - PLIB_ADC_ConversionStopSequenceEnable
-    - PLIB_ADC_ConversionStopSequenceDisable
+    bool PLIB_ADC_ExistsSamplingStatus(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionStopSequenceControl feature is supported on the device
-    - false  - The ConversionStopSequenceControl feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionControl feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ConversionStart
 
-bool PLIB_ADC_ExistsConversionStopSequenceControl( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsConversionStatus( ADC_MODULE_ID index )
+      Returns:
+        - true   - The ConversionControl feature is supported on the device
+        - false  - The ConversionControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the ConversionStatus feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ConversionStatus feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ConversionHasCompleted
+    bool PLIB_ADC_ExistsConversionControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionClock( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ConversionStatus feature is supported on the device
-    - false  - The ConversionStatus feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionClock feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionClock feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_ConversionClockSet
+        - PLIB_ADC_ConversionClockGet
 
-bool PLIB_ADC_ExistsConversionStatus( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsResultFormat( ADC_MODULE_ID index )
+      Returns:
+        - true   - The ConversionClock feature is supported on the device
+        - false  - The ConversionClock feature is not supported on the device
 
-  Summary:
-    Identifies whether the ResultFormat feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ResultFormat feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ResultFormatSelect
+    bool PLIB_ADC_ExistsConversionClock(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionClockSource( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ResultFormat feature is supported on the device
-    - false  - The ResultFormat feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionClockSource feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionClockSource feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ConversionClockSourceSelect
 
-bool PLIB_ADC_ExistsResultFormat( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsResultBufferMode( ADC_MODULE_ID index )
+      Returns:
+        - true   - The ConversionClockSource feature is supported on the device
+        - false  - The ConversionClockSource feature is not supported on the device
 
-  Summary:
-    Identifies whether the ResultBufferMode feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ResultBufferMode feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ResultBufferModeSelect
+    bool PLIB_ADC_ExistsConversionClockSource(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionTriggerSource( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ResultBufferMode feature is supported on the device
-    - false  - The ResultBufferMode feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionTriggerSource feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionTriggerSource feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ConversionTriggerSourceSelect
 
-bool PLIB_ADC_ExistsResultBufferMode( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsResultBufferFillStatus( ADC_MODULE_ID index )
+      Returns:
+        - true   - The ConversionTriggerSource feature is supported on the device
+        - false  - The ConversionTriggerSource feature is not supported on the device
 
-  Summary:
-    Identifies whether the ResultBufferFillStatus feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ResultBufferFillStatus feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ResultBufferStatusGet
+    bool PLIB_ADC_ExistsConversionTriggerSource(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionStopSequenceControl( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ResultBufferFillStatus feature is supported on the device
-    - false  - The ResultBufferFillStatus feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionStopSequenceControl feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionStopSequenceControl feature is available on the ADC module.
+        When this function returns true, these functions are supported on the device:
+        - PLIB_ADC_ConversionStopSequenceEnable
+        - PLIB_ADC_ConversionStopSequenceDisable
 
-bool PLIB_ADC_ExistsResultBufferFillStatus( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
+      Parameters:
+        index           - Identifier for the device instance
 
-//******************************************************************************
-/* Function :  PLIB_ADC_ExistsResultGetByIndex( ADC_MODULE_ID index )
+      Returns:
+        - true   - The ConversionStopSequenceControl feature is supported on the device
+        - false  - The ConversionStopSequenceControl feature is not supported on the device
 
-  Summary:
-    Identifies whether the ResultGetByIndex feature exists on the ADC module 
+      Remarks:
+        None.
+     */
 
-  Description:
-    This function identifies whether the ResultGetByIndex feature is available on the ADC module.
-    When this function returns true, this function is supported on the device: 
-    - PLIB_ADC_ResultGetByIndex
+    bool PLIB_ADC_ExistsConversionStopSequenceControl(ADC_MODULE_ID index);
 
-  Preconditions:
-    None.
 
-  Parameters:
-    index           - Identifier for the device instance
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsConversionStatus( ADC_MODULE_ID index )
 
-  Returns:
-    - true   - The ResultGetByIndex feature is supported on the device
-    - false  - The ResultGetByIndex feature is not supported on the device
+      Summary:
+        Identifies whether the ConversionStatus feature exists on the ADC module
 
-  Remarks:
-    None.
-*/
+      Description:
+        This function identifies whether the ConversionStatus feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ConversionHasCompleted
 
-bool PLIB_ADC_ExistsResultGetByIndex( ADC_MODULE_ID index );
+      Preconditions:
+        None.
 
-//DOM-IGNORE-BEGIN
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The ConversionStatus feature is supported on the device
+        - false  - The ConversionStatus feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_ADC_ExistsConversionStatus(ADC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsResultFormat( ADC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the ResultFormat feature exists on the ADC module
+
+      Description:
+        This function identifies whether the ResultFormat feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ResultFormatSelect
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The ResultFormat feature is supported on the device
+        - false  - The ResultFormat feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_ADC_ExistsResultFormat(ADC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsResultBufferMode( ADC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the ResultBufferMode feature exists on the ADC module
+
+      Description:
+        This function identifies whether the ResultBufferMode feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ResultBufferModeSelect
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The ResultBufferMode feature is supported on the device
+        - false  - The ResultBufferMode feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_ADC_ExistsResultBufferMode(ADC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsResultBufferFillStatus( ADC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the ResultBufferFillStatus feature exists on the ADC module
+
+      Description:
+        This function identifies whether the ResultBufferFillStatus feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ResultBufferStatusGet
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The ResultBufferFillStatus feature is supported on the device
+        - false  - The ResultBufferFillStatus feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_ADC_ExistsResultBufferFillStatus(ADC_MODULE_ID index);
+
+
+    //******************************************************************************
+    /* Function :  PLIB_ADC_ExistsResultGetByIndex( ADC_MODULE_ID index )
+
+      Summary:
+        Identifies whether the ResultGetByIndex feature exists on the ADC module
+
+      Description:
+        This function identifies whether the ResultGetByIndex feature is available on the ADC module.
+        When this function returns true, this function is supported on the device:
+        - PLIB_ADC_ResultGetByIndex
+
+      Preconditions:
+        None.
+
+      Parameters:
+        index           - Identifier for the device instance
+
+      Returns:
+        - true   - The ResultGetByIndex feature is supported on the device
+        - false  - The ResultGetByIndex feature is not supported on the device
+
+      Remarks:
+        None.
+     */
+
+    bool PLIB_ADC_ExistsResultGetByIndex(ADC_MODULE_ID index);
+
+    //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
@@ -2210,4 +2211,4 @@ bool PLIB_ADC_ExistsResultGetByIndex( ADC_MODULE_ID index );
 #endif // #ifndef _PLIB_ADC_H
 /*******************************************************************************
  End of File
-*/
+ */

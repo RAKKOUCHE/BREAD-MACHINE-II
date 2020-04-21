@@ -1,3 +1,8 @@
+/**
+ * \addtogroup MDB
+ * @{
+ */
+
 #include "mdb.h"
 
 #define MDB_TASK_NAME "TSK MDB"
@@ -12,7 +17,7 @@
  */
 #define MDB_TASK_STACK 512
 
-typedef  enum __attribute__((packed))
+typedef enum
 {
     MDB_INIT,
     MDB_POLL_CG,
@@ -28,7 +33,7 @@ typedef struct
 }
 UARTDATA;
 
-typedef union __attribute__((packed))
+typedef union
 {
     UARTDATA uartData;
     WORD wData;
@@ -39,14 +44,14 @@ uUART_DATA;
 
 struct
 {
-    BOOL isMDBChecked;
+    bool isMDBChecked;
     uint8_t byDecimalPos;
     WORD wCurrencyDivider;
     MDB_STATUS state;
     /**
      \brief Indique le TO pour la réponse du périphérique MDB est atteint.
      */
-    BOOL isNAK;
+    bool isNAK;
 
     /**
      *\brief Handle du timer utilisé pour le TO de la réponse d'un périphérique MDB.
@@ -134,7 +139,7 @@ static void vTaskMDB(void)
                 }
                 if(mdb.hTimerMDBNAK == NULL)
                 {
-                    mdb.hTimerMDBNAK = xTimerCreate((const char * const) "TMR MDB", MDB_TO, pdFALSE,
+                    mdb.hTimerMDBNAK = xTimerCreate((const char * const)"TMR MDB", MDB_TO, pdFALSE,
                                                     NULL, vNAKTO_MDB);
                 }
                 mdb.wCurrencyDivider = 1;
@@ -252,7 +257,7 @@ void vMDBInit(void)
 
     if(mdb.hTaskMdb == NULL)
     {
-        xTaskCreate((TaskFunction_t) vTaskMDB, MDB_TASK_NAME, MDB_TASK_STACK, NULL,
+        xTaskCreate((TaskFunction_t)vTaskMDB, MDB_TASK_NAME, MDB_TASK_STACK, NULL,
                     MDB_TASK_PRIORITY, &mdb.hTaskMdb);
         vTaskSuspend(mdb.hTaskMdb);
     }
@@ -454,7 +459,7 @@ void setMDBCurrencyDivider(uint16_t divider)
 
 /*********************************************************************
  * Function:
- *         BOOL getisMDBChecked(void)
+ *         bool getisMDBChecked(void)
  *
  * Version:
  *         1.0
@@ -495,7 +500,7 @@ void setMDBCurrencyDivider(uint16_t divider)
  *         None
  *
  ********************************************************************/
-BOOL getIsMDBChecked(void)
+bool getIsMDBChecked(void)
 {
     return mdb.isMDBChecked;
 }
@@ -670,7 +675,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
     uint8_t *byPtrParameters, *byPtrAnswer;
     byPtrParameters = ptrParameters;
     byPtrAnswer = ptrAnswer;
-    BOOL isRepeat = false;    
+    bool isRepeat = false;
     xSemaphoreTake(mdb.hSemaphorePoll, SECONDE);
 
     do
@@ -683,7 +688,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
         //Complete le buffer à transmettre
         for(byIndex = 1; byIndex <= byLenParameters; byIndex++)
         {
-            data[byIndex].uartData.byData = (uint8_t) byPtrParameters[byIndex - 1];
+            data[byIndex].uartData.byData = (uint8_t)byPtrParameters[byIndex - 1];
             data[byIndex].uartData.isBit9th = false;
         }
 
@@ -700,7 +705,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
             if(!mdb.isNAK)
             {
                 PLIB_USART_Transmitter9BitsSend(USART_ID_4, data[byIndex].uartData.byData, data[byIndex].uartData.isBit9th);
-                
+
             }
             else
             {
@@ -708,28 +713,28 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
                 break;
             }
         }
-        
+
         while(!PLIB_USART_TransmitterIsEmpty(USART_ID_4) && !mdb.isNAK);
-        
+
         if(!mdb.isNAK)
         {
             //Réception
             byPtrAnswer[byIndex = 0] = NAK;
             xTimerChangePeriod(mdb.hTimerMDBNAK, 500 * MILLISEC, SECONDE);
             do
-            {               
+            {
                 while(!PLIB_USART_ReceiverDataIsAvailable(USART_ID_4) & !mdb.isNAK);
                 if(!mdb.isNAK)
                 {
                     data[byIndex].wData = PLIB_USART_Receiver9BitsReceive(USART_ID_4);
                     byPtrAnswer[byIndex] = data[byIndex].uartData.byData;
-                    //Si la réponse du périphérique est NAK                    
+                    //Si la réponse du périphérique est NAK
                     if((byIndex == 1) && (data[byIndex].uartData.byData == 0XFF))
                     {
                         mdb.isNAK = true;
                     }
                 }
-            } while(!data[byIndex++].uartData.isBit9th && !mdb.isNAK);
+            }while(!data[byIndex++].uartData.isBit9th && !mdb.isNAK);
             if(!mdb.isNAK)
             {
                 if(byCheckSum(byIndex - 1, data) != data[byIndex - 1].uartData.byData)
@@ -745,13 +750,13 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
                 delayMs(100);
             }
         }
-    } while(isRepeat);
+    }while(isRepeat);
     if(mdb.isNAK)
     {
         byIndex = 0;
     }
     else
-    {        
+    {
         LED_MDB_Toggle();
     }
     xSemaphoreGive(mdb.hSemaphorePoll);
@@ -761,7 +766,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        BOOL isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse,
+ * Function:        bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse,
  *                  uint8_t *byLenAnswer)
  *
  * Version:         1.0
@@ -782,7 +787,7 @@ uint8_t byMDBSendCommand(const uint8_t byAddress, const uint8_t byCommand,
  *
  * Note:            None
  ********************************************************************/
-BOOL isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer)
+bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byLenAnswer)
 {
 
     uint8_t byResult = byMDBSendCommand(byDeviceAddress, CMD_POLL, 0, NULL,
@@ -799,7 +804,7 @@ BOOL isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byL
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        BOOL isMDBReset(const uint8_t byDeviceAddress)
+ * Function:        bool isMDBReset(const uint8_t byDeviceAddress)
  *
  * Version:         1.0
  *
@@ -819,7 +824,7 @@ BOOL isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byL
  *
  * Note:            None
  ********************************************************************/
-BOOL isMDBReset(const uint8_t byDeviceAddress)
+bool isMDBReset(const uint8_t byDeviceAddress)
 {
     uint8_t byAcknowledge;
     return((byMDBSendCommand(byDeviceAddress, CMD_RESET, 0, NULL, &byAcknowledge) == 1) && (byAcknowledge == ACK));
@@ -828,7 +833,7 @@ BOOL isMDBReset(const uint8_t byDeviceAddress)
 /******************************************************************************/
 
 /*********************************************************************
- * Function:        BOOL isGetMDBConfig(const uint8_t byDeviceAddress,
+ * Function:        bool isGetMDBConfig(const uint8_t byDeviceAddress,
  *                  void *byStatus, const uint8_t byLen)
  *
  * Version:         1.0
@@ -849,7 +854,7 @@ BOOL isMDBReset(const uint8_t byDeviceAddress)
  *
  * Note:            None
  ********************************************************************/
-BOOL isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen)
+bool isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t byLen)
 {
     if(byMDBSendCommand(byDeviceAddress, CMD_SETUP, 0, NULL, byStatus) > 1)
     {
@@ -907,5 +912,7 @@ void vDisplayRefused(void)
         //        }
     }
 }
-
+/**
+ * @}
+ */
 /******************************************************************************/

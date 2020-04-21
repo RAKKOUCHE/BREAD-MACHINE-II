@@ -5,7 +5,7 @@
  *
  * \file parameters.h
  *
- * \brief Fichier entï¿½te des paramï¿½tres.
+ * \brief Fichier entéte des paramétres.
  *
  ***************************************************************************** */
 /* ************************************************************************** */
@@ -32,8 +32,8 @@
 #include "peripheral/usart/plib_usart.h"
 #include "peripheral/usart/processor/usart_p32mx575f512l.h"
 #include "peripheral/reset/templates/reset_SoftwareResetTrigger_Default.h"
-
-
+#include "driver/nvm/drv_nvm.h"
+#include "peripheral/nvm/processor/nvm_p32mx575f512l.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -76,6 +76,20 @@ extern "C"
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
+
+    /**
+     * \brief
+     * @param byIndex
+     * @param value
+     */
+    void setSecurityValue(uint8_t byIndex, uint32_t value);
+
+    /**
+     * \brief
+     * @param byIndex
+     * @return
+     */
+    uint32_t getSecurityValue(uint8_t byIndex);
 
     /**
      * \brief Requête de la température de lancement du chauffage.
@@ -124,12 +138,12 @@ extern "C"
 
 
     /**
-     * \brief Enregistre les paramï¿½tres dans la mï¿½moire flash
+     * \brief Enregistre les paramétres dans la mémoire flash
      */
     void vParametersWrite(void);
 
     /**
-     * \brief Lecture des paramï¿½tres.
+     * \brief Lecture des paramétres.
      */
     void vParametersRead();
 

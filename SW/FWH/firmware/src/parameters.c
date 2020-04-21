@@ -1,6 +1,9 @@
+/**
+ * \addtogroup parameters
+ * @{
+ */
+
 /* ************************************************************************** */
-
-
 /** Descriptive File Name
  *
  *
@@ -19,12 +22,6 @@
 /* ************************************************************************** */
 
 #include "parameters.h"
-#include "driver/nvm/drv_nvm.h"
-#include "peripheral/nvm/processor/nvm_p32mx575f512l.h"
-/**
- * \addtogroup parameters
- * @{
- */
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: File Scope or Global Data                                         */
@@ -88,7 +85,7 @@ static union
     uint32_t dwBuffer[sizeof(PARAMETERS) / sizeof(uint32_t)]; /*!<Buffer des paramètres.*/
     uint8_t buffer[sizeof(PARAMETERS)]; /*!<Buffer des paramètres.*/
     PARAMETERS data; /*!<Paramètres de la machine.*/
-} parameters, backToto;
+} parameters;
 
 
 /**
@@ -98,11 +95,11 @@ const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gN
 = {
    1,
 #ifdef __DEBUG
-   90, 100, 110,
+    90, 100, 110,
 #else
-   100, 100, 100,
+    100, 100, 100,
 #endif
-   100,100,100,
+    100, 100, 100,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
    0, 0, 3, 3, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0,
@@ -127,6 +124,46 @@ const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gN
 // Section: Interface Functions                                               */
 
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        void setSecurityValue(uint8_t byIndex, uint32_t value)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setSecurityValue(uint8_t byIndex, uint32_t value)
+{
+    parameters.data.sensitivity[byIndex] = value;
+}
+
+/*********************************************************************
+ * Function:        uint32_t getSecurityValue(uint8_t byIndex)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+uint32_t getSecurityValue(uint8_t byIndex)
+{
+    return parameters.data.sensitivity[byIndex];
+}
 
 /*********************************************************************
  * Function:
@@ -413,7 +450,7 @@ ENABLE getEnableState()
  ********************************************************************/
 uint8_t getTOCumul(void)
 {
-    return(uint8_t) parameters.data.TOcumul;
+    return(uint8_t)parameters.data.TOcumul;
 }
 
 /*********************************************************************
@@ -462,7 +499,7 @@ uint8_t getTOCumul(void)
 uint16_t getChannelEnable(bool isChangeGiver)
 {
     return isChangeGiver ? parameters.data.enables.enable_GG :
-            parameters.data.enables.enable_BV;
+        parameters.data.enables.enable_BV;
 }
 
 /*********************************************************************
@@ -607,7 +644,6 @@ void vParametersWrite(void)
 void vParametersRead(void)
 {
     memmove(&parameters.buffer, &gNVMFlashReserveArea, sizeof(parameters));
-    memmove(&backToto.buffer, &gNVMFlashReserveArea, sizeof(backToto));
 }
 
 /*********************************************************************

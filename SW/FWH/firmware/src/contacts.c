@@ -1,17 +1,19 @@
+
+/**
+ * \addtogroup contacts
+ * @{
+ */
 /* ************************************************************************** */
 /**
  * \author Rachid AKKOUCHE
  *
  *  Company RASoftware
  *
- * \date 2019 11 08
+ * \date 2019 11 01
  *
- * \file clavier.c
+ * \file contacts.c
  *
- * \brief Fichier source de la gestion des touches.
- *
- * \details Ce fichier fournit les fonctions et les définitions utilisés par le
- *  programme pour gérer les les touches.
+ * \brief Fichier source des contacts du système.
  *
  ***************************************************************************/
 
@@ -188,22 +190,21 @@ static void vTaskCheckProductDispo(void)
                     vLCD_CLEAR();
                     printf("%s%u", "FERMETURE TRAP ", byIndex + 1);
                     delayMs(100);
-                    xTimerChangePeriod(switchs.hTimerPresenceProduct,
-                                       DOOR_TRAP_DELAY, 1 * SECONDE);
                     setMotorState(byIndex + 3, MOTORS_FORWARD);
                     do
                     {
-                        while((getDoorSwitchState(byIndex + 4) != KEY_USED) &&
-                              !switchs.isDoorTOReached);
+                        while(!getIsMotorCheckTO() &&
+                              (getDoorSwitchState(byIndex + 4) != KEY_USED));
                         delayMs(10);
-                    }while((getDoorSwitchState(byIndex + 4) != KEY_USED) &&
-                           !switchs.isDoorTOReached);
+                    }while(!getIsMotorCheckTO() &&
+                           (getDoorSwitchState(byIndex + 4) != KEY_USED));
                 }
-                xTimerStop(switchs.hTimerPresenceProduct, 1 * SECONDE);
+
                 setMotorState(byIndex + 3, MOTORS_BREAK);
                 while(getMotorState(byIndex + 3) != MOTORS_IDLE);
 
-                if((getOptoState(byIndex * 2) == KEY_HI) &&
+                if(!getIsMotorCheckTO() &&
+                   (getOptoState(byIndex * 2) == KEY_HI) &&
                    (getOptoState((byIndex * 2) + 1) == KEY_HI))
                 {
                     xTimerChangePeriod(switchs.hTimerPresenceProduct,
@@ -216,7 +217,9 @@ static void vTaskCheckProductDispo(void)
                 setMotorState(byIndex, MOTORS_BREAK);
                 while(getMotorState(byIndex) != MOTORS_IDLE);
                 xTimerStop(switchs.hTimerPresenceProduct, 1 * SECONDE);
-                setIsProductSelectable(byIndex, !switchs.isDoorTOReached);
+
+                setIsProductSelectable(byIndex, !(switchs.isDoorTOReached || getIsMotorCheckTO()));
+                setMotorCheckedTO(false);
             }
         }
         setAmountRequested(0);
@@ -363,6 +366,7 @@ static void vTaskCheckProductDispo(void)
  ********************************************************************/
 static void vShift_TO(const TimerHandle_t HandleTimer)
 {
+
     switchs.isKeyShifted = false;
 }
 
@@ -411,6 +415,7 @@ static void vShift_TO(const TimerHandle_t HandleTimer)
  ********************************************************************/
 static void setKeyState(const uint8_t numKey, const KEY_STATES state)
 {
+
     switchs.keys[numKey].state = state;
 }
 
@@ -459,6 +464,7 @@ static void setKeyState(const uint8_t numKey, const KEY_STATES state)
  ********************************************************************/
 static void setDoorSwitchState(const uint8_t byIndex, const KEY_STATES state)
 {
+
     switchs.door_switches[byIndex].state = state;
 }
 
@@ -479,6 +485,7 @@ static void setDoorSwitchState(const uint8_t byIndex, const KEY_STATES state)
  ********************************************************************/
 static void setOptoState(const uint8_t byIndex, const KEY_STATES state)
 {
+
     switchs.opto[byIndex].state = state;
 }
 
@@ -527,6 +534,7 @@ static void setOptoState(const uint8_t byIndex, const KEY_STATES state)
  ********************************************************************/
 static KEY_STATES getKeyState(const uint8_t numKey)
 {
+
     return switchs.keys[numKey].state;
 }
 
@@ -634,7 +642,7 @@ static void vTaskKeyboard(void *vParameter)
                         case KEY_CHECKED:
                             // <editor-fold desc="KEY_CHECKED">
                         {
-                            setMotorState(byIndex / 2, MOTORS_BREAK);
+                            //                            setMotorState(byIndex / 2, MOTORS_BREAK);
                             setOptoState(byIndex, (lOptoState == KEY_LO) ? KEY_USED : KEY_HI);
                             break;
                         }// </editor-fold>
@@ -678,23 +686,28 @@ static void vTaskKeyboard(void *vParameter)
                     {
                         if(byIndex)
                         {
-                            setMotorState((byIndex + 2) - ((uint8_t)(byIndex > 3) * 3), MOTORS_BREAK);
+                            //                            setMotorState((byIndex + 2) - ((uint8_t)(byIndex > 3) * 3), MOTORS_BREAK);
                             switchs.selection = 0;
+                        }
+                        if(byIndex > 3)
+                        {
+                            setLastDir((byIndex - 4), NONE);
                         }
                         setDoorSwitchState(byIndex, (lSWState == KEY_LO) ? KEY_USED : KEY_HI);
                         if(!byIndex)
                         {
                             setMainBoardTaskState((MAINBOARD_STATE_IDLE));
-                            vLCD_CLEAR();
-                            printf("%s", "FERMETURE PORTE");
                             for(byIndex2 = 0; byIndex2 < PRODUCT_NUMBER; byIndex2++)
                             {
                                 setIsProductSelectable(byIndex2, true);
                             }
-
                             setIsDoorOpen(false);
                             delayMs(50);
+
+                            //                            if(getIsSecurityActivated())
+                            //                            {
                             xTaskNotifyGive(switchs.hCheckProductDispo);
+                            //                            }
                         }
                         break;
                     }// </editor-fold>
@@ -708,7 +721,7 @@ static void vTaskKeyboard(void *vParameter)
                             {
                                 vLCD_CLEAR();
                                 delayMs(50);
-                                printf(" PORTE OUVERTE");
+                                printf("%s", STR_DOOR_OPEN);
                                 //delayMs(50);
                             }
                         }
@@ -791,6 +804,7 @@ static void vTaskKeyboard(void *vParameter)
  ********************************************************************/
 TaskHandle_t getHandleProductDispo(void)
 {
+
     return switchs.hCheckProductDispo;
 }
 
@@ -809,8 +823,9 @@ TaskHandle_t getHandleProductDispo(void)
  *
  * Note:            None
  ********************************************************************/
-BOOL getIsDoorOpen()
+bool getIsDoorOpen()
 {
+
     return switchs.isDoorOpen;
 }
 
@@ -829,13 +844,14 @@ BOOL getIsDoorOpen()
  *
  * Note:            None
  ********************************************************************/
-void setIsDoorOpen(const BOOL status)
+void setIsDoorOpen(const bool status)
 {
+
     switchs.isDoorOpen = status;
 }
 
 /*********************************************************************
- * Function:        BOOL getIsTaskKeyChecked(void)
+ * Function:        bool getIsTaskKeyChecked(void)
  *
  * PreCondition:    None
  *
@@ -849,13 +865,14 @@ void setIsDoorOpen(const BOOL status)
  *
  * Note:            None
  ********************************************************************/
-BOOL getIsTaskKeyChecked(void)
+bool getIsTaskKeyChecked(void)
 {
+
     return switchs.isTaskKeyChecked;
 }
 
 /*********************************************************************
- * Function:        void setIsTaskKeyChecked(BOOL status)
+ * Function:        void setIsTaskKeyChecked(bool status)
  *
  * PreCondition:    None
  *
@@ -869,8 +886,9 @@ BOOL getIsTaskKeyChecked(void)
  *
  * Note:            None
  ********************************************************************/
-void setIsTaskKeyChecked(BOOL status)
+void setIsTaskKeyChecked(bool status)
 {
+
     switchs.isTaskKeyChecked = status;
 }
 
@@ -917,9 +935,10 @@ void setIsTaskKeyChecked(BOOL status)
  *         None
  *
  ********************************************************************/
-KEY_STATES getDoorSwitchState(const uint8_t byIndex)
+KEY_STATES getDoorSwitchState(const uint8_t num)
 {
-    return switchs.door_switches[byIndex].state;
+
+    return switchs.door_switches[num].state;
 }
 
 /*********************************************************************
@@ -939,6 +958,7 @@ KEY_STATES getDoorSwitchState(const uint8_t byIndex)
  ********************************************************************/
 KEY_STATES getOptoState(const uint8_t byIndex)
 {
+
     return switchs.opto[byIndex].state;
 }
 
@@ -987,9 +1007,10 @@ KEY_STATES getOptoState(const uint8_t byIndex)
  ********************************************************************/
 void setShiftState(const bool state)
 {
-    (switchs.isKeyShifted = state) ?
-            xTimerStart(switchs.hShiftTO, 1000) :
-            xTimerStop(switchs.hShiftTO, 1000);
+    (
+     switchs.isKeyShifted = state) ?
+        xTimerStart(switchs.hShiftTO, 1000) :
+        xTimerStop(switchs.hShiftTO, 1000);
 }
 
 /*********************************************************************
@@ -1037,6 +1058,7 @@ void setShiftState(const bool state)
  ********************************************************************/
 bool getShiftState(void)
 {
+
     return switchs.isKeyShifted;
 }
 
@@ -1057,6 +1079,7 @@ bool getShiftState(void)
  ********************************************************************/
 void shiftStateToggle(void)
 {
+
     switchs.isKeyShifted = !switchs.isKeyShifted;
 }
 
@@ -1105,6 +1128,7 @@ void shiftStateToggle(void)
  ********************************************************************/
 uint8_t getSelection()
 {
+
     return switchs.selection;
 }
 
@@ -1192,6 +1216,9 @@ void vKeyboardInit(void)
                                                      NULL, vTOProductPresent);
     }
 }
+/**
+ * @}
+ */
 
 /******************************************************************************
 End of File

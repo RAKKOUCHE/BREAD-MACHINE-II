@@ -1,18 +1,23 @@
+/**
+ * \addtogroup ds18b20
+ * @{
+ */
+
 /* ************************************************************************** */
 /**
  * \author Rachid AKKOUCHE
- * 
+ *
  *  Company RASoftware
- * 
+ *
  * \date 2019 11 08
- * 
+ *
  * \file hd44780.c
- * 
+ *
  * \brief Fichier source de la gestion de la sonde température DS18B20
- * 
+ *
  * \details Ce fichier fournit les fonctions et les définitions utilisés par le
  * programme pour gestion de la sonde température DS18B20.
- *  
+ *
  ***************************************************************************/
 
 /* ************************************************************************** */
@@ -26,13 +31,22 @@
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
-
-
 /* ************************************************************************** */
 /* ************************************************************************** */
 /* Section: File Scope or Global Data                                         */
 /* ************************************************************************** */
+
+/**
+ * \brief
+ */
+#define DS18B20_TIMER_NAME "TO_TEMP_TIMER"
+
+/**
+ * \brief
+ */
+#define DS18B20_TO_DELAY (100 * MILLISEC)
+
+
 
 /**
  * \brief Nom en clair de la tâche de gestion de la sonde de température DS18B20.
@@ -92,7 +106,7 @@ typedef enum
     CONVERT_T = 0X44, /*!<Demande conversion.*/
     WRITE_SCRATCHPAD = 0X4E, /*!<Enregistre les alarmes et la configuration.*/
     READ_SCRATCHPAD = 0XBE, /*!<Lit les données des registres.*/
-    COPY_SCRATCHPAD = 0X48, /*!<Enregistre les alarmes et la configuration dans 
+    COPY_SCRATCHPAD = 0X48, /*!<Enregistre les alarmes et la configuration dans
                              * l'eeprom du DS18B20.*/
     RECALL_E2 = 0XB8, /*!<Relit les alarmes et la configuration dans l'eeprom.*/
     READ_PSU = 0XB4, /*!<Lit le type d'alimentation du DS18B20.*/
@@ -128,6 +142,7 @@ struct
     uint8_t laserCode[8]; /*!<lASER code unique du DS18B20.*/
     double Temperature;
     TaskHandle_t hDS18B20; /*!<Handle de la tâche.*/
+    TimerHandle_t hTO; /*!<Handle du TO.*/
 } ds18b20;
 
 
@@ -138,28 +153,19 @@ struct
 /* ************************************************************************** */
 
 /*********************************************************************
- * Function:        
- *         static bool vReset(void)
- * 
- * Version:
- *         1.0
- * 
- * Author:
- *         Rachid AKKOUCHE
- * 
- * Date:
- *         YY/MM/DD
+ * Function:
+ *         static void vDS18B20_TO(TimerHandle_t xTimer)
  *
  * Summary:
  *         RECAPULATIF
- * 
- * Description:
- *         DESCRIPTION
  *
- * PreCondition:    
+ * Description:
+ *         Description
+ *
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -170,25 +176,75 @@ struct
  *
  * Side Effects:
  *         None
- * 
+ *
+ * Example:
+ *         <code>
+ *         DS18B20_TO(TimerHandle_t xTimer)
+ *         <code>
+ *
+ * Remarks:
+ *         None
+ *
+ ********************************************************************/
+static void vDS18B20_TO(TimerHandle_t xTimer)
+{
+    vTaskSuspend(ds18b20.hDS18B20);
+}
+
+/*********************************************************************
+ * Function:
+ *         static bool vReset(void)
+ *
+ * Version:
+ *         1.0
+ *
+ * Author:
+ *         Rachid AKKOUCHE
+ *
+ * Date:
+ *         YY/MM/DD
+ *
+ * Summary:
+ *         RECAPULATIF
+ *
+ * Description:
+ *         DESCRIPTION
+ *
+ * PreCondition:
+ *         None
+ *
+ * Input:
+ *         None
+ *
+ * Output:
+ *         None
+ *
+ * Returns:
+ *         None
+ *
+ * Side Effects:
+ *         None
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static bool vOneWireReset(void)
 {
     uint8_t byIndex;
+    xTimerStart(ds18b20.hTO, 1000);
     DQ_OutputEnable();
     DQ_Clear();
     Delay10us(48);
     DQ_InputEnable();
     while(!DQ_Get());
     while(DQ_Get());
+    xTimerStop(ds18b20.hTO, 1000);
     for(byIndex = 0; byIndex < 4; byIndex++)
     {
         Delay10us(1);
@@ -207,28 +263,28 @@ static bool vOneWireReset(void)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static uint8_t OneWireReadByte()
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -239,15 +295,15 @@ static bool vOneWireReset(void)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static uint8_t OneWireReadByte()
 {
@@ -267,28 +323,28 @@ static uint8_t OneWireReadByte()
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void OneWireWriteByte(uint8_t data)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -299,15 +355,15 @@ static uint8_t OneWireReadByte()
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void OneWireWriteByte(uint8_t data)
 {
@@ -329,28 +385,28 @@ static void OneWireWriteByte(uint8_t data)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static byte CRC(uint* byffer, uint8_t lenght)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -361,15 +417,15 @@ static void OneWireWriteByte(uint8_t data)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 uint8_t dsCRC8(const uint8_t *addr, uint8_t len)
 {
@@ -390,28 +446,28 @@ uint8_t dsCRC8(const uint8_t *addr, uint8_t len)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void sendCommand(COMMANDES commande)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -422,15 +478,15 @@ uint8_t dsCRC8(const uint8_t *addr, uint8_t len)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void sendCommand(COMMANDES commande)
 {
@@ -438,28 +494,28 @@ static void sendCommand(COMMANDES commande)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void ReadROM(void)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -470,15 +526,15 @@ static void sendCommand(COMMANDES commande)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static bool isOneWireReadROM(void)
 {
@@ -498,28 +554,28 @@ static bool isOneWireReadROM(void)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void ds18b20ReadScratchPad()
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -530,15 +586,15 @@ static bool isOneWireReadROM(void)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static bool ds18b20ReadScratchPad()
 {
@@ -558,28 +614,28 @@ static bool ds18b20ReadScratchPad()
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void converT(void)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -590,15 +646,15 @@ static bool ds18b20ReadScratchPad()
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void converT(void)
 {
@@ -611,28 +667,28 @@ static void converT(void)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static double getds18b20Temp(void)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -643,15 +699,15 @@ static void converT(void)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static double getds18b20Temp()
 {
@@ -681,28 +737,28 @@ static double getds18b20Temp()
 /* ************************************************************************** */
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void vTaskTemperature(void *vParameters)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -713,41 +769,40 @@ static double getds18b20Temp()
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void vTaskTemperature(void *vParameters)
 {
-    TickType_t xLastWakeTime = xTaskGetTickCount();
     while(1)
     {
         if((ds18b20.Temperature = getds18b20Temp()))
         {
-            if(ds18b20.Temperature > ((double) getAlarmHeater() + 0.25))
+            if(ds18b20.Temperature > ((double)getAlarmHeater() + 0.25))
             {
                 COLD_Set();
             }
-            if(ds18b20.Temperature < ((double) getAlarmHeater() - 0.25))
+            if(ds18b20.Temperature < ((double)getAlarmHeater() - 0.25))
             {
                 COLD_Clear();
             }
-            if(ds18b20.Temperature > ((double) getAlarmCold() + 0.25))
+            if(ds18b20.Temperature > ((double)getAlarmCold() + 0.25))
             {
                 HEATER_Clear();
             }
-            if(ds18b20.Temperature < ((double) getAlarmCold() - 0.25))
+            if(ds18b20.Temperature < ((double)getAlarmCold() - 0.25))
             {
                 HEATER_Set();
             }
         }
-        vTaskDelayUntil(&xLastWakeTime, DS18B20_TASK_DELAY);
+        vTaskDelay(DS18B20_TASK_DELAY);
     }
 }
 /* ************************************************************************** */
@@ -756,28 +811,28 @@ static void vTaskTemperature(void *vParameters)
 /* ************************************************************************** */
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         double getTemp(void)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -788,15 +843,15 @@ static void vTaskTemperature(void *vParameters)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 double getTemp(void)
 {
@@ -804,28 +859,28 @@ double getTemp(void)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         void vDS18B20Init(void)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -836,15 +891,15 @@ double getTemp(void)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 void vDS18B20Init(void)
 {
@@ -852,10 +907,24 @@ void vDS18B20Init(void)
     {
         HEATER_Clear();
         COLD_Clear();
-        xTaskCreate((TaskFunction_t)vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
-                    NULL, DS18B20_TASK_PRIORITY, &ds18b20.hDS18B20);
+        if(ds18b20.hDS18B20 == NULL)
+        {
+            xTaskCreate((TaskFunction_t)vTaskTemperature, DS18B20_TASK_NAME, DS18B20_TASK_STACK,
+                        NULL, DS18B20_TASK_PRIORITY, &ds18b20.hDS18B20);
+        }
+        if(ds18b20.hTO == NULL)
+        {
+            ds18b20.hTO = xTimerCreate(DS18B20_TIMER_NAME, DS18B20_TO_DELAY,
+                                       pdFALSE, NULL, vDS18B20_TO);
+        }
+
+
     }
 }
+
+/**
+ * @}
+ */
 
 /* *****************************************************************************
  End of File

@@ -1,19 +1,17 @@
 /* ************************************************************************** */
-/** Descriptive File Name
+/**
+ * \author Rachid AKKOUCHE
+ *
+ *  Company RASoftware
+ *
+ * \date 2019 11 01
+ *
+ * \file contacts.h
+ *
+ * \brief Fichier entête de la gestion des contacts du système.
+ *
+ ***************************************************************************/
 
-  @Company
-    Company Name
-
-  @File Name
-    filename.h
-
-  @Summary
-    Brief description of the file.
-
-  @Description
-    Describe the purpose of this file.
- */
-/* ************************************************************************** */
 
 #ifndef _CONTACTS_H    /* Guard against multiple inclusion */
 #define _CONTACTS_H
@@ -29,14 +27,9 @@
 #include "task.h"
 #include "MDB/mdb.h"
 #include "product.h"
-//#include "peripheral/reset/templates/reset_SoftwareResetTrigger_Default.h"
-
 
 /* This section lists the other files that are included in this file.
  */
-
-/* TODO:  Include other files here if needed. */
-
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -44,6 +37,11 @@ extern "C"
 {
 #endif
 
+    /**
+     * \defgroup contacts CONTACTS
+     * Gestion des contacts du système.
+     * @{
+     */
 
     /* ************************************************************************** */
     /* ************************************************************************** */
@@ -51,6 +49,10 @@ extern "C"
     /* ************************************************************************** */
     /* ************************************************************************** */
 
+    /**
+     * \brief
+     */
+#define STR_DOOR_OPEN " PORTE OUVERTE"
 
     // *****************************************************************************
     // *****************************************************************************
@@ -58,7 +60,6 @@ extern "C"
     // *****************************************************************************
     // *****************************************************************************
 
-    
     /**
      * brief Enumération des états de la touche.
      */
@@ -87,7 +88,7 @@ extern "C"
      * @return
      */
     bool getShiftState(void);
-   
+
     //    /**
     //     * \brief Demande l'état du clavier.
     //     * \param[in] Numéro de la touche.
@@ -102,33 +103,33 @@ extern "C"
 
     /**
      * \brief
-     * @return 
+     * @return
      */
     TaskHandle_t getSwitchsHandle(void);
-    
+
     /**
      * \brief
-     * @return 
+     * @return
      */
-    BOOL getIsDoorOpen();
+    bool getIsDoorOpen();
 
     /**
      * \brief
      * @param status
      */
-    void setIsDoorOpen(const BOOL status);
+    void setIsDoorOpen(const bool status);
 
     /**
      * \brief
-     * @return 
+     * @return
      */
-    BOOL getIsTaskKeyChecked(void);
+    bool getIsTaskKeyChecked(void);
 
     /**
      * \brief
      * @param status
      */
-    void setIsTaskKeyChecked(BOOL status);
+    void setIsTaskKeyChecked(bool status);
 
     /**
      * \brief
@@ -140,7 +141,7 @@ extern "C"
     /**
      * \brief
      * @param byIndex
-     * @return 
+     * @return
      */
     KEY_STATES getOptoState(const uint8_t byIndex);
     //
@@ -178,7 +179,10 @@ extern "C"
      * \brief Initialisation du clavier.
      */
     void vKeyboardInit(void);
-
+    /**
+     * @}
+     */
+    
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }

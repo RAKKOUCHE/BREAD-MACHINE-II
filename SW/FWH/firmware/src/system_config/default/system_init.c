@@ -137,19 +137,15 @@ SYSTEM_OBJECTS sysObj;
     See prototype in system/common/sys_module.h.
  */
 
-void SYS_Initialize ( void* data )
+void SYS_Initialize(void* data)
 {
     /* Core Processor Initialization */
-    SYS_CLK_Initialize( NULL );
+    SYS_CLK_Initialize(NULL);
     SYS_DEVCON_Initialize(SYS_DEVCON_INDEX_0, (SYS_MODULE_INIT*)NULL);
     SYS_DEVCON_PerformanceConfig(SYS_CLK_SystemFrequencyGet());
     SYS_DEVCON_JTAGDisable();
 
     /* Initialize Drivers */
-
-    /* Initialize ADC */
-    DRV_ADC_Initialize();
-
     sysObj.drvFlash0 = DRV_FLASH_Initialize(DRV_FLASH_INDEX_0, (SYS_MODULE_INIT *)NULL);
     /* Initialize the NVM Driver */
     sysObj.drvNvm = DRV_NVM_Initialize(DRV_NVM_INDEX_0, (SYS_MODULE_INIT *)NULL);
@@ -169,5 +165,5 @@ void SYS_Initialize ( void* data )
 
 /*******************************************************************************
  End of File
-*/
+ */
 

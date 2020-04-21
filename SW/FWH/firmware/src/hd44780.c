@@ -1,3 +1,9 @@
+
+/**
+ * \addtogroup afficheur
+ * @{
+ */
+
 /* ************************************************************************** */
 /**
  * \author Rachid AKKOUCHE
@@ -24,15 +30,9 @@
 /* This section lists the other files that are included in this file.
  */
 
-/* TODO:  Include other files here if needed. */
 #include "hd44780.h"
 
 /* ************************************************************************** */
-
-/**
- * \addtogroup afficheur
- * @{
- */
 
 /* ************************************************************************** */
 /* Section: File Scope or Global Data                                         */
@@ -47,6 +47,7 @@
 /**
  * \brief Nom du timer du TO.
  */
+
 #define LCD_TO_TIMER_NAME "TO LCD"
 /**
  * \brief Profondeur du tas de la tâche de l'afficheur.
@@ -161,7 +162,7 @@
  * \brief Caractères de niveau sur l'afficheur
  */
 const uint8_t barr[] [8] =
-        // <editor-fold desc="barr">
+    // <editor-fold desc="barr">
 {
     {
      0b00000000,
@@ -220,7 +221,7 @@ const uint8_t barr[] [8] =
  * \brief Caractère euro
  */
 const uint8_t euro[] =
-        // <editor-fold desc="Euro">
+    // <editor-fold desc="Euro">
 {
  0b00000111,
  0b00001000,
@@ -234,12 +235,12 @@ const uint8_t euro[] =
 // </editor-fold>
 
 /**
- * \brief Structure contenant les informations à envoyer au contrôler HD44780.
+ * \brief Structure contenant les informations à envoyer au contrôleurr HD44780.
  */
 typedef struct
 {
-    bool isNotCmd;
-    uint8_t byToLCD;
+    bool isNotCmd; /*!<Flag indiquant s'il s'agit d'une commande ou non.*/
+    uint8_t byToLCD; /*!<Commande ou caractère à envoyer à l'afficheur.*/
 } FOR_LCD;
 
 /**
@@ -429,7 +430,7 @@ static uint8_t byGetLCDAddressCounter(void)
 
 /*********************************************************************
  * Function:
- *         static BOOL isLCDBusy()
+ *         static bool isLCDBusy()
  *
  * Author:
  *         Rachid AKKOUCHE
@@ -467,7 +468,7 @@ static uint8_t byGetLCDAddressCounter(void)
  *         None
  *
  ********************************************************************/
-static BOOL isLCDBusy()
+static bool isLCDBusy()
 {
     return(lcd.cursor_Address = byGetLCDAddressCounter()) & LCD_BUSY_FLAG;
 }
@@ -1370,7 +1371,7 @@ void vLCD_Function(const eInterface interface, const eLines lines,
  *         19/11/10
  *
  * Summary:
- *         Renvoi le flag d'initialization.
+ *         renvoie le flag d'initialization.
  *
  * Description:
  *         DESCRIPTION
@@ -1536,7 +1537,7 @@ void vLCDInit(void)
     }
     if(!lcd.hTaskLCD)
     {
-        xTaskCreate(vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL,
+        xTaskCreate((TaskFunction_t)vTaskSendToDisplay, LCD_TASK_NAME, LCD_TASK_STACK, NULL,
                     LCD_TASK_PRIORITY, &lcd.hTaskLCD);
     }
 }

@@ -1,23 +1,27 @@
 /* ************************************************************************** */
-/** Descriptive File Name
+/**
+ * \author Rachid AKKOUCHE
+ *
+ *  Company RASoftware
+ *
+ * \date 2019 11 01
+ *
+ * \file trap_security.h
+ *
+ * \brief Fichier entête de la gestion de la sensibilité des trappes.
+ *
+ *
+ ***************************************************************************/
 
-  @Company
-    Company Name
-
-  @File Name
-    filename.h
-
-  @Summary
-    Brief description of the file.
-
-  @Description
-    Describe the purpose of this file.
- */
-/* ************************************************************************** */
 
 #ifndef _EXAMPLE_FILE_NAME_H    /* Guard against multiple inclusion */
 #define _EXAMPLE_FILE_NAME_H
 
+/**
+ * \defgroup security SECURITY
+ * Gestion de la sensibilité des trappes lors de fermeture pour la sécurité.
+ * @{
+ */
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -27,15 +31,16 @@
 
 /* This section lists the other files that are included in this file.
  */
-
-#include <stdbool.h>
+#include <xc.h>
+#include <sys/attribs.h>
+#include "peripheral/adc/plib_adc.h"
+#include "peripheral/adc/processor/adc_p32mx575f512l.h"
+#include "driver/adc/drv_adc_static.h"
 #include "peripheral/adc/plib_adc.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "delay_us.h"
-
-
-/* TODO:  Include other files here if needed. */
+#include "communDef.h"
+#include "system/int/sys_int_mapping.h"
 
 
 /* Provide C++ Compatibility */
@@ -74,30 +79,58 @@ extern "C"
 
     // *****************************************************************************
 
-
     // *****************************************************************************
     // *****************************************************************************
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
-
     /*  A brief description of a section can be given directly below the section
         banner.
      */
 
-    TaskHandle_t getADCTaskHandle();
+    /**
+     * \brief
+     */
+    void setAdcValue(uint8_t num, uint32_t value);
 
     /**
      * \brief
-     * @param byIndex
+     * @param num
+     * @return
      */
-    void vCheckSecurity(uint8_t byIndex);
+    uint32_t getADCValue(uint8_t num);
+
+    /**
+     * \brief
+     * @return
+     */
+    bool getIsADCCheckInProgress(void);
+
+    /**
+     * \brief
+     * @param isCheckInProgress
+     */
+    void setIsADCCeckInProgress(bool isCheckInProgress);
+
+    /**
+     * \brief
+     * @return
+     */
+    TaskHandle_t getADCTaskHandle(void);
+
+    /**
+     * \brief
+     * @return
+     */
+    bool getIsAdcDone(void);
 
     /**
      * \brief
      */
     void vADCInit(void);
-
+/**
+ * @}
+ */
     /* Provide C++ Compatibility */
 #ifdef __cplusplus
 }

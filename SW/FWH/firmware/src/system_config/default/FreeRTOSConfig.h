@@ -89,7 +89,7 @@
 #define configTIMER_TASK_PRIORITY               5
 #define configTIMER_QUEUE_LENGTH                10
 #define configTIMER_TASK_STACK_DEPTH            256
-#define configUSE_DAEMON_TASK_STARTUP_HOOK      0
+#define configUSE_DAEMON_TASK_STARTUP_HOOK      1
 
 /* Misc */
 #define configUSE_APPLICATION_TASK_TAG          0
@@ -100,7 +100,7 @@
 /* The priority at which the tick interrupt runs.  This should probably be kept at 1. */
 #define configKERNEL_INTERRUPT_PRIORITY         1
 
-/* The maximum interrupt priority from which FreeRTOS.org API functions can be called.  
+/* The maximum interrupt priority from which FreeRTOS.org API functions can be called.
 Only API functions that end in ...FromISR() can be used within interrupts. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY    3
 

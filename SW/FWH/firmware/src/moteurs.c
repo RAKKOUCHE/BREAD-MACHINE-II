@@ -1,20 +1,20 @@
-/* ************************************************************************** */
-
-/** Descriptive File Name
-
-  @Company
-    Company Name
-
-  @File Name
-    filename.c
-
-  @Summary
-    Brief description of the file.
-
-  @Description
-    Describe the purpose of this file.
+/**
+ * \addtogroup moteurs
+ * @{
  */
-/* ************************************************************************** */
+
+/** *************************************************************************
+ * \author Rachid AKKOUCHE
+ *
+ *  Company RASoftware
+ *
+ * \date 2019 11 08
+ *
+ * \file moteurs.c
+ *
+ * \brief Fichier sources de la gestion des moteur.
+ *
+ ***************************************************************************/
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -38,29 +38,63 @@
  */
 
 /**
- * \brief
+ * \brief Nom du timer utilisé pour éliminer le pic de courant.
  */
-#define MOTOR_DELAY (100 * MILLISEC)
+#define MOTOR_PEAK_TIMER_NAME "PEAK TIMER"
 
 /**
- * \brief
+ * \brief Délai utilisé pour éviter le peak de courant.
+ */
+#define MOTOR_PEAK_DELAY (500 * MILLISEC)
+
+/**
+ * \brief Sensibilité de la sécurité des trappes.
+ * \details Plus la valeur est faible, plus la détection sera sensible.
+ */
+#define DELTA 75
+
+/**
+ * \brief Délai de la tâche des moteurs.
+ */
+#define MOTOR_DELAY (20 * MILLISEC)
+
+/**
+ * \brief Nom de la tâche moteur
  */
 #define MOTOR_TASK_NAME "Moteur tsk"
 
-/**\brief
+/**
+ * \brief Dimension du tas affecté à la tâche des moteurs.
  */
 #define MOTOR_TASK_STACK 512
 
 /**
- * \brief
+ * \brief Priorité de la tâche des moteurs.
  */
 #define MOTOR_TASK_PRIORITY 3
 
 /**
+ * \brief Délai pendant lequel le moteur sera inversé pour la sécurité de la trappe.
+ */
+#define MOTOR_REVERSE_DELAY (1000 * MILLISEC)
+
+/**
  * \brief Nombre de moteurs dans le distributeur.
- * \details 3 convoyeurs, 3 trappes.
+ * \details 6 : 3 convoyeurs, 3 trappes.
  */
 #define MOTEURS_NUMBER (PRODUCT_NUMBER * 2)
+
+/**
+ * \brief Nom du timer du TO de la vérification de la sécurité.
+ */
+#define MOTORS_NAME_TIMEOUT_CHECK "TO motors check"
+
+/**
+ * \brief Délai maximum pendant lequel un moteur sera activé.
+ */
+
+#define CHECK_MOTOR_TO (30 * SECONDE)
+
 
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
@@ -72,23 +106,69 @@
  */
 
 /**
- * \brief
+ * \brief Structure contenant les informations d'un moteur
  */
 typedef struct
 {
-    DIRECTION lastdir;
-    MOTORS_SATE state;
+    DIRECTION lastdir; /*!<La dernière direction utilisé par le moteur.*/
+    MOTORS_SATE state; /*!<Dernier état de la tâche pour ce moteur.*/
+    bool isToBeReversed; /*!<Flag indiquant si la direction du moteur doit être inversée.*/
+    bool isSecurityActivated; /*!<La sécurité est activée.*/
 } MOTOR;
 
 /**
- * \brief
+ * \brief Variable contenant les informations sur les moteurs.
  */
 struct
 {
-    MOTOR motor[MOTEURS_NUMBER];
-    TaskHandle_t hMotorHandle;
-    BOOL isMotorChecked;
+    MOTOR motor[MOTEURS_NUMBER]; /*!<Tableau contenant les informations spécifiques des moteurs.*/
+    TaskHandle_t hMotorHandle; /*!<Handle de la tâche gérant les moteurs.*/
+    TimerHandle_t hTimerMotorCheck; /*!<Handle du timer gérant le TO de la vérification des moteurs.*/
+    TimerHandle_t hTimerPeakMoteur; /*!<Handle du timer utilisé pour éliminer le peak de courant du démarrage du moteur.*/
+    bool isMotorChecked; /*!<Flag indiquant si le programme a effectué la tâche du moteur.*/
+    bool isMotorsCheckTO; /*Temps maximum accordé pour la vérification d'une trappe.*/
+    bool isPeakPassed; /*!<Flag indiquant que le temps accordé au pic de courant pour le démarrage du moteur est terminé.*/
 } motors;
+
+/*********************************************************************
+ * Function:        static void vPeakPassed(TimerHandle_t TimerHandle)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void vPeakPassed(TimerHandle_t TimerHandle)
+{
+    motors.isPeakPassed = true;
+}
+
+/*********************************************************************
+ * Function:        static void vCheckedTO()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void vMotorCheckTO(TimerHandle_t timerHandle)
+{
+    motors.isMotorsCheckTO = true;
+}
 
 /*********************************************************************
  * Function:
@@ -141,93 +221,25 @@ static void powerCarrouselMotors(void)
 }
 
 /*********************************************************************
- * Function:
- *         static void breakMotor(void)
+ * Function:        static void actvateBreakMotors(void)
  *
- * Version:
- *         1.0
+ * PreCondition:    None
  *
- * Author:
- *         Rachid AKKOUCHE
+ * Input:           None
  *
- * Date:
- *         YY/MM/DD
+ * Output:          None
  *
- * Summary:
- *         RECAPULATIF
+ * Side Effects:    None
  *
- * Description:
- *         DESCRIPTION
+ * Overview:        None
  *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
+ * Note:            None
  ********************************************************************/
-void actvateBreakMotors(void)
+static void actvateBreakMotors(void)
 {
     PWR_Clear();
     delayMs(1);
     BRK_Clear();
-}
-
-/*********************************************************************
- * Function:        BOOL getIsMotorChecked()
- *
- * PreCondition:    None
- *
- * Input:           None
- *
- * Output:          None
- *
- * Side Effects:    None
- *
- * Overview:        None
- *
- * Note:            None
- ********************************************************************/
-BOOL getIsMotorChecked()
-{
-    return motors.isMotorChecked;
-}
-
-/*********************************************************************
- * Function:        void setIsMotorChecked(const BOOL status)
- *
- * PreCondition:    None
- *
- * Input:           None
- *
- * Output:          None
- *
- * Side Effects:    None
- *
- * Overview:        None
- *
- * Note:            None
- ********************************************************************/
-void setIsMotorChecked(const BOOL status)
-{
-    motors.isMotorChecked = status;
 }
 
 /*********************************************************************
@@ -325,8 +337,9 @@ static void freeMotors(void)
  ********************************************************************/
 static void vTaskMoteur(void *vParameter)
 {
-    TickType_t xLastWakeTime = xTaskGetTickCount();
+    //    TickType_t xLastWakeTime = xTaskGetTickCount();
     uint8_t byIndex;
+    uint32_t dwToto, dwToto2, dwToto3;
     while(1)
     {
         setIsMotorChecked(TRUE);
@@ -337,6 +350,8 @@ static void vTaskMoteur(void *vParameter)
                 case MOTORS_INIT:
                     // <editor-fold desc="MOTORS_INIT">
                 {
+                    motors.motor[byIndex].isToBeReversed = false;
+                    motors.motor[byIndex].lastdir = NONE;
                     motors.motor[byIndex].state = MOTORS_OFF;
                     actvateBreakMotors();
                     freeMotors();
@@ -346,6 +361,15 @@ static void vTaskMoteur(void *vParameter)
                     // <editor-fold desc="MOTORS_OFF">
                 {
                     motors.motor[byIndex].state = MOTORS_IDLE;
+                    if((byIndex > 2) && motors.motor[byIndex - 3].isToBeReversed)
+                    {
+                        motors.motor[byIndex - 3].isToBeReversed = false;
+                        motors.motor[byIndex].state = MOTORS_REVERSE;
+                    }
+                    else
+                    {
+                        setLastDir(byIndex, NONE);
+                    }
                     switch(byIndex)
                     {
                         case 0:
@@ -395,6 +419,11 @@ static void vTaskMoteur(void *vParameter)
                     // <editor-fold desc="MOTORS_BREAK">
                 {
                     motors.motor[byIndex].state = MOTORS_OFF;
+                    if(byIndex > 2)
+                    {
+                        xTimerStop(getHandleMotorCheckTimer(), 1 * SECONDE);
+                    }
+
                     switch(byIndex)
                     {
                         case 0:
@@ -447,6 +476,9 @@ static void vTaskMoteur(void *vParameter)
                     motors.motor[byIndex].state = MOTORS_IDLE;
                     if(byIndex > 2)
                     {
+                        motors.isPeakPassed = false;
+                        xTimerChangePeriod(motors.hTimerPeakMoteur, MOTOR_PEAK_DELAY, 1000);
+                        xTimerStart(getHandleMotorCheckTimer(), 1 * SECONDE);
                         setLastDir(byIndex, FORWARD);
                     }
                     switch(byIndex)
@@ -467,6 +499,7 @@ static void vTaskMoteur(void *vParameter)
                             CMD_TRAP_N11_Set();
                             CMD_TRAP_N12_Clear();
                             CMD_TRAP_P11_Set();
+
                             break;
                         }// </editor-fold>
                         case 4:
@@ -501,6 +534,13 @@ static void vTaskMoteur(void *vParameter)
                     if(byIndex > 2)
                     {
                         setLastDir(byIndex, REVERSE);
+                        xTimerStart(getHandleMotorCheckTimer(), 1 * SECONDE);
+                        if(motors.motor[byIndex].isSecurityActivated)
+                        {
+                            motors.isPeakPassed = false;
+                            xTimerChangePeriod(motors.hTimerPeakMoteur,
+                                               MOTOR_REVERSE_DELAY, 1000);
+                        }
                     }
                     switch(byIndex)
                     {
@@ -544,27 +584,132 @@ static void vTaskMoteur(void *vParameter)
                             break;
                         }
                     }
-
                     break;
                 }// </editor-fold>
                 case MOTORS_IDLE:
                     // <editor-fold desc="MOTORS_IDLE">
                 {
-
+                    if(byIndex > 2)
+                    {
+                        if((motors.motor[byIndex].lastdir == FORWARD))
+                        {
+                            if(motors.isPeakPassed &&
+                               (getDoorSwitchState(byIndex - 2) == KEY_HI) &&
+                               (getDoorSwitchState(byIndex + 1) == KEY_HI))
+                            {
+#ifdef __DEBUG
+                                if(byIndex == 3)
+                                {
+                                    Nop();
+                                }
+#endif
+                                setInputSecurity(byIndex - 3);
+                                xTaskNotifyGive(getADCTaskHandle());
+                                while(!getIsAdcDone());
+                                if(getADCValue(byIndex - 3) > getSecurityValue(byIndex - 3))
+                                {
+                                    if(getIsADCCheckInProgress())
+                                    {
+                                        if(getADCValue(byIndex - 3) > getSecurityValue(byIndex - 3))
+                                        {
+                                            setSecurityValue(byIndex - 3, getADCValue(byIndex - 3));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(getADCValue(byIndex - 3) > ((getSecurityValue(byIndex - 3) * (100 + DELTA)) / 100))
+                                        {
+                                            setMotorState(byIndex, MOTORS_REVERSE);
+                                            motors.motor[byIndex].isSecurityActivated = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if((motors.motor[byIndex].lastdir == REVERSE))
+                        {
+                            if(motors.motor[byIndex].isSecurityActivated && (motors.isPeakPassed || (getDoorSwitchState(byIndex - 2) != KEY_HI)))
+                            {
+                                motors.motor[byIndex].isSecurityActivated = false;
+                                setMotorState(byIndex, MOTORS_FORWARD);
+                            }
+                        }
+                    }
                     break;
                 }// </editor-fold>
                 default:
                 {
+
                     break;
                 }
             }
         }
-        vTaskDelayUntil(&xLastWakeTime, MOTOR_DELAY);
+        vTaskDelay(MOTOR_DELAY);
     }
 }
 
-DIRECTION getLastDir(uint8_t num)
+/*********************************************************************
+ * Function:        TimerHandle_t getHandleMotorTimerChecked(VOID
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+TimerHandle_t getHandleMotorCheckTimer(void)
 {
+
+    return motors.hTimerMotorCheck;
+}
+
+/*********************************************************************
+ * Function:        bool getIsSecurityActivated(uint8_t num)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getIsSecurityActivated(void)
+{
+
+    return motors.motor[3].isSecurityActivated ||
+        motors.motor[4].isSecurityActivated ||
+        motors.motor[5].isSecurityActivated;
+}
+
+/*********************************************************************
+ * Function:        DIRECTION getLastDir(const uint8_t num)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+DIRECTION getLastDir(const uint8_t num)
+{
+
     return motors.motor[num].lastdir;
 }
 
@@ -611,9 +756,94 @@ DIRECTION getLastDir(uint8_t num)
  *         None
  *
  ********************************************************************/
-void setLastDir(uint8_t num, DIRECTION direction)
+void setLastDir(const uint8_t num, const DIRECTION direction)
 {
+
     motors.motor[num].lastdir = direction;
+}
+
+/*********************************************************************
+ * Function:        void setIsMotorChecked(const bool status)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsMotorChecked(const bool status)
+{
+
+    motors.isMotorChecked = status;
+}
+
+/*********************************************************************
+ * Function:        bool getIsMotorChecked()
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getIsMotorChecked()
+{
+
+    return motors.isMotorChecked;
+}
+
+/*********************************************************************
+ * Function:        bool getIsMotorCheckTO(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getIsMotorCheckTO(void)
+{
+
+    return motors.isMotorsCheckTO;
+}
+
+/*********************************************************************
+ * Function:        void setIsSecurityCheckedTO(bool isChecked)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setMotorCheckedTO(const bool isChecked)
+{
+
+    motors.isMotorsCheckTO = isChecked;
 }
 
 /*********************************************************************
@@ -661,6 +891,7 @@ void setLastDir(uint8_t num, DIRECTION direction)
  ********************************************************************/
 void setMotorState(const uint8_t num, const MOTORS_SATE state)
 {
+
     motors.motor[num].state = state;
 }
 
@@ -761,16 +992,35 @@ void vMotorsInit(void)
 
     //L'initialisation de l'état des moteurs est effectuée tout au début du programme
     //pour éviter un conflit entre les transistors.
+    motors.motor[byIndex].isSecurityActivated = false;
     for(byIndex = 0; byIndex < MOTEURS_NUMBER; byIndex++)
     {
+        motors.motor[byIndex].isSecurityActivated = false;
         motors.motor[byIndex].state = MOTORS_INIT;
     }
-    if(motors.hMotorHandle == NULL)
+    if(!motors.hTimerMotorCheck)
     {
-        xTaskCreate(vTaskMoteur, MOTOR_TASK_NAME, MOTOR_TASK_STACK, NULL, MOTOR_TASK_PRIORITY, &motors.hMotorHandle);
+        motors.hTimerMotorCheck = xTimerCreate(MOTORS_NAME_TIMEOUT_CHECK,
+                                               CHECK_MOTOR_TO, pdFALSE, NULL,
+                                               vMotorCheckTO);
+    }
+    if(!motors.hTimerPeakMoteur)
+    {
+        motors.hTimerPeakMoteur = xTimerCreate(MOTOR_PEAK_TIMER_NAME,
+                                               MOTOR_PEAK_DELAY, pdFALSE, NULL,
+                                               vPeakPassed);
+    }
+    if(!motors.hMotorHandle)
+    {
+        xTaskCreate((TaskFunction_t)vTaskMoteur, MOTOR_TASK_NAME,
+                    MOTOR_TASK_STACK, NULL, MOTOR_TASK_PRIORITY,
+                    &motors.hMotorHandle);
     }
 }
 
+/**
+ * @}
+ */
 /* *****************************************************************************
- End of File
+End of File
  */

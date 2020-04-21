@@ -1,18 +1,22 @@
+/**
+ * \addtogroup leds
+ * @{
+ */
 /* ************************************************************************** */
 /**
  * \author Rachid AKKOUCHE
- * 
+ *
  *  Company RASoftware
- * 
+ *
  * \date 2019 11 08
- * 
+ *
  * \file leds.c
- * 
+ *
  * \brief Fichier source de la gestion des leds du clavier
- * 
+ *
  * \details Ce fichier fournit les fonctions et les définitions utilisés par le
  *  programme pour  gérer les leds du clavier
- *  
+ *
  ***************************************************************************/
 
 /* ************************************************************************** */
@@ -25,8 +29,6 @@
  */
 
 #include "leds.h"
-
-/* TODO:  Include other files here if needed. */
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -59,7 +61,7 @@
 #define TASK_LED_DELAY (130 * MILLISEC)
 
 /**
- * \Structure contenant les variables d'une led.
+ * \brief Structure contenant les variables d'une led.
  */
 typedef struct
 {
@@ -73,7 +75,7 @@ struct
     uint8_t listEnable[PRODUCT_NUMBER];
     uint8_t numEnable;
     LED led[PRODUCT_NUMBER];
-    BOOL isChase;
+    bool isChase;
     TaskHandle_t taskLed;
 } leds;
 
@@ -88,7 +90,6 @@ struct
  */
 static void vTaskLed(void *vParameter)
 {
-    TickType_t xLastWakeTime = xTaskGetTickCount();
     static uint8_t byIndex = 0;
     while(1)
     {
@@ -119,27 +120,27 @@ static void vTaskLed(void *vParameter)
                         switch(leds.led[byIndex].ledState)
                         {
                             case LED_OFF:
-                                // <editor-fold desc="LED_OFF"> 
+                                // <editor-fold desc="LED_OFF">
                             {
                                 LATDCLR = (1 << (4 + byIndex));
                                 leds.led[byIndex].ledState = LED_IDLE;
                                 break;
                             }// </editor-fold>
                             case LED_ON:
-                                // <editor-fold desc="LED_ON"> 
+                                // <editor-fold desc="LED_ON">
                             {
                                 LATDSET = (1 << (4 + byIndex));
                                 leds.led[byIndex].ledState = LED_IDLE;
                                 break;
                             }// </editor-fold>
                             case LED_BLINK:
-                                // <editor-fold desc="LED_BLINK"> 
+                                // <editor-fold desc="LED_BLINK">
                             {
                                 LATDINV = (1 << (4 + byIndex));
                                 break;
                             }// </editor-fold>
                             case LED_IDLE:
-                                // <editor-fold desc="LED_IDLE"> 
+                                // <editor-fold desc="LED_IDLE">
                             {
 
                                 break;
@@ -154,7 +155,7 @@ static void vTaskLed(void *vParameter)
                 }
             }
         }
-        vTaskDelayUntil(&xLastWakeTime, TASK_LED_DELAY);
+        vTaskDelay(TASK_LED_DELAY);
     }
 }
 /* ************************************************************************** */
@@ -170,28 +171,28 @@ banner.
  */
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void setLedState(const uint8_t ledNum, const LED_STATE state )
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -202,15 +203,15 @@ banner.
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void setLedState(const uint8_t ledNum, const LED_STATE state)
 {
@@ -219,28 +220,28 @@ static void setLedState(const uint8_t ledNum, const LED_STATE state)
 }
 
 /*********************************************************************
- * Function:        
+ * Function:
  *         static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
- * 
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -251,15 +252,15 @@ static void setLedState(const uint8_t ledNum, const LED_STATE state)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
 static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
 {
@@ -267,28 +268,28 @@ static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
 }
 
 /*********************************************************************
- * Function:        
- *         void setLedChase(BOOL isOn)
- * 
+ * Function:
+ *         void setLedChase(bool isOn)
+ *
  * Version:
  *         1.0
- * 
+ *
  * Author:
  *         Rachid AKKOUCHE
- * 
+ *
  * Date:
  *         YY/MM/DD
  *
  * Summary:
  *         RECAPULATIF
- * 
+ *
  * Description:
  *         DESCRIPTION
  *
- * PreCondition:    
+ * PreCondition:
  *         None
  *
- * Input:     
+ * Input:
  *         None
  *
  * Output:
@@ -299,17 +300,17 @@ static void setLedEnable(const uint8_t ledNum, const LED_ENABLE en)
  *
  * Side Effects:
  *         None
- * 
+ *
  * Example:
  *         <code>
  *         FUNC_NAME(FUNC_PARAM)
  *         <code>
- * 
+ *
  * Remarks:
  *         None
- *         
+ *
  ********************************************************************/
-void setLedChase(const BOOL isOn)
+void setLedChase(const bool isOn)
 {
     uint8_t byIndex;
     if((leds.isChase = isOn))
@@ -385,10 +386,14 @@ void vLEDsKeybInit(void)
     }
     if(leds.taskLed == NULL)
     {
-        xTaskCreate((TaskFunction_t) vTaskLed, LED_TASK_NAME, LED_TASK_STACK,
+        xTaskCreate((TaskFunction_t)vTaskLed, LED_TASK_NAME, LED_TASK_STACK,
                     NULL, LED_TASK_PRIORITY, &leds.taskLed);
     }
 }
+
+/**
+ * @}
+ */
 
 /* *****************************************************************************
 End of File

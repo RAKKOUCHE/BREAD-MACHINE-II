@@ -13,7 +13,7 @@
   Description:
     This file contains functions related to the Interrupt System Service for PIC32
     devices.
-*******************************************************************************/
+ *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -37,7 +37,7 @@ INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
 CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
 SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-*******************************************************************************/
+ *******************************************************************************/
 // DOM-IGNORE-END
 
 #include "system/int/sys_int.h"
@@ -47,7 +47,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Function Definitions
 // *****************************************************************************
 // *****************************************************************************
-
 
 /******************************************************************************
 
@@ -80,22 +79,24 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
     implemented by the board support package (using the processor-specific
     interrupt peripheral library) because it requires knowledge of the specific
     interrupt requirements for each system.
-*/
+ */
 
-void SYS_INT_Initialize ( void )
+void SYS_INT_Initialize(void)
 
 {
     /* enable the multi vector */
-    PLIB_INT_MultiVectorSelect( INT_ID_0 );
+    PLIB_INT_MultiVectorSelect(INT_ID_0);
+
 }
 
 //*******************************************************************************
+
 /*  Function:
      SYS_INT_PROCESSOR_STATUS  SYS_INT_StatusGetAndDisable ( void )
 
   Summary:
     Disables interrupts to the processor and return the previois status.
-    
+
   Description:
     This function disables interrupts to the processor at the top level. This
     function can be called to prevent any source from being able to generate an
@@ -104,20 +105,21 @@ void SYS_INT_Initialize ( void )
 
   Remarks:
     See sys_int.h file for more details.
-*/
+ */
 
-SYS_INT_PROCESSOR_STATUS  SYS_INT_StatusGetAndDisable ( void )
+SYS_INT_PROCESSOR_STATUS SYS_INT_StatusGetAndDisable(void)
 {
     SYS_INT_PROCESSOR_STATUS processorStatus;
 
     /* Save the processor status and then Disable the global interrupt */
-    processorStatus = ( SYS_INT_PROCESSOR_STATUS )__builtin_disable_interrupts();
+    processorStatus = (SYS_INT_PROCESSOR_STATUS)__builtin_disable_interrupts();
 
     /* return the processor status */
     return processorStatus;
 }
 
 //*******************************************************************************
+
 /* Function:
     void SYS_INT_StatusRestore ( SYS_INT_PROCESSOR_STATUS processorStatus )
 
@@ -125,19 +127,20 @@ SYS_INT_PROCESSOR_STATUS  SYS_INT_StatusGetAndDisable ( void )
     Restores the processor status.
 
   Description:
-    This function sets the processor status based on the 32 bit value passed as 
+    This function sets the processor status based on the 32 bit value passed as
     a parameter. 0th bit of the status is for Master Interrupt status.
 
   Remarks:
     See sys_int.h file for more details.
-*/
+ */
 
-void SYS_INT_StatusRestore ( SYS_INT_PROCESSOR_STATUS processorStatus )
+void SYS_INT_StatusRestore(SYS_INT_PROCESSOR_STATUS processorStatus)
 {
     __builtin_mtc0(12, 0, processorStatus);
 }
 
 // *****************************************************************************
+
 /*  Disable the generation of interrupts to the CPU
 
   Summary:
@@ -150,18 +153,19 @@ void SYS_INT_StatusRestore ( SYS_INT_PROCESSOR_STATUS processorStatus )
     This API will be depricated soon. Use "SYS_INT_StatusGetAndDisable" instead.
  */
 
-bool SYS_INT_Disable( void )
+bool SYS_INT_Disable(void)
 {
     SYS_INT_PROCESSOR_STATUS processorStatus;
 
     /* Save the processor status and then Disable the global interrupt */
-    processorStatus = ( SYS_INT_PROCESSOR_STATUS )__builtin_disable_interrupts();
+    processorStatus = (SYS_INT_PROCESSOR_STATUS)__builtin_disable_interrupts();
 
     /* return the interrupt status */
-    return (bool)(processorStatus & 0x01);
+    return(bool)(processorStatus & 0x01);
 }
 
 // *****************************************************************************
+
 /* Function:
     bool SYS_INT_SourceDisable ( INT_SOURCE source )
 
@@ -169,28 +173,28 @@ bool SYS_INT_Disable( void )
     Disables the interrupt source.
 
   Description:
-    This routine disables the given source from generating interrupts the 
-    processor when events occur.It returns the interrupt source enable/disable 
-	status before disabling the interrupt source.
+    This routine disables the given source from generating interrupts the
+    processor when events occur.It returns the interrupt source enable/disable
+    status before disabling the interrupt source.
 
   Remarks:
     See sys_int.h file for more details.
  */
 
 
-bool SYS_INT_SourceDisable ( INT_SOURCE source )
+bool SYS_INT_SourceDisable(INT_SOURCE source)
 {
     bool intSrcStatus;
     SYS_INT_PROCESSOR_STATUS processorStatus;
 
     /* Save the processor status and then Disable the global interrupt */
-    processorStatus = ( SYS_INT_PROCESSOR_STATUS )__builtin_disable_interrupts();
-    
+    processorStatus = (SYS_INT_PROCESSOR_STATUS)__builtin_disable_interrupts();
+
     /* get the interrupt status of this source before disable is called */
-    intSrcStatus = PLIB_INT_SourceIsEnabled (INT_ID_0 , source);
+    intSrcStatus = PLIB_INT_SourceIsEnabled(INT_ID_0, source);
 
     /* disable the interrupts */
-    PLIB_INT_SourceDisable (INT_ID_0 , source);
+    PLIB_INT_SourceDisable(INT_ID_0, source);
 
     /* restore the state of CP0 Status register before the disable occurred*/
     __builtin_mtc0(12, 0, processorStatus);
@@ -201,6 +205,7 @@ bool SYS_INT_SourceDisable ( INT_SOURCE source )
 
 
 // *****************************************************************************
+
 /* Sets the external interrupt trigger type.
 
   Summary:
@@ -213,16 +218,16 @@ bool SYS_INT_SourceDisable ( INT_SOURCE source )
     Refer the datasheet to know the external interrupt sources supported.
  */
 
-void SYS_INT_ExternalInterruptTriggerSet ( 	INT_EXTERNAL_SOURCES source,
-										INT_EXTERNAL_EDGE_TRIGGER edgeTrigger )
+void SYS_INT_ExternalInterruptTriggerSet(INT_EXTERNAL_SOURCES source,
+                                         INT_EXTERNAL_EDGE_TRIGGER edgeTrigger)
 {
-	if ( edgeTrigger == INT_EDGE_TRIGGER_RISING )
-	{
-		PLIB_INT_ExternalRisingEdgeSelect ( INT_ID_0, source );
-	}
-	else
-	{
-		PLIB_INT_ExternalFallingEdgeSelect ( INT_ID_0, source );
-	}
+    if(edgeTrigger == INT_EDGE_TRIGGER_RISING)
+    {
+        PLIB_INT_ExternalRisingEdgeSelect(INT_ID_0, source);
+    }
+    else
+    {
+        PLIB_INT_ExternalFallingEdgeSelect(INT_ID_0, source);
+    }
 }
 

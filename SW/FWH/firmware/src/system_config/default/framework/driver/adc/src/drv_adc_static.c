@@ -44,29 +44,33 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 #include "framework/driver/adc/drv_adc_static.h"
- 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: ADC Static Driver Functions
 // *****************************************************************************
 // *****************************************************************************
+
 void DRV_ADC_Initialize(void)
 {
     /* Select Clock Source */
-    PLIB_ADC_ConversionClockSourceSelect(DRV_ADC_ID_1, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
+    PLIB_ADC_ConversionClockSourceSelect(DRV_ADC_ID_1, ADC_CLOCK_SOURCE_INTERNAL_RC);
     /* Select Clock Prescaler */
-    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 320000000);
+    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_CONFIG_PRIMARY_XTAL, 320000000);
 
     /* Select Power Mode */
     PLIB_ADC_StopInIdleDisable(DRV_ADC_ID_1);
 
-    /* Enable Calibration */
-    PLIB_ADC_CalibrationEnable(DRV_ADC_ID_1);
-	
     /* Select Voltage Reference */
     PLIB_ADC_VoltageReferenceSelect(DRV_ADC_ID_1, ADC_REFERENCE_VDD_TO_AVSS);
 
     /* Sampling Selections */
+    /* Enable Auto Sample Mode */
+    PLIB_ADC_SampleAutoStartEnable(DRV_ADC_ID_1);
+    /* Sample Acquisition Time (Auto Sample Mode) */
+    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 31);
+    /* Stop Conversion Sequence on First Interrupt (Auto Sample Mode) */
+    PLIB_ADC_ConversionStopSequenceEnable(DRV_ADC_ID_1);
     /* Select Sampling Mode */
     PLIB_ADC_SamplingModeSelect(DRV_ADC_ID_1, ADC_SAMPLING_MODE_MUXA);
     /* Number of Samples Per Interrupt */
@@ -74,7 +78,7 @@ void DRV_ADC_Initialize(void)
 
     /* Conversion Selections */
     /* Select Trigger Source */
-    PLIB_ADC_ConversionTriggerSourceSelect(DRV_ADC_ID_1, ADC_CONVERSION_TRIGGER_INTERNAL_COUNT);
+    PLIB_ADC_ConversionTriggerSourceSelect(DRV_ADC_ID_1, ADC_CONVERSION_TRIGGER_SAMP_CLEAR);
     /* Select Result Format */
     PLIB_ADC_ResultFormatSelect(DRV_ADC_ID_1, ADC_RESULT_FORMAT_INTEGER_16BIT);
     /* Buffer Mode */
@@ -83,38 +87,17 @@ void DRV_ADC_Initialize(void)
     /* Channel Selections */
     /* MUX A Negative Input Select */
     PLIB_ADC_MuxChannel0InputNegativeSelect(DRV_ADC_ID_1, ADC_MUX_A, ADC_INPUT_NEGATIVE_VREF_MINUS);
-/*scan false*/
-/*escan false*/
 
-    /* MUX A Positive Input Select dfdfd*/
+
+
+    /* MUX A Positive Input Select */
     PLIB_ADC_MuxChannel0InputPositiveSelect(DRV_ADC_ID_1, ADC_MUX_A, ADC_INPUT_POSITIVE_AN13);
 
-
- 
- 
-/*scan false*/
-/*escan false*/
-
-    /* MUX A Positive Input Select dfdfd*/
-    PLIB_ADC_MuxChannel0InputPositiveSelect(DRV_ADC_ID_1, ADC_MUX_A, ADC_INPUT_POSITIVE_AN14);
-
-
- 
- 
-/*scan false*/
-/*escan false*/
-
-    /* MUX A Positive Input Select dfdfd*/
-    PLIB_ADC_MuxChannel0InputPositiveSelect(DRV_ADC_ID_1, ADC_MUX_A, ADC_INPUT_POSITIVE_AN15);
-
-
- 
- 
     /* Initialize ADC Interrupt */
     PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
     PLIB_INT_SourceEnable(INT_ID_0, INT_SOURCE_ADC_1);
-    PLIB_INT_VectorPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_PRIORITY_LEVEL3);
-    PLIB_INT_VectorSubPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_SUBPRIORITY_LEVEL0);	
+    PLIB_INT_VectorPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_PRIORITY_LEVEL6);
+    PLIB_INT_VectorSubPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_SUBPRIORITY_LEVEL0);
 }
 
 inline void DRV_ADC_DeInitialize(void)
@@ -144,7 +127,7 @@ inline void DRV_ADC_Start(void)
 inline void DRV_ADC_Stop(void)
 {
     /* Stop ADC */
-    PLIB_ADC_SamplingStop(DRV_ADC_ID_1);	
+    PLIB_ADC_SamplingStop(DRV_ADC_ID_1);
 }
 
 inline void DRV_ADC_NegativeInputSelect(DRV_ADC_MUX mux, DRV_ADC_INPUTS_NEGATIVE input)
@@ -180,5 +163,5 @@ ADC_SAMPLE DRV_ADC_SamplesRead(uint8_t bufIndex)
 bool DRV_ADC_SamplesAvailable(void)
 {
     /* Return ADC conversion complete status */
-    return (PLIB_ADC_ConversionHasCompleted(DRV_ADC_ID_1));
+    return(PLIB_ADC_ConversionHasCompleted(DRV_ADC_ID_1));
 }
