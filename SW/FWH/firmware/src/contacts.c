@@ -137,6 +137,11 @@ uint8_t trapSwitchsTable[] = {2, 3, 4, 12, 13, 14, 15};
  */
 uint8_t optosTable[] = {10, 11, 12, 13, 2, 3};
 
+/**
+ * \brief
+ */
+char ConvoyerEmpty[LCDCAR + 2];
+
 /*********************************************************************
  * Function:        static void vTOProductPresent(TimerHandle_t xTimer)
  *
@@ -175,6 +180,7 @@ static void vTOProductPresent(TimerHandle_t xTimer)
 static void vTaskCheckProductDispo(void)
 {
     uint8_t byIndex;
+    char buffer[19];
 
     while(true)
     {
@@ -186,8 +192,8 @@ static void vTaskCheckProductDispo(void)
                 switchs.isDoorTOReached = false;
                 if(getDoorSwitchState(byIndex + 4) != KEY_USED)
                 {
-                    vLCD_CLEAR();
-                    vLCD_CLEAR();
+                    vLCD_Clear();
+                    vLCD_Clear();
                     printf("%s%u", "FERMETURE TRAP ", byIndex + 1);
                     delayMs(100);
                     setMotorState(byIndex + 3, MOTORS_FORWARD);
@@ -219,6 +225,13 @@ static void vTaskCheckProductDispo(void)
                 xTimerStop(switchs.hTimerPresenceProduct, 1 * SECONDE);
 
                 setIsProductSelectable(byIndex, !(switchs.isDoorTOReached || getIsMotorCheckTO()));
+                if(!getIsProductSelectable(byIndex))
+                {
+                    sprintf(buffer, ConvoyerEmpty, byIndex);
+                    vSendSMS(buffer);
+                    delayMs(1000);
+
+                }
                 setMotorCheckedTO(false);
             }
         }
@@ -602,8 +615,8 @@ static void vTaskKeyboard(void *vParameter)
     }
     while(1)
     {
-        if(getIsMDBChecked())
-        {
+//        if(getIsMDBChecked())
+//        {
             setIsTaskKeyChecked(true);
 
             for(byIndex = 0; byIndex < 7; byIndex++)
@@ -717,9 +730,9 @@ static void vTaskKeyboard(void *vParameter)
                         if(lSWState == KEY_HI)
                         {
                             setDoorSwitchState(byIndex, KEY_HI);
-                            if(!byIndex)
+                            if(!byIndex && getIsCheckOver())
                             {
-                                vLCD_CLEAR();
+                                vLCD_Clear();
                                 delayMs(50);
                                 printf("%s", STR_DOOR_OPEN);
                                 //delayMs(50);
@@ -782,9 +795,29 @@ static void vTaskKeyboard(void *vParameter)
                     }
                 }// </editor-fold>
             }
-        }
+//        }
         vTaskDelayUntil(&xLastWakeTime, CLAVIER_TASK_DELAY);
     }
+}
+
+/*********************************************************************
+ * Function:        TaskHandle_t getHandleTaskSwitch(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+TaskHandle_t getHandleTaskSwitch(void)     
+{
+    return switchs.hSwitchTask;
 }
 
 /*********************************************************************
@@ -846,7 +879,6 @@ bool getIsDoorOpen()
  ********************************************************************/
 void setIsDoorOpen(const bool status)
 {
-
     switchs.isDoorOpen = status;
 }
 
@@ -937,7 +969,6 @@ void setIsTaskKeyChecked(bool status)
  ********************************************************************/
 KEY_STATES getDoorSwitchState(const uint8_t num)
 {
-
     return switchs.door_switches[num].state;
 }
 

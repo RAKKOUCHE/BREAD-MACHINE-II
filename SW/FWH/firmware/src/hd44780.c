@@ -42,7 +42,7 @@
 /**
  * \brief Nom de la tâche de l'afficheur.
  */
-#define LCD_TASK_NAME "LCD"
+#define LCD_TASK_NAME "TSK LCD"
 
 /**
  * \brief Nom du timer du TO.
@@ -410,19 +410,27 @@ static uint8_t byGetLCDAddressCounter(void)
     LCD_DATA_IN();
     LCD_RS_Clear();
     LCD_RW_Set();
-    Delay10us(1);
+    Nop();
+    Nop();
     LCD_EN_Set();
     Delay10us(1);
     byResult = PORTA & LCD_DATA;
 
     LCD_EN_Clear();
-    Delay10us(1);
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
     LCD_EN_Set();
     Delay10us(1);
     byResult += ((PORTA & LCD_DATA) >> 4);
-
     LCD_EN_Clear();
-    Delay10us(1);
+    Nop();
+    Nop();
     LCD_RW_Clear();
     LCD_DATA_OUT();
     return byResult;
@@ -521,15 +529,15 @@ static void vLCDSetValue(const uint8_t byValue, const bool isData)
         Delay10us(1);
     }
     xTimerStop(lcd.hTO_LCD, 1000);
+    
     isData ? LCD_RS_Set() : LCD_RS_Clear();
     LCD_CLEAR_DATA();
     LATASET = (byValue & 0XF0);
-    Delay10us(1);
     vLCD_Enable();
-    Delay10us(1);
     LCD_CLEAR_DATA();
     LATASET = ((byValue << 4) & 0XF0);
-    Delay10us(1);
+    
+    
     vLCD_Enable();
 }
 //******************************************************************************
@@ -785,7 +793,7 @@ static void vCreateChar(const uint8_t Code, const uint8_t *pBuffer)
 
 /*********************************************************************
  * Function:
- *         bool isLCDInitialized(void)
+ *         bool getIsLCDIntialiazed(void)
  *
  * Version:
  *         1.0
@@ -826,7 +834,7 @@ static void vCreateChar(const uint8_t Code, const uint8_t *pBuffer)
  *         None
  *
  ********************************************************************/
-bool isLCDInitialized(void)
+bool getIsLCDIntialiazed(void)
 {
     return lcd.isLCDInitialized;
 }
@@ -906,54 +914,6 @@ void vDisplayLCD(char *format, ...)
     vprintf(format, args);
     va_end(args);
     xSemaphoreGive(lcd.semaphoreLCD);
-}
-
-/*********************************************************************
- * Function:
- *         bool getIsLCDIntialiazed(void)
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         YY/MM/DD
- *
- * Summary:
- *         RECAPULATIF
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         None
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-bool getIsLCDIntialiazed(void)
-{
-    return lcd.isLCDInitialized;
 }
 
 /*********************************************************************
@@ -1048,7 +1008,7 @@ void vLCD_HOME()
  *         None
  *
  ********************************************************************/
-void vLCD_CLEAR()
+void vLCD_Clear()
 {
     vLCD_Command(LCD_CLEAR);
     delayMs(200);
@@ -1359,54 +1319,6 @@ void vLCD_Function(const eInterface interface, const eLines lines,
 
 /*********************************************************************
  * Function:
- *         bool getLCDInitialized(void)
- *
- * Version:
- *         1.0
- *
- * Author:
- *         Rachid AKKOUCHE
- *
- * Date:
- *         19/11/10
- *
- * Summary:
- *         renvoie le flag d'initialization.
- *
- * Description:
- *         DESCRIPTION
- *
- * PreCondition:
- *         None
- *
- * Input:
- *         None
- *
- * Output:
- *         None
- *
- * Returns:
- *         isInitialized
- *
- * Side Effects:
- *         None
- *
- * Example:
- *         <code>
- *         FUNC_NAME(FUNC_PARAM)
- *         <code>
- *
- * Remarks:
- *         None
- *
- ********************************************************************/
-bool getLCDInitialized(void)
-{
-    return lcd.isLCDInitialized;
-}
-
-/*********************************************************************
- * Function:
  *         void vHD44780Init(void)
  *
  * Version: 1.0
@@ -1469,7 +1381,8 @@ void vHD44780Init(void)
     {
         vCreateChar(byIndex + 1, barr[byIndex]);
     }
-    vLCD_CLEAR();
+    vLCD_Clear();
+    lcd.isLCDInitialized = true;
 }
 
 /*********************************************************************

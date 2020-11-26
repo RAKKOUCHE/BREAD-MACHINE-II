@@ -29,3 +29,4 @@ D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Releas
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.application
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.exe
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.pdb
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Release\BreadParam.csproj.CoreCompileInputs.cache

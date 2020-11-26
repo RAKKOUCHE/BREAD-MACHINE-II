@@ -47,7 +47,7 @@
 /**
  * \brief Nom de la tâche d'audits.
  */
-#define AUDITS_TASK_NAME "Audits"
+#define AUDITS_TASK_NAME "TSK AUDITS"
 
 /**
  * \brief Profondeur du tas de la tâche d'audits.
@@ -189,7 +189,6 @@ static struct
 static void vTaskAudit(void *vParameters)
 {
     uint32_t byIndex;
-    TickType_t xLastWakeTime = xTaskGetTickCount();
 
     union
     {
@@ -242,7 +241,7 @@ static void vTaskAudit(void *vParameters)
                     EEpromWriteData(audits.record.dwAddress, &audits.record.dwValue, sizeof(audits.record.dwValue));
 
                     delayMs(5);
-                    Nop();
+                    setIsRAZAudit(false);
                     if(audits.record.dwAddress == ADDRESS_FLAG)
                     {
                         if(audits.record.dwValue == UINT32_MAX)
@@ -253,7 +252,7 @@ static void vTaskAudit(void *vParameters)
                         {
                             if(!CLR_Get())
                             {
-                                vLCD_CLEAR();
+                                vLCD_Clear();
                                 vLCDGotoXY(1, 1);
                                 vDisplayLCD("%s", "  RAZ termine");
                                 vLCDGotoXY(1, 2);
@@ -562,6 +561,28 @@ bool getIsRAZAudit()
 void setIsRAZAudit(bool isRAZ)
 {
     audits.isAuditReseted = isRAZ;
+}
+
+/*********************************************************************
+ * Function:        void RAZAudits(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void RAZAudits(void)
+{
+    memset(&audits.dataBuffer.buffer, 0, sizeof(audits.dataBuffer.buffer));
+    EEpromWriteData(ADDRESSBASEAUDIT, &audits.dataBuffer.buffer, sizeof(audits.dataBuffer.buffer));
+    audits.isAuditReseted = true;
 }
 
 /*********************************************************************

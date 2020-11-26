@@ -22,6 +22,7 @@ typedef enum
     MDB_INIT,
     MDB_POLL_CG,
     MDB_POLL_BV,
+    MDB_POLL_CL,
     MDB_IDLE,
 }
 MDB_STATUS;
@@ -121,7 +122,7 @@ static void vTaskMDB(void)
                 // <editor-fold defaultstate="collapsed" desc="MDB_INIT">
             {
                 mdb.isMDBChecked = false;
-                vLCD_CLEAR();
+                vLCD_Clear();
                 vDisplayLCD("%s", "  Verification");
                 vLCDGotoXY(1, 2);
                 vDisplayLCD("%s", "      MDB");
@@ -162,12 +163,19 @@ static void vTaskMDB(void)
             case MDB_POLL_BV:
                 // <editor-fold defaultstate="collapsed" desc="MDB_POLL_BV">
             {
-                mdb.state = MDB_IDLE;
+                mdb.state = MDB_POLL_CL;
                 vTaskBV();
                 break;
             }
                 // </editor-fold>
 
+            case MDB_POLL_CL:
+                // <editor-fold desc="MDB_POLL_CL"> 
+            {
+                mdb.state = MDB_IDLE;
+                vTaskCashLess();
+                break;
+            }// </editor-fold>
             case MDB_IDLE:
                 // <editor-fold defaultstate="collapsed" desc="MDB_IDLE">
             {
@@ -826,7 +834,7 @@ bool isMDBPoll(const uint8_t byDeviceAddress, uint8_t *byResponse, uint8_t * byL
  ********************************************************************/
 bool isMDBReset(const uint8_t byDeviceAddress)
 {
-    uint8_t byAcknowledge;
+    uint8_t byAcknowledge = 0xFF;
     return((byMDBSendCommand(byDeviceAddress, CMD_RESET, 0, NULL, &byAcknowledge) == 1) && (byAcknowledge == ACK));
 }
 
@@ -891,7 +899,7 @@ bool isGetMDBConfig(const uint8_t byDeviceAddress, void *byStatus, const uint8_t
 void vDisplayRefused(void)
 {
     //Traitement des espèces non identifiées.
-    vLCD_CLEAR();
+    vLCD_Clear();
     delayMs(100);
     vDisplayLCD("%s", "Refusee...");
     delayMs(1000);

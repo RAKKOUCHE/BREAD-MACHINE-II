@@ -49,7 +49,7 @@
 /**
  * \brief
  */
-#define ADC_TASK_NAME "ADC tsk"
+#define ADC_TASK_NAME "TSK ADC"
 
 /**\brief
  */
@@ -85,6 +85,7 @@ static struct __attribute__((packed))
     uint8_t byIndex;
     bool isDone;
     bool isCheckInProgress; /*!<Indique si l'etalonnage de la sécurité est en cours.*/
+    bool isCheckOver;
 }
 adcs;
 
@@ -297,6 +298,46 @@ bool getIsAdcDone(void)
 }
 
 /*********************************************************************
+ * Function:        void setIsCheckOver(bool data )
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void setIsCheckOver(bool data)
+{
+    adcs.isCheckOver = data;
+}
+
+/*********************************************************************
+ * Function:        bool getIsCheckOver(void
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getIsCheckOver(void)
+{
+    return adcs.isCheckOver;
+}
+
+/*********************************************************************
  * Function:
  *         void vADCInit(void)
  *
@@ -366,8 +407,9 @@ void vADCInit(void)
         adcs.adc[byIndex].dwValue = 0;
     }
 
-    xTaskCreate(vTaskTrapSecurity, ADC_TASK_NAME, ADC_TASK_STACK, NULL,
+    xTaskCreate((TaskFunction_t)vTaskTrapSecurity, ADC_TASK_NAME, ADC_TASK_STACK, NULL,
                 ADC_TASK_PRIORITY, &adcs.task_adc_handle);
+    adcs.isCheckOver = false;
 
 };
 /**

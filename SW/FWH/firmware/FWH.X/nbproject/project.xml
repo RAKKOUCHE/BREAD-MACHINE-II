@@ -21,6 +21,7 @@
                 <sourceRootElem>..\src\system_config\default</sourceRootElem>
                 <sourceRootElem>../../../doc/PDF</sourceRootElem>
                 <sourceRootElem>.</sourceRootElem>
+                <sourceRootElem>../../../../doc/PDF</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

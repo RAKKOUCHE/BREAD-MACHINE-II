@@ -660,6 +660,8 @@ extern "C"
 #define BTN_MTR_1_OutputEnable()      (TRISECLR = (1<<4))
 #define BTN_MTR_1_InputEnable()       (TRISESET = (1<<4))
 #define BTN_MTR_1_PIN                  GPIO_PIN_RE4
+    
+    
 
     /* ************************************************************************** */
     /* ************************************************************************** */
@@ -680,12 +682,12 @@ extern "C"
     /**
      * \brief Définition d'une seconde pour Freertos
      */
-#define SECONDE pdMS_TO_TICKS(1000)
+#define SECONDE 1000UL
 
     /**
      * \brief Définition d'une milliseconde pour Freertos.
      */
-#define MILLISEC pdMS_TO_TICKS(1)
+#define MILLISEC 1UL
 
     /**
      * \brief Provoque un délai de x milliseconde.

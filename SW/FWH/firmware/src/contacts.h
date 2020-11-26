@@ -105,7 +105,7 @@ extern "C"
      * \brief
      * @return
      */
-    TaskHandle_t getSwitchsHandle(void);
+    TaskHandle_t getHandleTaskSwitch(void);
 
     /**
      * \brief

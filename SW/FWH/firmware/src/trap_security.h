@@ -123,6 +123,18 @@ extern "C"
      * @return
      */
     bool getIsAdcDone(void);
+    
+    /**
+     * \brief
+     * @param data
+     */
+    void setIsCheckOver(bool data);
+    
+    /**
+     * 
+     * @return 
+     */
+    bool getIsCheckOver(void);
 
     /**
      * \brief

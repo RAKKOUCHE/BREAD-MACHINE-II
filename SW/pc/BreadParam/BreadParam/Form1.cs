@@ -26,10 +26,10 @@
  **/
 
 using System;
+using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Text;
-using System.Globalization;
 
 namespace BreadParam
 {
@@ -370,6 +370,7 @@ namespace BreadParam
             Double TotalAmountOutCG = 0;
             Double TotalAmountInBv = 0;
             Double OverPay;
+            Double InCash;
             Double CashLess;
             try
             {
@@ -430,10 +431,10 @@ namespace BreadParam
                     }
 
                     OverPay = Convert.ToDouble(byBuffer[108] + (byBuffer[109] * 0X100) + (byBuffer[110] * 0X10000) + (byBuffer[111] * 0X1000000)) / 100;
-                    LOverPay.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", OverPay);
+                    this.OverPay.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", OverPay);
                     CashLess = Convert.ToDouble(byBuffer[112] + (byBuffer[113] * 0X100) + (byBuffer[114] * 0X10000) + (byBuffer[115] * 0X1000000));
                     lCashLess.Text = string.Format(CultureInfo.CurrentCulture, "{0:F2}", CashLess);
-                    Total.Text = String.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG + TotalAmountInBv + OverPay /*+ InCash*/ - TotalAmountOutCG);
+                    Total.Text = String.Format(CultureInfo.CurrentCulture, "{0:F2}", TotalAmountInCG + TotalAmountInBv/* + OverPay + InCash*/ - TotalAmountOutCG);
 
                 }
             }
@@ -598,6 +599,7 @@ namespace BreadParam
                     serialPort1.DiscardInBuffer();
 
                     byte[] byParamRequest = { Convert.ToByte(HEADER.GETPARAMS, CultureInfo.CurrentCulture) };
+                    byte[] byAck = { Convert.ToByte(0XAA) };
                     serialPort1.Write(byParamRequest, 0, 1);
                     byPos = serialPort1.ReadByte();
 
@@ -607,7 +609,7 @@ namespace BreadParam
                     {
                         LVersionFW.Text += (char)serialPort1.ReadByte();
                     }
-
+                    serialPort1.Write(byAck, 0, 1);
                     //Date FW
                     LDateFW.Text = "";
                     byPos = serialPort1.ReadByte();
@@ -615,6 +617,7 @@ namespace BreadParam
                     {
                         LDateFW.Text += (char)serialPort1.ReadByte();
                     }
+                    serialPort1.Write(byAck, 0, 1);
 
                     //Parametres
                     byBuffer = new byte[4];
@@ -627,8 +630,8 @@ namespace BreadParam
                     for (int i = 0; i < dwLength; i++)
                     {
                         byBuffer[i] = Convert.ToByte(serialPort1.ReadByte());
-
                     }
+                    serialPort1.Write(byAck, 0, 1);
 
                     //Identification
                     MachineID.Text = string.Format(CultureInfo.CurrentCulture, "{0,0:D}", byBuffer[0] + (byBuffer[1] * 0x100) + (byBuffer[2] * 0x10000) + (byBuffer[3] * 0x1000000));

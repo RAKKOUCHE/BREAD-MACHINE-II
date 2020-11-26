@@ -47,42 +47,43 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "ISR_Support.h"
 
-/* ADC Interrupt */
-   .extern  IntHandlerDrvAdc
+ 
 
-   .section	.vector_27,code, keep
-   .equ     __vector_dispatch_27, IntVectorDrvAdc
-   .global  __vector_dispatch_27
+/* USART Instance 0 Interrupt */
+
+   .extern  IntHandlerDrvUsartInstance0
+
+   .section	.vector_31,code, keep
+   .equ     __vector_dispatch_31, IntVectorDrvUsartInstance0
+   .global  __vector_dispatch_31
    .set     nomicromips
    .set     noreorder
    .set     nomips16
    .set     noat
-   .ent  IntVectorDrvAdc
+   .ent  IntVectorDrvUsartInstance0
 
-IntVectorDrvAdc:
-    la    $26,  _IntHandlerDrvAdc         
+IntVectorDrvUsartInstance0:
+    la    $26,  _IntHandlerDrvUsartInstance0         
     jr    $26
     nop
-	.end	IntVectorDrvAdc
+	.end	IntVectorDrvUsartInstance0
 
-   .section	.DrvAdc_vector_text, code, keep
+   .section	.DrvUsartInstance0_vector_text, code, keep
    .set     nomicromips
    .set     noreorder
    .set     nomips16
    .set     noat
-   .ent  _IntHandlerDrvAdc
+   .ent  _IntHandlerDrvUsartInstance0
 
-_IntHandlerDrvAdc:
+_IntHandlerDrvUsartInstance0:
     portSAVE_CONTEXT
-    la    s6,  IntHandlerDrvAdc
+    la    s6,  IntHandlerDrvUsartInstance0
     jalr  s6
     nop
     portRESTORE_CONTEXT
-    .end	_IntHandlerDrvAdc
+    .end	_IntHandlerDrvUsartInstance0
 
 
-
- 
 /*******************************************************************************
  End of File
  */

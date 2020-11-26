@@ -847,7 +847,7 @@ void vTaskCG(void)
             {
                 changeGiver.iBeforeRetry = MDBRETRY;
                 changeGiver.state = CG_POLL;
-
+             
                 if(!isMDBReset(CGADDRESS))
                 {
                     vResetCG();
@@ -976,8 +976,7 @@ void vTaskCG(void)
                                         }
                                         case CG_DEFECTIVE_TUBE:
                                         {
-                                            //TODO Envoyé message
-                                            //vSendSMS("Problème tube changeur.");
+                                            vSendSMS("Problème tube changeur.");
                                             break;
                                         }
                                         case CG_DOUBLE_ARRIVAL:
@@ -990,14 +989,12 @@ void vTaskCG(void)
                                         }
                                         case CG_TUBE_JAM:
                                         {
-                                            //TODO Envoyé message
-                                            //vSendSMS("Bourrage tube changeur");
+                                            vSendSMS("Bourrage tube changeur");
                                             break;
                                         }
                                         case CG_ROM_ERROR:
                                         {
-                                            //TODO Envoyé message
-                                            //vSendSMS("Defaut ROM changeur");
+                                            vSendSMS("Defaut ROM changeur");
                                             break;
                                         }
                                         case CG_ROUTE_ERROR:
@@ -1018,8 +1015,7 @@ void vTaskCG(void)
                                         }
                                         case CG_COIN_JAM:
                                         {
-                                            //TODO Envoyé message
-                                            //vSendSMS("Bourrage pièce");
+                                            vSendSMS("Bourrage pièce");
                                             break;
                                         }
                                         case CG_COIN_REMOVAL:
@@ -1195,7 +1191,7 @@ void vTaskCG(void)
                         {
                             setAmountDispo(0);
                         }
-                        vLCD_CLEAR();
+                        vLCD_Clear();
 
                         vDisplayLCD("Rendu : %.*f\7", getMDBDecimalPos(),
                                     (double)(changeGiver.lAmountDispensed) /

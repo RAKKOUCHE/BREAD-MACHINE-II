@@ -87,11 +87,11 @@ const char STR_RETURN_IN_PROGRESS[] = "Rendu en cours...";
 const char STR_MACHINE[] = "    MACHINE";
 const char STR_HS[] = "      VIDE";
 const char STR_CHOICE[] = "Choix : ";
-const char STR_PRICE[] = "Prix";
+const char STR_PRICE[] = "Prix:";
 const char STR_VERIFGSM[] = "Verification GSM";
 const char STR_PATIENCE[] = "  Un instant...";
 const char STR_CALIBRATION[] = "  CALIBRATION";
-const char STR_TRAP[] = "    TRAPPES";
+const char STR_TRAP[] = "    TRAPPE";
 
 uint8_t doorSwitchTable[] = {2, 3, 4, 12, 13, 14, 15};
 
@@ -491,7 +491,7 @@ static void vDispenseTask(void)
         billType = getBillType();
         isSetCoinEnable(false, &coinType);
         isSetBillEnable(false, &billType);
-        vLCD_CLEAR();
+        vLCD_Clear();
         printf("%s", STR_DISPENSE);
         vLCDGotoXY(1, 2);
         printf("%s", STR_IN_PROGRESS);
@@ -515,7 +515,7 @@ static void vDispenseTask(void)
 
         if(!getIsMotorCheckTO())
         {
-            vLCD_CLEAR();
+            vLCD_Clear();
             printf("%s", STR_TAKE);
             vLCDGotoXY(1, 2);
             printf("%s", STR_YOUR_CHOICE);
@@ -594,15 +594,16 @@ static void vSecurityCalibration(void)
 
     uint8_t byIndex;
     setIsADCCeckInProgress(true);
+    //char strBuffer[32] = {0};
 
     //Pour chaque trappe
     for(byIndex = 0; byIndex < PRODUCT_NUMBER; byIndex++)
     {
         //Si la valeur sauvegardÈ est ‡ zÈro le test doit Ítre fait.
-        if(!getSecurityValue(byIndex))
+        //if(!getSecurityValue(byIndex))
         {
             //Affichage du
-            vLCD_CLEAR();
+            vLCD_Clear();
             vDisplayLCD("%s", STR_CALIBRATION);
             vLCDGotoXY(1, 2);
             vDisplayLCD("%s %u", STR_TRAP, byIndex + 1);
@@ -613,43 +614,54 @@ static void vSecurityCalibration(void)
             //RAZ du timeOut pour le travail de la trappe (CHECK_MOTOR_TO = 30 secondes)
             setMotorCheckedTO(false);
             //Activation du timer
-
-            do
-            {
-                setMotorState(byIndex + 3, MOTORS_UP);
-                //Attend la fin de l'activation.
-                while(getMotorState(byIndex + 3) != MOTORS_IDLE);
-            }while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 4) != KEY_HI));
-
-            while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 1) == KEY_HI));
+            xTimerStart((void*)getHandleMotorCheckTimer(), 1 * SECONDE);
+            setMotorState(byIndex + 3, MOTORS_UP);
+            //Attend la fin de l'activation.
+            while(getMotorState(byIndex + 3) != MOTORS_IDLE);
+            while(!getIsMotorCheckTO() && ((getDoorSwitchState(byIndex + 4) != KEY_HI) ||
+                                           (getDoorSwitchState(byIndex + 1) == KEY_HI)));
             setMotorState(byIndex + 3, MOTORS_BREAK);
             while(getMotorState(byIndex + 3) != MOTORS_IDLE);
 
-            //Affiche le message indiquant de ne pas toucher ‡ la trappe.
-            vLCD_CLEAR();
-            vDisplayLCD("%s", "  NE PAS GENER");
-            vLCDGotoXY(1, 2);
-            vDisplayLCD("%s", "   LA TRAPPE");
-
-            do
+            if(!getIsMotorCheckTO())
             {
-                //Active le retour de la trappe.
-                setMotorState(byIndex + 3, MOTORS_DOWN);
-                //Attend la fin de l'activation.
+                xTimerStart(getHandleMotorCheckTimer(), 1 * SECONDE);
+
+                //Affiche le message indiquant de ne pas toucher ‡ la trappe.
+                vLCD_Clear();
+                vDisplayLCD("%s", "  NE PAS GENER");
+                vLCDGotoXY(1, 2);
+                vDisplayLCD("%s", "   LA TRAPPE");
+
+                do
+                {
+                    //Active le retour de la trappe.
+                    setMotorState(byIndex + 3, MOTORS_DOWN);
+                    //Attend la fin de l'activation.
+                    while(!getIsMotorCheckTO() && (getMotorState(byIndex + 3) != MOTORS_IDLE));
+                    //Attend qie le fin de coruse InfÈrieur soit atteint
+                }while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 1) != KEY_HI));
+
+                while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 4) == KEY_HI));
+
+                setMotorState(byIndex + 3, MOTORS_BREAK);
+
                 while(getMotorState(byIndex + 3) != MOTORS_IDLE);
-                //Attend qie le fin de coruse InfÈrieur soit atteint
-            }while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 1) != KEY_HI));
-            delayMs(50);
-            while(!getIsMotorCheckTO() && (getDoorSwitchState(byIndex + 4) == KEY_HI));
-
-            setMotorState(byIndex + 3, MOTORS_BREAK);
-
-            while(getMotorState(byIndex + 3) != MOTORS_IDLE);
-
+                setIsADCCeckInProgress(false);
+            }
+            xTimerStop(getHandleMotorCheckTimer(), 1 * SECONDE);
             setIsProductSelectable(byIndex, !getIsMotorCheckTO());
-            setIsADCCeckInProgress(false);
+            if(getIsMotorCheckTO())
+            {
+                vLCD_Clear();
+                vDisplayLCD("%s", "   INCIDENT");
+                vLCDGotoXY(1, 2);
+                vDisplayLCD("%s %u", "SUR LA TRAPPE", byIndex + 1);
+                delayMs(2000);
+            }
         }
     } //Fin du tarage des trappes.
+    setIsCheckOver(true);
 }
 
 /*********************************************************************
@@ -794,7 +806,6 @@ void vCreateTimerOverPay(void)
  ********************************************************************/
 void setMainBoardTaskState(MAINBOARD_STATES state)
 {
-
     MAINBOARDData.state = state;
 }
 
@@ -843,7 +854,6 @@ void setMainBoardTaskState(MAINBOARD_STATES state)
  ********************************************************************/
 int32_t getAmountDispo(void)
 {
-
     return MAINBOARDData.lAmountDispo;
 }
 
@@ -892,7 +902,6 @@ int32_t getAmountDispo(void)
  ********************************************************************/
 void setAmountRequested(uint32_t amount)
 {
-
     MAINBOARDData.lAmountRequested = amount;
 }
 // *****************************************************************************
@@ -973,7 +982,6 @@ void vMAINBOARD_Tasks(void)
     static uint8_t oldChoice = 0;
     COIN_TYPE coinType;
     BILL_TYPE billType;
-
     /* Check the application's current state. */
     switch(getMainBoardTaskState())
     {
@@ -982,6 +990,10 @@ void vMAINBOARD_Tasks(void)
             // <editor-fold desc="MAINBOARD_STATE_INIT">
         {
             setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
+
+            GSM_PWRKEYOff();
+
+
             setIsDispenseProductFinished(true);
             oldAmount = 0;
             setAmountDispo(0);
@@ -989,10 +1001,15 @@ void vMAINBOARD_Tasks(void)
             vDisplayLCD("%s", STR_MANUFACTURER);
             vLCDGotoXY(1, 2);
             vDisplayLCD(" %s %s", STR_VERSION, VERSION);
-            delayMs(1000);
+            delayMs(2000);           
+//#ifndef __DEBUG
+            vSecurityCalibration();
+//#else
+  //          setIsCheckOver(true);
+//#endif
+            vTaskSuspend(getHandleTaskSwitch());
             vTaskResume(getHandleMDB());
             while(!getIsMDBChecked());
-            vSecurityCalibration();
             xTaskCreate((TaskFunction_t)vDispenseTask, "TSK DISPENSE",
                         DISPENSE_TASK_STACK, NULL, DISPENSE_PRIORITY,
                         &MAINBOARDData.hDispenseTask);
@@ -1005,6 +1022,9 @@ void vMAINBOARD_Tasks(void)
                                                       false, NULL,
                                                       vTO_DisplaySelection);
             }
+            vGSMInit();
+            while(!isGSMChecked());
+            vTaskResume(getHandleTaskSwitch());
             break;
         }// </editor-fold>
         case MAINBOARD_STATE_SERVICE_TASKS:
@@ -1026,7 +1046,7 @@ void vMAINBOARD_Tasks(void)
                (getTemp() > 0.0))
             {
                 vLCDGotoXY(12, 2);
-                vDisplayLCD("%.1f≤", getTemp());
+                vDisplayLCD("%.1fﬂ", getTemp());
             }
             if(oldAmount != getAmountDispo())
             {
@@ -1095,7 +1115,7 @@ void vMAINBOARD_Tasks(void)
                 {
                     if(oldChoice && (oldChoice < 4))
                     {
-                        vLCD_CLEAR();
+                        vLCD_Clear();
                         vDisplayLCD("%s%u", STR_CHOICE, oldChoice);
                         vLCDGotoXY(1, 2);
                         vDisplayLCD("%s %.*f\7", STR_PRICE, getMDBDecimalPos(),
@@ -1111,7 +1131,7 @@ void vMAINBOARD_Tasks(void)
         {
             oldChoice = 0;
             setMainBoardTaskState(MAINBOARD_STATE_SERVICE_TASKS);
-            vLCD_CLEAR();
+            vLCD_Clear();
             if(!DOOR_Get())
             {
                 vDisplayLCD("%s", STR_SELECT);
@@ -1131,7 +1151,7 @@ void vMAINBOARD_Tasks(void)
             //                    MAINBOARD_STATE_DISPLAY_SELECT;
             if(getIsDispenseProductFinished())
             {
-                vLCD_CLEAR();
+                vLCD_Clear();
                 vDisplayLCD("%s %.*f\7", STR_CREDIT, getMDBDecimalPos(),
                             (double)getAmountDispo() / getMDBCurrencyDivider());
             }
@@ -1163,7 +1183,7 @@ void vMAINBOARD_Tasks(void)
         {
             if(getAmountDispo())
             {
-                vLCD_CLEAR();
+                vLCD_Clear();
                 vDisplayLCD("%s", STR_RETURN_IN_PROGRESS);
                 setIsChangeFinished(false);
                 xTaskNotifyGive(getChangeTaskHandle());
@@ -1233,13 +1253,8 @@ void MAINBOARD_Initialize(void)
     vKeyboardInit();
     vDS18B20Init();
     vMotorsInit();
-    //TODO ‡ vÈrifier
     vADCInit();
     vProductInit();
-
-    /* TODO: Initialize your application's state machine and other
-     * parameters.
-     */
 }
 
 /**

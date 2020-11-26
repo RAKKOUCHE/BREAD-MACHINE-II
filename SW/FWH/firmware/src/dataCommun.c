@@ -34,7 +34,7 @@
 /**
  * \brief Nom en clair de la tâche
  */
-#define PCCOM_TASK_NAME "PC com"
+#define PCCOM_TASK_NAME "TSK PC_COM"
 
 /**
  * \brief Nom en clair du timer de TO.
@@ -176,7 +176,7 @@ void vTaskPcComm(void *vParameters)
 {
 
     //    uint8_t byCheckAnswer = 0XFA;
-    uint8_t toto;
+
     while(1)
     {
         switch(pcCom.state)
@@ -218,8 +218,14 @@ void vTaskPcComm(void *vParameters)
                         case PCCOM_AUDITS_CLEAR:
                             // <editor-fold desc="PCCOM_AUDITS_CLEAR">
                         {
-                            setAuditState(AUDITS_STATE_CLEAR);
+                            setIsRAZAudit(false);
+                            RAZAudits();
                             while(!getIsRAZAudit());
+                            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+                            PLIB_USART_TransmitterByteSend(USART_ID_2, 0Xff);
+
+                            //                            setAuditState(AUDITS_STATE_CLEAR);
+                            //                            while(!getIsRAZAudit());
                             //                            setAuditState(AUDITS_STATE_SEND_TO_PC);
                             break;
                         }// </editor-fold>

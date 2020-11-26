@@ -59,6 +59,7 @@
 #include "MDB/mdb_bv.h"
 #include "moteurs.h"
 #include "trap_security.h"
+#include "modemGSM.h"
 
 
 // DOM-IGNORE-BEGIN
@@ -82,10 +83,12 @@ extern "C"
     // *****************************************************************************
 
 #ifdef __DEBUG
-#define VERSION "2.10_D"
+#define VERSION "2.11_D"
 #else
-#define VERSION "2.10  "
+#define VERSION "2.11  "
 #endif
+    
+#define LCDCAR 16
 
     /**
      * \brief Enumération de la machine d'état principale.

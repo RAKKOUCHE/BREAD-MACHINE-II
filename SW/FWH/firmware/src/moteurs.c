@@ -61,7 +61,7 @@
 /**
  * \brief Nom de la tâche moteur
  */
-#define MOTOR_TASK_NAME "Moteur tsk"
+#define MOTOR_TASK_NAME "TSK MOTEUR"
 
 /**
  * \brief Dimension du tas affecté à la tâche des moteurs.
@@ -93,7 +93,7 @@
  * \brief Délai maximum pendant lequel un moteur sera activé.
  */
 
-#define CHECK_MOTOR_TO (30 * SECONDE)
+#define CHECK_MOTOR_TO (20UL *SECONDE)
 
 
 /* ************************************************************************** */
@@ -128,6 +128,7 @@ struct
     bool isMotorChecked; /*!<Flag indiquant si le programme a effectué la tâche du moteur.*/
     bool isMotorsCheckTO; /*Temps maximum accordé pour la vérification d'une trappe.*/
     bool isPeakPassed; /*!<Flag indiquant que le temps accordé au pic de courant pour le démarrage du moteur est terminé.*/
+    uint32_t id;
 } motors;
 
 /*********************************************************************
@@ -339,7 +340,7 @@ static void vTaskMoteur(void *vParameter)
 {
     //    TickType_t xLastWakeTime = xTaskGetTickCount();
     uint8_t byIndex;
-    uint32_t dwToto, dwToto2, dwToto3;
+
     while(1)
     {
         setIsMotorChecked(TRUE);
@@ -597,12 +598,6 @@ static void vTaskMoteur(void *vParameter)
                                (getDoorSwitchState(byIndex - 2) == KEY_HI) &&
                                (getDoorSwitchState(byIndex + 1) == KEY_HI))
                             {
-#ifdef __DEBUG
-                                if(byIndex == 3)
-                                {
-                                    Nop();
-                                }
-#endif
                                 setInputSecurity(byIndex - 3);
                                 xTaskNotifyGive(getADCTaskHandle());
                                 while(!getIsAdcDone());
@@ -665,7 +660,6 @@ static void vTaskMoteur(void *vParameter)
  ********************************************************************/
 TimerHandle_t getHandleMotorCheckTimer(void)
 {
-
     return motors.hTimerMotorCheck;
 }
 
@@ -821,7 +815,6 @@ bool getIsMotorChecked()
  ********************************************************************/
 bool getIsMotorCheckTO(void)
 {
-
     return motors.isMotorsCheckTO;
 }
 
@@ -842,7 +835,6 @@ bool getIsMotorCheckTO(void)
  ********************************************************************/
 void setMotorCheckedTO(const bool isChecked)
 {
-
     motors.isMotorsCheckTO = isChecked;
 }
 
@@ -891,7 +883,6 @@ void setMotorCheckedTO(const bool isChecked)
  ********************************************************************/
 void setMotorState(const uint8_t num, const MOTORS_SATE state)
 {
-
     motors.motor[num].state = state;
 }
 
@@ -989,7 +980,7 @@ MOTORS_SATE getMotorState(const uint8_t num)
 void vMotorsInit(void)
 {
     uint8_t byIndex;
-
+    motors.id = 1;
     //L'initialisation de l'état des moteurs est effectuée tout au début du programme
     //pour éviter un conflit entre les transistors.
     motors.motor[byIndex].isSecurityActivated = false;
@@ -1001,10 +992,11 @@ void vMotorsInit(void)
     if(!motors.hTimerMotorCheck)
     {
         motors.hTimerMotorCheck = xTimerCreate(MOTORS_NAME_TIMEOUT_CHECK,
-                                               CHECK_MOTOR_TO, pdFALSE, NULL,
+                                               CHECK_MOTOR_TO, pdFALSE,
+                                               (void*)motors.id,
                                                vMotorCheckTO);
     }
-    if(!motors.hTimerPeakMoteur)
+    if(motors.hTimerPeakMoteur == NULL)
     {
         motors.hTimerPeakMoteur = xTimerCreate(MOTOR_PEAK_TIMER_NAME,
                                                MOTOR_PEAK_DELAY, pdFALSE, NULL,

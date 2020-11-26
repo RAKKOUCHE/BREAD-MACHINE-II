@@ -68,14 +68,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
-
-void IntHandlerDrvAdc(void)
+void IntHandlerDrvUsartInstance0(void)
 {
-   /* Clear ADC Interrupt Flag */
-   PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
+    DRV_USART_TasksTransmit(sysObj.drvUsart0);
+    DRV_USART_TasksError(sysObj.drvUsart0);
+    DRV_USART_TasksReceive(sysObj.drvUsart0);
 }
- 
-
-/*******************************************************************************
+ /*******************************************************************************
  End of File
 */

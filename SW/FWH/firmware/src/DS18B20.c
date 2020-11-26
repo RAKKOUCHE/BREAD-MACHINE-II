@@ -66,12 +66,8 @@
 /**
  * \brief Delay entre 2 vérifications de la sonde.
  */
-#ifdef __DEBUG
-#define DS18B20_TASK_DELAY (60 * SECONDE)
-#else
 #define DS18B20_TASK_DELAY (60 * SECONDE)
 
-#endif
 /**
  * \brief Configuration 9 bits
  */
@@ -240,7 +236,7 @@ static bool vOneWireReset(void)
     xTimerStart(ds18b20.hTO, 1000);
     DQ_OutputEnable();
     DQ_Clear();
-    Delay10us(48);
+    Delay10us(50);
     DQ_InputEnable();
     while(!DQ_Get());
     while(DQ_Get());

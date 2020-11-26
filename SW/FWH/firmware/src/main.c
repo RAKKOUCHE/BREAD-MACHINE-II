@@ -87,6 +87,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Main Entry Point
 // *****************************************************************************
 // *****************************************************************************
+  
 
 int main(void)
 {
@@ -130,19 +131,19 @@ int main(void)
     CMD_TRAP_N32_OutputEnable();
     CMD_TRAP_N32_Set(); //D?sactive la deuxieme tension négative du moteur de la trappe 3.
 
+    /* Maintain state machines of all polled MPLAB Harmony modules. */
+
     /* Initialize all MPLAB Harmony modules, including application(s). */
     SYS_Initialize(NULL);
 
     while(true)
     {
-        /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks();
     }
-
-    /* Execution should not come here during normal operation */
-
     return( EXIT_FAILURE);
 }
+
+/* Execution should not come here during normal operation */
 
 
 /*******************************************************************************

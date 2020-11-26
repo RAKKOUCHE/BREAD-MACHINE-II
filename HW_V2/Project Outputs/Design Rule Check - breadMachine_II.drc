@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : D:\Projets\MTDistribution\BreadMachine II\HW_V2\breadMachine_II.PcbDoc
-Date     : 31/03/2020
-Time     : 20:00:37
+Date     : 28/09/2020
+Time     : 17:35:22
 
 Processing Rule : Clearance Constraint (Gap=20mil) (IsStitchingVia and InNet('GND')),((IsVia and (Not IsStitchingVia)) Or IsPad)
 Rule Violations :0
@@ -27,22 +27,19 @@ Rule Violations :0
 Processing Rule : Width Constraint (Min=8mil) (Max=200mil) (Preferred=12mil) (All)
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=10mil) (Max=100mil) (Preferred=50mil) (InNet('NetP11_3'))
+Processing Rule : Width Constraint (Min=10mil) (Max=200mil) (Preferred=50mil) (InNet('NetC43_1'))
 Rule Violations :0
 
 Processing Rule : Width Constraint (Min=30mil) (Max=100mil) (Preferred=50mil) (InNet('NetC39_1'))
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=20mil) (Max=200mil) (Preferred=50mil) (InNet('NetD22_3'))
+Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=30mil) (InNet('+5'))
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=10mil) (Max=200mil) (Preferred=50mil) (InNet('24V'))
+Processing Rule : Width Constraint (Min=10mil) (Max=200mil) (Preferred=50mil) (NetC43_1 And InNet('24V'))
 Rule Violations :0
 
-Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=20mil) (InNet('3.3V'))
-Rule Violations :0
-
-Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=30mil) (InNet('5V'))
+Processing Rule : Width Constraint (Min=8mil) (Max=50mil) (Preferred=20mil) (InNet('+3.3'))
 Rule Violations :0
 
 Processing Rule : SMD Neck-Down Constraint (Percent=400%) (All)

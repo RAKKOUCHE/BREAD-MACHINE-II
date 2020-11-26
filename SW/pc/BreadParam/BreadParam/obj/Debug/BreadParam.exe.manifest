@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BreadParam.exe" size="299520">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BreadParam.exe" size="298496">
       <assemblyIdentity name="BreadParam" version="2.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vW49xj1A6eqOHG0gNfRp+L1gA1pon2QXtm3lZSUJla8=</dsig:DigestValue>
+        <dsig:DigestValue>lV/d17gJeJHuIWnuGv/1YX6t8i+mX5+s/YKndmMzIPA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -12,16 +12,16 @@
 
   Description:
     The Ports System Service provides a simple interface to manage the ports
-    on Microchip microcontrollers. This file defines the static implementation for the 
+    on Microchip microcontrollers. This file defines the static implementation for the
     Ports System Service.
-    
+
   Remarks:
     Static functions incorporate all system ports configuration settings as
-    determined by the user via the Microchip Harmony Configurator GUI.  It provides 
-    static version of the routines, eliminating the need for an object ID or 
+    determined by the user via the Microchip Harmony Configurator GUI.  It provides
+    static version of the routines, eliminating the need for an object ID or
     object handle.
 
-*******************************************************************************/
+ *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -45,7 +45,7 @@ INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
 CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
 SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-*******************************************************************************/
+ *******************************************************************************/
 //DOM-IGNORE-END
 
 #include "system_config.h"
@@ -67,7 +67,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
   Remarks:
     None.
-*/
+ */
 void SYS_PORTS_Initialize(void)
 {
 
@@ -77,42 +77,42 @@ void SYS_PORTS_Initialize(void)
     PLIB_PORTS_CnPinsEnable(PORTS_ID_0, SYS_PORT_CNEN);
     PLIB_PORTS_ChangeNoticeEnable(PORTS_ID_0);
 
-    
+
     /* PORT A Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_A, SYS_PORT_A_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_A,  SYS_PORT_A_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_A,  SYS_PORT_A_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_A, SYS_PORT_A_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_A, SYS_PORT_A_TRIS ^ 0xFFFF);
+
     /* PORT B Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_B, SYS_PORT_B_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_B,  SYS_PORT_B_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B,  SYS_PORT_B_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_B, SYS_PORT_B_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_B, SYS_PORT_B_TRIS ^ 0xFFFF);
+
     /* PORT C Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_C, SYS_PORT_C_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_C,  SYS_PORT_C_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_C,  SYS_PORT_C_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_C, SYS_PORT_C_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_C, SYS_PORT_C_TRIS ^ 0xFFFF);
+
     /* PORT D Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_D, SYS_PORT_D_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_D,  SYS_PORT_D_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_D,  SYS_PORT_D_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_D, SYS_PORT_D_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_D, SYS_PORT_D_TRIS ^ 0xFFFF);
+
     /* PORT E Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_E, SYS_PORT_E_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_E,  SYS_PORT_E_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_E,  SYS_PORT_E_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_E, SYS_PORT_E_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_E, SYS_PORT_E_TRIS ^ 0xFFFF);
+
     /* PORT F Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_F, SYS_PORT_F_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_F,  SYS_PORT_F_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_F,  SYS_PORT_F_TRIS ^ 0xFFFF);
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_F, SYS_PORT_F_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_F, SYS_PORT_F_TRIS ^ 0xFFFF);
+
     /* PORT G Initialization */
     PLIB_PORTS_OpenDrainEnable(PORTS_ID_0, PORT_CHANNEL_G, SYS_PORT_G_ODC);
-    PLIB_PORTS_Write( PORTS_ID_0, PORT_CHANNEL_G,  SYS_PORT_G_LAT);
-	PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_G,  SYS_PORT_G_TRIS ^ 0xFFFF);    
-    
+    PLIB_PORTS_Write(PORTS_ID_0, PORT_CHANNEL_G, SYS_PORT_G_LAT);
+    PLIB_PORTS_DirectionOutputSet(PORTS_ID_0, PORT_CHANNEL_G, SYS_PORT_G_TRIS ^ 0xFFFF);
+
 }
 
 /******************************************************************************
@@ -127,18 +127,17 @@ void SYS_PORTS_Initialize(void)
 
   Remarks:
     None.
-*/
+ */
 
-PORTS_DATA_TYPE SYS_PORTS_Read( PORTS_MODULE_ID index, PORTS_CHANNEL channel )
+PORTS_DATA_TYPE SYS_PORTS_Read(PORTS_MODULE_ID index, PORTS_CHANNEL channel)
 {
-    return PLIB_PORTS_Read( index, channel );
+    return PLIB_PORTS_Read(index, channel);
 }
-
 
 /******************************************************************************
   Function:
     void SYS_PORTS_Write( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                      		PORTS_DATA_TYPE value )
+                            PORTS_DATA_TYPE value )
 
   Summary:
     Writes the data from the I/O port.
@@ -148,13 +147,13 @@ PORTS_DATA_TYPE SYS_PORTS_Read( PORTS_MODULE_ID index, PORTS_CHANNEL channel )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_Write( PORTS_MODULE_ID index,
-                      PORTS_CHANNEL channel,
-                      PORTS_DATA_TYPE value )
+void SYS_PORTS_Write(PORTS_MODULE_ID index,
+                     PORTS_CHANNEL channel,
+                     PORTS_DATA_TYPE value)
 {
-    PLIB_PORTS_Write( index, channel, value );
+    PLIB_PORTS_Write(index, channel, value);
 }
 
 /******************************************************************************
@@ -169,9 +168,9 @@ void SYS_PORTS_Write( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-PORTS_DATA_TYPE SYS_PORTS_LatchedGet( PORTS_MODULE_ID index, PORTS_CHANNEL channel )
+PORTS_DATA_TYPE SYS_PORTS_LatchedGet(PORTS_MODULE_ID index, PORTS_CHANNEL channel)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     /* TODO: Call corresponding PLIB API */
@@ -181,7 +180,7 @@ PORTS_DATA_TYPE SYS_PORTS_LatchedGet( PORTS_MODULE_ID index, PORTS_CHANNEL chann
 /******************************************************************************
   Function:
     void SYS_PORTS_Set( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-	                         PORTS_DATA_TYPE value,
+                             PORTS_DATA_TYPE value,
                          PORTS_DATA_MASK mask )
 
   Summary:
@@ -192,15 +191,14 @@ PORTS_DATA_TYPE SYS_PORTS_LatchedGet( PORTS_MODULE_ID index, PORTS_CHANNEL chann
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_Set( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                    PORTS_DATA_TYPE value,
-                    PORTS_DATA_MASK mask )
+void SYS_PORTS_Set(PORTS_MODULE_ID index, PORTS_CHANNEL channel,
+                   PORTS_DATA_TYPE value,
+                   PORTS_DATA_MASK mask)
 {
-    PLIB_PORTS_Set( index, channel, value, mask );
+    PLIB_PORTS_Set(index, channel, value, mask);
 }
-
 
 /******************************************************************************
   Function:
@@ -215,21 +213,20 @@ void SYS_PORTS_Set( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_Clear ( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                           PORTS_DATA_MASK clearMask )
+void SYS_PORTS_Clear(PORTS_MODULE_ID index, PORTS_CHANNEL channel,
+                     PORTS_DATA_MASK clearMask)
 {
-    PLIB_PORTS_Clear ( index, channel, clearMask );
+    PLIB_PORTS_Clear(index, channel, clearMask);
 }
-
 
 /******************************************************************************
   Function:
     void SYS_PORTS_DirectionSelect( PORTS_MODULE_ID index,
-								SYS_PORTS_PIN_DIRECTION pinDir,
-								PORTS_CHANNEL channel,
-								PORTS_DATA_MASK mask )
+                                SYS_PORTS_PIN_DIRECTION pinDir,
+                                PORTS_CHANNEL channel,
+                                PORTS_DATA_MASK mask )
   Summary:
     Enables the direction for the selected port.
 
@@ -238,14 +235,14 @@ void SYS_PORTS_Clear ( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_DirectionSelect( PORTS_MODULE_ID index,
-                             SYS_PORTS_PIN_DIRECTION pinDir,
-                             PORTS_CHANNEL channel,
-                             PORTS_DATA_MASK mask )
+void SYS_PORTS_DirectionSelect(PORTS_MODULE_ID index,
+                               SYS_PORTS_PIN_DIRECTION pinDir,
+                               PORTS_CHANNEL channel,
+                               PORTS_DATA_MASK mask)
 {
-    if (pinDir == SYS_PORTS_DIRECTION_INPUT)
+    if(pinDir == SYS_PORTS_DIRECTION_INPUT)
     {
         PLIB_PORTS_DirectionInputSet(index, channel, mask);
     }
@@ -254,7 +251,6 @@ void SYS_PORTS_DirectionSelect( PORTS_MODULE_ID index,
         PLIB_PORTS_DirectionOutputSet(index, channel, mask);
     }
 }
-
 
 /******************************************************************************
   Function:
@@ -269,13 +265,12 @@ void SYS_PORTS_DirectionSelect( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-PORTS_DATA_MASK SYS_PORTS_DirectionGet( PORTS_MODULE_ID index, PORTS_CHANNEL channel )
+PORTS_DATA_MASK SYS_PORTS_DirectionGet(PORTS_MODULE_ID index, PORTS_CHANNEL channel)
 {
-    return PLIB_PORTS_DirectionGet( index, channel );
+    return PLIB_PORTS_DirectionGet(index, channel);
 }
-
 
 /******************************************************************************
   Function:
@@ -290,14 +285,13 @@ PORTS_DATA_MASK SYS_PORTS_DirectionGet( PORTS_MODULE_ID index, PORTS_CHANNEL cha
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_Toggle( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                       PORTS_DATA_MASK toggleMask )
+void SYS_PORTS_Toggle(PORTS_MODULE_ID index, PORTS_CHANNEL channel,
+                      PORTS_DATA_MASK toggleMask)
 {
-    PLIB_PORTS_Toggle( index, channel, toggleMask );
+    PLIB_PORTS_Toggle(index, channel, toggleMask);
 }
-
 
 /******************************************************************************
   Function:
@@ -312,19 +306,18 @@ void SYS_PORTS_Toggle( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_OpenDrainEnable( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                                PORTS_DATA_MASK mask )
+void SYS_PORTS_OpenDrainEnable(PORTS_MODULE_ID index, PORTS_CHANNEL channel,
+                               PORTS_DATA_MASK mask)
 {
 #if defined(PLIB_PORTS_ExistsPortsOpenDrain)
     if(PLIB_PORTS_ExistsPortsOpenDrain(index))
     {
-        PLIB_PORTS_OpenDrainEnable( index, channel, mask );
+        PLIB_PORTS_OpenDrainEnable(index, channel, mask);
     }
 #endif
 }
-
 
 /******************************************************************************
   Function:
@@ -339,41 +332,42 @@ void SYS_PORTS_OpenDrainEnable( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_OpenDrainDisable( PORTS_MODULE_ID index, PORTS_CHANNEL channel,
-                                 PORTS_DATA_MASK mask )
+void SYS_PORTS_OpenDrainDisable(PORTS_MODULE_ID index, PORTS_CHANNEL channel,
+                                PORTS_DATA_MASK mask)
 {
 #if defined(PLIB_PORTS_ExistsPortsOpenDrain)
     if(PLIB_PORTS_ExistsPortsOpenDrain(index))
     {
-        PLIB_PORTS_OpenDrainDisable( index, channel, mask );
+        PLIB_PORTS_OpenDrainDisable(index, channel, mask);
     }
 #endif
 }
 
 // *****************************************************************************
+
 /* Function:
     PORTS_DATA_TYPE SYS_PORTS_InterruptStatusGet
-    ( 
-        PORTS_MODULE_ID index, 
-        PORTS_CHANNEL channel 
+    (
+        PORTS_MODULE_ID index,
+        PORTS_CHANNEL channel
     )
 
   Summary:
     Reads the data from the I/O port.
-	<p><b>Implementation:</b> Dynamic</p>
+    <p><b>Implementation:</b> Dynamic</p>
 
   Description:
     This function reads the data from the I/O port.
 
-*/
+ */
 
 PORTS_DATA_TYPE SYS_PORTS_InterruptStatusGet
-( 
-    PORTS_MODULE_ID index, 
-    PORTS_CHANNEL channel 
-)
+(
+ PORTS_MODULE_ID index,
+ PORTS_CHANNEL channel
+ )
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return 0;
@@ -397,14 +391,14 @@ PORTS_DATA_TYPE SYS_PORTS_InterruptStatusGet
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationGlobalEnable( PORTS_MODULE_ID index )
+void SYS_PORTS_ChangeNotificationGlobalEnable(PORTS_MODULE_ID index)
 {
 #if defined(PLIB_PORTS_ExistsChangeNotice)
     if(PLIB_PORTS_ExistsChangeNotice(index))
     {
-        PLIB_PORTS_ChangeNoticeEnable( index );
+        PLIB_PORTS_ChangeNoticeEnable(index);
     }
 #endif
 }
@@ -421,14 +415,14 @@ void SYS_PORTS_ChangeNotificationGlobalEnable( PORTS_MODULE_ID index )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationGlobalDisable( PORTS_MODULE_ID index )
+void SYS_PORTS_ChangeNotificationGlobalDisable(PORTS_MODULE_ID index)
 {
 #if defined(PLIB_PORTS_ExistsChangeNotice)
     if(PLIB_PORTS_ExistsChangeNotice(index))
     {
-        PLIB_PORTS_ChangeNoticeDisable( index );
+        PLIB_PORTS_ChangeNoticeDisable(index);
     }
 #endif
 }
@@ -445,18 +439,17 @@ void SYS_PORTS_ChangeNotificationGlobalDisable( PORTS_MODULE_ID index )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_GlobalChangeNotificationDisable( PORTS_MODULE_ID index )
+void SYS_PORTS_GlobalChangeNotificationDisable(PORTS_MODULE_ID index)
 {
 #if defined(PLIB_PORTS_ExistsChangeNotice)
     if(PLIB_PORTS_ExistsChangeNotice(index))
     {
-        PLIB_PORTS_ChangeNoticeDisable( index );
+        PLIB_PORTS_ChangeNoticeDisable(index);
     }
 #endif
 }
-
 
 /******************************************************************************
   Function:
@@ -472,11 +465,11 @@ void SYS_PORTS_GlobalChangeNotificationDisable( PORTS_MODULE_ID index )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationEnable( PORTS_MODULE_ID index,
-                                         PORTS_CHANGE_NOTICE_PIN pinNum,
-                                         SYS_PORTS_PULLUP_PULLDOWN_STATUS value )
+void SYS_PORTS_ChangeNotificationEnable(PORTS_MODULE_ID index,
+                                        PORTS_CHANGE_NOTICE_PIN pinNum,
+                                        SYS_PORTS_PULLUP_PULLDOWN_STATUS value)
 {
 #if defined(PLIB_PORTS_ExistsChangeNoticePullUp)
     if(PLIB_PORTS_ExistsChangeNoticePullUp(index))
@@ -496,11 +489,10 @@ void SYS_PORTS_ChangeNotificationEnable( PORTS_MODULE_ID index,
 #if defined(PLIB_PORTS_ExistsPinChangeNotice)
     if(PLIB_PORTS_ExistsPinChangeNotice(index))
     {
-        PLIB_PORTS_PinChangeNoticeEnable( index, pinNum );
+        PLIB_PORTS_PinChangeNoticeEnable(index, pinNum);
     }
 #endif
 }
-
 
 /******************************************************************************
   Function:
@@ -515,19 +507,17 @@ void SYS_PORTS_ChangeNotificationEnable( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
-
-void SYS_PORTS_ChangeNotificationDisable( PORTS_MODULE_ID index,
-                                          PORTS_CHANGE_NOTICE_PIN pinNum )
+ */
+void SYS_PORTS_ChangeNotificationDisable(PORTS_MODULE_ID index,
+                                         PORTS_CHANGE_NOTICE_PIN pinNum)
 {
 #if defined(PLIB_PORTS_ExistsPinChangeNotice)
     if(PLIB_PORTS_ExistsPinChangeNotice(index))
     {
-        PLIB_PORTS_PinChangeNoticeDisable( index, pinNum );
+        PLIB_PORTS_PinChangeNoticeDisable(index, pinNum);
     }
 #endif
 }
-
 
 /******************************************************************************
   Function:
@@ -542,20 +532,21 @@ void SYS_PORTS_ChangeNotificationDisable( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationInIdleModeEnable( PORTS_MODULE_ID index )
+void SYS_PORTS_ChangeNotificationInIdleModeEnable(PORTS_MODULE_ID index)
 {
 #if defined(PLIB_PORTS_ExistsChangeNoticeInIdle)
     if(PLIB_PORTS_ExistsChangeNoticeInIdle(index))
     {
-        PLIB_PORTS_ChangeNoticeInIdleEnable( index );
+        PLIB_PORTS_ChangeNoticeInIdleEnable(index);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_ChangeNotificationInIdleModeDisable( PORTS_MODULE_ID index)
 
@@ -568,20 +559,21 @@ void SYS_PORTS_ChangeNotificationInIdleModeEnable( PORTS_MODULE_ID index )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationInIdleModeDisable( PORTS_MODULE_ID index )
+void SYS_PORTS_ChangeNotificationInIdleModeDisable(PORTS_MODULE_ID index)
 {
 #if defined(PLIB_PORTS_ExistsChangeNoticeInIdle)
     if(PLIB_PORTS_ExistsChangeNoticeInIdle(index))
     {
-        PLIB_PORTS_ChangeNoticeInIdleDisable( index );
+        PLIB_PORTS_ChangeNoticeInIdleDisable(index);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_ChangeNotificationPullUpEnable ( PORTS_MODULE_ID         index,
                                                     PORTS_CHANGE_NOTICE_PIN pinNum )
@@ -594,21 +586,22 @@ void SYS_PORTS_ChangeNotificationInIdleModeDisable( PORTS_MODULE_ID index )
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationPullUpEnable ( PORTS_MODULE_ID         index,
-                                                PORTS_CHANGE_NOTICE_PIN pinNum )
+void SYS_PORTS_ChangeNotificationPullUpEnable(PORTS_MODULE_ID index,
+                                              PORTS_CHANGE_NOTICE_PIN pinNum)
 {
 #if defined(PLIB_PORTS_ExistsChangeNoticePullUp)
     if(PLIB_PORTS_ExistsChangeNoticePullUp(index))
     {
-        PLIB_PORTS_ChangeNoticePullUpEnable ( index, pinNum );
+        PLIB_PORTS_ChangeNoticePullUpEnable(index, pinNum);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_ChangeNotificationPullUpDisable ( PORTS_MODULE_ID         index,
                                                     PORTS_CHANGE_NOTICE_PIN pinNum )
@@ -621,15 +614,15 @@ void SYS_PORTS_ChangeNotificationPullUpEnable ( PORTS_MODULE_ID         index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_ChangeNotificationPullUpDisable ( PORTS_MODULE_ID         index,
-                                                PORTS_CHANGE_NOTICE_PIN pinNum )
+void SYS_PORTS_ChangeNotificationPullUpDisable(PORTS_MODULE_ID index,
+                                               PORTS_CHANGE_NOTICE_PIN pinNum)
 {
 #if defined(PLIB_PORTS_ExistsChangeNoticePullUp)
     if(PLIB_PORTS_ExistsChangeNoticePullUp(index))
     {
-        PLIB_PORTS_ChangeNoticePullUpDisable ( index, pinNum );
+        PLIB_PORTS_ChangeNoticePullUpDisable(index, pinNum);
     }
 #endif
 }
@@ -642,9 +635,10 @@ void SYS_PORTS_ChangeNotificationPullUpDisable ( PORTS_MODULE_ID         index,
 // *****************************************************************************
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinModeSelect ( PORTS_MODULE_ID index, PORTS_ANALOG_PIN pin,
-    								PORTS_PIN_MODE mode)
+                                    PORTS_PIN_MODE mode)
 
   Summary:
     Enables the selected pin as analog or digital.
@@ -654,21 +648,22 @@ void SYS_PORTS_ChangeNotificationPullUpDisable ( PORTS_MODULE_ID         index,
 
  Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinModeSelect ( PORTS_MODULE_ID index, PORTS_ANALOG_PIN pin,
-								PORTS_PIN_MODE mode)
+void SYS_PORTS_PinModeSelect(PORTS_MODULE_ID index, PORTS_ANALOG_PIN pin,
+                             PORTS_PIN_MODE mode)
 {
 #if defined(PLIB_PORTS_ExistsPinMode)
     if(PLIB_PORTS_ExistsPinMode(index))
     {
-        PLIB_PORTS_PinModeSelect ( index, pin, mode);
+        PLIB_PORTS_PinModeSelect(index, pin, mode);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinWrite ( PORTS_MODULE_ID index,
                               PORTS_CHANNEL channel,
@@ -682,18 +677,19 @@ void SYS_PORTS_PinModeSelect ( PORTS_MODULE_ID index, PORTS_ANALOG_PIN pin,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinWrite ( PORTS_MODULE_ID index,
-                          PORTS_CHANNEL channel,
-                          PORTS_BIT_POS bitPos,
-                          bool value )
+void SYS_PORTS_PinWrite(PORTS_MODULE_ID index,
+                        PORTS_CHANNEL channel,
+                        PORTS_BIT_POS bitPos,
+                        bool value)
 {
-    PLIB_PORTS_PinWrite ( index, channel, bitPos, value );
+    PLIB_PORTS_PinWrite(index, channel, bitPos, value);
 }
 
 
 // *****************************************************************************
+
 /* Function:
     bool SYS_PORTS_PinLatchedGet ( PORTS_MODULE_ID index,
                              PORTS_CHANNEL channel,
@@ -707,11 +703,11 @@ void SYS_PORTS_PinWrite ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-bool SYS_PORTS_PinLatchedGet ( PORTS_MODULE_ID index,
-                         PORTS_CHANNEL channel,
-                         PORTS_BIT_POS bitPos )
+bool SYS_PORTS_PinLatchedGet(PORTS_MODULE_ID index,
+                             PORTS_CHANNEL channel,
+                             PORTS_BIT_POS bitPos)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     /* TODO: Call corresponding PLIB API */
@@ -720,6 +716,7 @@ bool SYS_PORTS_PinLatchedGet ( PORTS_MODULE_ID index,
 
 
 // *****************************************************************************
+
 /* Function:
     bool SYS_PORTS_PinRead ( PORTS_MODULE_ID index,
                              PORTS_CHANNEL channel,
@@ -733,17 +730,18 @@ bool SYS_PORTS_PinLatchedGet ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-bool SYS_PORTS_PinRead ( PORTS_MODULE_ID index,
-                         PORTS_CHANNEL channel,
-                         PORTS_BIT_POS bitPos )
+bool SYS_PORTS_PinRead(PORTS_MODULE_ID index,
+                       PORTS_CHANNEL channel,
+                       PORTS_BIT_POS bitPos)
 {
-    return PLIB_PORTS_PinGet ( index, channel, bitPos );
+    return PLIB_PORTS_PinGet(index, channel, bitPos);
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinToggle ( PORTS_MODULE_ID index,
                                PORTS_CHANNEL channel,
@@ -757,17 +755,18 @@ bool SYS_PORTS_PinRead ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinToggle ( PORTS_MODULE_ID index,
-                           PORTS_CHANNEL channel,
-                           PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinToggle(PORTS_MODULE_ID index,
+                         PORTS_CHANNEL channel,
+                         PORTS_BIT_POS bitPos)
 {
-    PLIB_PORTS_PinToggle ( index, channel, bitPos );
+    PLIB_PORTS_PinToggle(index, channel, bitPos);
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinSet( PORTS_MODULE_ID index,
                            PORTS_CHANNEL channel,
@@ -781,17 +780,18 @@ void SYS_PORTS_PinToggle ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinSet( PORTS_MODULE_ID index,
-                       PORTS_CHANNEL channel,
-                       PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinSet(PORTS_MODULE_ID index,
+                      PORTS_CHANNEL channel,
+                      PORTS_BIT_POS bitPos)
 {
-    PLIB_PORTS_PinSet( index, channel, bitPos );
+    PLIB_PORTS_PinSet(index, channel, bitPos);
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinClear ( PORTS_MODULE_ID index,
                               PORTS_CHANNEL channel,
@@ -805,17 +805,18 @@ void SYS_PORTS_PinSet( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinClear ( PORTS_MODULE_ID index,
-                          PORTS_CHANNEL channel,
-                          PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinClear(PORTS_MODULE_ID index,
+                        PORTS_CHANNEL channel,
+                        PORTS_BIT_POS bitPos)
 {
-    PLIB_PORTS_PinClear ( index, channel, bitPos );
+    PLIB_PORTS_PinClear(index, channel, bitPos);
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinDirectionSelect ( PORTS_MODULE_ID index,
                                      SYS_PORTS_PIN_DIRECTION pinDir,
@@ -829,14 +830,14 @@ void SYS_PORTS_PinClear ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinDirectionSelect ( PORTS_MODULE_ID index,
-                                 SYS_PORTS_PIN_DIRECTION pinDir,
-                                 PORTS_CHANNEL channel,
-                                 PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinDirectionSelect(PORTS_MODULE_ID index,
+                                  SYS_PORTS_PIN_DIRECTION pinDir,
+                                  PORTS_CHANNEL channel,
+                                  PORTS_BIT_POS bitPos)
 {
-    if (pinDir == SYS_PORTS_DIRECTION_OUTPUT)
+    if(pinDir == SYS_PORTS_DIRECTION_OUTPUT)
     {
         PLIB_PORTS_PinDirectionOutputSet(index, channel, bitPos);
     }
@@ -848,6 +849,7 @@ void SYS_PORTS_PinDirectionSelect ( PORTS_MODULE_ID index,
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinOpenDrainEnable ( PORTS_MODULE_ID index,
                                         PORTS_CHANNEL channel,
@@ -861,22 +863,23 @@ void SYS_PORTS_PinDirectionSelect ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinOpenDrainEnable ( PORTS_MODULE_ID index,
-                                    PORTS_CHANNEL channel,
-                                    PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinOpenDrainEnable(PORTS_MODULE_ID index,
+                                  PORTS_CHANNEL channel,
+                                  PORTS_BIT_POS bitPos)
 {
 #if defined(PLIB_PORTS_ExistsPortsOpenDrain)
     if(PLIB_PORTS_ExistsPortsOpenDrain(index))
     {
-        PLIB_PORTS_PinOpenDrainEnable ( index, channel, bitPos );
+        PLIB_PORTS_PinOpenDrainEnable(index, channel, bitPos);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_PinOpenDrainDisable ( PORTS_MODULE_ID index,
                                          PORTS_CHANNEL channel,
@@ -890,30 +893,31 @@ void SYS_PORTS_PinOpenDrainEnable ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 
-void SYS_PORTS_PinOpenDrainDisable ( PORTS_MODULE_ID index,
-                                     PORTS_CHANNEL channel,
-                                     PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinOpenDrainDisable(PORTS_MODULE_ID index,
+                                   PORTS_CHANNEL channel,
+                                   PORTS_BIT_POS bitPos)
 {
 #if defined(PLIB_PORTS_ExistsPortsOpenDrain)
     if(PLIB_PORTS_ExistsPortsOpenDrain(index))
     {
-        PLIB_PORTS_PinOpenDrainDisable ( index, channel, bitPos );
+        PLIB_PORTS_PinOpenDrainDisable(index, channel, bitPos);
     }
 #endif
 }
 
 
 // *****************************************************************************
+
 /* Function:
-    void SYS_PORTS_PinPullUpEnable ( PORTS_MODULE_ID index, 
+    void SYS_PORTS_PinPullUpEnable ( PORTS_MODULE_ID index,
                                         PORTS_CHANNEL channel,
                                         PORTS_BIT_POS bitPos )
 
   Summary:
     Enables the pull-up functionality for the selected pin.
-	<p><b>Implementation:</b> Dynamic</p>
+    <p><b>Implementation:</b> Dynamic</p>
 
   Description:
     This function enables the pull-up functionality for the selected pin.
@@ -921,11 +925,11 @@ void SYS_PORTS_PinOpenDrainDisable ( PORTS_MODULE_ID index,
   Remarks:
     Not all features are available on all devices. Refer to the specific device
     data sheet for availability.
-*/
+ */
 
-void SYS_PORTS_PinPullUpEnable ( PORTS_MODULE_ID index, 
-                                    PORTS_CHANNEL channel,
-                                    PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinPullUpEnable(PORTS_MODULE_ID index,
+                               PORTS_CHANNEL channel,
+                               PORTS_BIT_POS bitPos)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return;
@@ -933,14 +937,15 @@ void SYS_PORTS_PinPullUpEnable ( PORTS_MODULE_ID index,
 
 
 // *****************************************************************************
+
 /* Function:
-    void SYS_PORTS_PinPullUpDisable ( PORTS_MODULE_ID index, 
+    void SYS_PORTS_PinPullUpDisable ( PORTS_MODULE_ID index,
                                          PORTS_CHANNEL channel,
                                          PORTS_BIT_POS bitPos )
 
   Summary:
     Disables the pull-up functionality for the selected pin.
-	<p><b>Implementation:</b> Dynamic</p>
+    <p><b>Implementation:</b> Dynamic</p>
 
   Description:
     This function disables the pull-up functionality for the selected pin.
@@ -948,11 +953,11 @@ void SYS_PORTS_PinPullUpEnable ( PORTS_MODULE_ID index,
   Remarks:
     Not all features are available on all devices. Refer to the specific device
     data sheet for availability.
-*/
+ */
 
-void SYS_PORTS_PinPullUpDisable ( PORTS_MODULE_ID index, 
-                                     PORTS_CHANNEL channel,
-                                     PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinPullUpDisable(PORTS_MODULE_ID index,
+                                PORTS_CHANNEL channel,
+                                PORTS_BIT_POS bitPos)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return;
@@ -960,14 +965,15 @@ void SYS_PORTS_PinPullUpDisable ( PORTS_MODULE_ID index,
 
 
 // *****************************************************************************
+
 /* Function:
-    void SYS_PORTS_PinPullDownEnable ( PORTS_MODULE_ID index, 
+    void SYS_PORTS_PinPullDownEnable ( PORTS_MODULE_ID index,
                                         PORTS_CHANNEL channel,
                                         PORTS_BIT_POS bitPos )
 
   Summary:
     Enables the pull-down functionality for the selected pin.
-	<p><b>Implementation:</b> Dynamic</p>
+    <p><b>Implementation:</b> Dynamic</p>
 
   Description:
     This function enables the pull-down functionality for the selected pin.
@@ -975,11 +981,11 @@ void SYS_PORTS_PinPullUpDisable ( PORTS_MODULE_ID index,
   Remarks:
     Not all features are available on all devices. Refer to the specific device
     data sheet for availability.
-*/
+ */
 
-void SYS_PORTS_PinPullDownEnable ( PORTS_MODULE_ID index, 
-                                    PORTS_CHANNEL channel,
-                                    PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinPullDownEnable(PORTS_MODULE_ID index,
+                                 PORTS_CHANNEL channel,
+                                 PORTS_BIT_POS bitPos)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return;
@@ -987,14 +993,15 @@ void SYS_PORTS_PinPullDownEnable ( PORTS_MODULE_ID index,
 
 
 // *****************************************************************************
+
 /* Function:
-    void SYS_PORTS_PinPullDownDisable ( PORTS_MODULE_ID index, 
+    void SYS_PORTS_PinPullDownDisable ( PORTS_MODULE_ID index,
                                          PORTS_CHANNEL channel,
                                          PORTS_BIT_POS bitPos )
 
   Summary:
     Disables the pull-down functionality for the selected pin.
-	<p><b>Implementation:</b> Dynamic</p>
+    <p><b>Implementation:</b> Dynamic</p>
 
   Description:
     This function disables the pull-down functionality for the selected pin.
@@ -1002,17 +1009,16 @@ void SYS_PORTS_PinPullDownEnable ( PORTS_MODULE_ID index,
   Remarks:
     Not all features are available on all devices. Refer to the specific device
     data sheet for availability.
-*/
+ */
 
-void SYS_PORTS_PinPullDownDisable ( PORTS_MODULE_ID index, 
-                                     PORTS_CHANNEL channel,
-                                     PORTS_BIT_POS bitPos )
+void SYS_PORTS_PinPullDownDisable(PORTS_MODULE_ID index,
+                                  PORTS_CHANNEL channel,
+                                  PORTS_BIT_POS bitPos)
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return;
 }
-                                     
-                                     
+
 /******************************************************************************
   Function:
     void SYS_PORTS_InterruptEnable
@@ -1032,14 +1038,14 @@ void SYS_PORTS_PinPullDownDisable ( PORTS_MODULE_ID index,
 
   Remarks:
     None.
-*/
+ */
 void SYS_PORTS_InterruptEnable
 (
-    PORTS_MODULE_ID index,
-    PORTS_CHANNEL channel,
-    PORTS_BIT_POS bitPos,
-    PORTS_PIN_INTERRUPT_TYPE pinInterruptType
-)
+ PORTS_MODULE_ID index,
+ PORTS_CHANNEL channel,
+ PORTS_BIT_POS bitPos,
+ PORTS_PIN_INTERRUPT_TYPE pinInterruptType
+ )
 {
     SYS_ASSERT(false, "This API is not supported on this device");
     return;
@@ -1047,10 +1053,11 @@ void SYS_PORTS_InterruptEnable
 
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_RemapInput( PORTS_MODULE_ID      index,
-							  PORTS_REMAP_INPUT_FUNCTION function,
-							  PORTS_REMAP_INPUT_PIN      remapPin )
+                              PORTS_REMAP_INPUT_FUNCTION function,
+                              PORTS_REMAP_INPUT_PIN      remapPin )
 
   Summary:
     Input/Output (I/O) function remapping.
@@ -1060,22 +1067,23 @@ void SYS_PORTS_InterruptEnable
 
   Precondition:
     None.
-*/	
-void SYS_PORTS_RemapInput( PORTS_MODULE_ID      index,
-						   PORTS_REMAP_INPUT_FUNCTION function,
-						   PORTS_REMAP_INPUT_PIN      remapPin )
+ */
+void SYS_PORTS_RemapInput(PORTS_MODULE_ID index,
+                          PORTS_REMAP_INPUT_FUNCTION function,
+                          PORTS_REMAP_INPUT_PIN remapPin)
 {
 #if defined(PLIB_PORTS_ExistsRemapInput)
     if(PLIB_PORTS_ExistsRemapInput(index))
     {
         PLIB_DEVCON_SystemUnlock(DEVCON_ID_0);
         PLIB_DEVCON_DeviceRegistersUnlock(DEVCON_ID_0, DEVCON_PPS_REGISTERS);
-        PLIB_PORTS_RemapInput( index, function, remapPin);
+        PLIB_PORTS_RemapInput(index, function, remapPin);
     }
 #endif
 }
 
 // *****************************************************************************
+
 /* Function:
     void SYS_PORTS_RemapOutput( PORTS_MODULE_ID      index,
                                       PORTS_REMAP_OUTPUT_FUNCTION function,
@@ -1089,21 +1097,21 @@ void SYS_PORTS_RemapInput( PORTS_MODULE_ID      index,
 
   Precondition:
     None.
-*/
-void SYS_PORTS_RemapOutput( PORTS_MODULE_ID      index,
-						    PORTS_REMAP_OUTPUT_FUNCTION function,
-						    PORTS_REMAP_OUTPUT_PIN      remapPin )
+ */
+void SYS_PORTS_RemapOutput(PORTS_MODULE_ID index,
+                           PORTS_REMAP_OUTPUT_FUNCTION function,
+                           PORTS_REMAP_OUTPUT_PIN remapPin)
 {
 #if defined(PLIB_PORTS_ExistsRemapOutput)
     if(PLIB_PORTS_ExistsRemapOutput(index))
     {
         PLIB_DEVCON_SystemUnlock(DEVCON_ID_0);
         PLIB_DEVCON_DeviceRegistersUnlock(DEVCON_ID_0, DEVCON_PPS_REGISTERS);
-        PLIB_PORTS_RemapOutput( index, function, remapPin);
+        PLIB_PORTS_RemapOutput(index, function, remapPin);
     }
 #endif
 }
 
 /*******************************************************************************
  End of File
-*/
+ */

@@ -51,7 +51,7 @@ extern "C"
 
     /**
      * \brief Réponses mdb.
-     */    
+     */
 #define ACK 0x00 /*!< Réponse OK. */
 #define RET 0xAA, /*!< Retransmettre les données. */
 #define NAK 0XFF /*!< Réponse incorrecte. */
@@ -118,6 +118,9 @@ extern "C"
 #define SUB_VEND_SESSION_COMPLETE 0x04
 #define SUB_VEND_CASH_SALE 0x05
 #define SUB_NEGATIVE_VEND_REQUEST 0x06
+#define CMD_EXPANSION               0x07 /*!< Commandes étendues. Voir la documentation MDB. */
+
+#define SUB_REQUEST_ID 0x00
 #define SUB_READER_DISABLE 0x00
 #define SUB_READER_ENABLE 0x01
 #define SUB_READER_CANCEL 0x02
@@ -137,6 +140,8 @@ extern "C"
 #define SUB_FTL_OK_TO_SEND 0xFD
 #define SUB_FTL_REQ_TO_SEND 0xFE
 #define SUB_DIAGNOSTICS 0xFF
+
+
 
     /*Enumerations*************************************************************/
 
@@ -262,7 +267,7 @@ extern "C"
     /**
      * @}
      */
-    
+
 #ifdef	__cplusplus
 }
 #endif

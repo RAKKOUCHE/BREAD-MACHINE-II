@@ -115,7 +115,7 @@ extern "C"
     void setAuditState(AUDITS_STATES state);
 
     /**
-     * \brief renvoie le flag indiquant si les audits ont étés remise à zéro.
+     * \brief Renvoie le flag indiquant si les audits ont étés remise à zéro.
      * @return true quand les audits viennent d'être remis à zéro.
      */
     bool getIsRAZAudit(void);
@@ -126,10 +126,16 @@ extern "C"
     void setIsRAZAudit(bool isRAZ);
 
     /**
+     * \brief Remise à zéro des audits dans l'eeprom.
+     */
+    void RAZAudits(void);
+    
+    /**
      * \brief Initialisation du module des audits.
      */
     void vAuditsInit(void);
 
+    
     /**
      * @}
      */

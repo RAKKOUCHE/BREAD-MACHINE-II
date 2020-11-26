@@ -28,6 +28,7 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
+
 /**
  * \brief Taille des lignes.
  */
@@ -41,15 +42,15 @@
 /**
  * \brief Adresse des donées en flash
  */
-#define NVM_MEDIA_START_ADDRESS 0X9D070000
+#define NVM_MEDIA_START_ADDRESS 0x9D010000
 
 /**
  * \brief Structure contenant les informations sur un numéro de téléphone
  */
 typedef struct
 {
-    unsigned int phone[13]; /*!<Numéro de téléphone en sur 12 chiffres.*/
-    unsigned int isAuditInform; /*!<La consultation des audits est autorisée sur ce ab
+    unsigned int phone[13]; /*!<Numéro de téléphone sur 12 chiffres.*/
+    unsigned int isAuditInformed; /*!<La consultation des audits est autorisée sur ce
                          * numéro*/
     unsigned int isAlarmed; /*!<Ce numéro sera informé de l'activité de la
                                * machine.*/
@@ -73,12 +74,12 @@ typedef struct
         ENABLE enables; /*!<Habilitation des canaux.*/
         uint32_t u32Enables;
     };
-    int32_t heater; /*!<Températirue de déclenchement du chauffage.*/
-    int32_t cooler; /*!<Températeur de déclenchement du refroidissement.*/
+    int32_t heater; /*!<Température de déclenchement du chauffage.*/
+    int32_t cooler; /*!<Température de déclenchement du refroidissement.*/
 } PARAMETERS;
 
 /**
- * \brief Variable contant les apram
+ * \brief Variable contant les paramètres
  */
 static union
 {
@@ -120,6 +121,53 @@ const uint32_t __attribute__((space(prog), address(NVM_MEDIA_START_ADDRESS))) gN
 /* ************************************************************************** */
 
 /* ************************************************************************** */
+
+/*********************************************************************
+ * Function:        static bool isAcked(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static bool isAcked(void)     
+{
+    uint8_t data;
+    if(PLIB_USART_ReceiverDataIsAvailable(USART_ID_2))
+    {
+        return (data = PLIB_USART_ReceiverByteReceive(USART_ID_2)) == 0xAA;
+    }
+    return false;
+}
+
+/*********************************************************************
+ * Function:        static sendByteToPC(uint8_t data)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+static void sendByteToPC(uint8_t data)
+{
+    while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
+    PLIB_USART_TransmitterByteSend(USART_ID_2, data);
+}
+
 /* ************************************************************************** */
 // Section: Interface Functions                                               */
 
@@ -163,6 +211,47 @@ void setSecurityValue(uint8_t byIndex, uint32_t value)
 uint32_t getSecurityValue(uint8_t byIndex)
 {
     return parameters.data.sensitivity[byIndex];
+}
+
+/*********************************************************************
+ * Function:        void getPhoneNumber(uint8_t byIndex, void phoneNumber)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+void getPhoneNumber(uint8_t byIndex, void *phoneNumber)
+{
+    memmove(phoneNumber, parameters.data.phones[byIndex].phone,
+            strlen((char*)parameters.data.phones[byIndex].phone));
+}
+
+/*********************************************************************
+ * Function:        uint32_t getSerialNumber(void)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+uint32_t getSerialNumber(void)
+{
+    return parameters.data.id;
 }
 
 /*********************************************************************
@@ -503,6 +592,46 @@ uint16_t getChannelEnable(bool isChangeGiver)
 }
 
 /*********************************************************************
+ * Function:        bool getAlarmAuthorized (uint8_t byIndex)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getAlarmAuthorized(uint8_t byIndex)
+{
+    return parameters.data.phones[byIndex].isAlarmed;
+}
+
+/*********************************************************************
+ * Function:        bool getAuditsAuthorized(__uint8_t byIndex)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getAuditsAuthorized(__uint8_t byIndex)
+{
+    return parameters.data.phones[byIndex].isAuditInformed;
+}
+
+/*********************************************************************
  * Function:
  *         void vParametreWrite(void)
  *
@@ -554,9 +683,9 @@ void vParametersWrite(void)
 
 
     vTaskSuspendAll();
-    DRV_FLASH0_ErasePage(DRV_NVM_MEDIA_START_ADDRESS);
+    DRV_FLASH0_ErasePage(NVM_MEDIA_START_ADDRESS);
     while(DRV_FLASH0_IsBusy());
-    DRV_FLASH0_WriteRow(DRV_NVM_MEDIA_START_ADDRESS, parameters.dwBuffer);
+    DRV_FLASH0_WriteRow(NVM_MEDIA_START_ADDRESS, parameters.dwBuffer);
     while(DRV_FLASH0_IsBusy());
     //
     //    DRV_HANDLE NVMHandle = DRV_NVM_Open(NVM_ID_0, DRV_IO_INTENT_READWRITE);
@@ -696,59 +825,62 @@ void vParamSendToPC(void)
     uint8_t byChannel;
     uint32_t dwParameterSize = sizeof(PARAMETERS);
     int byIndex;
-    uint8_t dwBuffer[11];
+    uint8_t byBuffer[11];
     while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
     PLIB_USART_TransmitterByteSend(USART_ID_2, 6);
-    memmove(dwBuffer, VERSION, 6);
+    memmove(byBuffer, VERSION, 6);
 
+    //Version
     for(byIndex = 0; byIndex < 6; byIndex++)
     {
-        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+        sendByteToPC(byBuffer[byIndex]);
     }
 
+    while(!isAcked());
+
+    //Date
     while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
     PLIB_USART_TransmitterByteSend(USART_ID_2, 11);
-    memmove(dwBuffer, __DATE__, 11);
+    memmove(byBuffer, __DATE__, 11);
     for(byIndex = 0; byIndex < 11; byIndex++)
     {
-        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+        sendByteToPC(byBuffer[byIndex]);
     }
 
-    memmove(dwBuffer, &dwParameterSize, sizeof(dwParameterSize));
+    while(!isAcked());
+  
+    //Dimension paramètres
+    memmove(byBuffer, &dwParameterSize, sizeof(dwParameterSize));
     for(byIndex = 0; byIndex < sizeof(dwParameterSize); byIndex++)
     {
-        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-        PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+        sendByteToPC(byBuffer[byIndex]);
     }
 
+    //Parametres
     for(byIndex = 0; byIndex < dwParameterSize; byIndex++)
     {
-        while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-        PLIB_USART_TransmitterByteSend(USART_ID_2, parameters.buffer[byIndex]);
+        sendByteToPC(parameters.buffer[byIndex]);
     }
 
     for(byChannel = 0; byChannel < 8; byChannel++)
     {
-        value = getCoinValue(byIndex);
-        memmove(dwBuffer, &value, 4);
+        value = getCoinValue(byChannel);
+        memmove(byBuffer, &value, 4);
         for(byIndex = 0; byIndex < 4; byIndex++)
         {
-            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-            PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+            sendByteToPC(byBuffer[byIndex]);
         }
     }
 
+    while(!isAcked());
+
     for(byChannel = 0; byChannel < 8; byChannel++)
     {
-        value = getBillValue(byIndex);
-        memmove(dwBuffer, &value, 4);
+        value = getBillValue(byChannel);
+        memmove(byBuffer, &value, 4);
         for(byIndex = 0; byIndex < 4; byIndex++)
         {
-
-            while(!PLIB_USART_TransmitterIsEmpty(USART_ID_2));
-            PLIB_USART_TransmitterByteSend(USART_ID_2, dwBuffer[byIndex]);
+            sendByteToPC(byBuffer[byIndex]);
         }
     }
 }
@@ -798,7 +930,6 @@ void vParamSendToPC(void)
  ********************************************************************/
 void vParametersGetFromPC(void)
 {
-    unsigned int total = 0;
     int byIndex;
     BILL_TYPE billType;
     COIN_TYPE coinType;
@@ -825,6 +956,33 @@ void vParametersGetFromPC(void)
     isSetBillEnable(true, &billType); // &billValidator.byBillType);
     vParametersWrite();
     //vParametersRead();
+}
+
+/*********************************************************************
+ * Function:        bool getEnable(BYTE byIndex, bool isAudit)
+ *
+ * PreCondition:    None
+ *
+ * Input:           None
+ *
+ * Output:          None
+ *
+ * Side Effects:    None
+ *
+ * Overview:        None
+ *
+ * Note:            None
+ ********************************************************************/
+bool getIsCallEnable(BYTE byIndex, bool isAudit)
+{
+    if(isAudit)
+    {
+        return parameters.data.phones[byIndex].isAuditInformed;
+    }
+    else
+    {
+        return parameters.data.phones[byIndex].isAlarmed;
+    }
 }
 
 /**

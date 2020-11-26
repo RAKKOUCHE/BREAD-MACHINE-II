@@ -48,7 +48,7 @@
 /**
  * \brief Mom en clair de la tâche
  */
-#define LED_TASK_NAME "Led task"
+#define LED_TASK_NAME "TSK LED"
 
 /**
  * \brief Dimension de la pile de la  tâche

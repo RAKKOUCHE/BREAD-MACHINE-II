@@ -33,3 +33,4 @@ D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Debug\
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Debug\BreadParam.exe
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Debug\BreadParam.pdb
 D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Debug\BreadParam.csprojAssemblyReference.cache
+D:\Projets\MTDistribution\BreadMachine II\SW\pc\BreadParam\BreadParam\obj\Debug\BreadParam.csproj.CoreCompileInputs.cache

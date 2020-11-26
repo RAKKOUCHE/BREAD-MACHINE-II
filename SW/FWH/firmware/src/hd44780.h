@@ -26,7 +26,6 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-//#include <GenericTypeDefs.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"

@@ -51,6 +51,8 @@ extern "C"
     /* ************************************************************************** */
     /* ************************************************************************** */
 
+#define NUM_PHONE 5
+
     // *****************************************************************************
     // *****************************************************************************
     // Section: Data Types
@@ -76,6 +78,12 @@ extern "C"
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
+
+    /**
+     * \brief
+     * @return 
+     */
+    uint32_t getSerialNumber(void);
 
     /**
      * \brief
@@ -136,6 +144,19 @@ extern "C"
      */
     uint16_t getChannelEnable(bool isChangeGiver);
 
+    /**
+     * \brief
+     * @param byIndex
+     * @return 
+     */
+    bool getAlarmAuthorized(uint8_t byIndex);
+
+    /**
+     * \brief
+     * @param byIndex
+     * @return 
+     */
+    bool getAuditsAuthorized(uint8_t byIndex);
 
     /**
      * \brief Enregistre les paramétres dans la mémoire flash
@@ -156,6 +177,20 @@ extern "C"
      * \brief Recoit les caractères du PC et les enregistre
      */
     void vParametersGetFromPC(void);
+
+    /**
+     * \brief
+     * @param byIndex
+     * @param isAudit
+     * @return 
+     */
+    bool getIsCallEnable(BYTE byIndex, bool isAudit);
+
+    /**
+     * \brief
+     * @param byIndex
+     */
+    void getPhoneNumber(BYTE byIndex, void* buffer);
 
     /**
      * @}

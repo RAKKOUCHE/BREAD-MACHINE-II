@@ -2,3 +2,5 @@
 Version=1.0
 [Project1]
 ProjectPath=breadMachine_II.PrjPCB
+[Project2]
+ProjectPath=Filtre moteur\Filtre moteur.PrjPcb

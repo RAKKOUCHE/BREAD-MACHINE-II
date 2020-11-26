@@ -665,20 +665,17 @@ void vTaskBV(void)
                             {
                                 case BV_MOTOR_DEFAULT:
                                 {
-                                    //TODO envoyé un message pour indiquer le défaut.
-                                    // vSendSMS("Défaut moteur lecteur de billets");
+                                    vSendSMS("Défaut moteur lecteur de billets");
                                     break;
                                 }
                                 case BV_SENSOR_DEFAULT:
                                 {
-                                    //TODO envoyé un message pour indiquer le défaut.
-                                    //vSendSMS("Défaut sensor lecteur de billets");
+                                    vSendSMS("Défaut sensor lecteur de billets");
                                     break;
                                 }
                                 case BV_ROM_ERROR:
                                 {
-                                    //TODO envoyé un message pour indiquer le défaut.
-                                    //vSendSMS("Défaut ROM lecteur de billets");
+                                    vSendSMS("Défaut ROM lecteur de billets");
                                     break;
                                 }
                                 case BV_BUSY:
@@ -687,8 +684,7 @@ void vTaskBV(void)
                                 }
                                 case BV_JAM_ACCEPTANCE:
                                 {
-                                    //TODO envoyé un message pour indiquer le défaut.
-                                    //vSendSMS("Bourrage lecteur de billets");
+                                    vSendSMS("Bourrage lecteur de billets");
                                     break;
                                 }
                                 case BV_JUST_RESET:
@@ -704,8 +700,7 @@ void vTaskBV(void)
                                 }
                                 case BV_CASHBOX_OPEN:
                                 {
-                                    //TODO envoyé un message pour indiquer le défaut.
-                                    //vSendSMS("Caisse lecteur de billets ouverte");
+                                    vSendSMS("Caisse lecteur de billets ouverte");
 
                                     break;
                                 }
@@ -780,8 +775,7 @@ void vTaskBV(void)
             {
                 if((billValidator.isStackerFull = (billValidator.i16BillInStacker < 0)))
                 {
-                    //TODO envoyé message sms
-                    // vSendSMS("Caisse lecteur de billets pleine.");
+                    vSendSMS("Caisse lecteur de billets pleine.");
                 }
                 billValidator.i16BillInStacker = abs(billValidator.i16BillInStacker);
                 billValidator.i16BillInStacker = (billValidator.i16BillInStacker >> 8) | (billValidator.i16BillInStacker << 8);

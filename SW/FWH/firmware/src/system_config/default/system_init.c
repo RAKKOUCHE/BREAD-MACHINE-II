@@ -97,7 +97,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Driver Initialization Data
 // *****************************************************************************
 // *****************************************************************************
-/*** FLASH Driver Initialization Data ***/
+// <editor-fold defaultstate="collapsed" desc="DRV_USART Initialization Data">
+// </editor-fold>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -147,13 +148,14 @@ void SYS_Initialize(void* data)
 
     /* Initialize Drivers */
     sysObj.drvFlash0 = DRV_FLASH_Initialize(DRV_FLASH_INDEX_0, (SYS_MODULE_INIT *)NULL);
-    /* Initialize the NVM Driver */
-    sysObj.drvNvm = DRV_NVM_Initialize(DRV_NVM_INDEX_0, (SYS_MODULE_INIT *)NULL);
+    sysObj.drvUsart0 = DRV_USART_Initialize(DRV_USART_INDEX_0, (SYS_MODULE_INIT *)NULL);
+    SYS_INT_VectorPrioritySet(INT_VECTOR_UART3, INT_PRIORITY_LEVEL1);
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_UART3, INT_SUBPRIORITY_LEVEL0);
 
     /* Initialize System Services */
     SYS_PORTS_Initialize();
 
-    /*** Interrupt Service Initialization Code ***/
+     /*** Interrupt Service Initialization Code ***/
     SYS_INT_Initialize();
 
     /* Initialize Middleware */
