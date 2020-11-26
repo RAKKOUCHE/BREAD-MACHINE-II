@@ -1,0 +1,45 @@
+Removed Pin From Net: NetName=NetC39_1 Pin=Q51-1
+Removed Pin From Net: NetName=NetQ50_3 Pin=Q51-2
+Change Component Footprint: Designator=Q51 Old Footprint=TO-92A New Footprint=SOT23
+Change Component Comment : Designator=Q51 Old Comment=2N3904 New Comment=BC846
+Change component parameters: Designator = "Q51" ("Q51"); Footprint = "TO-92A"; UniqueID = "\LMBOJOMC\IWOFIWEJ" ("\LMBOJOMC\IWOFIWEJ")
+Change component parameters (AddParameter): Name = "ComponentLink1Description"; Value = "http://www.farnell.com/datasheets/1581369.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.farnell.com/datasheets/1581369.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Courant de collecteur DC"; Value = "100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Courant Ic max.."; Value = "100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Courant, Ic (hfe)"; Value = "2"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Courant, Ic max.. permanent a"; Value = "100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Dissipation de puissance Pd"; Value = "250"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "FB max.."; Value = "10"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ft, min."; Value = "100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Gain Bande-passante ft, typ."; Value = "300"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Gain en courant DC hFE"; Value = "110"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Hfe, min."; Value = "110"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Hfe, typ."; Value = "125"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "NXP"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "BC846"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Marquage composant"; Value = "BC846"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Marquage, CMS"; Value = "1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Nombre de broches"; Value = "3"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Nombre de transistors"; Value = "1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Polarité transistor"; Value = "NPN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Pricing 1"; Value = "10=0,02, 100=0,016, 1000=0,015, 3000=0,013 (EUR)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Puissance, Ptot"; Value = "250"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "YES"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "Farnell"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "1081227"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "SVHC"; Value = "No SVHC (19-Dec-2012)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Température de fonctionnement"; Value = "-65°C à +150"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Température de fonctionnement max.."; Value = "150"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Température d'utilisation min"; Value = "-65"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tension, Vcbo"; Value = "80"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tension, Vce sat max.."; Value = "200"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tension, Vceo"; Value = "65"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type de boîtier"; Value = "SOT-23"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type de boîtier de transistor"; Value = "SOT-23"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type de terminaison"; Value = "SMD"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetD22_3 Pin=F2-1
+Added Pin To Net: NetName=NetF2_2 Pin=F2-2
+Added Pin To Net: NetName=NetQ50_3 Pin=Q51-1
+Added Pin To Net: NetName=NetC39_1 Pin=Q51-2
+Added Member To Class: ClassName=U_PSU Member=Component F2 1A

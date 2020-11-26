@@ -1,0 +1,4 @@
+Added Component: Designator=P1(tp)
+Added Component: Designator=P2(tp)
+Added Pin To Net: NetName=+24VCC Pin=P1-1
+Added Pin To Net: NetName=+12V Pin=P2-1

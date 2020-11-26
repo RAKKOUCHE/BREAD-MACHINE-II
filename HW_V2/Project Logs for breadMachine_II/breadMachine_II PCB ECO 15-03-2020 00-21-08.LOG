@@ -1,0 +1,3 @@
+Added Pin To Net: NetName=NetC52_2 Pin=R190-1
+Added Pin To Net: NetName=BTNRTN Pin=R190-2
+Added Member To Class: ClassName=U_COIN RETURN_A Member=Component R190 1K

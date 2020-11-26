@@ -1,0 +1,16 @@
+Change Component Comment : Designator=L1 Old Comment=470µH New Comment=1mH
+Change Component Comment : Designator=L2 Old Comment=470µH New Comment=1mH
+Change component parameters: Designator = "L1" ("L1"); Footprint = "SELF 1207"; UniqueID = "\PXXMBXEU" ("\PXXMBXEU")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "FerroCore"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "DE1207-1000"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Stock 1"; Value = "22755"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "DE1207-1000"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L2" ("L2"); Footprint = "SELF 1207"; UniqueID = "\MJSUKUJQ" ("\MJSUKUJQ")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "FerroCore"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "DE1207-1000"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Stock 1"; Value = "22755"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "DE1207-1000"; VariantName = "[No Variations]"

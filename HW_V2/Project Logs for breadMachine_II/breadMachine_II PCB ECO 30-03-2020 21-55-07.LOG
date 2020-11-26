@@ -1,0 +1,113 @@
+Removed Pin From Net: NetName=NetC7_1 Pin=P2-3
+Removed Pin From Net: NetName=NetC6_1 Pin=P2-4
+Removed Pin From Net: NetName=NetC5_1 Pin=P2-5
+Removed Pin From Net: NetName=NetC4_1 Pin=P2-6
+Removed Pin From Net: NetName=NetC3_1 Pin=P2-7
+Removed Pin From Net: NetName=NetC2_1 Pin=P2-8
+Removed Pin From Net: NetName=NetC1_1 Pin=P2-9
+Removed Pin From Net: NetName=NetC1_1 Pin=R168-1
+Removed Pin From Net: NetName=DOOR Pin=R168-2
+Removed Pin From Net: NetName=NetC2_1 Pin=R169-1
+Removed Pin From Net: NetName=TOP1 Pin=R169-2
+Removed Pin From Net: NetName=NetC3_1 Pin=R170-1
+Removed Pin From Net: NetName=TOP2 Pin=R170-2
+Removed Pin From Net: NetName=NetC4_1 Pin=R171-1
+Removed Pin From Net: NetName=TOP3 Pin=R171-2
+Removed Pin From Net: NetName=NetC5_1 Pin=R172-1
+Removed Pin From Net: NetName=BOT1 Pin=R172-2
+Removed Pin From Net: NetName=NetC6_1 Pin=R173-1
+Removed Pin From Net: NetName=BOT2 Pin=R173-2
+Removed Pin From Net: NetName=NetC7_1 Pin=R174-1
+Removed Pin From Net: NetName=BOT3 Pin=R174-2
+Removed Pin From Net: NetName=DOOR Pin=U3-7
+Removed Pin From Net: NetName=TOP1 Pin=U3-8
+Removed Pin From Net: NetName=TOP2 Pin=U3-9
+Removed Pin From Net: NetName=TOP3 Pin=U3-63
+Removed Pin From Net: NetName=BOT3 Pin=U3-64
+Removed Pin From Net: NetName=BOT1 Pin=U3-73
+Removed Pin From Net: NetName=BOT2 Pin=U3-74
+Change Component Comment : Designator=C43 Old Comment=100µF New Comment=100uF
+Change Component Designator: OldDesignator=C43 NewDesignator=C38
+Added Component: Designator=C36(C 0805(2012)x0.65)
+Add component (AddParameter): Name = "Capacitance"; Value = "10uF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Case Code (Imperial)"; Value = "0805"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Case Code (Metric)"; Value = "2012"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Case/Package"; Value = "0805"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "http://www.tme.eu/en/details/cc0805kkx5r5106/0805-mlcc-smd-capacitors/yageo/cc0805kkx5r5bb106/"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.tme.eu/en/details/cc0805kkx5r5106/0805-mlcc-smd-capacitors/yageo/cc0805kkx5r5bb106/"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Depth"; Value = "1.25mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Dielectric"; Value = "X7R"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "1.25mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Lead Free"; Value = "Lead Free"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Length"; Value = "2mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Operating Temperature"; Value = "85°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Min Operating Temperature"; Value = "-55°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Surface Mount"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package Quantity"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Packaging"; Value = "Tape and Reel"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Radiation Hardening"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "CL21A106KOQNNNE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Thickness"; Value = "0.055inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tolerance"; Value = "10%"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Voltage"; Value = "16V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Voltage Rating"; Value = "16V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Voltage Rating (DC)"; Value = "16V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Width"; Value = "0.049inch"; VariantName = "[No Variations]"
+Added Component: Designator=C37(C 0805(2012)x0.65)
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "http://www.farnell.com/datasheets/1520827.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.farnell.com/datasheets/1520827.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "MCCA000296"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "100=0,01, 500=0,008, 1000=0,006, 4000=0,005 (EUR)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "1759167"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3.3V Pin=C36-1
+Added Pin To Net: NetName=GND Pin=C36-2
+Added Pin To Net: NetName=GND Pin=C37-1
+Added Pin To Net: NetName=3.3V Pin=C37-2
+Added Pin To Net: NetName=TOP3 Pin=P2-3
+Added Pin To Net: NetName=TOP2 Pin=P2-4
+Added Pin To Net: NetName=TOP1 Pin=P2-5
+Added Pin To Net: NetName=DOOR Pin=P2-6
+Added Pin To Net: NetName=BOT3 Pin=P2-7
+Added Pin To Net: NetName=BOT2 Pin=P2-8
+Added Pin To Net: NetName=BOT1 Pin=P2-9
+Added Pin To Net: NetName=BOT1 Pin=R168-1
+Added Pin To Net: NetName=NetC1_1 Pin=R168-2
+Added Pin To Net: NetName=BOT2 Pin=R169-1
+Added Pin To Net: NetName=NetC2_1 Pin=R169-2
+Added Pin To Net: NetName=BOT3 Pin=R170-1
+Added Pin To Net: NetName=NetC3_1 Pin=R170-2
+Added Pin To Net: NetName=DOOR Pin=R171-1
+Added Pin To Net: NetName=NetC4_1 Pin=R171-2
+Added Pin To Net: NetName=TOP1 Pin=R172-1
+Added Pin To Net: NetName=NetC5_1 Pin=R172-2
+Added Pin To Net: NetName=TOP2 Pin=R173-1
+Added Pin To Net: NetName=NetC6_1 Pin=R173-2
+Added Pin To Net: NetName=TOP3 Pin=R174-1
+Added Pin To Net: NetName=NetC7_1 Pin=R174-2
+Added Pin To Net: NetName=NetC1_1 Pin=U3-7
+Added Pin To Net: NetName=NetC2_1 Pin=U3-8
+Added Pin To Net: NetName=NetC3_1 Pin=U3-9
+Added Pin To Net: NetName=NetC4_1 Pin=U3-63
+Added Pin To Net: NetName=NetC7_1 Pin=U3-64
+Added Pin To Net: NetName=NetC5_1 Pin=U3-73
+Added Pin To Net: NetName=NetC6_1 Pin=U3-74
+Change Net Name : Old Net Name=BOT1 New Net Name=NetP2_9
+Change Net Name : Old Net Name=BOT2 New Net Name=NetP2_8
+Change Net Name : Old Net Name=BOT3 New Net Name=NetP2_7
+Change Net Name : Old Net Name=DOOR New Net Name=NetP2_6
+Change Net Name : Old Net Name=NetC1_1 New Net Name=DOOR
+Change Net Name : Old Net Name=NetC2_1 New Net Name=TOP1
+Change Net Name : Old Net Name=NetC3_1 New Net Name=TOP2
+Change Net Name : Old Net Name=NetC4_1 New Net Name=TOP3
+Change Net Name : Old Net Name=NetC5_1 New Net Name=BOT1
+Change Net Name : Old Net Name=NetC6_1 New Net Name=BOT2
+Change Net Name : Old Net Name=NetC7_1 New Net Name=BOT3
+Change Net Name : Old Net Name=TOP1 New Net Name=NetP2_5
+Change Net Name : Old Net Name=TOP2 New Net Name=NetP2_4
+Change Net Name : Old Net Name=TOP3 New Net Name=NetP2_3
+Change Net Color : Old Net Color=RGB(110, 110, 255) New Net Color=Default
+Added Member To Class: ClassName=U_PSU Member=Component C36 10µF
+Added Member To Class: ClassName=U_PSU Member=Component C37 100nF

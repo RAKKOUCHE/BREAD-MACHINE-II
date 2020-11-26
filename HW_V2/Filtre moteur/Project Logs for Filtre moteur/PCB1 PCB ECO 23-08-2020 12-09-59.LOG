@@ -1,0 +1,21 @@
+Removed Pin From Net: NetName=NetC2_2 Pin=P1-2
+Removed Pin From Net: NetName=NetC2_2 Pin=P2-1
+Added Component: Designator=F1(1206)
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "http://datasheet.octopart.com/FUSE-1206-FF-PW-3A5-ESKA-Erich-Schweizer-datasheet-17566018.pdf?src-supplier=TME"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://datasheet.octopart.com/FUSE-1206-FF-PW-3A5-ESKA-Erich-Schweizer-datasheet-17566018.pdf?src-supplier=TME"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "ESKA Erich Schweizer"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "FUSE 1206-FF PW 3A5"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "5=0,32060, 20=0,24610, 100=0,18400, 500=0,15920 (EUR)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Stock 1"; Value = "92"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "BSMD1206-SS3.5"; VariantName = "[No Variations]"
+Added Component: Designator=P5(tp)
+Added Pin To Net: NetName=NetC2_2 Pin=F1-2
+Added Pin To Net: NetName=GND Pin=P5-1
+Added Pin To Net: NetName=NetF1_1 Pin=F1-1
+Added Pin To Net: NetName=NetF1_1 Pin=P1-2
+Added Pin To Net: NetName=NetF1_1 Pin=P2-1
+Added Net: Name=NetF1_1
+Added Member To Class: ClassName=FILTRE MOTEUR Member=Component F1 3A5
+Added Member To Class: ClassName=FILTRE MOTEUR Member=Component P5 GND
+Added Room: Name=FILTRE MOTEUR

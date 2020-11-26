@@ -1,0 +1,18 @@
+Change Component Footprint: Designator=L1 Old Footprint=Dr DBS-135 New Footprint=Dr DRH-125 (SIR1205)
+Change Component Footprint: Designator=L2 Old Footprint=Dr DBS-135 New Footprint=Dr DRH-125 (SIR1205)
+Change Component Comment : Designator=L1 Old Comment=68u New Comment=100µH
+Change Component Comment : Designator=L2 Old Comment=68u New Comment=100µH
+Change component parameters: Designator = "L1" ("L1"); Footprint = "Dr DBS-135"; UniqueID = "\TUAHAEUC" ("\TUAHAEUC")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "FerroCore"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "DL22-100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Stock 1"; Value = "2639"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "DL22-100"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L2" ("L2"); Footprint = "Dr DBS-135"; UniqueID = "\ATUTOWAM" ("\ATUTOWAM")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "FerroCore"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "DL22-100"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Stock 1"; Value = "2639"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "TME"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "DL22-100"; VariantName = "[No Variations]"

@@ -1,0 +1,31 @@
+Change Component Comment : Designator=R10 Old Comment=3.3K New Comment=6.2K
+Change component parameters: Designator = "R10" ("R10"); Footprint = "R 0805(2012)"; UniqueID = "\WXESKVSZ" ("\WXESKVSZ")
+Change component parameters (AddParameter): Name = "ComponentLink1Description"; Value = "https://produktinfo.conrad.com/datenblaetter/1400000-1499999/001458913-da-01-en-CHIP_WID__DICKSCH__1_8WS_0805_5__6K2.pdf?src-supplier=Conrad"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink1URL"; Value = "https://produktinfo.conrad.com/datenblaetter/1400000-1499999/001458913-da-01-en-CHIP_WID__DICKSCH__1_8WS_0805_5__6K2.pdf?src-supplier=Conrad"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Royal Electronic Factory"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "0805S8J0622T5E"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=+3.3 Pin=C5-1
+Added Pin To Net: NetName=GND Pin=C5-2
+Added Pin To Net: NetName=NetC2_1 Pin=C6-1
+Added Pin To Net: NetName=GND Pin=C6-2
+Added Pin To Net: NetName=NetC7_1 Pin=C7-1
+Added Pin To Net: NetName=GND Pin=C7-2
+Added Pin To Net: NetName=GND Pin=D3-1
+Added Pin To Net: NetName=NetD3_2 Pin=D3-2
+Added Pin To Net: NetName=NetD3_2 Pin=L2-1
+Added Pin To Net: NetName=+3.3 Pin=L2-2
+Added Pin To Net: NetName=+3.3 Pin=R8-1
+Added Pin To Net: NetName=NetR8_2 Pin=R8-2
+Added Pin To Net: NetName=NetC2_1 Pin=R9-1
+Added Pin To Net: NetName=NetR9_2 Pin=R9-2
+Added Pin To Net: NetName=GND Pin=R10-1
+Added Pin To Net: NetName=NetR8_2 Pin=R10-2
+Added Pin To Net: NetName=NetR9_2 Pin=U2-1
+Added Pin To Net: NetName=NetD3_2 Pin=U2-2
+Added Pin To Net: NetName=NetC7_1 Pin=U2-3
+Added Pin To Net: NetName=GND Pin=U2-4
+Added Pin To Net: NetName=NetR8_2 Pin=U2-5
+Added Pin To Net: NetName=NetC2_1 Pin=U2-6
+Added Pin To Net: NetName=NetR9_2 Pin=U2-7
+Added Pin To Net: NetName=NetR9_2 Pin=U2-8
